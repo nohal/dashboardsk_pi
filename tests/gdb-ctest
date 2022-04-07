@@ -1,0 +1,166 @@
+#!/bin/bash
+#
+# MIT License
+#
+# Copyright (c) 2021 Václav Kubernát
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+set -eu
+
+print_usage()
+{
+    echo "$0 - runs a ctest inside gdb, including fixtures and environment"
+    echo "Usage: $0 <test_name>"
+    echo
+    echo "Options:"
+    echo "    <test_name>  Test to be ran. The same for 'ctest -R <test_name>'. Specifying more than one test is an error."
+    echo "    -X           Arguments starting with a single dash are ignored."
+    echo "    --XXX        Arguments starting with a double dash are ignored."
+    echo
+    echo "Information:"
+    echo "    For information and caveats, check README.md"
+    exit 1
+}
+
+while [[ $# -gt 0 ]]; do
+    if [[ "$1" = "--help" || "$1" = "-h"  ]]; then
+        print_usage
+    fi
+
+    if [[ "$1" =~ ^[^-].+ ]]; then
+        if [[ "${TEST_NAME:-}" = "" ]]; then
+            TEST_NAME="$1"
+        else
+            print_usage
+        fi
+    fi
+
+    shift
+done
+
+if [[ "${TEST_NAME:-}" = "" ]]; then
+    print_usage
+fi
+
+DUMP="$(ctest --show-only=json-v1 -R "$TEST_NAME" | jq ".tests")"
+
+get_test_json()
+{
+    jq "map(select(.name == \"$1\"))[]" <<< "$DUMP"
+}
+
+get_test_command()
+{
+    get_test_json "$1" | jq -r ".command | join(\" \")"
+}
+
+get_test_property()
+{
+    get_test_json "$1" | jq -r ".properties | map(select(.name == \"$2\"))[].value | join(\" \")"
+}
+
+match_property()
+{
+    PROP_NAME="$1"
+    PROP_VALUE="$2"
+    # I need to find out who has the PROP_NAME property.
+    # The outer map(select()) looks at the .properties array and tries to filter it according to name and value. This
+    # can result into two things:
+    #   1) The test has the property name/value combo - then the result of the inner map is an non-empty array (containing the combo).
+    #   2) The test doesn't have the property name/value combo - the result is an empty array (because everything got filtered out).
+    #
+    # The outer map(select()) finds the desired test based on whether the filtered .properties is empty or not.
+    #
+    # CAVEAT: if more tests have the same property name/value combo, this will take the first one.
+    jq -r "map(select((.properties | map(select(.name == \"$PROP_NAME\" and .value[] == \"$PROP_VALUE\"))) != []))[].name" <<< "$DUMP"
+}
+
+get_test_environment()
+{
+    get_test_json "$1" | jq ".[].properties | map(select(.name == \"ENVIRONMENT\"))[].value"
+}
+
+# TEST_JSON="$(get_test_json "$TEST_NAME")"
+TEST_COMMAND="$(get_test_command "$TEST_NAME")"
+if [[ -z "$TEST_COMMAND" ]]; then
+    echo "Couldn't find a test named '$TEST_NAME'"
+    exit 1
+fi
+
+FIXTURES_REQUIRED="$(get_test_property "$TEST_NAME" "FIXTURES_REQUIRED")"
+SETUP_NAME=
+CLEANUP_NAME=
+
+if [[ -n "$FIXTURES_REQUIRED" ]]; then
+    SETUP_NAME="$(match_property "FIXTURES_SETUP" "$FIXTURES_REQUIRED")"
+    if [[ -n "$SETUP_NAME" ]]; then
+        SETUP_COMMAND="$(get_test_command $SETUP_NAME)"
+    fi
+
+    CLEANUP_NAME="$(match_property "FIXTURES_CLEANUP" "$FIXTURES_REQUIRED")"
+    if [[ -n "$CLEANUP_NAME" ]]; then
+        CLEANUP_COMMAND="$(get_test_command $CLEANUP_NAME)"
+    fi
+fi
+# echo "TEST_NAME         = $TEST_NAME"
+# echo "TEST_COMMAND      = $TEST_COMMAND"
+# echo "FIXTURES_REQUIRED = $FIXTURES_REQUIRED"
+# echo "SETUP_NAME        = $SETUP_NAME"
+# echo "SETUP_COMMAND     = $SETUP_COMMAND"
+# echo "CLEANUP_NAME      = $CLEANUP_NAME"
+# echo "CLEANUP_COMMAND   = $CLEANUP_COMMAND"
+
+SETUP=
+CLEANUP=
+
+if [[ -n "$SETUP_NAME" ]]; then
+    SETUP="$(get_test_property "$SETUP_NAME" "ENVIRONMENT") $SETUP_COMMAND"
+    echo "Will run this to setup fixture '$FIXTURES_REQUIRED':"
+    echo "  $" $SETUP
+    echo
+fi
+TEST="$(get_test_property "$TEST_NAME" "ENVIRONMENT") gdb --args $TEST_COMMAND"
+echo "Will run this as the test command for '$TEST_NAME' (gdb is included):"
+echo "  $" $TEST
+if [[ -n "$CLEANUP_NAME" ]]; then
+    echo
+    CLEANUP="$(get_test_property "$CLEANUP_NAME" "ENVIRONMENT") $CLEANUP_COMMAND"
+    echo "Will run this to cleanup fixture '$FIXTURES_REQUIRED':"
+    echo "  $" $CLEANUP
+fi
+
+echo
+
+read -r -p "Is that ok? [Y/n] " RESPONSE
+if [[ -z "$RESPONSE" ]]; then
+    RESPONSE=y
+fi
+RESPONSE="${RESPONSE,,}"    # tolower
+if ! [[ "$RESPONSE" =~ ^(yes|y)$ ]]; then
+    exit 0
+fi
+
+if [[ -n "$SETUP_NAME" ]]; then
+    env $SETUP
+fi
+env $TEST
+if [[ -n "$CLEANUP_NAME" ]]; then
+    env $CLEANUP
+fi

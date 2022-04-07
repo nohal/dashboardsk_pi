@@ -1,0 +1,15 @@
+src/instrument.cpp
+src/dashboardskguiimpl.cpp
+src/dashboardskgui.cpp
+src/dashboardsk.cpp
+src/dashboardsk_pi.cpp
+src/dashboard.cpp
+include/dashboard.h
+include/dashboardsk.h
+include/dashboardskguiimpl.h
+include/instrument.h
+include/dashboardsk_pi.h
+include/pi_common.h
+include/dskdc.h
+include/simplenumberinstrument.h
+include/dashboardskgui.h

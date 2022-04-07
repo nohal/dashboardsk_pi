@@ -1,0 +1,30 @@
+:imagesdir: ../images/
+== Plugin DashboardSK_pi
+
+image::dashboardsk_pi_icon.png[]]
+
+=== Features
+
+The plugin provides universal data display based on the https://signalk.org[SignalK] data model.
+The data is displayed using configurable overlay instruments docked to any edge of chart canvas.
+
+=== Available instruments
+
+==== Simple number
+
+Simple instrument displaying a value of one SignalK path with configurable formatting and transformations.
+
+Example uses: speed, wind speed, temperature, voltage, heading etc.
+
+=== Installation
+
+Use the integrated plugin manager to install the plugin.
+
+=== Configuration
+
+The configuration of the plugin can be accessed from the _Plugins_ tab of the _OpenCPN Toolbox_ by clicking the _Preferences_ button on the tile representing the DashboardSK plugin.
+
+=== Links
+
+* Github project: https://github.com/nohal/dashboardsk_pi +
+* Forum: http://www.cruisersforum.com/forums/f134/[OpenCPN support forum] +

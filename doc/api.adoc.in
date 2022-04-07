@@ -1,0 +1,8 @@
+= DashboardSK Plugin internal API v@PKG_VERSION@
+
+All the code uses namespace `DashboardSKPlugin`, put `PLUGIN_BEGIN_NAMESPACE` macro at the beginning of every
+source file and `PLUGIN_END_NAMESPACE` at the end.
+
+== The Instrument interface
+
+${insert("Instrument")}

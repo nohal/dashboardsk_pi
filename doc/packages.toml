@@ -1,0 +1,5 @@
+[packages]
+
+[packages.DashboardSKPlugin]
+type = "local"
+package_dir = "."

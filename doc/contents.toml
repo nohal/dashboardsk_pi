@@ -1,0 +1,6 @@
+[package]
+name = "DashboardSKPlugin"
+
+[reference]
+type = "doxygen"
+dir = "docs/xml"

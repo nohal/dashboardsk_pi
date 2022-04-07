@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=11"/>
+    <meta name="generator" content="Doxygen 1.9.3"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>DashboardSK_pi: File List</title>
+    <link href="tabs.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="dynsections.js"></script>
+    <link href="navtree.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="resize.js"></script>
+    <script type="text/javascript" src="navtreedata.js"></script>
+    <script type="text/javascript" src="navtree.js"></script>
+    <link href="search/search.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="search/searchdata.js"></script>
+    <script type="text/javascript" src="search/search.js"></script>
+    <link href="doxygen.css" rel="stylesheet" type="text/css"/>
+    <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+    <div id="top">
+        <!-- do not remove this div, it is closed by doxygen! -->
+        <div id="titlearea">
+            <table cellspacing="0" cellpadding="0">
+                <tbody>
+                    <tr id="projectrow">
+                        <td id="projectlogo">
+                            <img width="100%" height="100%" alt="Logo" src="dashboardsk_pi_toggled.svg"/>
+                        </td>
+                        <td id="projectalign">
+                            <div id="projectname">
+                                ${PKG_NAME}
+                                <span id="projectnumber">&#160;${PKG_VERSION}</span>
+                            </div>
+                            <div id="projectbrief">Universal dashboard plugin for OpenCPN based on the SignalK data model</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- end header part -->

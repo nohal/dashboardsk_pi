@@ -1,0 +1,6 @@
+<svg width="20mm" height="20mm" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+    <path style="font-size:31.5646px;line-height:1.25;font-family:'Arial Black';-inkscape-font-specification:'Arial Black, ';stroke-width:.78912;fill:#ccc" d="m12.555 18.372 6.35-12.408h-5.51l-1.259 3.108V2.418H8.632v6.727L7.356 5.964H1.863l6.35 12.408z"/>
+    <g style="fill:#000">
+        <path style="font-size:31.5646px;line-height:1.25;font-family:'Arial Black';-inkscape-font-specification:'Arial Black, ';fill:#000;stroke-width:.78912" d="m8.597 4.188-6.35 12.409h5.51l1.258-3.109v6.655h3.505v-6.727l1.275 3.181h5.494l-6.35-12.409z" transform="rotate(180 10.192 10.885)"/>
+    </g>
+</svg>
