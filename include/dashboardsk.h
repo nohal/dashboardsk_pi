@@ -138,7 +138,8 @@ public:
     const wxString NormalizeID(const wxString& id)
     {
         if (id.IsEmpty()) {
-            return Self().AfterFirst('.');
+            // return Self().AfterFirst('.');
+            return Self();
         } else if (id.StartsWith(
                        "vessels")) { // TODO: Other types (aircraft, aton, sar)
             return NormalizeID(id.AfterFirst('.'));

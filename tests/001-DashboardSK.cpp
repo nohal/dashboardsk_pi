@@ -72,5 +72,5 @@ TEST_CASE("DashboardSK - ID normalization")
                 .IsSameAs("urn:mrn:mailto:test@example.com"));
     REQUIRE(d.NormalizeID("tel:+420603200300")
                 .IsSameAs("urn:mrn:tel:+420603200300"));
-    REQUIRE(d.NormalizeID("").IsSameAs("urn:mrn:imo:mmsi:223456789"));
+    REQUIRE(d.NormalizeID("") == ("urn:mrn:imo:mmsi:223456789"));
 }

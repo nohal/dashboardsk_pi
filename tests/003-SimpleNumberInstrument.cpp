@@ -29,6 +29,7 @@
 #include "pi_common.h"
 #include "wx/jsonreader.h"
 #include "wx/jsonval.h"
+#include "wx/jsonwriter.h"
 
 #include "dashboard.h"
 #include "dashboardsk.h"
@@ -42,7 +43,7 @@ TEST_CASE("SimpleNumberInstrument Creation - properties set to defaults")
     SimpleNumberInstrument i(nullptr);
     REQUIRE(i.Class() != "Instrument");
     REQUIRE(i.DisplayType().IsSameAs("Simple number"));
-    REQUIRE(i.ConfigControls().size() == 1);
+    REQUIRE(i.ConfigControls().size() == 10);
     REQUIRE(i.Class().IsSameAs("SimpleNumberInstrument"));
 }
 
@@ -52,14 +53,17 @@ TEST_CASE("SimpleNumberInstrument Configuration Storage - if JSON not "
     SimpleNumberInstrument i(nullptr);
     wxJSONValue v;
     wxJSONReader r;
+    wxJSONWriter w;
+    wxString out;
 
     r.Parse("{ \"sk_key\": \"vessels.123456789.navigation.test\" }", &v);
     i.ReadConfig(v);
     v = i.GenerateJSONConfig();
+    w.Write(v, out);
+    REQUIRE(out == "");
 
     REQUIRE(
         v["sk_key"].AsString().IsSameAs("vessels.123456789.navigation.test"));
-
     REQUIRE(v["title_background"].AsString().StartsWith("#"));
     REQUIRE(v["title_color"].AsString().StartsWith("#"));
     REQUIRE(v["body_background"].AsString().StartsWith("#"));
