@@ -60,7 +60,6 @@ TEST_CASE("SimpleNumberInstrument Configuration Storage - if JSON not "
     i.ReadConfig(v);
     v = i.GenerateJSONConfig();
     w.Write(v, out);
-    REQUIRE(out == "");
 
     REQUIRE(
         v["sk_key"].AsString().IsSameAs("vessels.123456789.navigation.test"));
@@ -70,7 +69,7 @@ TEST_CASE("SimpleNumberInstrument Configuration Storage - if JSON not "
     REQUIRE(v["body_color"].AsString().StartsWith("#"));
     REQUIRE(v["border_color"].AsString().StartsWith("#"));
     REQUIRE(v["body_font"].AsInt() > 1);
-    REQUIRE(v["body_font"].AsInt() < 30);
+    REQUIRE(v["body_font"].AsInt() < 40);
     REQUIRE(v["title_font"].AsInt() > 1);
-    REQUIRE(v["title_font"].AsInt() < 20);
+    REQUIRE(v["title_font"].AsInt() < 30);
 }

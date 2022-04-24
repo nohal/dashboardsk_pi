@@ -71,9 +71,11 @@ void SimpleNumberInstrument::SetSetting(
 {
     Instrument::SetSetting(key, value);
     if (key == "sk_key" && !m_sk_key.IsSameAs(value)) {
-        m_parent_dashboard->Unsubscribe(this);
         m_sk_key = wxString(value);
-        m_parent_dashboard->Subscribe(m_sk_key, this);
+        if (m_parent_dashboard) {
+            m_parent_dashboard->Unsubscribe(this);
+            m_parent_dashboard->Subscribe(m_sk_key, this);
+        }
     } else if (key.IsSameAs("format") || key.IsSameAs("transformation")) {
         int i = 0;
         value.ToInt(&i);
