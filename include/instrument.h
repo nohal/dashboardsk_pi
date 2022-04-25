@@ -28,6 +28,7 @@
 #define _INSTRUMENT_H_
 
 #include "pi_common.h"
+#include "zone.h"
 
 #include <wx/bitmap.h>
 #include <wx/dcgraph.h>
@@ -44,13 +45,14 @@ PLUGIN_BEGIN_NAMESPACE
 typedef unordered_map<wxString, wxString> config_map_t;
 
 /// Instrument configuration controls type enum
-enum dskConfigCtrl {
+enum class dskConfigCtrl {
     Spacer = 0,
     TextCtrl,
     ColourPickerCtrl,
     SpinCtrl,
     ChoiceCtrl,
-    SignalKKeyCtrl
+    SignalKKeyCtrl,
+    SignalKZonesCtrl
 };
 
 /// Structure describing a single configuration control for the instrument
@@ -64,6 +66,17 @@ struct config_control {
     dskConfigCtrl control;
     /// String with serialized settings of the control
     wxString control_settings;
+};
+
+/// Alarm type
+/// See \c definitions.json in SignalK schema
+enum class alarmType {
+    /// No alarm
+    none = 0,
+    /// Visual alarm
+    visual,
+    /// Sound alarm
+    sound
 };
 
 class Dashboard;
@@ -102,6 +115,10 @@ protected:
     wxCoord m_height;
     /// Indicator there is new data available
     bool m_new_data;
+    /// Value zones  definitions
+    vector<Zone> m_zones;
+    /// Alarm state matrix
+    unordered_map<Zone::state, vector<alarmType>> m_alarm_methods;
 
     /// Get version of a color adjusted to the current color scheme set for the
     /// instrument
@@ -295,6 +312,9 @@ public:
     /// \return Value of the parameter as string
     virtual wxString GetStringSetting(const wxString& key)
     {
+        if (key.IsSameAs("zones")) {
+            return Zone::ZonesToString(m_zones);
+        }
         if (m_config_vals.find(key) != m_config_vals.end()) {
             return m_config_vals[key];
         }

@@ -570,6 +570,38 @@ SKKeyCtrl::~SKKeyCtrl()
         wxCommandEventHandler(SKKeyCtrl::m_btnSelectOnButtonClick), NULL, this);
 }
 
+SKZonesCtrl::SKZonesCtrl(wxWindow* parent, wxWindowID id, const wxPoint& pos,
+    const wxSize& size, long style, const wxString& name)
+    : wxPanel(parent, id, pos, size, style, name)
+{
+    wxBoxSizer* bSizerMain;
+    bSizerMain = new wxBoxSizer(wxHORIZONTAL);
+
+    m_tZones = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition,
+        wxDefaultSize, wxTE_READONLY);
+    bSizerMain->Add(m_tZones, 1, wxEXPAND | wxRIGHT, 5);
+
+    m_btnSelect = new wxButton(this, wxID_ANY, _("..."), wxDefaultPosition,
+        wxDefaultSize, wxBU_EXACTFIT);
+    bSizerMain->Add(m_btnSelect, 0, wxEXPAND | wxLEFT, 5);
+
+    this->SetSizer(bSizerMain);
+    this->Layout();
+
+    // Connect Events
+    m_btnSelect->Connect(wxEVT_COMMAND_BUTTON_CLICKED,
+        wxCommandEventHandler(SKZonesCtrl::m_btnSelectOnButtonClick), NULL,
+        this);
+}
+
+SKZonesCtrl::~SKZonesCtrl()
+{
+    // Disconnect Events
+    m_btnSelect->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED,
+        wxCommandEventHandler(SKZonesCtrl::m_btnSelectOnButtonClick), NULL,
+        this);
+}
+
 SKPathBrowser::SKPathBrowser(wxWindow* parent, wxWindowID id,
     const wxString& title, const wxPoint& pos, const wxSize& size, long style)
     : wxDialog(parent, id, title, pos, size, style)
@@ -622,5 +654,161 @@ SKPathBrowser::~SKPathBrowser()
         NULL, this);
     m_sdbSizerButtonsOK->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED,
         wxCommandEventHandler(SKPathBrowser::m_sdbSizerButtonsOnOKButtonClick),
+        NULL, this);
+}
+
+ZonesConfigDialog::ZonesConfigDialog(wxWindow* parent, wxWindowID id,
+    const wxString& title, const wxPoint& pos, const wxSize& size, long style)
+    : wxDialog(parent, id, title, pos, size, style)
+{
+    this->SetSizeHints(wxSize(200, 200), wxDefaultSize);
+
+    wxBoxSizer* bSizerMain;
+    bSizerMain = new wxBoxSizer(wxVERTICAL);
+
+    m_stZones = new wxStaticText(
+        this, wxID_ANY, _("Zones"), wxDefaultPosition, wxDefaultSize, 0);
+    m_stZones->Wrap(-1);
+    bSizerMain->Add(m_stZones, 0, wxALL, 5);
+
+    wxBoxSizer* bSizerData;
+    bSizerData = new wxBoxSizer(wxHORIZONTAL);
+
+    m_lbZones = new wxListBox(
+        this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, 0);
+    bSizerData->Add(m_lbZones, 1, wxALL | wxEXPAND, 5);
+
+    wxBoxSizer* bSizerButtons;
+    bSizerButtons = new wxBoxSizer(wxVERTICAL);
+
+    m_bpAdd = new wxBitmapButton(this, wxID_ANY, wxNullBitmap,
+        wxDefaultPosition, wxSize(32, 32), wxBU_AUTODRAW | 0);
+    bSizerButtons->Add(m_bpAdd, 0, wxALL, 5);
+
+    m_bpRemove = new wxBitmapButton(this, wxID_ANY, wxNullBitmap,
+        wxDefaultPosition, wxSize(32, 32), wxBU_AUTODRAW | 0);
+    bSizerButtons->Add(m_bpRemove, 0, wxALL, 5);
+
+    bSizerData->Add(bSizerButtons, 0, wxEXPAND, 5);
+
+    wxFlexGridSizer* fgSizerZone;
+    fgSizerZone = new wxFlexGridSizer(0, 2, 0, 0);
+    fgSizerZone->SetFlexibleDirection(wxBOTH);
+    fgSizerZone->SetNonFlexibleGrowMode(wxFLEX_GROWMODE_SPECIFIED);
+
+    m_stLower = new wxStaticText(
+        this, wxID_ANY, _("Lower bound"), wxDefaultPosition, wxDefaultSize, 0);
+    m_stLower->Wrap(-1);
+    fgSizerZone->Add(m_stLower, 0, wxALL, 5);
+
+    m_spLower = new wxSpinCtrlDouble(this, wxID_ANY, wxEmptyString,
+        wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, -99999, 99999, 0, 1);
+    m_spLower->SetDigits(1);
+    fgSizerZone->Add(m_spLower, 0, wxALL, 5);
+
+    m_stUpper = new wxStaticText(
+        this, wxID_ANY, _("Upper bound"), wxDefaultPosition, wxDefaultSize, 0);
+    m_stUpper->Wrap(-1);
+    fgSizerZone->Add(m_stUpper, 0, wxALL, 5);
+
+    m_spUpper = new wxSpinCtrlDouble(this, wxID_ANY, wxEmptyString,
+        wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, -99999, 99999, 0, 1);
+    m_spUpper->SetDigits(1);
+    fgSizerZone->Add(m_spUpper, 0, wxALL, 5);
+
+    m_stState = new wxStaticText(
+        this, wxID_ANY, _("State"), wxDefaultPosition, wxDefaultSize, 0);
+    m_stState->Wrap(-1);
+    fgSizerZone->Add(m_stState, 0, wxALL, 5);
+
+    wxString m_choiceStateChoices[] = { _("Nominal"), _("Normal"), _("Alert"),
+        _("Warning"), _("Alarm"), _("Emergency") };
+    int m_choiceStateNChoices = sizeof(m_choiceStateChoices) / sizeof(wxString);
+    m_choiceState = new wxChoice(this, wxID_ANY, wxDefaultPosition,
+        wxDefaultSize, m_choiceStateNChoices, m_choiceStateChoices, 0);
+    m_choiceState->SetSelection(0);
+    fgSizerZone->Add(m_choiceState, 0, wxALL, 5);
+
+    bSizerData->Add(fgSizerZone, 1, wxEXPAND, 5);
+
+    bSizerMain->Add(bSizerData, 1, wxEXPAND, 5);
+
+    m_stNominal = new wxStaticText(this, wxID_ANY,
+        _("All values not covered by the zones are considered nominal."),
+        wxDefaultPosition, wxDefaultSize, 0);
+    m_stNominal->Wrap(-1);
+    bSizerMain->Add(m_stNominal, 0, wxALL, 5);
+
+    m_sdbSizerButtons = new wxStdDialogButtonSizer();
+    m_sdbSizerButtonsOK = new wxButton(this, wxID_OK);
+    m_sdbSizerButtons->AddButton(m_sdbSizerButtonsOK);
+    m_sdbSizerButtonsCancel = new wxButton(this, wxID_CANCEL);
+    m_sdbSizerButtons->AddButton(m_sdbSizerButtonsCancel);
+    m_sdbSizerButtons->Realize();
+
+    bSizerMain->Add(m_sdbSizerButtons, 0, wxEXPAND, 5);
+
+    this->SetSizer(bSizerMain);
+    this->Layout();
+
+    this->Centre(wxBOTH);
+
+    // Connect Events
+    m_lbZones->Connect(wxEVT_COMMAND_LISTBOX_SELECTED,
+        wxCommandEventHandler(ZonesConfigDialog::m_lbZonesOnListBox), NULL,
+        this);
+    m_bpAdd->Connect(wxEVT_COMMAND_BUTTON_CLICKED,
+        wxCommandEventHandler(ZonesConfigDialog::m_bpAddOnButtonClick), NULL,
+        this);
+    m_bpRemove->Connect(wxEVT_COMMAND_BUTTON_CLICKED,
+        wxCommandEventHandler(ZonesConfigDialog::m_bpRemoveOnButtonClick), NULL,
+        this);
+    m_spLower->Connect(wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED,
+        wxSpinDoubleEventHandler(ZonesConfigDialog::m_spLowerOnSpinCtrlDouble),
+        NULL, this);
+    m_spUpper->Connect(wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED,
+        wxSpinDoubleEventHandler(ZonesConfigDialog::m_spUpperOnSpinCtrlDouble),
+        NULL, this);
+    m_choiceState->Connect(wxEVT_COMMAND_CHOICE_SELECTED,
+        wxCommandEventHandler(ZonesConfigDialog::m_choiceStateOnChoice), NULL,
+        this);
+    m_sdbSizerButtonsCancel->Connect(wxEVT_COMMAND_BUTTON_CLICKED,
+        wxCommandEventHandler(
+            ZonesConfigDialog::m_sdbSizerButtonsOnCancelButtonClick),
+        NULL, this);
+    m_sdbSizerButtonsOK->Connect(wxEVT_COMMAND_BUTTON_CLICKED,
+        wxCommandEventHandler(
+            ZonesConfigDialog::m_sdbSizerButtonsOnOKButtonClick),
+        NULL, this);
+}
+
+ZonesConfigDialog::~ZonesConfigDialog()
+{
+    // Disconnect Events
+    m_lbZones->Disconnect(wxEVT_COMMAND_LISTBOX_SELECTED,
+        wxCommandEventHandler(ZonesConfigDialog::m_lbZonesOnListBox), NULL,
+        this);
+    m_bpAdd->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED,
+        wxCommandEventHandler(ZonesConfigDialog::m_bpAddOnButtonClick), NULL,
+        this);
+    m_bpRemove->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED,
+        wxCommandEventHandler(ZonesConfigDialog::m_bpRemoveOnButtonClick), NULL,
+        this);
+    m_spLower->Disconnect(wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED,
+        wxSpinDoubleEventHandler(ZonesConfigDialog::m_spLowerOnSpinCtrlDouble),
+        NULL, this);
+    m_spUpper->Disconnect(wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED,
+        wxSpinDoubleEventHandler(ZonesConfigDialog::m_spUpperOnSpinCtrlDouble),
+        NULL, this);
+    m_choiceState->Disconnect(wxEVT_COMMAND_CHOICE_SELECTED,
+        wxCommandEventHandler(ZonesConfigDialog::m_choiceStateOnChoice), NULL,
+        this);
+    m_sdbSizerButtonsCancel->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED,
+        wxCommandEventHandler(
+            ZonesConfigDialog::m_sdbSizerButtonsOnCancelButtonClick),
+        NULL, this);
+    m_sdbSizerButtonsOK->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED,
+        wxCommandEventHandler(
+            ZonesConfigDialog::m_sdbSizerButtonsOnOKButtonClick),
         NULL, this);
 }

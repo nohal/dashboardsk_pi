@@ -43,7 +43,7 @@ TEST_CASE("SimpleNumberInstrument Creation - properties set to defaults")
     SimpleNumberInstrument i(nullptr);
     REQUIRE(i.Class() != "Instrument");
     REQUIRE(i.DisplayType().IsSameAs("Simple number"));
-    REQUIRE(i.ConfigControls().size() == 10);
+    REQUIRE(i.ConfigControls().size() == 15);
     REQUIRE(i.Class().IsSameAs("SimpleNumberInstrument"));
 }
 

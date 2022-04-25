@@ -188,7 +188,10 @@ wxJSONValue SimpleNumberInstrument::GenerateJSONConfig()
     // Shared parameters from the parent
     wxJSONValue v = Instrument::GenerateJSONConfig();
     // my own parameters
-#define X(a, b, c, d, e, f, g, h) v[b] = h(b);
+#define X(a, b, c, d, e, f, g, h)                                              \
+    if (!wxString(b).IsSameAs("zones")) {                                      \
+        v[b] = h(b);                                                           \
+    }
     DSK_SNI_SETTINGS
 #undef X
     return v;

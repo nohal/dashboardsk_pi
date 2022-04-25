@@ -55,11 +55,18 @@
     X(SimpleNumberInstrument::transformation::ms2kmh, _("m/s -> km/h"))        \
     X(SimpleNumberInstrument::transformation::ms2mih, _("m/s -> mph"))
 
-// Palette from https://colorhunt.co/palette/125b50f8b400faf5e4ff6363
-#define DSK_SNI_COLOR_TITLE_BG wxColor(18, 91, 80)
-#define DSK_SNI_COLOR_TITLE_FG wxColor(248, 180, 0)
-#define DSK_SNI_COLOR_BODY_BG wxColor(250, 245, 228)
-#define DSK_SNI_COLOR_BODY_FG wxColor(255, 99, 99)
+// Palette from
+// Normal: https://colorhunt.co/palette/f1ddbf525e7578938a92ba92
+// Warn: https://colorhunt.co/palette/9adcfffff89affb2a6ff8aae
+// Alarm:https://colorhunt.co/palette/ff007517277477d970eeeeee
+#define DSK_SNI_COLOR_TITLE_BG wxColor(82, 94, 117)
+#define DSK_SNI_COLOR_TITLE_FG wxColor(146, 186, 146)
+#define DSK_SNI_COLOR_BODY_BG wxColor(120, 147, 138)
+#define DSK_SNI_COLOR_BODY_FG wxColor(241, 221, 191)
+#define DSK_SNI_COLOR_WARN_BG wxColor(255, 248, 154)
+#define DSK_SNI_COLOR_WARN_FG wxColor(154, 220, 255)
+#define DSK_SNI_COLOR_ALRM_BG wxColor(255, 0, 117)
+#define DSK_SNI_COLOR_ALRM_FG wxColor(23, 39, 116)
 #define DSK_SNI_COLOR_BORDER *wxBLACK
 
 // Setting name, default value, label, dskConfigCtrl control type, control
@@ -71,19 +78,30 @@
         ConcatChoiceStrings(m_supported_formats), AsInt, GetIntSetting)        \
     X(2, "transformation", 0, _("Transformation"), ChoiceCtrl,                 \
         ConcatChoiceStrings(m_supported_transforms), AsInt, GetIntSetting)     \
-    X(3, "title_font", m_title_font.GetPointSize(), _("Title size"), SpinCtrl, \
+    X(3, "zones", wxString(wxEmptyString), _("Zones"), SignalKZonesCtrl,       \
+        wxEmptyString, AsString, GetStringSetting)                             \
+    X(4, "title_font", m_title_font.GetPointSize(), _("Title size"), SpinCtrl, \
         "5;40", AsInt, GetIntSetting)                                          \
-    X(4, "body_font", m_body_font.GetPointSize(), _("Body size"), SpinCtrl,    \
+    X(5, "body_font", m_body_font.GetPointSize(), _("Body size"), SpinCtrl,    \
         "5;40", AsInt, GetIntSetting)                                          \
-    X(5, "title_background", DSK_SNI_COLOR_TITLE_BG, _("Title background"),    \
+    X(6, "title_background", DSK_SNI_COLOR_TITLE_BG, _("Title background"),    \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(6, "title_color", DSK_SNI_COLOR_TITLE_FG, _("Title color"),              \
+    X(7, "title_color", DSK_SNI_COLOR_TITLE_FG, _("Title color"),              \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(7, "body_background", DSK_SNI_COLOR_BODY_BG, _("Body background"),       \
+    X(8, "body_background", DSK_SNI_COLOR_BODY_BG, _("Body background"),       \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(8, "body_color", DSK_SNI_COLOR_BODY_FG, _("Body color"),                 \
+    X(9, "body_color", DSK_SNI_COLOR_BODY_FG, _("Body color"),                 \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(9, "border_color", DSK_SNI_COLOR_BORDER, _("Border color"),              \
+    X(10, "warning_background", DSK_SNI_COLOR_WARN_BG,                         \
+        _("Warning background"), ColourPickerCtrl, wxEmptyString, AsString,    \
+        GetStringSetting)                                                      \
+    X(11, "warning_color", DSK_SNI_COLOR_WARN_FG, _("Warning color"),          \
+        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
+    X(12, "alarm_background", DSK_SNI_COLOR_ALRM_BG, _("Alarm background"),    \
+        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
+    X(13, "alarm_color", DSK_SNI_COLOR_ALRM_FG, _("Alarm color"),              \
+        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
+    X(14, "border_color", DSK_SNI_COLOR_BORDER, _("Border color"),             \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)
 
 PLUGIN_BEGIN_NAMESPACE

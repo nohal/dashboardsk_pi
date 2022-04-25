@@ -215,6 +215,30 @@ public:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/// Class SKZonesCtrl
+///////////////////////////////////////////////////////////////////////////////
+class SKZonesCtrl : public wxPanel {
+private:
+protected:
+    wxTextCtrl* m_tZones;
+    wxButton* m_btnSelect;
+
+    // Virtual event handlers, override them in your derived class
+    virtual void m_btnSelectOnButtonClick(wxCommandEvent& event)
+    {
+        event.Skip();
+    }
+
+public:
+    SKZonesCtrl(wxWindow* parent, wxWindowID id = wxID_ANY,
+        const wxPoint& pos = wxDefaultPosition,
+        const wxSize& size = wxSize(200, 32), long style = wxTAB_TRAVERSAL,
+        const wxString& name = wxEmptyString);
+
+    ~SKZonesCtrl();
+};
+
+///////////////////////////////////////////////////////////////////////////////
 /// Class SKPathBrowser
 ///////////////////////////////////////////////////////////////////////////////
 class SKPathBrowser : public wxDialog {
@@ -247,6 +271,62 @@ public:
         long style = wxDEFAULT_FRAME_STYLE | wxTAB_TRAVERSAL);
 
     ~SKPathBrowser();
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class ZonesConfigDialog
+///////////////////////////////////////////////////////////////////////////////
+class ZonesConfigDialog : public wxDialog {
+private:
+protected:
+    wxStaticText* m_stZones;
+    wxListBox* m_lbZones;
+    wxBitmapButton* m_bpAdd;
+    wxBitmapButton* m_bpRemove;
+    wxStaticText* m_stLower;
+    wxSpinCtrlDouble* m_spLower;
+    wxStaticText* m_stUpper;
+    wxSpinCtrlDouble* m_spUpper;
+    wxStaticText* m_stState;
+    wxChoice* m_choiceState;
+    wxStaticText* m_stNominal;
+    wxStdDialogButtonSizer* m_sdbSizerButtons;
+    wxButton* m_sdbSizerButtonsOK;
+    wxButton* m_sdbSizerButtonsCancel;
+
+    // Virtual event handlers, override them in your derived class
+    virtual void m_lbZonesOnListBox(wxCommandEvent& event) { event.Skip(); }
+    virtual void m_bpAddOnButtonClick(wxCommandEvent& event) { event.Skip(); }
+    virtual void m_bpRemoveOnButtonClick(wxCommandEvent& event)
+    {
+        event.Skip();
+    }
+    virtual void m_spLowerOnSpinCtrlDouble(wxSpinDoubleEvent& event)
+    {
+        event.Skip();
+    }
+    virtual void m_spUpperOnSpinCtrlDouble(wxSpinDoubleEvent& event)
+    {
+        event.Skip();
+    }
+    virtual void m_choiceStateOnChoice(wxCommandEvent& event) { event.Skip(); }
+    virtual void m_sdbSizerButtonsOnCancelButtonClick(wxCommandEvent& event)
+    {
+        event.Skip();
+    }
+    virtual void m_sdbSizerButtonsOnOKButtonClick(wxCommandEvent& event)
+    {
+        event.Skip();
+    }
+
+public:
+    ZonesConfigDialog(wxWindow* parent, wxWindowID id = wxID_ANY,
+        const wxString& title = _("Zones configuration"),
+        const wxPoint& pos = wxDefaultPosition,
+        const wxSize& size = wxSize(500, 300),
+        long style = wxDEFAULT_DIALOG_STYLE);
+
+    ~ZonesConfigDialog();
 };
 
 } // namespace DashboardSKPlugin

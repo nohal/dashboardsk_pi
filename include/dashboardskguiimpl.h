@@ -32,6 +32,8 @@
 #include "instrument.h"
 #include "pi_common.h"
 
+#define BMP_SZ 16 // Size of the bitmap fo wxBitmapButton
+
 PLUGIN_BEGIN_NAMESPACE
 
 class dashboardsk_pi;
@@ -308,9 +310,9 @@ public:
     }; // TODO: For configuration JSON editing
 };
 
-/// Implementation of widget for editing SignalK path in a textbox or selecting
-/// it from a tree structure generated from JSON document To obtain \c SKKeyCtrl
-/// information use \c wxFormBuilder to open \c dashboardsk.fbp
+/// Implementation of the widget for editing SignalK path in a textbox or
+/// selecting it from a tree structure generated from JSON document To obtain \c
+/// SKKeyCtrl information use \c wxFormBuilder to open \c dashboardsk.fbp
 class SKKeyCtrlImpl : public SKKeyCtrl {
 public:
     /// Constructor
@@ -378,16 +380,15 @@ private:
 };
 
 /// Implementation of the form displaying SignalK data tree view allowing
-/// selection To obtain \c SKKeyCtrl information use \c wxFormBuilder to open \c
-/// dashboardsk.fbp
+/// selection To obtain \c SKPathBrowser information use \c wxFormBuilder to
+/// open \c dashboardsk.fbp
 class SKPathBrowserImpl : public SKPathBrowser {
 public:
     /// Constructor
     /// \param parent Pointer to the owner window
     /// \param id An identifier for the dialog. \c wxID_ANY is taken to mean a
     /// default.
-    /// \param sk_tree Reference to the wxJSONValue holding the full SignalK
-    /// data tree \param title Title of the dialog window \param pos The dialog
+    /// \param title Title of the dialog window \param pos The dialog
     /// position. The value \c wxDefaultPosition indicates a default position,
     /// chosen by either the windowing system or wxWidgets, depending on
     /// platform.
@@ -397,18 +398,11 @@ public:
     /// \param style The window style. See \c wxDialog.
 
     explicit SKPathBrowserImpl(wxWindow* parent, wxWindowID id = wxID_ANY,
-        const wxJSONValue& sk_tree = wxJSONValue(),
         const wxString& title = _("SignalK Browser"),
         const wxPoint& pos = wxDefaultPosition,
         const wxSize& size = wxSize(500, 300),
         long style = wxDEFAULT_FRAME_STYLE | wxTAB_TRAVERSAL)
-        : SKPathBrowser(parent, id, title, pos, size, style)
-    {
-        m_sk_tree = sk_tree;
-        wxTreeItemId root = m_treePaths->AddRoot("SignalK");
-        AddChildren(root, m_sk_tree);
-        m_treePaths->ExpandAll();
-    };
+        : SKPathBrowser(parent, id, title, pos, size, style) {};
 
     /// Destructor
     ~SKPathBrowserImpl() = default;
@@ -436,7 +430,10 @@ public:
     void SetSKTree(wxJSONValue* sk_tree)
     {
         m_sk_tree = *sk_tree;
-        wxTreeItemId root = m_treePaths->AddRoot("SignalK");
+        wxTreeItemId root = m_treePaths->GetRootItem();
+        if (!root.IsOk()) {
+            root = m_treePaths->AddRoot("SignalK");
+        }
         AddChildren(root, m_sk_tree);
         m_treePaths->ExpandAll();
     };
@@ -450,19 +447,282 @@ private:
     /// population
     void AddChildren(wxTreeItemId parent, wxJSONValue& json_node)
     {
-        for (auto member : json_node.GetMemberNames()) {
-            if (!(member.IsSameAs("value") || member.IsSameAs("source")
-                    || member.IsSameAs("timestamp"))) {
-                // TODO: Isn't there a "legal" node with some of the above
-                // names?
-                wxTreeItemId child = m_treePaths->AppendItem(parent, member);
-                AddChildren(child, json_node[member]);
+        if (!json_node.IsNull()) {
+            for (auto member : json_node.GetMemberNames()) {
+                if (!(member.IsSameAs("value") || member.IsSameAs("source")
+                        || member.IsSameAs("timestamp"))) {
+                    // TODO: Isn't there a "legal" node with some of the above
+                    // names?
+                    wxTreeItemId child
+                        = m_treePaths->AppendItem(parent, member);
+                    AddChildren(child, json_node[member]);
+                }
             }
         }
     };
 
     /// Pointer to the object holding the SignalK data
     wxJSONValue m_sk_tree;
+};
+
+/// Implementation of the widget for editing warning and alarm zones. To obtain
+/// \c SKZonesCtrl information use \c wxFormBuilder to open \c dashboardsk.fbp
+class SKZonesCtrlImpl : public SKZonesCtrl {
+private:
+    /// Pointer to the plugin object
+    dashboardsk_pi* m_dsk_pi;
+
+public:
+    /// Constructor
+    SKZonesCtrlImpl()
+        : SKZonesCtrl(NULL) {};
+
+    /// Constructor
+    ///
+    /// \param parent Parent window pointer
+    /// \param dsk_pi Pointer to the plugin object
+    /// \param id Id of the window
+    /// \param pos Position, defaults to \c wxDefaultPosition
+    /// \param size Size, defaults to \c wxDefaultSize
+    /// \param style Style, defaults to \c wxTAB_TRAVERSAL
+    /// \param name Name of the widget
+    /// \param value Initial value of the textbox
+    SKZonesCtrlImpl(wxWindow* parent, dashboardsk_pi* dsk_pi = nullptr,
+        wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition,
+        const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL,
+        const wxString& name = wxEmptyString,
+        const wxString& value = wxEmptyString)
+        : SKZonesCtrl(parent, id, pos, size, style, name)
+    {
+        m_dsk_pi = dsk_pi;
+        m_tZones->SetValue(value);
+    };
+
+    /// Destructor
+    ~SKZonesCtrlImpl() = default;
+
+    /// Get the value from the textbox
+    /// \return String value from the textbox
+    wxString GetValue() const { return m_tZones->GetValue(); };
+
+    /// Set value of the textbox
+    ///
+    /// \param value Value to set
+    void SetValue(const wxString& value) const { m_tZones->SetValue(value); };
+
+protected:
+    /// Event handler for click on the button invoking the path selection from a
+    /// tree of known values
+    virtual void m_btnSelectOnButtonClick(wxCommandEvent& event);
+
+    /// Get best size for the widget
+    virtual wxSize DoGetBestSize() const
+    {
+        wxSize s1 = m_tZones->GetBestSize();
+        wxSize s2 = m_btnSelect->GetBestSize();
+        return wxSize(s1.GetWidth() + s2.GetWidth(),
+            wxMax(s1.GetHeight(), s2.GetHeight()));
+    }
+
+private:
+    /// Obligatory for the widget
+    wxDECLARE_DYNAMIC_CLASS(SKZonesCtrlImpl);
+    // wxDECLARE_EVENT_TABLE();
+};
+
+/// Implementation of the form displaying value zones
+/// To obtain \c ZonesConfigDialog information use \c wxFormBuilder to open \c
+/// dashboardsk.fbp
+class ZonesConfigDialogImpl : public ZonesConfigDialog {
+private:
+    /// Pointer to the dashboard plugin
+    dashboardsk_pi* m_dsk_pi;
+
+public:
+    /// Constructor
+    /// \param parent Pointer to the owner window
+    /// \param dsk_pi Pointer to the plugin object
+    /// \param id An identifier for the dialog. \c wxID_ANY is taken to mean a
+    /// default.
+    /// \param value String representation of the zones
+    /// data tree \param title Title of the dialog window \param pos The dialog
+    /// position. The value \c wxDefaultPosition indicates a default position,
+    /// chosen by either the windowing system or wxWidgets, depending on
+    /// platform.
+    /// \param size The panel size. The value \c wxDefaultSize
+    /// indicates a default size, chosen by either the windowing system or
+    /// wxWidgets, depending on platform.
+    /// \param style The window style. See \c wxDialog.
+    explicit ZonesConfigDialogImpl(wxWindow* parent,
+        dashboardsk_pi* dsk_pi = nullptr, wxWindowID id = wxID_ANY,
+        const wxString& value = wxEmptyString,
+        const wxString& title = _("SignalK Zones Configuration"),
+        const wxPoint& pos = wxDefaultPosition,
+        const wxSize& size = wxSize(500, 300),
+        long style = wxDEFAULT_FRAME_STYLE | wxTAB_TRAVERSAL);
+
+    /// Destructor
+    ~ZonesConfigDialogImpl() = default;
+
+    /// Get the zones defined in the dialog
+    ///
+    /// \return vector of zones
+    const vector<Zone> GetZones() { return m_zones; }
+
+protected:
+    /// Original zone definition to revert to on Cancel
+    vector<Zone> m_original_zones;
+    /// Current zone configuration state
+    vector<Zone> m_zones;
+    /// Pointer to the currently edited zone
+    Zone* m_edited_zone;
+
+    /// Enable/disable controls based on the state of the form
+    void EnableControls()
+    {
+        bool enable;
+        if (m_lbZones->GetSelection() != wxNOT_FOUND) {
+            enable = true;
+        } else {
+            // Enable only the Add button
+            enable = false;
+            m_bpAdd->Enable();
+        }
+        m_bpRemove->Enable(enable);
+        m_stLower->Enable(enable);
+        m_spLower->Enable(enable);
+        m_stUpper->Enable(enable);
+        m_spUpper->Enable(enable);
+        m_stState->Enable(enable);
+        m_choiceState->Enable(enable);
+    };
+
+    /// Fill the controls with zone values
+    void FillZoneControls()
+    {
+        if (m_edited_zone) {
+            m_spLower->SetRange(-99999, m_edited_zone->GetUpperLimit());
+            m_spLower->SetValue(m_edited_zone->GetLowerLimit());
+            m_spUpper->SetRange(m_edited_zone->GetLowerLimit(), 99999);
+            m_spUpper->SetValue(m_edited_zone->GetUpperLimit());
+            m_choiceState->SetSelection(
+                static_cast<int>(m_edited_zone->GetState()));
+        } else {
+            m_spLower->SetValue(0);
+            m_spUpper->SetValue(0);
+            m_choiceState->SetSelection(static_cast<int>(Zone::state::nominal));
+        }
+    };
+
+    /// Update the zone list widget
+    void UpdateList()
+    {
+        m_edited_zone = nullptr;
+        int sel = m_lbZones->GetSelection();
+        m_lbZones->Clear();
+        for (auto zone : m_zones) {
+            m_lbZones->Append(zone.ToUIString());
+        }
+        m_lbZones->SetSelection(sel);
+        if (sel >= 0 && sel < m_zones.size()) {
+            m_edited_zone = &m_zones.at(sel);
+        }
+    };
+
+    /// Event handler for zone list widget
+    ///
+    /// \param event The event data
+    void m_lbZonesOnListBox(wxCommandEvent& event)
+    {
+        m_edited_zone = &m_zones.at(m_lbZones->GetSelection());
+        FillZoneControls();
+        event.Skip();
+    }
+
+    /// Event handler for zone addition button
+    ///
+    /// \param event The event data
+    void m_bpAddOnButtonClick(wxCommandEvent& event)
+    {
+        Zone z;
+        m_zones.emplace_back(z);
+        m_edited_zone = &m_zones.back();
+        m_lbZones->Append(z.ToUIString());
+        m_lbZones->SetSelection(m_lbZones->GetCount() - 1);
+        FillZoneControls();
+        EnableControls();
+        event.Skip();
+    };
+
+    /// Event handler for zone removal button
+    ///
+    /// \param event The event data
+    void m_bpRemoveOnButtonClick(wxCommandEvent& event)
+    {
+        int sel = m_lbZones->GetSelection();
+        m_edited_zone = nullptr;
+        m_zones.erase(m_zones.begin() + sel);
+        m_lbZones->Delete(sel);
+        sel = wxMin(sel, m_lbZones->GetCount() - 1);
+        if (sel >= 0 && sel < m_zones.size()) {
+            m_lbZones->SetSelection(sel);
+            m_edited_zone = &m_zones.at(sel);
+        }
+        FillZoneControls();
+        EnableControls();
+        event.Skip();
+    };
+
+    /// Event handler for the zone lower limit spin control
+    ///
+    /// \param event The event data
+    void m_spLowerOnSpinCtrlDouble(wxSpinDoubleEvent& event)
+    {
+        m_spUpper->SetRange(m_spLower->GetValue(), 99999);
+        m_edited_zone->SetLowerLimit(m_spLower->GetValue());
+        UpdateList();
+        event.Skip();
+    }
+
+    /// Event handler for the zone upper limit spin control
+    ///
+    /// \param event The event data
+    void m_spUpperOnSpinCtrlDouble(wxSpinDoubleEvent& event)
+    {
+        m_spLower->SetRange(-99999, m_spUpper->GetValue());
+        m_edited_zone->SetUpperLimit(m_spUpper->GetValue());
+        UpdateList();
+        event.Skip();
+    }
+
+    /// Event handler for the zone alarm state dropdown
+    ///
+    /// \param event The event data
+    void m_choiceStateOnChoice(wxCommandEvent& event)
+    {
+        m_edited_zone->SetState(
+            static_cast<Zone::state>(m_choiceState->GetSelection()));
+        UpdateList();
+        event.Skip();
+    }
+
+    /// Event handler for the cancel button
+    ///
+    /// \param event The event data
+    void m_sdbSizerButtonsOnCancelButtonClick(wxCommandEvent& event)
+    {
+        m_zones = m_original_zones;
+        event.Skip();
+    }
+
+    /// Event handler for the OK button
+    ///
+    /// \param event The event data
+    void m_sdbSizerButtonsOnOKButtonClick(wxCommandEvent& event)
+    {
+        // We just let it close, m_zones contains all the info
+        event.Skip();
+    };
 };
 
 PLUGIN_END_NAMESPACE

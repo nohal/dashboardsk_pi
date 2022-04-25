@@ -48,7 +48,7 @@ MainConfigFrameImpl::MainConfigFrameImpl(dashboardsk_pi* dsk_pi,
     m_orig_config = m_dsk_pi->GetDSK()->GenerateJSONConfig();
     m_tSelf->SetValue(m_dsk_pi->GetDSK()->Self());
     m_comboDashboard->Append(m_dsk_pi->GetDSK()->GetDashboardNames());
-#define BMP_SZ 16
+
     m_bpAddButton->SetBitmap(wxBitmapBundle::FromSVGFile(
         m_dsk_pi->GetDataDir() + "plus.svg", wxSize(BMP_SZ, BMP_SZ)));
     m_bpRemoveButton->SetBitmap(wxBitmapBundle::FromSVGFile(
@@ -318,10 +318,14 @@ void MainConfigFrameImpl::FillInstrumentDetails()
                     wxString token = tokenizer.GetNextToken();
                     switch (pos) {
                     case 0:
-                        token.ToInt(&min);
+                        if (!token.ToInt(&min)) {
+                            min = -99999;
+                        }
                         break;
                     case 1:
-                        token.ToInt(&max);
+                        if (!token.ToInt(&max)) {
+                            max = 99999;
+                        }
                         break;
                     }
                     pos++;
@@ -367,6 +371,14 @@ void MainConfigFrameImpl::FillInstrumentDetails()
                 skk, 0, wxALIGN_CENTER_VERTICAL | wxALL | wxEXPAND, 5);
             break;
         }
+        case dskConfigCtrl::SignalKZonesCtrl: {
+            SKZonesCtrlImpl* skz = new SKZonesCtrlImpl(m_swConfig, m_dsk_pi);
+            skz->SetName(ctrl.key);
+            skz->SetValue(m_edited_instrument->GetStringSetting(ctrl.key));
+            SettingsItemSizer->Add(
+                skz, 0, wxALIGN_CENTER_VERTICAL | wxALL | wxEXPAND, 5);
+            break;
+        }
         default:
             // Dunno, add spacer
             SettingsItemSizer->Add(0, 0, 1, wxEXPAND, 5);
@@ -392,6 +404,9 @@ const wxString MainConfigFrameImpl::ExtractValue(wxWindow* ctrl)
     } else if (wxString(ctrl->GetClassInfo()->GetClassName())
         == "SKKeyCtrlImpl") {
         return ((SKKeyCtrlImpl*)ctrl)->GetValue();
+    } else if (wxString(ctrl->GetClassInfo()->GetClassName())
+        == "SKZonesCtrlImpl") {
+        return ((SKZonesCtrlImpl*)ctrl)->GetValue();
     } // TODO: Other supported controls defined in dskConfigCtrl
     LOG_VERBOSE("DashboardSK: Unknown control class %s",
         ctrl->GetClassInfo()->GetClassName());
@@ -587,5 +602,41 @@ void SKKeyCtrlImpl::m_btnSelectOnButtonClick(wxCommandEvent& event)
     });
     event.Skip();
 }
+
+wxIMPLEMENT_DYNAMIC_CLASS_XTI(SKZonesCtrlImpl, wxPanel, "dashboardsdguiimpl.h");
+
+void SKZonesCtrlImpl::m_btnSelectOnButtonClick(wxCommandEvent& event)
+{
+    wxWindowPtr<ZonesConfigDialogImpl> dlg(new ZonesConfigDialogImpl(
+        this, m_dsk_pi, wxID_ANY, m_tZones->GetValue()));
+    dlg->ShowWindowModalThenDo([this, dlg](int retcode) {
+        if (retcode == wxID_OK) {
+            m_tZones->SetValue(Zone::ZonesToString(dlg->GetZones()));
+        }
+    });
+    event.Skip();
+}
+
+ZonesConfigDialogImpl::ZonesConfigDialogImpl(wxWindow* parent,
+    dashboardsk_pi* dsk_pi, wxWindowID id, const wxString& value,
+    const wxString& title, const wxPoint& pos, const wxSize& size, long style)
+    : ZonesConfigDialog(parent, id, title, pos, size, style)
+{
+    m_dsk_pi = dsk_pi;
+    if (m_dsk_pi) {
+        m_bpAdd->SetBitmap(wxBitmapBundle::FromSVGFile(
+            m_dsk_pi->GetDataDir() + "plus.svg", wxSize(BMP_SZ, BMP_SZ)));
+        m_bpRemove->SetBitmap(wxBitmapBundle::FromSVGFile(
+            m_dsk_pi->GetDataDir() + "minus.svg", wxSize(BMP_SZ, BMP_SZ)));
+    }
+    m_zones = Zone::ParseZonesFromString(value);
+    if (!m_zones.empty()) {
+        UpdateList();
+        m_lbZones->SetSelection(0);
+        m_edited_zone = &m_zones.at(m_lbZones->GetSelection());
+    }
+    FillZoneControls();
+    EnableControls();
+};
 
 PLUGIN_END_NAMESPACE
