@@ -45,10 +45,13 @@ case $(uname -s) in
             brew link --overwrite $pkg || brew install $pkg
         done
 
-        # Install the pre-built wxWidgets package
-
-        wget -q https://download.opencpn.org/s/MCiRiq4fJcKD56r/download \
-            -O /tmp/wx315_opencpn50_macos1010.tar.xz
-        tar -C /tmp -xJf /tmp/wx315_opencpn50_macos1010.tar.xz
+        if [ "${USE_HOMEBREW}" -ne 1 ]; then
+            # Install the pre-built wxWidgets package
+            wget -q https://download.opencpn.org/s/MCiRiq4fJcKD56r/download \
+                -O /tmp/wx315_opencpn50_macos1010.tar.xz
+            tar -C /tmp -xJf /tmp/wx315_opencpn50_macos1010.tar.xz
+        else
+            brew install wxwidgets
+        fi
         ;;
 esac
