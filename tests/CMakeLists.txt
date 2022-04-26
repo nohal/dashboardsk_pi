@@ -18,10 +18,10 @@ include(FetchContent)
 FetchContent_Declare(
         Catch2
         GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-        GIT_TAG        v2.13.9)
+        GIT_TAG        v3.0.0-preview5)
 
 FetchContent_MakeAvailable(Catch2)
-set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${Catch2_SOURCE_DIR}/contrib")
+set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${Catch2_SOURCE_DIR}/extras")
 
 set( SOURCES_TESTS
         001-DashboardSK.cpp
@@ -43,7 +43,7 @@ if(WIN32)
 
     target_link_libraries(tests ${wxWidgets_LIBRARIES})
 endif()
-target_link_libraries(tests Catch2::Catch2)
+target_link_libraries(tests Catch2::Catch2WithMain)
 add_subdirectory("opencpn-libs/plugingl")
 target_link_libraries(tests ocpn::plugingl)
 target_link_libraries(tests OpenGL::GL)

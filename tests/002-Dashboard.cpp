@@ -24,7 +24,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_all.hpp>
 
 #include "pi_common.h"
 #include "wx/jsonreader.h"

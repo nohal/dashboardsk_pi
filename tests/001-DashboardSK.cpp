@@ -25,8 +25,8 @@
  ******************************************************************************/
 
 // Let Catch provide main():
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
+//#define CATCH_CONFIG_MAIN
+#include <catch2/catch_all.hpp>
 
 #include "pi_common.h"
 #include "wx/jsonreader.h"

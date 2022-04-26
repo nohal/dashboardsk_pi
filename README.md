@@ -26,7 +26,7 @@ In case you already cloned the repository without the `--recurse-submodules` par
 
 ### General
 
-The project is developed in C++, specifically C++11.
+The project is developed in C++, specifically C++17.
 Please format your code using `clang-format` before submitting pull requests, they are checked for compliance with the `.clang-format` file used by the project during the CI workflow and can't be accepted if the test is not passing.
 To make this as simple as possible, a [pre-commit](https://pre-commit.com) configuration is provided in the project, which activates a Git pre-commit hook taking care of the formatting automatically. To use it run the following commands:
 
@@ -71,6 +71,6 @@ When adding a new instrument please also update the documentation under `manual/
 
 ### Tests
 
-It is not a completely bad idea to cover your code with tests where feasible (It is not very feasible for the GUI part, but the logic should usually be pretty well testable). The project uses [Catch2](https://github.com/catchorg/Catch2) testing framework v2.x (Because we use C++11) and the testcases reside under `tests`.
+It is not a completely bad idea to cover your code with tests where feasible (It is not very feasible for the GUI part, but the logic should usually be pretty well testable). The project uses the current branch of [Catch2](https://github.com/catchorg/Catch2) testing framework (Because we use C++17) and the testcases reside under `tests`.
 Building the tests is enabled by default and may be disabled by running cmake `cmake` with `-DWITH_TESTS=OFF` parameter.
 To execute the tests, simply run `ctest` in the build directory.
