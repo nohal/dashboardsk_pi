@@ -78,7 +78,11 @@ void SimpleNumberInstrument::SetSetting(
         }
     } else if (key.IsSameAs("format") || key.IsSameAs("transformation")) {
         int i = 0;
+#if (wxCHECK_VERSION(3, 1, 6))
         value.ToInt(&i);
+#else
+        i = wxAtoi(value);
+#endif
         SetSetting(key, i);
     }
 }

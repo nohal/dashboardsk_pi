@@ -286,9 +286,13 @@ public:
     static const int IntFromString(const wxString& str)
     {
         int i;
+#if (wxCHECK_VERSION(3, 1, 6))
         if (str.ToInt(&i)) {
             return i;
         }
+#else
+        return wxAtoi(str);
+#endif
         return 0;
     };
 
@@ -330,7 +334,11 @@ public:
     {
         int i = 0;
         if (m_config_vals.find(key) != m_config_vals.end()) {
+#if (wxCHECK_VERSION(3, 1, 6))
             m_config_vals[key].ToInt(&i);
+#else
+            i = wxAtoi(m_config_vals[key]);
+#endif
         }
         return i;
     };
