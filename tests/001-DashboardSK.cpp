@@ -24,9 +24,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-// Let Catch provide main():
-//#define CATCH_CONFIG_MAIN
-#include <catch2/catch_all.hpp>
+#include <catch2/catch_test_macros.hpp>
 
 #include "pi_common.h"
 #include "wx/jsonreader.h"
