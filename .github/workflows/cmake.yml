@@ -33,12 +33,12 @@ jobs:
             runner: ubuntu-18.04
             cmake_generator: Unix Makefiles
           - name: macOS latest Homebrew wxOSX
-            runner: macos-latest
+            runner: macos-12
             cmake_generator: Xcode
             cmake_defines: -DCMAKE_CXX_STANDARD=11
             use_homebrew: 1
-          - name: macOS latest wxOSX
-            runner: macos-latest
+          - name: macOS 11 wxOSX
+            runner: macos-11
             cmake_generator: Xcode
             cmake_defines: -DCMAKE_CXX_STANDARD=11 -DwxWidgets_CONFIG_EXECUTABLE=/tmp/wx315_opencpn50_macos1010/bin/wx-config -DwxWidgets_CONFIG_OPTIONS="--prefix=/tmp/wx315_opencpn50_macos1010"
           - name: macOS 10.15 wxOSX
@@ -69,7 +69,7 @@ jobs:
         run: |
           ./ci/github-pre-build.sh
         env:
-          USE_HOMEBREW: ${{ matrix.config.use_homebrew }}
+          USE_HOMEBREW: ${{ matrix.use_homebrew && matrix.use_homebrew || 0 }}
 
       # required for CMake to find Ninja
       - name: "[Windows] Set up MSVC Developer Command Prompt"
