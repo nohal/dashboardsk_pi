@@ -612,6 +612,63 @@ void SKDataTreeImpl::SetCodeSKTree(DashboardSK* dsk)
     m_scintillaCode->SetReadOnly(true);
 }
 
+//====================================
+// SKPathBrowserImpl
+//====================================
+
+SKPathBrowserImpl::SKPathBrowserImpl(wxWindow* parent, wxWindowID id,
+    const wxString& title, const wxPoint& pos, const wxSize& size, long style)
+    : SKPathBrowser(parent, id, title, pos, size, style)
+{
+}
+
+const wxString SKPathBrowserImpl::GetSKPath()
+{
+    wxTreeItemId selected = m_treePaths->GetSelection();
+    wxString path = wxEmptyString;
+    while (selected.IsOk() && selected != m_treePaths->GetRootItem()) {
+        if (!path.IsEmpty()) {
+            path.Prepend(".");
+        }
+        path.Prepend(m_treePaths->GetItemText(selected));
+        selected = m_treePaths->GetItemParent(selected);
+    }
+    return path;
+}
+
+/// Set pointer to the SignalK full data object
+///
+/// \param sk_tree Pointer to the \c wxJSONValue holding the data
+void SKPathBrowserImpl::SetSKTree(wxJSONValue* sk_tree)
+{
+    m_sk_tree = *sk_tree;
+    wxTreeItemId root = m_treePaths->GetRootItem();
+    if (!root.IsOk()) {
+        root = m_treePaths->AddRoot("SignalK");
+    }
+    AddChildren(root, m_sk_tree);
+    m_treePaths->ExpandAll();
+}
+
+void SKPathBrowserImpl::AddChildren(wxTreeItemId parent, wxJSONValue& json_node)
+{
+    if (!json_node.IsNull()) {
+        for (auto member : json_node.GetMemberNames()) {
+            if (!(member.IsSameAs("value") || member.IsSameAs("source")
+                    || member.IsSameAs("timestamp"))) {
+                // TODO: Isn't there a "legal" node with some of the above
+                // names?
+                wxTreeItemId child = m_treePaths->AppendItem(parent, member);
+                AddChildren(child, json_node[member]);
+            }
+        }
+    }
+}
+
+//====================================
+// SKKeyCtrlImpl
+//====================================
+
 wxIMPLEMENT_DYNAMIC_CLASS_XTI(SKKeyCtrlImpl, wxPanel, "dashboardsdguiimpl.h");
 
 void SKKeyCtrlImpl::m_btnSelectOnButtonClick(wxCommandEvent& event)

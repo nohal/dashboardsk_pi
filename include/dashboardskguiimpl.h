@@ -401,8 +401,7 @@ public:
         const wxString& title = _("SignalK Browser"),
         const wxPoint& pos = wxDefaultPosition,
         const wxSize& size = wxSize(500, 300),
-        long style = wxDEFAULT_FRAME_STYLE | wxTAB_TRAVERSAL)
-        : SKPathBrowser(parent, id, title, pos, size, style) {};
+        long style = wxDEFAULT_FRAME_STYLE | wxTAB_TRAVERSAL);
 
     /// Destructor
     ~SKPathBrowserImpl() = default;
@@ -410,33 +409,12 @@ public:
     /// Get the full path selected from the tree
     ///
     /// \return The full path
-    const wxString GetSKPath()
-    {
-        wxTreeItemId selected = m_treePaths->GetSelection();
-        wxString path = wxEmptyString;
-        while (selected.IsOk() && selected != m_treePaths->GetRootItem()) {
-            if (!path.IsEmpty()) {
-                path.Prepend(".");
-            }
-            path.Prepend(m_treePaths->GetItemText(selected));
-            selected = m_treePaths->GetItemParent(selected);
-        }
-        return path;
-    };
+    const wxString GetSKPath();
 
     /// Set pointer to the SignalK full data object
     ///
     /// \param sk_tree Pointer to the \c wxJSONValue holding the data
-    void SetSKTree(wxJSONValue* sk_tree)
-    {
-        m_sk_tree = *sk_tree;
-        wxTreeItemId root = m_treePaths->GetRootItem();
-        if (!root.IsOk()) {
-            root = m_treePaths->AddRoot("SignalK");
-        }
-        AddChildren(root, m_sk_tree);
-        m_treePaths->ExpandAll();
-    };
+    void SetSKTree(wxJSONValue* sk_tree);
 
 private:
     /// Recursively populate the tree control with known children from the
@@ -445,21 +423,7 @@ private:
     /// \param parent ID of the parent tree node
     /// \param json_node Reference to the SignalK data node to be used for
     /// population
-    void AddChildren(wxTreeItemId parent, wxJSONValue& json_node)
-    {
-        if (!json_node.IsNull()) {
-            for (auto member : json_node.GetMemberNames()) {
-                if (!(member.IsSameAs("value") || member.IsSameAs("source")
-                        || member.IsSameAs("timestamp"))) {
-                    // TODO: Isn't there a "legal" node with some of the above
-                    // names?
-                    wxTreeItemId child
-                        = m_treePaths->AppendItem(parent, member);
-                    AddChildren(child, json_node[member]);
-                }
-            }
-        }
-    };
+    void AddChildren(wxTreeItemId parent, wxJSONValue& json_node);
 
     /// Pointer to the object holding the SignalK data
     wxJSONValue m_sk_tree;
