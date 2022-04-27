@@ -35,6 +35,10 @@
 
 PLUGIN_BEGIN_NAMESPACE
 
+//====================================
+// MainConfigFrameImpl
+//====================================
+
 MainConfigFrameImpl::MainConfigFrameImpl(dashboardsk_pi* dsk_pi,
     wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos,
     const wxSize& size, long style)
@@ -602,6 +606,53 @@ void MainConfigFrameImpl::m_btnSignalKOnButtonClick(wxCommandEvent& event)
             // and fill the SK key field from it
         }
     });
+}
+
+void MainConfigFrameImpl::m_cbEnabledOnCheckBox(wxCommandEvent& event)
+{
+    UpdateEditedDashboard();
+}
+/// Event handler for change of parameter of edited dashboard
+///
+/// \param event The event object reference
+void MainConfigFrameImpl::m_spCanvasOnSpinCtrl(wxSpinEvent& event)
+{
+    UpdateEditedDashboard();
+}
+/// Event handler for change of parameter of edited dashboard
+///
+/// \param event The event object reference
+void MainConfigFrameImpl::m_chAnchorOnChoice(wxCommandEvent& event)
+{
+    UpdateEditedDashboard();
+}
+/// Event handler for change of parameter of edited dashboard
+///
+/// \param event The event object reference
+void MainConfigFrameImpl::m_spOffsetXOnSpinCtrl(wxSpinEvent& event)
+{
+    UpdateEditedDashboard();
+}
+/// Event handler for change of parameter of edited dashboard
+///
+/// \param event The event object reference
+void MainConfigFrameImpl::m_spOffsetYOnSpinCtrl(wxSpinEvent& event)
+{
+    UpdateEditedDashboard();
+}
+/// Event handler for change of parameter of edited dashboard
+///
+/// \param event The event object reference
+void MainConfigFrameImpl::m_spSpacingHOnSpinCtrl(wxSpinEvent& event)
+{
+    UpdateEditedDashboard();
+}
+/// Event handler for change of parameter of edited dashboard
+///
+/// \param event The event object reference
+void MainConfigFrameImpl::m_spSpacingVOnSpinCtrl(wxSpinEvent& event)
+{
+    UpdateEditedDashboard();
 }
 
 //====================================

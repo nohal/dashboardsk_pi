@@ -62,24 +62,32 @@ private:
     /// Desired state of the widgets editing configuratio of the instrument
     void EnableItems(bool dashboard_selection, bool instr_list,
         bool dashboard_config, bool instr_config);
+
     /// Enable/disable items based on the currently selected dashboard
     void EnableItemsForSelectedDashboard();
+
     /// Enable/disable buttons related to the instrument list
     void EnableInstrumentListButtons();
+
     /// Fill in the instrument list with items
     void FillInstrumentList();
+
     /// Fill the widgets with data for currently selected instrument
     void FillInstrumentDetails();
+
     /// Extract value from a dynamically generated widget in instrument
     /// configuration
     ///
     /// \param ctrl Pointer to the widget
     /// \return String representation of the value obtained from the widget
     const wxString ExtractValue(wxWindow* ctrl);
+
     /// Update the currently edited instrument with values set in the GUI
     void UpdateEditedInstrument();
+
     /// Fill the form with prameters of the currently edited dashboard
     void FillDashboardDetails();
+
     /// Update the currently edited dashboard with values set in the GUI
     void UpdateEditedDashboard();
 
@@ -111,40 +119,49 @@ protected:
     ///
     /// \param event The event object reference
     virtual void m_btnSignalKOnButtonClick(wxCommandEvent& event);
+
     /// Event handler for dashboard selection in the combobox
     ///
     /// \param event The event object reference
     virtual void m_comboDashboardOnChoice(wxCommandEvent& event);
+
     /// Event handler for dashboard removal
     ///
     /// \param event The event object reference
     virtual void m_btnRemoveDashboardOnButtonClick(wxCommandEvent& event);
+
     /// Event handler for creation of new dashboard
     ///
     /// \param event The event object reference
     virtual void m_btnNewDashboardOnButtonClick(wxCommandEvent& event);
+
     /// Event handler for instrument selection from the list
     ///
     /// \param event The event object reference
     virtual void m_lbInstrumentsOnListBox(wxCommandEvent& event);
+
     /// Event handler for addition of new instrument
     ///
     /// \param event The event object reference
     virtual void m_bpAddButtonOnButtonClick(wxCommandEvent& event);
+
     /// Event handler for instrument removal
     ///
     /// \param event The event object reference
     virtual void m_bpRemoveButtonOnButtonClick(wxCommandEvent& event);
+
     /// Event handler for instrument reordering. Moving instrument up in the
     /// list.
     ///
     /// \param event The event object reference
     virtual void m_bpMoveUpButtonOnButtonClick(wxCommandEvent& event);
+
     /// Event handler for instrument reordering. Moving instrument down in the
     /// list.
     ///
     /// \param event The event object reference
     virtual void m_bpMoveDownButtonOnButtonClick(wxCommandEvent& event);
+
     /// Event handler for instrument import.
     /// \todo Implement this functionality
     ///
@@ -154,6 +171,7 @@ protected:
         // TODO
         event.Skip();
     }
+
     /// Event handler for instrument export.
     /// \todo Implement this functionality
     ///
@@ -163,60 +181,48 @@ protected:
         // TODO
         event.Skip();
     }
+
     /// Event handler for change of parameter of edited dashboard
     ///
     /// \param event The event object reference
-    virtual void m_cbEnabledOnCheckBox(wxCommandEvent& event)
-    {
-        UpdateEditedDashboard();
-    }
+    virtual void m_cbEnabledOnCheckBox(wxCommandEvent& event);
+
     /// Event handler for change of parameter of edited dashboard
     ///
     /// \param event The event object reference
-    virtual void m_spCanvasOnSpinCtrl(wxSpinEvent& event)
-    {
-        UpdateEditedDashboard();
-    }
+    virtual void m_spCanvasOnSpinCtrl(wxSpinEvent& event);
+
     /// Event handler for change of parameter of edited dashboard
     ///
     /// \param event The event object reference
-    virtual void m_chAnchorOnChoice(wxCommandEvent& event)
-    {
-        UpdateEditedDashboard();
-    }
+    virtual void m_chAnchorOnChoice(wxCommandEvent& event);
+
     /// Event handler for change of parameter of edited dashboard
     ///
     /// \param event The event object reference
-    virtual void m_spOffsetXOnSpinCtrl(wxSpinEvent& event)
-    {
-        UpdateEditedDashboard();
-    }
+    virtual void m_spOffsetXOnSpinCtrl(wxSpinEvent& event);
+
     /// Event handler for change of parameter of edited dashboard
     ///
     /// \param event The event object reference
-    virtual void m_spOffsetYOnSpinCtrl(wxSpinEvent& event)
-    {
-        UpdateEditedDashboard();
-    }
+    virtual void m_spOffsetYOnSpinCtrl(wxSpinEvent& event);
+
     /// Event handler for change of parameter of edited dashboard
     ///
     /// \param event The event object reference
-    virtual void m_spSpacingHOnSpinCtrl(wxSpinEvent& event)
-    {
-        UpdateEditedDashboard();
-    }
+    virtual void m_spSpacingHOnSpinCtrl(wxSpinEvent& event);
+
     /// Event handler for change of parameter of edited dashboard
     ///
     /// \param event The event object reference
-    virtual void m_spSpacingVOnSpinCtrl(wxSpinEvent& event)
-    {
-        UpdateEditedDashboard();
-    }
+    virtual void m_spSpacingVOnSpinCtrl(wxSpinEvent& event);
+
     /// Event handler for main Cancel button click. Rolls back all the changing
     /// by reloading the original configuration stored in #m_orig_config
     ///
     /// \param event The event object reference
     virtual void m_sdbSizerOnCancelButtonClick(wxCommandEvent& event);
+
     /// Event handler for main OK button click. Triggers saving of the
     /// configuration persistently to disk.
     ///
