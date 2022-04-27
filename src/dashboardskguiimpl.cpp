@@ -604,6 +604,10 @@ void MainConfigFrameImpl::m_btnSignalKOnButtonClick(wxCommandEvent& event)
     });
 }
 
+//====================================
+// SKPathBrowserImpl
+//====================================
+
 void SKDataTreeImpl::SetCodeSKTree(DashboardSK* dsk)
 {
     m_sdbSizerBtnsCancel->Hide();
@@ -670,6 +674,32 @@ void SKPathBrowserImpl::AddChildren(wxTreeItemId parent, wxJSONValue& json_node)
 //====================================
 
 wxIMPLEMENT_DYNAMIC_CLASS_XTI(SKKeyCtrlImpl, wxPanel, "dashboardsdguiimpl.h");
+
+SKKeyCtrlImpl::SKKeyCtrlImpl(wxWindow* parent, wxWindowID id,
+    const wxPoint& pos, const wxSize& size, long style, const wxString& name,
+    const wxString& value)
+    : SKKeyCtrl(parent, id, pos, size, style, name)
+{
+    m_tSKKey->SetValue(value);
+    m_sk_tree = nullptr;
+};
+
+wxString SKKeyCtrlImpl::GetValue() const { return m_tSKKey->GetValue(); };
+
+void SKKeyCtrlImpl::SetValue(const wxString& value) const
+{
+    m_tSKKey->SetValue(value);
+};
+
+void SKKeyCtrlImpl::SetSKTree(wxJSONValue* sk_tree) { m_sk_tree = sk_tree; }
+
+wxSize SKKeyCtrlImpl::DoGetBestSize() const
+{
+    wxSize s1 = m_tSKKey->GetBestSize();
+    wxSize s2 = m_btnSelect->GetBestSize();
+    return wxSize(
+        s1.GetWidth() + s2.GetWidth(), wxMax(s1.GetHeight(), s2.GetHeight()));
+}
 
 void SKKeyCtrlImpl::m_btnSelectOnButtonClick(wxCommandEvent& event)
 {

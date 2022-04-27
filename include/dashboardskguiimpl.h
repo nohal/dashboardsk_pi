@@ -332,29 +332,24 @@ public:
         const wxPoint& pos = wxDefaultPosition,
         const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL,
         const wxString& name = wxEmptyString,
-        const wxString& value = wxEmptyString)
-        : SKKeyCtrl(parent, id, pos, size, style, name)
-    {
-        m_tSKKey->SetValue(value);
-        m_sk_tree = nullptr;
-    };
+        const wxString& value = wxEmptyString);
 
     /// Destructor
     ~SKKeyCtrlImpl() = default;
 
     /// Get the value from the textbox
     /// \return String value from the textbox
-    wxString GetValue() const { return m_tSKKey->GetValue(); };
+    wxString GetValue() const;
 
     /// Set value of the textbox
     ///
     /// \param value Value to set
-    void SetValue(const wxString& value) const { m_tSKKey->SetValue(value); };
+    void SetValue(const wxString& value) const;
 
     /// Set pointer to the SignalK full data object
     ///
     /// \param sk_tree Pointer to the \c wxJSONValue holding the data
-    void SetSKTree(wxJSONValue* sk_tree) { m_sk_tree = sk_tree; }
+    void SetSKTree(wxJSONValue* sk_tree);
 
 protected:
     /// Event handler for click on the button invoking the path selection from a
@@ -362,13 +357,7 @@ protected:
     virtual void m_btnSelectOnButtonClick(wxCommandEvent& event);
 
     /// Get best size for the widget
-    virtual wxSize DoGetBestSize() const
-    {
-        wxSize s1 = m_tSKKey->GetBestSize();
-        wxSize s2 = m_btnSelect->GetBestSize();
-        return wxSize(s1.GetWidth() + s2.GetWidth(),
-            wxMax(s1.GetHeight(), s2.GetHeight()));
-    }
+    virtual wxSize DoGetBestSize() const;
 
 private:
     /// Pointer to the \c wxJSONValue object holding SignalK data
