@@ -880,6 +880,7 @@ ZonesConfigDialogImpl::ZonesConfigDialogImpl(wxWindow* parent,
     dashboardsk_pi* dsk_pi, wxWindowID id, const wxString& value,
     const wxString& title, const wxPoint& pos, const wxSize& size, long style)
     : ZonesConfigDialog(parent, id, title, pos, size, style)
+    , m_edited_zone(nullptr)
 {
     m_dsk_pi = dsk_pi;
     if (m_dsk_pi) {
