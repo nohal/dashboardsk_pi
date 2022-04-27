@@ -96,6 +96,10 @@ void SimpleNumberInstrument::SetSetting(const wxString& key, const int& value)
         m_format_index = value;
     } else if (key.IsSameAs(DSK_SNI_TRANSFORMATION)) {
         m_transformation = static_cast<transformation>(value);
+    } else if (key.IsSameAs(DSK_SNI_TITLE_FONT)) {
+        m_title_font.SetPointSize(value);
+    } else if (key.IsSameAs(DSK_SNI_BODY_FONT)) {
+        m_body_font.SetPointSize(value);
     }
 }
 
