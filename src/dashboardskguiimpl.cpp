@@ -627,6 +627,10 @@ void SKKeyCtrlImpl::m_btnSelectOnButtonClick(wxCommandEvent& event)
     event.Skip();
 }
 
+//====================================
+// SKZonesCtrlImpl
+//====================================
+
 wxIMPLEMENT_DYNAMIC_CLASS_XTI(SKZonesCtrlImpl, wxPanel, "dashboardsdguiimpl.h");
 
 void SKZonesCtrlImpl::m_btnSelectOnButtonClick(wxCommandEvent& event)
@@ -639,6 +643,30 @@ void SKZonesCtrlImpl::m_btnSelectOnButtonClick(wxCommandEvent& event)
         }
     });
     event.Skip();
+}
+
+SKZonesCtrlImpl::SKZonesCtrlImpl(wxWindow* parent, dashboardsk_pi* dsk_pi,
+    wxWindowID id, const wxPoint& pos, const wxSize& size, long style,
+    const wxString& name, const wxString& value)
+    : SKZonesCtrl(parent, id, pos, size, style, name)
+{
+    m_dsk_pi = dsk_pi;
+    m_tZones->SetValue(value);
+};
+
+wxString SKZonesCtrlImpl::GetValue() const { return m_tZones->GetValue(); }
+
+void SKZonesCtrlImpl::SetValue(const wxString& value) const
+{
+    m_tZones->SetValue(value);
+}
+
+wxSize SKZonesCtrlImpl::DoGetBestSize() const
+{
+    wxSize s1 = m_tZones->GetBestSize();
+    wxSize s2 = m_btnSelect->GetBestSize();
+    return wxSize(
+        s1.GetWidth() + s2.GetWidth(), wxMax(s1.GetHeight(), s2.GetHeight()));
 }
 
 //====================================

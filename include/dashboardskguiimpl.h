@@ -491,24 +491,19 @@ public:
         wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition,
         const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL,
         const wxString& name = wxEmptyString,
-        const wxString& value = wxEmptyString)
-        : SKZonesCtrl(parent, id, pos, size, style, name)
-    {
-        m_dsk_pi = dsk_pi;
-        m_tZones->SetValue(value);
-    };
+        const wxString& value = wxEmptyString);
 
     /// Destructor
     ~SKZonesCtrlImpl() = default;
 
     /// Get the value from the textbox
     /// \return String value from the textbox
-    wxString GetValue() const { return m_tZones->GetValue(); };
+    wxString GetValue() const;
 
     /// Set value of the textbox
     ///
     /// \param value Value to set
-    void SetValue(const wxString& value) const { m_tZones->SetValue(value); };
+    void SetValue(const wxString& value) const;
 
 protected:
     /// Event handler for click on the button invoking the path selection from a
@@ -516,13 +511,7 @@ protected:
     virtual void m_btnSelectOnButtonClick(wxCommandEvent& event);
 
     /// Get best size for the widget
-    virtual wxSize DoGetBestSize() const
-    {
-        wxSize s1 = m_tZones->GetBestSize();
-        wxSize s2 = m_btnSelect->GetBestSize();
-        return wxSize(s1.GetWidth() + s2.GetWidth(),
-            wxMax(s1.GetHeight(), s2.GetHeight()));
-    }
+    virtual wxSize DoGetBestSize() const;
 
 private:
     /// Obligatory for the widget
