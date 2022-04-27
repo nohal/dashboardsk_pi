@@ -231,78 +231,17 @@ class SKDataTreeImpl : public SKDataTree {
 public:
     /// Constructor
     /// \param parent Pointer to the owner window
-    explicit SKDataTreeImpl(wxWindow* parent)
-        : SKDataTree(parent)
-    {
-        m_scintillaCode->StyleClearAll();
-        m_scintillaCode->StyleSetForeground(
-            wxSTC_STYLE_DEFAULT, GetForegroundColour());
-        m_scintillaCode->StyleSetBackground(
-            wxSTC_STYLE_DEFAULT, GetBackgroundColour());
-        m_scintillaCode->SetLexer(wxSTC_LEX_JSON);
-        m_scintillaCode->StyleSetForeground(
-            wxSTC_JSON_DEFAULT, GetForegroundColour());
-        m_scintillaCode->StyleSetBackground(
-            wxSTC_JSON_DEFAULT, GetBackgroundColour());
-        m_scintillaCode->StyleSetForeground(
-            wxSTC_JSON_KEYWORD, GetForegroundColour());
-        m_scintillaCode->StyleSetBackground(
-            wxSTC_JSON_KEYWORD, GetBackgroundColour());
-        m_scintillaCode->StyleSetForeground(
-            wxSTC_JSON_STRING, GetForegroundColour());
-        m_scintillaCode->StyleSetBackground(
-            wxSTC_JSON_STRING, GetBackgroundColour());
-        m_scintillaCode->StyleSetForeground(
-            wxSTC_JSON_URI, GetForegroundColour());
-        m_scintillaCode->StyleSetBackground(
-            wxSTC_JSON_URI, GetBackgroundColour());
-        m_scintillaCode->StyleSetForeground(
-            wxSTC_JSON_NUMBER, GetForegroundColour());
-        m_scintillaCode->StyleSetBackground(
-            wxSTC_JSON_NUMBER, GetBackgroundColour());
-        m_scintillaCode->StyleSetForeground(
-            wxSTC_JSON_OPERATOR, GetForegroundColour());
-        m_scintillaCode->StyleSetBackground(
-            wxSTC_JSON_OPERATOR, GetBackgroundColour());
-        m_scintillaCode->StyleSetForeground(wxSTC_JSON_PROPERTYNAME, *wxRED);
-        m_scintillaCode->StyleSetBackground(
-            wxSTC_JSON_PROPERTYNAME, GetBackgroundColour());
-        m_scintillaCode->StyleSetForeground(
-            wxSTC_JSON_ERROR, GetForegroundColour());
-        m_scintillaCode->StyleSetBackground(
-            wxSTC_JSON_ERROR, GetBackgroundColour());
-        m_scintillaCode->StyleSetForeground(
-            wxSTC_JSON_LDKEYWORD, GetForegroundColour());
-        m_scintillaCode->StyleSetBackground(
-            wxSTC_JSON_LDKEYWORD, GetBackgroundColour());
-        m_scintillaCode->StyleSetForeground(
-            wxSTC_JSON_LINECOMMENT, GetForegroundColour());
-        m_scintillaCode->StyleSetBackground(
-            wxSTC_JSON_LINECOMMENT, GetBackgroundColour());
-        m_scintillaCode->StyleSetForeground(
-            wxSTC_JSON_BLOCKCOMMENT, GetForegroundColour());
-        m_scintillaCode->StyleSetBackground(
-            wxSTC_JSON_BLOCKCOMMENT, GetBackgroundColour());
-        m_scintillaCode->StyleSetForeground(
-            wxSTC_JSON_STRINGEOL, GetForegroundColour());
-        m_scintillaCode->StyleSetBackground(
-            wxSTC_JSON_STRINGEOL, GetBackgroundColour());
-        m_scintillaCode->StyleSetForeground(
-            wxSTC_JSON_COMPACTIRI, GetForegroundColour());
-        m_scintillaCode->StyleSetBackground(
-            wxSTC_JSON_COMPACTIRI, GetBackgroundColour());
-        m_scintillaCode->StyleSetForeground(
-            wxSTC_JSON_ESCAPESEQUENCE, GetForegroundColour());
-        m_scintillaCode->StyleSetBackground(
-            wxSTC_JSON_ESCAPESEQUENCE, GetBackgroundColour());
-    };
+    explicit SKDataTreeImpl(wxWindow* parent);
+
     /// Destructor
     ~SKDataTreeImpl() = default;
+
     /// Fill the form with the SignalK data object
     /// \todo Implement this functionality
     ///
     /// \param dsk Pointer to the plugin logic implementation
     void SetCodeSKTree(DashboardSK* dsk);
+
     /// Fill the form with configuration file
     void SetCodeConfig(const wxString& config)
     {
