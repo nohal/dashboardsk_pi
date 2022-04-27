@@ -42,6 +42,7 @@ Dashboard::Dashboard()
     , m_spacing_v(DEFAULT_SPACING_V)
     , m_enabled(true)
     , m_parent(nullptr)
+    , m_color_scheme(0)
 {
 }
 
@@ -179,7 +180,7 @@ void Dashboard::ReadConfig(wxJSONValue& config)
     }
 }
 
-const wxJSONValue Dashboard::GenerateJSONConfig()
+wxJSONValue Dashboard::GenerateJSONConfig()
 {
     wxJSONValue v;
     v["name"] = m_name;
@@ -224,7 +225,7 @@ wxArrayString Dashboard::GetInstrumentNames()
     return as;
 }
 
-const wxJSONValue* Dashboard::GetSKData(wxString path)
+const wxJSONValue* Dashboard::GetSKData(const wxString& path)
 {
     return m_parent->GetSKData(path);
 }

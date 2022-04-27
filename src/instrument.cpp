@@ -52,7 +52,7 @@ wxColor Instrument::GetDimedColor(const wxColor& c) const
     default:
         return c;
     }
-};
+}
 
 void Instrument::ReadConfig(wxJSONValue& config)
 {
@@ -60,7 +60,7 @@ void Instrument::ReadConfig(wxJSONValue& config)
     m_title = config["title"].AsString();
     m_allowed_age_sec = config["allowed_age"].AsInt();
     m_zones = Zone::ParseZonesFromString(config[DSK_SNI_ZONES].AsString());
-};
+}
 
 wxJSONValue Instrument::GenerateJSONConfig()
 {
@@ -71,7 +71,7 @@ wxJSONValue Instrument::GenerateJSONConfig()
     v["allowed_age"] = m_allowed_age_sec;
     v[DSK_SNI_ZONES] = Zone::ZonesToString(m_zones);
     return v;
-};
+}
 
 void Instrument::SetSetting(const wxString& key, const wxString& value)
 {
@@ -91,7 +91,7 @@ void Instrument::SetSetting(const wxString& key, const wxString& value)
 void Instrument::SetSetting(const wxString& key, const wxColor& value)
 {
     m_config_vals[key] = value.GetAsString(wxC2S_HTML_SYNTAX);
-};
+}
 
 void Instrument::SetSetting(const wxString& key, const int& value)
 {
@@ -100,7 +100,7 @@ void Instrument::SetSetting(const wxString& key, const int& value)
     } else {
         m_config_vals[key] = wxString::Format("%i", value);
     }
-};
+}
 
 wxBitmap Instrument::ScaleBitmap(
     wxBitmap& bmpIn, double scale, bool antialiasing)

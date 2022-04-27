@@ -65,7 +65,7 @@ void SimpleNumberInstrument::Init()
         config_control({ b, d, dskConfigCtrl::e, f }));
     DSK_SNI_SETTINGS
 #undef X
-};
+}
 
 void SimpleNumberInstrument::SetSetting(
     const wxString& key, const wxString& value)
@@ -135,13 +135,14 @@ wxBitmap SimpleNumberInstrument::Render(double scale)
                 cbb = GetDimedColor(GetColorSetting(DSK_SNI_ALERT_BG));
                 cbf = GetDimedColor(GetColorSetting(DSK_SNI_ALERT_FG));
             } else {
-                double val = Transform(v.AsDouble());
-                value = wxString::Format(m_format_strings[m_format_index], val);
-                ctb = GetDimedColor(GetColor(val, color_item::title_bg));
-                ctf = GetDimedColor(GetColor(val, color_item::title_fg));
-                cbb = GetDimedColor(GetColor(val, color_item::body_bg));
-                cbf = GetDimedColor(GetColor(val, color_item::body_fg));
-                cb = GetDimedColor(GetColor(val, color_item::border));
+                double dval = Transform(v.AsDouble());
+                value
+                    = wxString::Format(m_format_strings[m_format_index], dval);
+                ctb = GetDimedColor(GetColor(dval, color_item::title_bg));
+                ctf = GetDimedColor(GetColor(dval, color_item::title_fg));
+                cbb = GetDimedColor(GetColor(dval, color_item::body_bg));
+                cbf = GetDimedColor(GetColor(dval, color_item::body_fg));
+                cb = GetDimedColor(GetColor(dval, color_item::border));
             }
         } else {
             value = _("Error!");
@@ -204,7 +205,7 @@ void SimpleNumberInstrument::ReadConfig(wxJSONValue& config)
     }
     DSK_SNI_SETTINGS
 #undef X
-};
+}
 
 wxJSONValue SimpleNumberInstrument::GenerateJSONConfig()
 {
@@ -218,9 +219,9 @@ wxJSONValue SimpleNumberInstrument::GenerateJSONConfig()
     DSK_SNI_SETTINGS
 #undef X
     return v;
-};
+}
 
-const double SimpleNumberInstrument::Transform(const double& val)
+double SimpleNumberInstrument::Transform(const double& val)
 {
     switch (m_transformation) {
     case transformation::none:
@@ -236,6 +237,6 @@ const double SimpleNumberInstrument::Transform(const double& val)
     default:
         return val;
     }
-};
+}
 
 PLUGIN_END_NAMESPACE

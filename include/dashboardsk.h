@@ -92,7 +92,7 @@ public:
     /// Generate the JSON object with complete configuration of the dashboards
     ///
     /// \return JSON object representing the configuration
-    const wxJSONValue GenerateJSONConfig();
+    wxJSONValue GenerateJSONConfig();
 
     /// Set the color scheme of all the dashboards
     ///
@@ -104,7 +104,7 @@ public:
     ///
     ///\param path SignalK fully qualified path
     ///\return Pointer to the data object or NULL if not found
-    const wxJSONValue* GetSKData(wxString path);
+    const wxJSONValue* GetSKData(const wxString& path);
 
     /// Process a JSON object representing SignalK delta message
     ///
@@ -271,7 +271,7 @@ public:
     /// Get JSON text of the whole SignalK data structure
     ///
     /// \return JSON text
-    const wxString GetSignalKTreeText();
+    wxString GetSignalKTreeText();
 
     /// Get pointer to the SignalK data
     ///

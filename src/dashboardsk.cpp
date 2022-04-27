@@ -67,7 +67,7 @@ void DashboardSK::ReadConfig(wxJSONValue& config)
     }
 }
 
-const wxJSONValue DashboardSK::GenerateJSONConfig()
+wxJSONValue DashboardSK::GenerateJSONConfig()
 {
     wxJSONValue v;
     v["signalk"]["self"] = m_self;
@@ -85,7 +85,7 @@ void DashboardSK::SetColorScheme(int cs)
     }
 }
 
-const wxJSONValue* DashboardSK::GetSKData(wxString path)
+const wxJSONValue* DashboardSK::GetSKData(const wxString& path)
 {
     wxStringTokenizer tokenizer(path, ".");
     wxJSONValue* ptr = &m_sk_data;
@@ -186,7 +186,7 @@ void DashboardSK::SendSKDelta(wxJSONValue& message)
         wxJSONValue* val_ptr;
         wxString fullKeyWithPath;
         wxString source = message["updates"][i]["$source"].AsString();
-        wxString token;
+        wxString utoken;
         for (int j = 0; j < message["updates"][i]["values"].Size(); j++) {
             val_ptr = ptr;
             fullKeyWithPath = fullKey;
@@ -196,21 +196,21 @@ void DashboardSK::SendSKDelta(wxJSONValue& message)
             wxStringTokenizer path_tokenizer(
                 message["updates"][i]["values"][j]["path"].AsString(), ".");
             while (path_tokenizer.HasMoreTokens()) {
-                token = path_tokenizer.GetNextToken();
-                fullKeyWithPath.Append(".").Append(token);
-                if (!val_ptr->HasMember(token)
+                utoken = path_tokenizer.GetNextToken();
+                fullKeyWithPath.Append(".").Append(utoken);
+                if (!val_ptr->HasMember(utoken)
                     && path_tokenizer.HasMoreTokens()) {
                     // If we are not done parsing the path yet, we add another
                     // branch if needed
                     LOG_RECEIVE_DEBUG(fullKeyWithPath
-                        + " not yet in the tree, adding " + token);
+                        + " not yet in the tree, adding " + utoken);
                     wxJSONValue v;
-                    (*val_ptr)[token] = v;
+                    (*val_ptr)[utoken] = v;
                     val_ptr = &v;
                 } else {
                     LOG_RECEIVE_DEBUG(
                         fullKeyWithPath + " already exists in the tree");
-                    val_ptr = &(*val_ptr)[token];
+                    val_ptr = &(*val_ptr)[utoken];
                 }
             }
             // TODO: What if we get same stuff from multiple sources (Like two
@@ -230,14 +230,14 @@ void DashboardSK::SendSKDelta(wxJSONValue& message)
     }
 }
 
-const wxString DashboardSK::GetSignalKTreeText()
+wxString DashboardSK::GetSignalKTreeText()
 {
     wxJSONWriter w;
     wxString s;
     w.Write(m_sk_data, s);
     return s;
-};
+}
 
-wxJSONValue* DashboardSK::GetSignalKTree() { return &m_sk_data; };
+wxJSONValue* DashboardSK::GetSignalKTree() { return &m_sk_data; }
 
 PLUGIN_END_NAMESPACE

@@ -183,7 +183,7 @@ public:
     /// Generate the JSON object with complete configuration of the dashboards
     ///
     /// \return JSON object representing the configuration
-    const wxJSONValue GenerateJSONConfig();
+    wxJSONValue GenerateJSONConfig();
 
     /// Subscribe the instrument to notifications about value updates of a path
     ///
@@ -262,7 +262,7 @@ public:
     ///
     ///\param path SignalK fully qualified path
     ///\return Pointer to the data object or NULL if not found
-    const wxJSONValue* GetSKData(wxString path);
+    const wxJSONValue* GetSKData(const wxString& path);
 
     /// Force redraw of the instrument on the next overlay refresh
     void ForceRedraw()

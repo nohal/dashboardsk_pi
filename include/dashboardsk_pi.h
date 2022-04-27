@@ -195,7 +195,7 @@ public:
     /// Get Path to the plaugin data
     ///
     /// \return Path to the plugin data including the trailing separator
-    const wxString GetDataDir();
+    wxString GetDataDir();
 
     /// Get bitmap from SVG file
     ///
@@ -204,7 +204,7 @@ public:
     /// \param h Height of the requested bitmal
     /// \return Generated bitmap
     wxBitmap GetBitmapFromSVG(
-        const wxString filename, const wxCoord w, const wxCoord h);
+        const wxString& filename, const wxCoord w, const wxCoord h);
 };
 
 PLUGIN_END_NAMESPACE

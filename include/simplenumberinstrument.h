@@ -373,7 +373,7 @@ public:
     ///
     /// \param val Double value to be transformed
     /// \return Transformed value
-    const double Transform(const double& val);
+    double Transform(const double& val);
 };
 
 PLUGIN_END_NAMESPACE

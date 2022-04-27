@@ -80,7 +80,7 @@ private:
     ///
     /// \param ctrl Pointer to the widget
     /// \return String representation of the value obtained from the widget
-    const wxString ExtractValue(wxWindow* ctrl);
+    wxString ExtractValue(wxWindow* ctrl);
 
     /// Update the currently edited instrument with values set in the GUI
     void UpdateEditedInstrument();
@@ -343,7 +343,7 @@ public:
     /// Get the full path selected from the tree
     ///
     /// \return The full path
-    const wxString GetSKPath();
+    wxString GetSKPath();
 
     /// Set pointer to the SignalK full data object
     ///
@@ -454,7 +454,7 @@ public:
     /// Get the zones defined in the dialog
     ///
     /// \return vector of zones
-    const vector<Zone> GetZones();
+    vector<Zone> GetZones();
 
 protected:
     /// Original zone definition to revert to on Cancel

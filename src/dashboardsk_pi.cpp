@@ -58,7 +58,9 @@ dashboardsk_pi::dashboardsk_pi(void* ppimgr)
     , m_leftclick_tool_id(-1)
     , m_color_scheme(PI_GLOBAL_COLOR_SCHEME_RGB)
     , m_shown(false)
+    , m_dsk(nullptr)
     , m_oDC(nullptr)
+
 {
     // Get a pointer to the opencpn display canvas, to use as a parent for the
     // dashboard
@@ -73,7 +75,7 @@ dashboardsk_pi::dashboardsk_pi(void* ppimgr)
         GetDataDir() + "dashboardsk_pi_toggled.svg", 32, 32);
 }
 
-dashboardsk_pi::~dashboardsk_pi() { delete m_json_reader; };
+dashboardsk_pi::~dashboardsk_pi() { delete m_json_reader; }
 
 int dashboardsk_pi::Init()
 {
@@ -250,13 +252,13 @@ void dashboardsk_pi::SetPluginMessage(
     }
 }
 
-const wxString dashboardsk_pi::GetDataDir()
+wxString dashboardsk_pi::GetDataDir()
 {
     return GetPluginDataDir("DashboardSK") + wxFileName::GetPathSeparator();
 }
 
 wxBitmap dashboardsk_pi::GetBitmapFromSVG(
-    const wxString filename, const wxCoord w, const wxCoord h)
+    const wxString& filename, const wxCoord w, const wxCoord h)
 {
     return GetBitmapFromSVGFile(GetDataDir() + filename, w, h);
 }

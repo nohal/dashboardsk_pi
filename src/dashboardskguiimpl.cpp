@@ -192,7 +192,6 @@ void MainConfigFrameImpl::EnableItemsForSelectedDashboard()
 void MainConfigFrameImpl::m_btnNewDashboardOnButtonClick(wxCommandEvent& event)
 {
     UpdateEditedInstrument();
-    ;
 
     wxWindowPtr<wxTextEntryDialog> dlg(new wxTextEntryDialog(this,
         _("Enter name for the newly created dashboard"),
@@ -303,7 +302,7 @@ void MainConfigFrameImpl::FillInstrumentDetails()
     m_stInstrument->SetLabel(m_edited_instrument->GetDisplayType());
     m_spTimeout->SetValue(m_edited_instrument->GetTimeout());
 
-    for (auto ctrl : m_edited_instrument->ConfigControls()) {
+    for (const auto& ctrl : m_edited_instrument->ConfigControls()) {
         SettingsItemSizer->Add(
             new wxStaticText(m_swConfig, wxID_ANY, ctrl.description,
                 wxDefaultPosition, wxDefaultSize, 0),
@@ -354,6 +353,8 @@ void MainConfigFrameImpl::FillInstrumentDetails()
                         max = wxAtoi(token);
 #endif
                         break;
+                    default:
+                        LOG_VERBOSE("Uncovered SpinCtrl parameter %i", pos);
                     }
                     pos++;
                 }
@@ -381,8 +382,8 @@ void MainConfigFrameImpl::FillInstrumentDetails()
                 }
                 pos++;
             }
-            wxChoice* ch = new wxChoice(m_swConfig, wxID_ANY, wxDefaultPosition,
-                wxDefaultSize, 0, NULL, 0, wxDefaultValidator, ctrl.key);
+            auto* ch = new wxChoice(m_swConfig, wxID_ANY, wxDefaultPosition,
+                wxDefaultSize, 0, nullptr, 0, wxDefaultValidator, ctrl.key);
             ch->Append(as);
             ch->SetSelection(sel);
             SettingsItemSizer->Add(
@@ -390,7 +391,7 @@ void MainConfigFrameImpl::FillInstrumentDetails()
             break;
         }
         case dskConfigCtrl::SignalKKeyCtrl: {
-            SKKeyCtrlImpl* skk = new SKKeyCtrlImpl(m_swConfig);
+            auto* skk = new SKKeyCtrlImpl(m_swConfig);
             skk->SetName(ctrl.key);
             skk->SetValue(m_edited_instrument->GetStringSetting(ctrl.key));
             skk->SetSKTree(m_dsk_pi->GetDSK()->GetSignalKTree());
@@ -399,7 +400,7 @@ void MainConfigFrameImpl::FillInstrumentDetails()
             break;
         }
         case dskConfigCtrl::SignalKZonesCtrl: {
-            SKZonesCtrlImpl* skz = new SKZonesCtrlImpl(m_swConfig, m_dsk_pi);
+            auto* skz = new SKZonesCtrlImpl(m_swConfig, m_dsk_pi);
             skz->SetName(ctrl.key);
             skz->SetValue(m_edited_instrument->GetStringSetting(ctrl.key));
             SettingsItemSizer->Add(
@@ -415,7 +416,7 @@ void MainConfigFrameImpl::FillInstrumentDetails()
     m_panelConfig->Layout();
 }
 
-const wxString MainConfigFrameImpl::ExtractValue(wxWindow* ctrl)
+wxString MainConfigFrameImpl::ExtractValue(wxWindow* ctrl)
 {
     if (wxString(ctrl->GetClassInfo()->GetClassName()) == "wxTextCtrl") {
         return ((wxTextCtrl*)ctrl)->GetValue();
@@ -741,7 +742,7 @@ SKPathBrowserImpl::SKPathBrowserImpl(wxWindow* parent, wxWindowID id,
 {
 }
 
-const wxString SKPathBrowserImpl::GetSKPath()
+wxString SKPathBrowserImpl::GetSKPath()
 {
     wxTreeItemId selected = m_treePaths->GetSelection();
     wxString path = wxEmptyString;
@@ -772,7 +773,7 @@ void SKPathBrowserImpl::SetSKTree(wxJSONValue* sk_tree)
 void SKPathBrowserImpl::AddChildren(wxTreeItemId parent, wxJSONValue& json_node)
 {
     if (!json_node.IsNull()) {
-        for (auto member : json_node.GetMemberNames()) {
+        for (const auto& member : json_node.GetMemberNames()) {
             if (!(member.IsSameAs("value") || member.IsSameAs("source")
                     || member.IsSameAs("timestamp"))) {
                 // TODO: Isn't there a "legal" node with some of the above
@@ -788,23 +789,23 @@ void SKPathBrowserImpl::AddChildren(wxTreeItemId parent, wxJSONValue& json_node)
 // SKKeyCtrlImpl
 //====================================
 
-wxIMPLEMENT_DYNAMIC_CLASS_XTI(SKKeyCtrlImpl, wxPanel, "dashboardsdguiimpl.h");
+wxIMPLEMENT_DYNAMIC_CLASS_XTI(SKKeyCtrlImpl, wxPanel, "dashboardsdguiimpl.h")
 
-SKKeyCtrlImpl::SKKeyCtrlImpl(wxWindow* parent, wxWindowID id,
-    const wxPoint& pos, const wxSize& size, long style, const wxString& name,
-    const wxString& value)
+    SKKeyCtrlImpl::SKKeyCtrlImpl(wxWindow* parent, wxWindowID id,
+        const wxPoint& pos, const wxSize& size, long style,
+        const wxString& name, const wxString& value)
     : SKKeyCtrl(parent, id, pos, size, style, name)
 {
     m_tSKKey->SetValue(value);
     m_sk_tree = nullptr;
-};
+}
 
-wxString SKKeyCtrlImpl::GetValue() const { return m_tSKKey->GetValue(); };
+wxString SKKeyCtrlImpl::GetValue() const { return m_tSKKey->GetValue(); }
 
 void SKKeyCtrlImpl::SetValue(const wxString& value) const
 {
     m_tSKKey->SetValue(value);
-};
+}
 
 void SKKeyCtrlImpl::SetSKTree(wxJSONValue* sk_tree) { m_sk_tree = sk_tree; }
 
@@ -812,8 +813,8 @@ wxSize SKKeyCtrlImpl::DoGetBestSize() const
 {
     wxSize s1 = m_tSKKey->GetBestSize();
     wxSize s2 = m_btnSelect->GetBestSize();
-    return wxSize(
-        s1.GetWidth() + s2.GetWidth(), wxMax(s1.GetHeight(), s2.GetHeight()));
+    return { s1.GetWidth() + s2.GetWidth(),
+        wxMax(s1.GetHeight(), s2.GetHeight()) };
 }
 
 void SKKeyCtrlImpl::m_btnSelectOnButtonClick(wxCommandEvent& event)
@@ -833,9 +834,9 @@ void SKKeyCtrlImpl::m_btnSelectOnButtonClick(wxCommandEvent& event)
 // SKZonesCtrlImpl
 //====================================
 
-wxIMPLEMENT_DYNAMIC_CLASS_XTI(SKZonesCtrlImpl, wxPanel, "dashboardsdguiimpl.h");
+wxIMPLEMENT_DYNAMIC_CLASS_XTI(SKZonesCtrlImpl, wxPanel, "dashboardsdguiimpl.h")
 
-void SKZonesCtrlImpl::m_btnSelectOnButtonClick(wxCommandEvent& event)
+    void SKZonesCtrlImpl::m_btnSelectOnButtonClick(wxCommandEvent& event)
 {
     wxWindowPtr<ZonesConfigDialogImpl> dlg(new ZonesConfigDialogImpl(
         this, m_dsk_pi, wxID_ANY, m_tZones->GetValue()));
@@ -854,7 +855,7 @@ SKZonesCtrlImpl::SKZonesCtrlImpl(wxWindow* parent, dashboardsk_pi* dsk_pi,
 {
     m_dsk_pi = dsk_pi;
     m_tZones->SetValue(value);
-};
+}
 
 wxString SKZonesCtrlImpl::GetValue() const { return m_tZones->GetValue(); }
 
@@ -867,8 +868,8 @@ wxSize SKZonesCtrlImpl::DoGetBestSize() const
 {
     wxSize s1 = m_tZones->GetBestSize();
     wxSize s2 = m_btnSelect->GetBestSize();
-    return wxSize(
-        s1.GetWidth() + s2.GetWidth(), wxMax(s1.GetHeight(), s2.GetHeight()));
+    return { s1.GetWidth() + s2.GetWidth(),
+        wxMax(s1.GetHeight(), s2.GetHeight()) };
 }
 
 //====================================
@@ -902,9 +903,9 @@ ZonesConfigDialogImpl::ZonesConfigDialogImpl(wxWindow* parent,
     }
     FillZoneControls();
     EnableControls();
-};
+}
 
-const vector<Zone> ZonesConfigDialogImpl::GetZones() { return m_zones; }
+vector<Zone> ZonesConfigDialogImpl::GetZones() { return m_zones; }
 
 void ZonesConfigDialogImpl::EnableControls()
 {
