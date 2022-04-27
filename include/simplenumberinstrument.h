@@ -53,7 +53,10 @@
     X(SimpleNumberInstrument::transformation::rad2deg, _("RAD->DEG"))          \
     X(SimpleNumberInstrument::transformation::ms2kn, _("m/s -> kn"))           \
     X(SimpleNumberInstrument::transformation::ms2kmh, _("m/s -> km/h"))        \
-    X(SimpleNumberInstrument::transformation::ms2mih, _("m/s -> mph"))
+    X(SimpleNumberInstrument::transformation::ms2mih, _("m/s -> mph"))         \
+    X(SimpleNumberInstrument::transformation::m2ft, _("m -> feet"))            \
+    X(SimpleNumberInstrument::transformation::m2fm, _("m -> fathoms"))         \
+    X(SimpleNumberInstrument::transformation::m2nm, _("m -> NMi"))
 
 // Palette from
 // Normal: https://colorhunt.co/palette/e6e6e6c5a880532e1c0f0f0f
@@ -155,7 +158,13 @@ public:
         /// meters/second to km/h
         ms2kmh,
         /// meters/second to miles per hour
-        ms2mph
+        ms2mph,
+        /// meters to feet
+        m2ft,
+        /// meters to fathoms
+        m2fm,
+        /// meters to nautical miles
+        m2nm
     };
 
 private:

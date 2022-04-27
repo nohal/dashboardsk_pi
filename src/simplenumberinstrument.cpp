@@ -238,6 +238,12 @@ double SimpleNumberInstrument::Transform(const double& val)
         return 3.6 * val;
     case transformation::ms2mph:
         return 2.236936 * val;
+    case transformation::m2ft:
+        return 3.28084 * val;
+    case transformation::m2fm:
+        return 0.546807 * val;
+    case transformation::m2nm:
+        return val / 1852;
     default:
         return val;
     }
