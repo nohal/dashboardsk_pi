@@ -156,8 +156,11 @@ wxBitmap SimpleNumberInstrument::Render(double scale)
                         / (DSK_SNI_SMOOTHING_MAX + 1);
                 }
                 m_old_value = dval;
-                value
-                    = wxString::Format(m_format_strings[m_format_index], dval);
+                value = wxString::Format(
+                    m_format_strings[m_format_index], abs(dval));
+                if (dval < 0) {
+                    value.Prepend("-");
+                }
                 ctb = GetDimedColor(GetColor(dval, color_item::title_bg));
                 ctf = GetDimedColor(GetColor(dval, color_item::title_fg));
                 cbb = GetDimedColor(GetColor(dval, color_item::body_bg));
