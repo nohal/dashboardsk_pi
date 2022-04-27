@@ -5,7 +5,7 @@ This project provides an universal instrument dashboard display for [OpenCPN](ht
 
 ## Dependencies
 
-The plugin requires wxWidgets 3.1 or newer and targets OpenCPN 5.6 or newer.
+The plugin requires wxWidgets 3.0 (3.1+ very strongly encouraged, support for 3.0 will be completely dropped as soon as 3.2 makes it to the major Linux distributions) or newer and targets OpenCPN 5.6 or newer.
 
 ## Compiling
 

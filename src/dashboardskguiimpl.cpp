@@ -48,7 +48,13 @@ MainConfigFrameImpl::MainConfigFrameImpl(dashboardsk_pi* dsk_pi,
 {
     m_dsk_pi = dsk_pi;
     m_chAnchor->Clear();
+#if wxCHECK_VERSION(3, 1, 0)
     m_chAnchor->Append(Dashboard::AnchorEdgeLabels);
+#else
+    for (auto lbl : Dashboard::AnchorEdgeLabels) {
+        m_chAnchor->Append(wxString(lbl));
+    }
+#endif
     m_orig_config = m_dsk_pi->GetDSK()->GenerateJSONConfig();
     m_tSelf->SetValue(m_dsk_pi->GetDSK()->Self());
     m_comboDashboard->Append(m_dsk_pi->GetDSK()->GetDashboardNames());
@@ -668,6 +674,7 @@ SKDataTreeImpl::SKDataTreeImpl(wxWindow* parent)
         wxSTC_STYLE_DEFAULT, GetForegroundColour());
     m_scintillaCode->StyleSetBackground(
         wxSTC_STYLE_DEFAULT, GetBackgroundColour());
+#if wxCHECK_VERSION(3, 1, 0)
     m_scintillaCode->SetLexer(wxSTC_LEX_JSON);
     m_scintillaCode->StyleSetForeground(
         wxSTC_JSON_DEFAULT, GetForegroundColour());
@@ -722,6 +729,7 @@ SKDataTreeImpl::SKDataTreeImpl(wxWindow* parent)
         wxSTC_JSON_ESCAPESEQUENCE, GetForegroundColour());
     m_scintillaCode->StyleSetBackground(
         wxSTC_JSON_ESCAPESEQUENCE, GetBackgroundColour());
+#endif
 }
 
 void SKDataTreeImpl::SetCodeSKTree(DashboardSK* dsk)

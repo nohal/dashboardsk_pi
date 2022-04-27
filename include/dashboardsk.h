@@ -64,7 +64,11 @@ private:
     wxJSONValue* m_self_ptr;
     /// Map of instrument subscription to the data paths. Only instruments
     /// interested in changed data are notified and poll them on next update
+#if wxCHECK_VERSION(3, 1, 0)
     std::unordered_map<wxString, vector<Instrument*>> m_path_subscriptions;
+#else
+    std::unordered_map<string, vector<Instrument*>> m_path_subscriptions;
+#endif
     /// Color scheme to be used when rendering the dashboards on screen
     int m_color_scheme;
 
@@ -164,7 +168,7 @@ public:
     /// \param instrument Pointer to the subscribed instrument
     void Subscribe(const wxString& path, Instrument* instrument)
     {
-        m_path_subscriptions[path].push_back(instrument);
+        m_path_subscriptions[UNORDERED_KEY(path)].push_back(instrument);
     }
 
     /// Unsubscribe instrument from all paths

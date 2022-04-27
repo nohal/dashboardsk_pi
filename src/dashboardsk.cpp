@@ -230,7 +230,8 @@ void DashboardSK::SendSKDelta(wxJSONValue& message)
 
                 LOG_RECEIVE_DEBUG(
                     "Notifying update to path " + fullKeyWithPath);
-                for (auto instr : m_path_subscriptions[fullKeyWithPath]) {
+                for (auto instr :
+                    m_path_subscriptions[UNORDERED_KEY(fullKeyWithPath)]) {
                     instr->NotifyNewData(fullKeyWithPath);
                 }
             }

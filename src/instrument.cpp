@@ -84,13 +84,13 @@ void Instrument::SetSetting(const wxString& key, const wxString& value)
     } else if (key == DSK_SNI_ZONES) {
         m_zones = Zone::ParseZonesFromString(value);
     } else {
-        m_config_vals[key] = value;
+        m_config_vals[UNORDERED_KEY(key)] = value;
     }
 }
 
 void Instrument::SetSetting(const wxString& key, const wxColor& value)
 {
-    m_config_vals[key] = value.GetAsString(wxC2S_HTML_SYNTAX);
+    m_config_vals[UNORDERED_KEY(key)] = value.GetAsString(wxC2S_HTML_SYNTAX);
 }
 
 void Instrument::SetSetting(const wxString& key, const int& value)
@@ -98,7 +98,7 @@ void Instrument::SetSetting(const wxString& key, const int& value)
     if (key == "allowed_age") {
         m_allowed_age_sec = value;
     } else {
-        m_config_vals[key] = wxString::Format("%i", value);
+        m_config_vals[UNORDERED_KEY(key)] = wxString::Format("%i", value);
     }
 }
 

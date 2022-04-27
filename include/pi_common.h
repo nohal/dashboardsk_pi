@@ -173,3 +173,11 @@ using namespace std;
 #define LOG_DIALOG IF_LOG_AT_LEVEL(LOGLEVEL_DIALOG) wxLogMessage
 #define LOG_RECEIVE IF_LOG_AT_LEVEL(LOGLEVEL_RECEIVE) wxLogMessage
 #define LOG_RECEIVE_DEBUG IF_LOG_AT_LEVEL(LOGLEVEL_RECEIVE_DEBUG) wxLogMessage
+
+// In wxWidgets 3.0 wxString is not compatible with std::string and can't
+// directly be used as a key in std containers
+#if wxCHECK_VERSION(3, 1, 0)
+#define UNORDERED_KEY(x) x
+#else
+#define UNORDERED_KEY(x) x.ToStdString()
+#endif

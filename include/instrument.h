@@ -45,7 +45,11 @@ PLUGIN_BEGIN_NAMESPACE
 #define DSK_SNI_ZONES "zones"
 
 /// Key-value pair unordered map for instrument configuration parameters
+#if wxCHECK_VERSION(3, 1, 0)
 typedef unordered_map<wxString, wxString> config_map_t;
+#else
+typedef unordered_map<string, wxString> config_map_t;
+#endif
 
 /// Instrument configuration controls type enum
 enum class dskConfigCtrl {
@@ -325,8 +329,8 @@ public:
         if (key.IsSameAs(DSK_SNI_ZONES)) {
             return Zone::ZonesToString(m_zones);
         }
-        if (m_config_vals.find(key) != m_config_vals.end()) {
-            return m_config_vals[key];
+        if (m_config_vals.find(UNORDERED_KEY(key)) != m_config_vals.end()) {
+            return m_config_vals[UNORDERED_KEY(key)];
         }
         return wxEmptyString;
     };
@@ -339,11 +343,11 @@ public:
     virtual int GetIntSetting(const wxString& key)
     {
         int i = 0;
-        if (m_config_vals.find(key) != m_config_vals.end()) {
+        if (m_config_vals.find(UNORDERED_KEY(key)) != m_config_vals.end()) {
 #if (wxCHECK_VERSION(3, 1, 6))
-            m_config_vals[key].ToInt(&i);
+            m_config_vals[UNORDERED_KEY(key)].ToInt(&i);
 #else
-            i = wxAtoi(m_config_vals[key]);
+            i = wxAtoi(m_config_vals[UNORDERED_KEY(key)]);
 #endif
         }
         return i;
@@ -356,9 +360,9 @@ public:
     /// \return Value of the parameter as string
     virtual wxColor GetColorSetting(const wxString& key)
     {
-        if (m_config_vals.find(key) != m_config_vals.end()) {
+        if (m_config_vals.find(UNORDERED_KEY(key)) != m_config_vals.end()) {
             wxColor col;
-            wxFromString(m_config_vals[key], &col);
+            wxFromString(m_config_vals[UNORDERED_KEY(key)], &col);
             return col;
         }
         return *wxCYAN;

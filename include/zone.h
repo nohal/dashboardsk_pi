@@ -28,6 +28,7 @@
 #define _ZONE_H_
 
 #include "pi_common.h"
+#include <vector>
 #include <wx/tokenzr.h>
 
 PLUGIN_BEGIN_NAMESPACE
