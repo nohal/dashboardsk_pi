@@ -263,6 +263,14 @@ public:
     ///\param path SignalK fully qualified path
     ///\return Pointer to the data object or NULL if not found
     const wxJSONValue* GetSKData(wxString path);
+
+    /// Force redraw of the instrument on the next overlay refresh
+    void ForceRedraw()
+    {
+        for (auto i : m_instruments) {
+            i->ForceRedraw();
+        }
+    };
 };
 
 PLUGIN_END_NAMESPACE

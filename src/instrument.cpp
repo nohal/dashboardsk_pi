@@ -59,7 +59,7 @@ void Instrument::ReadConfig(wxJSONValue& config)
     m_name = config["name"].AsString();
     m_title = config["title"].AsString();
     m_allowed_age_sec = config["allowed_age"].AsInt();
-    m_zones = Zone::ParseZonesFromString(config["zones"].AsString());
+    m_zones = Zone::ParseZonesFromString(config[DSK_SNI_ZONES].AsString());
 };
 
 wxJSONValue Instrument::GenerateJSONConfig()
@@ -69,7 +69,7 @@ wxJSONValue Instrument::GenerateJSONConfig()
     v["title"] = m_title;
     v["class"] = GetClass();
     v["allowed_age"] = m_allowed_age_sec;
-    v["zones"] = Zone::ZonesToString(m_zones);
+    v[DSK_SNI_ZONES] = Zone::ZonesToString(m_zones);
     return v;
 };
 
@@ -81,7 +81,7 @@ void Instrument::SetSetting(const wxString& key, const wxString& value)
         m_title = value;
     } else if (key == "allowed_age") {
         m_allowed_age_sec = IntFromString(value);
-    } else if (key == "zones") {
+    } else if (key == DSK_SNI_ZONES) {
         m_zones = Zone::ParseZonesFromString(value);
     } else {
         m_config_vals[key] = value;

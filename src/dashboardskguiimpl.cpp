@@ -530,6 +530,7 @@ void MainConfigFrameImpl::m_sdbSizerOnOKButtonClick(wxCommandEvent& event)
     UpdateEditedDashboard();
     UpdateEditedInstrument();
     m_dsk_pi->GetDSK()->SetSelf(m_tSelf->GetValue());
+    m_dsk_pi->GetDSK()->ForceRedraw();
     m_dsk_pi->SaveConfig();
     event.Skip();
 }

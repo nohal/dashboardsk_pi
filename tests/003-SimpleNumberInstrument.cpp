@@ -43,7 +43,7 @@ TEST_CASE("SimpleNumberInstrument Creation - properties set to defaults")
     SimpleNumberInstrument i(nullptr);
     REQUIRE(i.Class() != "Instrument");
     REQUIRE(i.DisplayType().IsSameAs("Simple number"));
-    REQUIRE(i.ConfigControls().size() == 15);
+    REQUIRE(i.ConfigControls().size() == 19);
     REQUIRE(i.Class().IsSameAs("SimpleNumberInstrument"));
 }
 
@@ -61,15 +61,15 @@ TEST_CASE("SimpleNumberInstrument Configuration Storage - if JSON not "
     v = i.GenerateJSONConfig();
     w.Write(v, out);
 
-    REQUIRE(
-        v["sk_key"].AsString().IsSameAs("vessels.123456789.navigation.test"));
-    REQUIRE(v["title_background"].AsString().StartsWith("#"));
-    REQUIRE(v["title_color"].AsString().StartsWith("#"));
-    REQUIRE(v["body_background"].AsString().StartsWith("#"));
-    REQUIRE(v["body_color"].AsString().StartsWith("#"));
-    REQUIRE(v["border_color"].AsString().StartsWith("#"));
-    REQUIRE(v["body_font"].AsInt() > 1);
-    REQUIRE(v["body_font"].AsInt() < 40);
-    REQUIRE(v["title_font"].AsInt() > 1);
-    REQUIRE(v["title_font"].AsInt() < 30);
+    REQUIRE(v[DSK_SNI_SK_KEY].AsString().IsSameAs(
+        "vessels.123456789.navigation.test"));
+    REQUIRE(v[DSK_SNI_TITLE_BG].AsString().StartsWith("#"));
+    REQUIRE(v[DSK_SNI_TITLE_FG].AsString().StartsWith("#"));
+    REQUIRE(v[DSK_SNI_BODY_BG].AsString().StartsWith("#"));
+    REQUIRE(v[DSK_SNI_BODY_FG].AsString().StartsWith("#"));
+    REQUIRE(v[DSK_SNI_BORDER_COLOR].AsString().StartsWith("#"));
+    REQUIRE(v[DSK_SNI_BODY_FONT].AsInt() > 1);
+    REQUIRE(v[DSK_SNI_BODY_FONT].AsInt() < 40);
+    REQUIRE(v[DSK_SNI_TITLE_FONT].AsInt() > 1);
+    REQUIRE(v[DSK_SNI_TITLE_FONT].AsInt() < 30);
 }

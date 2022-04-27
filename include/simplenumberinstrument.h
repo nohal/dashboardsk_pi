@@ -56,52 +56,82 @@
     X(SimpleNumberInstrument::transformation::ms2mih, _("m/s -> mph"))
 
 // Palette from
-// Normal: https://colorhunt.co/palette/f1ddbf525e7578938a92ba92
-// Warn: https://colorhunt.co/palette/9adcfffff89affb2a6ff8aae
-// Alarm:https://colorhunt.co/palette/ff007517277477d970eeeeee
-#define DSK_SNI_COLOR_TITLE_BG wxColor(82, 94, 117)
-#define DSK_SNI_COLOR_TITLE_FG wxColor(146, 186, 146)
-#define DSK_SNI_COLOR_BODY_BG wxColor(120, 147, 138)
-#define DSK_SNI_COLOR_BODY_FG wxColor(241, 221, 191)
-#define DSK_SNI_COLOR_WARN_BG wxColor(255, 248, 154)
-#define DSK_SNI_COLOR_WARN_FG wxColor(154, 220, 255)
-#define DSK_SNI_COLOR_ALRM_BG wxColor(255, 0, 117)
-#define DSK_SNI_COLOR_ALRM_FG wxColor(23, 39, 116)
+// Normal: https://colorhunt.co/palette/e6e6e6c5a880532e1c0f0f0f
+// Backgrounds: https://colorhunt.co/palette/ea5959f98b60ffc057ffe084
+#define DSK_SNI_COLOR_TITLE_BG wxColor(83, 46, 28)
+#define DSK_SNI_COLOR_TITLE_FG wxColor(197, 168, 128)
+#define DSK_SNI_COLOR_BODY_BG wxColor(230, 230, 230)
+#define DSK_SNI_COLOR_BODY_FG wxColor(15, 15, 15)
+#define DSK_SNI_COLOR_ALERT_BG wxColor(255, 224, 132)
+#define DSK_SNI_COLOR_ALERT_FG wxColor(15, 15, 15)
+#define DSK_SNI_COLOR_WARN_BG wxColor(255, 192, 87)
+#define DSK_SNI_COLOR_WARN_FG wxColor(15, 15, 15)
+#define DSK_SNI_COLOR_ALRM_BG wxColor(249, 139, 96)
+#define DSK_SNI_COLOR_ALRM_FG wxColor(15, 15, 15)
+#define DSK_SNI_COLOR_EMERG_BG wxColor(234, 89, 89)
+#define DSK_SNI_COLOR_EMERG_FG wxColor(255, 255, 255)
 #define DSK_SNI_COLOR_BORDER *wxBLACK
+
+// Setting nams
+#define DSK_SNI_SK_KEY "sk_key"
+#define DSK_SNI_FORMAT "format"
+#define DSK_SNI_TRANSFORMATION "transformation"
+#define DSK_SNI_TITLE_FONT "title_font"
+#define DSK_SNI_BODY_FONT "body_font"
+#define DSK_SNI_TITLE_BG "title_background"
+#define DSK_SNI_TITLE_FG "title_color"
+#define DSK_SNI_BODY_BG "body_background"
+#define DSK_SNI_BODY_FG "body_color"
+#define DSK_SNI_ALERT_BG "alert_background"
+#define DSK_SNI_ALERT_FG "alert_color"
+#define DSK_SNI_WARN_BG "warn_background"
+#define DSK_SNI_WARN_FG "warn_color"
+#define DSK_SNI_ALRM_BG "alarm_background"
+#define DSK_SNI_ALRM_FG "alarm_color"
+#define DSK_SNI_EMERG_BG "emergency_background"
+#define DSK_SNI_EMERG_FG "emergency_color"
+#define DSK_SNI_BORDER_COLOR "border_color"
 
 // Setting name, default value, label, dskConfigCtrl control type, control
 // parameters string, wxJSONValue conversion function, getter function
 #define DSK_SNI_SETTINGS                                                       \
-    X(0, "sk_key", wxString(wxEmptyString), _("SK Key"), SignalKKeyCtrl,       \
+    X(0, DSK_SNI_SK_KEY, wxString(wxEmptyString), _("SK Key"), SignalKKeyCtrl, \
         wxEmptyString, AsString, GetStringSetting)                             \
-    X(1, "format", 0, _("Format"), ChoiceCtrl,                                 \
+    X(1, DSK_SNI_FORMAT, 0, _("Format"), ChoiceCtrl,                           \
         ConcatChoiceStrings(m_supported_formats), AsInt, GetIntSetting)        \
-    X(2, "transformation", 0, _("Transformation"), ChoiceCtrl,                 \
+    X(2, DSK_SNI_TRANSFORMATION, 0, _("Transformation"), ChoiceCtrl,           \
         ConcatChoiceStrings(m_supported_transforms), AsInt, GetIntSetting)     \
-    X(3, "zones", wxString(wxEmptyString), _("Zones"), SignalKZonesCtrl,       \
+    X(3, DSK_SNI_ZONES, wxString(wxEmptyString), _("Zones"), SignalKZonesCtrl, \
         wxEmptyString, AsString, GetStringSetting)                             \
-    X(4, "title_font", m_title_font.GetPointSize(), _("Title size"), SpinCtrl, \
-        "5;40", AsInt, GetIntSetting)                                          \
-    X(5, "body_font", m_body_font.GetPointSize(), _("Body size"), SpinCtrl,    \
-        "5;40", AsInt, GetIntSetting)                                          \
-    X(6, "title_background", DSK_SNI_COLOR_TITLE_BG, _("Title background"),    \
+    X(4, DSK_SNI_TITLE_FONT, m_title_font.GetPointSize(), _("Title size"),     \
+        SpinCtrl, "5;40", AsInt, GetIntSetting)                                \
+    X(5, DSK_SNI_BODY_FONT, m_body_font.GetPointSize(), _("Body size"),        \
+        SpinCtrl, "5;40", AsInt, GetIntSetting)                                \
+    X(6, DSK_SNI_TITLE_BG, DSK_SNI_COLOR_TITLE_BG, _("Title background"),      \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(7, "title_color", DSK_SNI_COLOR_TITLE_FG, _("Title color"),              \
+    X(7, DSK_SNI_TITLE_FG, DSK_SNI_COLOR_TITLE_FG, _("Title color"),           \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(8, "body_background", DSK_SNI_COLOR_BODY_BG, _("Body background"),       \
+    X(8, DSK_SNI_BODY_BG, DSK_SNI_COLOR_BODY_BG, _("Body background"),         \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(9, "body_color", DSK_SNI_COLOR_BODY_FG, _("Body color"),                 \
+    X(9, DSK_SNI_BODY_FG, DSK_SNI_COLOR_BODY_FG, _("Body color"),              \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(10, "warning_background", DSK_SNI_COLOR_WARN_BG,                         \
-        _("Warning background"), ColourPickerCtrl, wxEmptyString, AsString,    \
-        GetStringSetting)                                                      \
-    X(11, "warning_color", DSK_SNI_COLOR_WARN_FG, _("Warning color"),          \
+    X(10, DSK_SNI_ALERT_BG, DSK_SNI_COLOR_ALERT_BG, _("Alert background"),     \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(12, "alarm_background", DSK_SNI_COLOR_ALRM_BG, _("Alarm background"),    \
+    X(11, DSK_SNI_ALERT_FG, DSK_SNI_COLOR_ALERT_FG, _("Alert color"),          \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(13, "alarm_color", DSK_SNI_COLOR_ALRM_FG, _("Alarm color"),              \
+    X(12, DSK_SNI_WARN_BG, DSK_SNI_COLOR_WARN_BG, _("Warning background"),     \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(14, "border_color", DSK_SNI_COLOR_BORDER, _("Border color"),             \
+    X(13, DSK_SNI_WARN_FG, DSK_SNI_COLOR_WARN_FG, _("Warning color"),          \
+        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
+    X(14, DSK_SNI_ALRM_BG, DSK_SNI_COLOR_ALRM_BG, _("Alarm background"),       \
+        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
+    X(15, DSK_SNI_ALRM_FG, DSK_SNI_COLOR_ALRM_FG, _("Alarm color"),            \
+        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
+    X(16, DSK_SNI_EMERG_BG, DSK_SNI_COLOR_EMERG_BG, _("Emergency background"), \
+        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
+    X(17, DSK_SNI_EMERG_FG, DSK_SNI_COLOR_EMERG_FG, _("Emergency color"),      \
+        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
+    X(18, DSK_SNI_BORDER_COLOR, DSK_SNI_COLOR_BORDER, _("Border color"),       \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)
 
 PLUGIN_BEGIN_NAMESPACE
@@ -172,6 +202,120 @@ private:
             s.Append(str);
         }
         return s;
+    };
+
+    /// Enum to identify the part of the instrument graphical representation
+    enum class color_item {
+        /// Title background
+        title_bg = 0,
+        /// Title text
+        title_fg,
+        /// Body backgorund
+        body_bg,
+        /// Body text
+        body_fg,
+        /// Border
+        border
+    };
+
+    /// Returns color corresponding to the provided value adjusted according to
+    /// the zone ot which the value falls. In case of overlapping zones the one
+    /// with highest severity takes precedence \param val The value to be
+    /// displayed \param nominal_color Color corresponding to nominal value (Not
+    /// in any zone) \param normal_color Color corresponding to normal value
+    /// \param alert_color Color corresponding to an alert
+    /// \param warn_color Color corresponding to a warning
+    /// \param alert_color Color corresponding to an alarm
+    /// \param emergency_color Color corresponding to an emergency
+    /// \return Color
+    const wxColor AdjustColorForZone(const double& val,
+        const wxColor& nominal_color, const wxColor& normal_color,
+        const wxColor& alert_color, const wxColor& warn_color,
+        const wxColor& alarm_color, const wxColor& emergency_color)
+    {
+        wxColor c = nominal_color;
+        Zone::state high_state = Zone::state::nominal;
+        for (auto zone : m_zones) {
+            if (high_state < Zone::state::emergency
+                && val >= zone.GetLowerLimit() && val <= zone.GetUpperLimit()
+                && high_state < zone.GetState()) {
+                high_state = zone.GetState();
+                switch (high_state) {
+                case Zone::state::normal:
+                    c = normal_color;
+                    break;
+                case Zone::state::alert:
+                    c = alert_color;
+                    break;
+                case Zone::state::warn:
+                    c = warn_color;
+                    break;
+                case Zone::state::alarm:
+                    c = alarm_color;
+                    break;
+                case Zone::state::emergency:
+                    c = emergency_color;
+                    break;
+                default:
+                    c = nominal_color;
+                }
+            }
+        }
+        return c;
+    }
+
+    /// Get color for a part of the instrument corresponding to a value to be
+    /// displayed
+    ///
+    /// \param val Duble value to be displayed
+    /// \param item Part of the instrument
+    /// \return Color to be used
+    const wxColor GetColor(const double& val, const color_item item)
+    {
+        wxColor c;
+        switch (item) {
+        case color_item::title_bg:
+            c = AdjustColorForZone(val, GetColorSetting(DSK_SNI_TITLE_BG),
+                GetColorSetting(DSK_SNI_TITLE_BG),
+                GetColorSetting(DSK_SNI_TITLE_BG),
+                GetColorSetting(DSK_SNI_TITLE_BG),
+                GetColorSetting(DSK_SNI_TITLE_BG),
+                GetColorSetting(DSK_SNI_TITLE_BG));
+            break;
+        case color_item::title_fg:
+            c = AdjustColorForZone(val, GetColorSetting(DSK_SNI_TITLE_FG),
+                GetColorSetting(DSK_SNI_TITLE_FG),
+                GetColorSetting(DSK_SNI_TITLE_FG),
+                GetColorSetting(DSK_SNI_TITLE_FG),
+                GetColorSetting(DSK_SNI_TITLE_FG),
+                GetColorSetting(DSK_SNI_TITLE_FG));
+            break;
+        case color_item::body_bg:
+            c = AdjustColorForZone(val, GetColorSetting(DSK_SNI_BODY_BG),
+                GetColorSetting(DSK_SNI_BODY_BG),
+                GetColorSetting(DSK_SNI_ALERT_BG),
+                GetColorSetting(DSK_SNI_WARN_BG),
+                GetColorSetting(DSK_SNI_ALRM_BG),
+                GetColorSetting(DSK_SNI_EMERG_BG));
+            break;
+        case color_item::body_fg:
+            c = AdjustColorForZone(val, GetColorSetting(DSK_SNI_BODY_FG),
+                GetColorSetting(DSK_SNI_BODY_FG),
+                GetColorSetting(DSK_SNI_ALERT_FG),
+                GetColorSetting(DSK_SNI_WARN_FG),
+                GetColorSetting(DSK_SNI_ALRM_FG),
+                GetColorSetting(DSK_SNI_EMERG_FG));
+            break;
+        case color_item::border:
+            c = AdjustColorForZone(val, GetColorSetting(DSK_SNI_BORDER_COLOR),
+                GetColorSetting(DSK_SNI_BORDER_COLOR),
+                GetColorSetting(DSK_SNI_BORDER_COLOR),
+                GetColorSetting(DSK_SNI_BORDER_COLOR),
+                GetColorSetting(DSK_SNI_BORDER_COLOR),
+                GetColorSetting(DSK_SNI_BORDER_COLOR));
+            break;
+        }
+        return c;
     };
 
 public:

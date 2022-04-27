@@ -277,6 +277,14 @@ public:
     ///
     /// \return Pointer to the data
     wxJSONValue* GetSignalKTree();
+
+    /// Force redraw of the instrument on the next overlay refresh
+    void ForceRedraw()
+    {
+        for (auto d : m_dashboards) {
+            d.ForceRedraw();
+        }
+    };
 };
 
 PLUGIN_END_NAMESPACE

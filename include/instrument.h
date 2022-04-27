@@ -41,6 +41,9 @@ PLUGIN_BEGIN_NAMESPACE
 #define LUMIMOSITY_NIGHT (-0.5)
 #define LUMIMOSITY_DUSK (-0.2)
 
+// TODO: Rename the macro without SNI amd add the other "general" setting names
+#define DSK_SNI_ZONES "zones"
+
 /// Key-value pair unordered map for instrument configuration parameters
 typedef unordered_map<wxString, wxString> config_map_t;
 
@@ -119,6 +122,8 @@ protected:
     vector<Zone> m_zones;
     /// Alarm state matrix
     unordered_map<Zone::state, vector<alarmType>> m_alarm_methods;
+    /// Needs redraw on next overlay refresh
+    bool m_needs_redraw;
 
     /// Get version of a color adjusted to the current color scheme set for the
     /// instrument
@@ -138,6 +143,7 @@ protected:
         , m_width(0)
         , m_height(0)
         , m_new_data(false)
+        , m_needs_redraw(true)
     {
     }
 
@@ -316,7 +322,7 @@ public:
     /// \return Value of the parameter as string
     virtual wxString GetStringSetting(const wxString& key)
     {
-        if (key.IsSameAs("zones")) {
+        if (key.IsSameAs(DSK_SNI_ZONES)) {
             return Zone::ZonesToString(m_zones);
         }
         if (m_config_vals.find(key) != m_config_vals.end()) {
@@ -376,6 +382,9 @@ public:
     /// \param key Identification key of the parameter
     /// \param value Integer value of the parameter
     virtual void SetSetting(const wxString& key, const int& value);
+
+    /// Force redraw of the instrument on the next overlay refresh
+    void ForceRedraw() { m_needs_redraw = true; };
 };
 
 PLUGIN_END_NAMESPACE
