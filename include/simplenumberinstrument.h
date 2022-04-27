@@ -79,6 +79,7 @@
 #define DSK_SNI_SK_KEY "sk_key"
 #define DSK_SNI_FORMAT "format"
 #define DSK_SNI_TRANSFORMATION "transformation"
+#define DSK_SNI_SMOOTHING "smoothing"
 #define DSK_SNI_TITLE_FONT "title_font"
 #define DSK_SNI_BODY_FONT "body_font"
 #define DSK_SNI_TITLE_BG "title_background"
@@ -95,6 +96,8 @@
 #define DSK_SNI_EMERG_FG "emergency_color"
 #define DSK_SNI_BORDER_COLOR "border_color"
 
+#define DSK_SNI_SMOOTHING_MAX 9
+
 // Setting name, default value, label, dskConfigCtrl control type, control
 // parameters string, wxJSONValue conversion function, getter function
 #define DSK_SNI_SETTINGS                                                       \
@@ -106,35 +109,37 @@
         ConcatChoiceStrings(m_supported_transforms), AsInt, GetIntSetting)     \
     X(3, DSK_SNI_ZONES, wxString(wxEmptyString), _("Zones"), SignalKZonesCtrl, \
         wxEmptyString, AsString, GetStringSetting)                             \
-    X(4, DSK_SNI_TITLE_FONT, m_title_font.GetPointSize(), _("Title size"),     \
+    X(4, DSK_SNI_SMOOTHING, m_smoothing, _("Data smoothing"), SpinCtrl,        \
+        "0;DSK_SNI_SMOOTHING_MAX", AsInt, GetIntSetting)                       \
+    X(5, DSK_SNI_TITLE_FONT, m_title_font.GetPointSize(), _("Title size"),     \
         SpinCtrl, "5;40", AsInt, GetIntSetting)                                \
-    X(5, DSK_SNI_BODY_FONT, m_body_font.GetPointSize(), _("Body size"),        \
+    X(6, DSK_SNI_BODY_FONT, m_body_font.GetPointSize(), _("Body size"),        \
         SpinCtrl, "5;40", AsInt, GetIntSetting)                                \
-    X(6, DSK_SNI_TITLE_BG, DSK_SNI_COLOR_TITLE_BG, _("Title background"),      \
+    X(7, DSK_SNI_TITLE_BG, DSK_SNI_COLOR_TITLE_BG, _("Title background"),      \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(7, DSK_SNI_TITLE_FG, DSK_SNI_COLOR_TITLE_FG, _("Title color"),           \
+    X(8, DSK_SNI_TITLE_FG, DSK_SNI_COLOR_TITLE_FG, _("Title color"),           \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(8, DSK_SNI_BODY_BG, DSK_SNI_COLOR_BODY_BG, _("Body background"),         \
+    X(9, DSK_SNI_BODY_BG, DSK_SNI_COLOR_BODY_BG, _("Body background"),         \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(9, DSK_SNI_BODY_FG, DSK_SNI_COLOR_BODY_FG, _("Body color"),              \
+    X(10, DSK_SNI_BODY_FG, DSK_SNI_COLOR_BODY_FG, _("Body color"),             \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(10, DSK_SNI_ALERT_BG, DSK_SNI_COLOR_ALERT_BG, _("Alert background"),     \
+    X(11, DSK_SNI_ALERT_BG, DSK_SNI_COLOR_ALERT_BG, _("Alert background"),     \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(11, DSK_SNI_ALERT_FG, DSK_SNI_COLOR_ALERT_FG, _("Alert color"),          \
+    X(12, DSK_SNI_ALERT_FG, DSK_SNI_COLOR_ALERT_FG, _("Alert color"),          \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(12, DSK_SNI_WARN_BG, DSK_SNI_COLOR_WARN_BG, _("Warning background"),     \
+    X(13, DSK_SNI_WARN_BG, DSK_SNI_COLOR_WARN_BG, _("Warning background"),     \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(13, DSK_SNI_WARN_FG, DSK_SNI_COLOR_WARN_FG, _("Warning color"),          \
+    X(14, DSK_SNI_WARN_FG, DSK_SNI_COLOR_WARN_FG, _("Warning color"),          \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(14, DSK_SNI_ALRM_BG, DSK_SNI_COLOR_ALRM_BG, _("Alarm background"),       \
+    X(15, DSK_SNI_ALRM_BG, DSK_SNI_COLOR_ALRM_BG, _("Alarm background"),       \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(15, DSK_SNI_ALRM_FG, DSK_SNI_COLOR_ALRM_FG, _("Alarm color"),            \
+    X(16, DSK_SNI_ALRM_FG, DSK_SNI_COLOR_ALRM_FG, _("Alarm color"),            \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(16, DSK_SNI_EMERG_BG, DSK_SNI_COLOR_EMERG_BG, _("Emergency background"), \
+    X(17, DSK_SNI_EMERG_BG, DSK_SNI_COLOR_EMERG_BG, _("Emergency background"), \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(17, DSK_SNI_EMERG_FG, DSK_SNI_COLOR_EMERG_FG, _("Emergency color"),      \
+    X(18, DSK_SNI_EMERG_FG, DSK_SNI_COLOR_EMERG_FG, _("Emergency color"),      \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(18, DSK_SNI_BORDER_COLOR, DSK_SNI_COLOR_BORDER, _("Border color"),       \
+    X(19, DSK_SNI_BORDER_COLOR, DSK_SNI_COLOR_BORDER, _("Border color"),       \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)
 
 PLUGIN_BEGIN_NAMESPACE
@@ -190,6 +195,16 @@ private:
     /// Instrument in timed out state flag. True if the instrument is not
     /// receiving data. for more than #m_allowed_age_sec seconds.
     bool m_timed_out;
+    /// Data smoothing ratio (0-DSK_SNI_SMOOTHING_MAX). The value effectively
+    /// tells over how many historic values with progressively declining
+    /// importance we want to smooth our data. 0 means the newest value is used
+    /// as is, while 9 means the newest value has only 10% influence on the
+    /// result. a(i+1) = (m_smoothing*a(i) +
+    /// (DSK_SNI_SMOOTHING_MAX-m_smoothing+1)*data(i+1)) /
+    /// (DSK_SNI_SMOOTHING_MAX + 1)
+    size_t m_smoothing;
+    /// Previous value displayed by the instrument
+    double m_old_value;
 
     /// Constructor
     SimpleNumberInstrument() { Init(); };

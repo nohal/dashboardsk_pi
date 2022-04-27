@@ -27,6 +27,7 @@
 #include "simplenumberinstrument.h"
 #include "dashboard.h"
 #include "instrument.h"
+#include <limits>
 
 PLUGIN_BEGIN_NAMESPACE
 
@@ -55,6 +56,8 @@ void SimpleNumberInstrument::Init()
         15, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
     m_body_font
         = wxFont(30, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
+    m_smoothing = 0;
+    m_old_value = std::numeric_limits<double>::lowest();
 
 #define X(a, b, c, d, e, f, g, h) SetSetting(b, c);
     DSK_SNI_SETTINGS
@@ -78,7 +81,11 @@ void SimpleNumberInstrument::SetSetting(
             m_parent_dashboard->Subscribe(m_sk_key, this);
         }
     } else if (key.IsSameAs(DSK_SNI_FORMAT)
-        || key.IsSameAs(DSK_SNI_TRANSFORMATION)) {
+        || key.IsSameAs(DSK_SNI_TRANSFORMATION)
+        || key.IsSameAs(DSK_SNI_SMOOTHING) || key.IsSameAs(DSK_SNI_BODY_FONT)
+        || key.IsSameAs(DSK_SNI_TITLE_FONT)) {
+        // TODO: The above manually maintained list should be replaced with
+        // something using the information from the DSK_SNI_SETTINGS macro
         int i = 0;
 #if (wxCHECK_VERSION(3, 1, 6))
         value.ToInt(&i);
@@ -100,6 +107,8 @@ void SimpleNumberInstrument::SetSetting(const wxString& key, const int& value)
         m_title_font.SetPointSize(value);
     } else if (key.IsSameAs(DSK_SNI_BODY_FONT)) {
         m_body_font.SetPointSize(value);
+    } else if (key.IsSameAs(DSK_SNI_SMOOTHING)) {
+        m_smoothing = value;
     }
 }
 
@@ -140,6 +149,13 @@ wxBitmap SimpleNumberInstrument::Render(double scale)
                 cbf = GetDimedColor(GetColorSetting(DSK_SNI_ALERT_FG));
             } else {
                 double dval = Transform(v.AsDouble());
+                if (m_old_value > std::numeric_limits<double>::lowest()) {
+                    dval = (m_smoothing * m_old_value
+                               + (DSK_SNI_SMOOTHING_MAX - m_smoothing + 1)
+                                   * dval)
+                        / (DSK_SNI_SMOOTHING_MAX + 1);
+                }
+                m_old_value = dval;
                 value
                     = wxString::Format(m_format_strings[m_format_index], dval);
                 ctb = GetDimedColor(GetColor(dval, color_item::title_bg));
