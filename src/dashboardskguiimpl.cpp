@@ -641,6 +641,10 @@ void SKZonesCtrlImpl::m_btnSelectOnButtonClick(wxCommandEvent& event)
     event.Skip();
 }
 
+//====================================
+// ZonesConfigDialogImpl
+//====================================
+
 ZonesConfigDialogImpl::ZonesConfigDialogImpl(wxWindow* parent,
     dashboardsk_pi* dsk_pi, wxWindowID id, const wxString& value,
     const wxString& title, const wxPoint& pos, const wxSize& size, long style)
@@ -669,5 +673,129 @@ ZonesConfigDialogImpl::ZonesConfigDialogImpl(wxWindow* parent,
     FillZoneControls();
     EnableControls();
 };
+
+const vector<Zone> ZonesConfigDialogImpl::GetZones() { return m_zones; }
+
+void ZonesConfigDialogImpl::EnableControls()
+{
+    bool enable;
+    if (m_lbZones->GetSelection() != wxNOT_FOUND) {
+        enable = true;
+    } else {
+        // Enable only the Add button
+        enable = false;
+        m_bpAdd->Enable();
+    }
+    m_bpRemove->Enable(enable);
+    m_stLower->Enable(enable);
+    m_spLower->Enable(enable);
+    m_stUpper->Enable(enable);
+    m_spUpper->Enable(enable);
+    m_stState->Enable(enable);
+    m_choiceState->Enable(enable);
+}
+
+void ZonesConfigDialogImpl::FillZoneControls()
+{
+    if (m_edited_zone) {
+        m_spLower->SetRange(-99999, m_edited_zone->GetUpperLimit());
+        m_spLower->SetValue(m_edited_zone->GetLowerLimit());
+        m_spUpper->SetRange(m_edited_zone->GetLowerLimit(), 99999);
+        m_spUpper->SetValue(m_edited_zone->GetUpperLimit());
+        m_choiceState->SetSelection(
+            static_cast<int>(m_edited_zone->GetState()));
+    } else {
+        m_spLower->SetValue(0);
+        m_spUpper->SetValue(0);
+        m_choiceState->SetSelection(static_cast<int>(Zone::state::nominal));
+    }
+}
+
+void ZonesConfigDialogImpl::UpdateList()
+{
+    m_edited_zone = nullptr;
+    int sel = m_lbZones->GetSelection();
+    m_lbZones->Clear();
+    for (auto zone : m_zones) {
+        m_lbZones->Append(zone.ToUIString());
+    }
+    m_lbZones->SetSelection(sel);
+    if (sel >= 0 && sel < m_zones.size()) {
+        m_edited_zone = &m_zones.at(sel);
+    }
+}
+
+void ZonesConfigDialogImpl::m_lbZonesOnListBox(wxCommandEvent& event)
+{
+    m_edited_zone = &m_zones.at(m_lbZones->GetSelection());
+    FillZoneControls();
+    event.Skip();
+}
+
+void ZonesConfigDialogImpl::m_bpAddOnButtonClick(wxCommandEvent& event)
+{
+    Zone z;
+    m_zones.emplace_back(z);
+    m_edited_zone = &m_zones.back();
+    m_lbZones->Append(z.ToUIString());
+    m_lbZones->SetSelection(m_lbZones->GetCount() - 1);
+    FillZoneControls();
+    EnableControls();
+    event.Skip();
+}
+
+void ZonesConfigDialogImpl::m_bpRemoveOnButtonClick(wxCommandEvent& event)
+{
+    int sel = m_lbZones->GetSelection();
+    m_edited_zone = nullptr;
+    m_zones.erase(m_zones.begin() + sel);
+    m_lbZones->Delete(sel);
+    sel = wxMin(sel, m_lbZones->GetCount() - 1);
+    if (sel >= 0 && sel < m_zones.size()) {
+        m_lbZones->SetSelection(sel);
+        m_edited_zone = &m_zones.at(sel);
+    }
+    FillZoneControls();
+    EnableControls();
+    event.Skip();
+}
+
+void ZonesConfigDialogImpl::m_spLowerOnSpinCtrlDouble(wxSpinDoubleEvent& event)
+{
+    m_spUpper->SetRange(m_spLower->GetValue(), 99999);
+    m_edited_zone->SetLowerLimit(m_spLower->GetValue());
+    UpdateList();
+    event.Skip();
+}
+
+void ZonesConfigDialogImpl::m_spUpperOnSpinCtrlDouble(wxSpinDoubleEvent& event)
+{
+    m_spLower->SetRange(-99999, m_spUpper->GetValue());
+    m_edited_zone->SetUpperLimit(m_spUpper->GetValue());
+    UpdateList();
+    event.Skip();
+}
+
+void ZonesConfigDialogImpl::m_choiceStateOnChoice(wxCommandEvent& event)
+{
+    m_edited_zone->SetState(
+        static_cast<Zone::state>(m_choiceState->GetSelection()));
+    UpdateList();
+    event.Skip();
+}
+
+void ZonesConfigDialogImpl::m_sdbSizerButtonsOnCancelButtonClick(
+    wxCommandEvent& event)
+{
+    m_zones = m_original_zones;
+    event.Skip();
+}
+
+void ZonesConfigDialogImpl::m_sdbSizerButtonsOnOKButtonClick(
+    wxCommandEvent& event)
+{
+    // We just let it close, m_zones contains all the info
+    event.Skip();
+}
 
 PLUGIN_END_NAMESPACE

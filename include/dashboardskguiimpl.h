@@ -567,7 +567,7 @@ public:
     /// Get the zones defined in the dialog
     ///
     /// \return vector of zones
-    const vector<Zone> GetZones() { return m_zones; }
+    const vector<Zone> GetZones();
 
 protected:
     /// Original zone definition to revert to on Cancel
@@ -578,151 +578,53 @@ protected:
     Zone* m_edited_zone;
 
     /// Enable/disable controls based on the state of the form
-    void EnableControls()
-    {
-        bool enable;
-        if (m_lbZones->GetSelection() != wxNOT_FOUND) {
-            enable = true;
-        } else {
-            // Enable only the Add button
-            enable = false;
-            m_bpAdd->Enable();
-        }
-        m_bpRemove->Enable(enable);
-        m_stLower->Enable(enable);
-        m_spLower->Enable(enable);
-        m_stUpper->Enable(enable);
-        m_spUpper->Enable(enable);
-        m_stState->Enable(enable);
-        m_choiceState->Enable(enable);
-    };
+    void EnableControls();
 
     /// Fill the controls with zone values
-    void FillZoneControls()
-    {
-        if (m_edited_zone) {
-            m_spLower->SetRange(-99999, m_edited_zone->GetUpperLimit());
-            m_spLower->SetValue(m_edited_zone->GetLowerLimit());
-            m_spUpper->SetRange(m_edited_zone->GetLowerLimit(), 99999);
-            m_spUpper->SetValue(m_edited_zone->GetUpperLimit());
-            m_choiceState->SetSelection(
-                static_cast<int>(m_edited_zone->GetState()));
-        } else {
-            m_spLower->SetValue(0);
-            m_spUpper->SetValue(0);
-            m_choiceState->SetSelection(static_cast<int>(Zone::state::nominal));
-        }
-    };
+    void FillZoneControls();
 
     /// Update the zone list widget
-    void UpdateList()
-    {
-        m_edited_zone = nullptr;
-        int sel = m_lbZones->GetSelection();
-        m_lbZones->Clear();
-        for (auto zone : m_zones) {
-            m_lbZones->Append(zone.ToUIString());
-        }
-        m_lbZones->SetSelection(sel);
-        if (sel >= 0 && sel < m_zones.size()) {
-            m_edited_zone = &m_zones.at(sel);
-        }
-    };
+    void UpdateList();
 
     /// Event handler for zone list widget
     ///
     /// \param event The event data
-    void m_lbZonesOnListBox(wxCommandEvent& event)
-    {
-        m_edited_zone = &m_zones.at(m_lbZones->GetSelection());
-        FillZoneControls();
-        event.Skip();
-    }
+    void m_lbZonesOnListBox(wxCommandEvent& event);
 
     /// Event handler for zone addition button
     ///
     /// \param event The event data
-    void m_bpAddOnButtonClick(wxCommandEvent& event)
-    {
-        Zone z;
-        m_zones.emplace_back(z);
-        m_edited_zone = &m_zones.back();
-        m_lbZones->Append(z.ToUIString());
-        m_lbZones->SetSelection(m_lbZones->GetCount() - 1);
-        FillZoneControls();
-        EnableControls();
-        event.Skip();
-    };
+    void m_bpAddOnButtonClick(wxCommandEvent& event);
 
     /// Event handler for zone removal button
     ///
     /// \param event The event data
-    void m_bpRemoveOnButtonClick(wxCommandEvent& event)
-    {
-        int sel = m_lbZones->GetSelection();
-        m_edited_zone = nullptr;
-        m_zones.erase(m_zones.begin() + sel);
-        m_lbZones->Delete(sel);
-        sel = wxMin(sel, m_lbZones->GetCount() - 1);
-        if (sel >= 0 && sel < m_zones.size()) {
-            m_lbZones->SetSelection(sel);
-            m_edited_zone = &m_zones.at(sel);
-        }
-        FillZoneControls();
-        EnableControls();
-        event.Skip();
-    };
+    void m_bpRemoveOnButtonClick(wxCommandEvent& event);
 
     /// Event handler for the zone lower limit spin control
     ///
     /// \param event The event data
-    void m_spLowerOnSpinCtrlDouble(wxSpinDoubleEvent& event)
-    {
-        m_spUpper->SetRange(m_spLower->GetValue(), 99999);
-        m_edited_zone->SetLowerLimit(m_spLower->GetValue());
-        UpdateList();
-        event.Skip();
-    }
+    void m_spLowerOnSpinCtrlDouble(wxSpinDoubleEvent& event);
 
     /// Event handler for the zone upper limit spin control
     ///
     /// \param event The event data
-    void m_spUpperOnSpinCtrlDouble(wxSpinDoubleEvent& event)
-    {
-        m_spLower->SetRange(-99999, m_spUpper->GetValue());
-        m_edited_zone->SetUpperLimit(m_spUpper->GetValue());
-        UpdateList();
-        event.Skip();
-    }
+    void m_spUpperOnSpinCtrlDouble(wxSpinDoubleEvent& event);
 
     /// Event handler for the zone alarm state dropdown
     ///
     /// \param event The event data
-    void m_choiceStateOnChoice(wxCommandEvent& event)
-    {
-        m_edited_zone->SetState(
-            static_cast<Zone::state>(m_choiceState->GetSelection()));
-        UpdateList();
-        event.Skip();
-    }
+    void m_choiceStateOnChoice(wxCommandEvent& event);
 
     /// Event handler for the cancel button
     ///
     /// \param event The event data
-    void m_sdbSizerButtonsOnCancelButtonClick(wxCommandEvent& event)
-    {
-        m_zones = m_original_zones;
-        event.Skip();
-    }
+    void m_sdbSizerButtonsOnCancelButtonClick(wxCommandEvent& event);
 
     /// Event handler for the OK button
     ///
     /// \param event The event data
-    void m_sdbSizerButtonsOnOKButtonClick(wxCommandEvent& event)
-    {
-        // We just let it close, m_zones contains all the info
-        event.Skip();
-    };
+    void m_sdbSizerButtonsOnOKButtonClick(wxCommandEvent& event);
 };
 
 PLUGIN_END_NAMESPACE
