@@ -166,21 +166,13 @@ protected:
     /// \todo Implement this functionality
     ///
     /// \param event The event object reference
-    virtual void m_bpSaveInstrButtonOnButtonClick(wxCommandEvent& event)
-    {
-        // TODO
-        event.Skip();
-    }
+    virtual void m_bpSaveInstrButtonOnButtonClick(wxCommandEvent& event);
 
     /// Event handler for instrument export.
     /// \todo Implement this functionality
     ///
     /// \param event The event object reference
-    virtual void m_bpImportInstrButtonOnButtonClick(wxCommandEvent& event)
-    {
-        // TODO
-        event.Skip();
-    }
+    virtual void m_bpImportInstrButtonOnButtonClick(wxCommandEvent& event);
 
     /// Event handler for change of parameter of edited dashboard
     ///

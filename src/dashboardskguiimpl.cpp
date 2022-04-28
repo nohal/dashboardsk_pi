@@ -27,10 +27,13 @@
 #include "dashboardskguiimpl.h"
 #include "dashboardsk.h"
 #include "dashboardsk_pi.h"
+#include "wx/jsonreader.h"
+#include "wx/jsonwriter.h"
 #include <wx/choicdlg.h>
 #include <wx/dialog.h>
 #include <wx/msgdlg.h>
 #include <wx/tokenzr.h>
+#include <wx/wfstream.h>
 #include <wx/windowptr.h>
 
 PLUGIN_BEGIN_NAMESPACE
@@ -622,47 +625,103 @@ void MainConfigFrameImpl::m_cbEnabledOnCheckBox(wxCommandEvent& event)
 {
     UpdateEditedDashboard();
 }
-/// Event handler for change of parameter of edited dashboard
-///
-/// \param event The event object reference
+
 void MainConfigFrameImpl::m_spCanvasOnSpinCtrl(wxSpinEvent& event)
 {
     UpdateEditedDashboard();
 }
-/// Event handler for change of parameter of edited dashboard
-///
-/// \param event The event object reference
+
 void MainConfigFrameImpl::m_chAnchorOnChoice(wxCommandEvent& event)
 {
     UpdateEditedDashboard();
 }
-/// Event handler for change of parameter of edited dashboard
-///
-/// \param event The event object reference
+
 void MainConfigFrameImpl::m_spOffsetXOnSpinCtrl(wxSpinEvent& event)
 {
     UpdateEditedDashboard();
 }
-/// Event handler for change of parameter of edited dashboard
-///
-/// \param event The event object reference
+
 void MainConfigFrameImpl::m_spOffsetYOnSpinCtrl(wxSpinEvent& event)
 {
     UpdateEditedDashboard();
 }
-/// Event handler for change of parameter of edited dashboard
-///
-/// \param event The event object reference
+
 void MainConfigFrameImpl::m_spSpacingHOnSpinCtrl(wxSpinEvent& event)
 {
     UpdateEditedDashboard();
 }
-/// Event handler for change of parameter of edited dashboard
-///
-/// \param event The event object reference
+
 void MainConfigFrameImpl::m_spSpacingVOnSpinCtrl(wxSpinEvent& event)
 {
     UpdateEditedDashboard();
+}
+
+void MainConfigFrameImpl::m_bpSaveInstrButtonOnButtonClick(
+    wxCommandEvent& event)
+{
+    wxString fn;
+    if (m_edited_instrument) {
+        fn = m_edited_instrument->GetName();
+    }
+    wxWindowPtr<wxFileDialog> dlg(
+        new wxFileDialog(this, _("Save instrument to file"), "", fn,
+            "DashboardSK JSON files (*.json)|*.json",
+            wxFD_SAVE | wxFD_OVERWRITE_PROMPT));
+    dlg->ShowWindowModalThenDo([this, dlg](int retcode) {
+        if (retcode == wxID_OK && m_edited_instrument) {
+            wxFileOutputStream output_stream(dlg->GetPath());
+            if (output_stream.IsOk()) {
+                wxJSONWriter w;
+                w.Write(
+                    m_edited_instrument->GenerateJSONConfig(), output_stream);
+                output_stream.Close();
+                wxString s;
+                w.Write(m_edited_instrument->GenerateJSONConfig(), s);
+                wxMessageBox(s);
+                LOG_INFO("Cannot save current contents in file '%s'.",
+                    dlg->GetPath());
+            }
+        }
+    });
+    event.Skip();
+}
+
+void MainConfigFrameImpl::m_bpImportInstrButtonOnButtonClick(
+    wxCommandEvent& event)
+{
+    wxWindowPtr<wxFileDialog> dlg(
+        new wxFileDialog(this, _("Load instrument(s) to file"), "", "",
+            "DashboardSK JSON files (*.json)|*.json",
+            wxFD_OPEN | wxFD_MULTIPLE | wxFD_FILE_MUST_EXIST));
+    dlg->ShowWindowModalThenDo([this, dlg](int retcode) {
+        if (retcode == wxID_OK && m_edited_dashboard) {
+            wxArrayString paths;
+            dlg->GetPaths(paths);
+            for (auto p : paths) {
+                wxFileInputStream input_stream(p);
+                if (input_stream.IsOk() && m_edited_dashboard) {
+                    wxJSONValue v;
+                    wxJSONReader r;
+                    r.Parse(input_stream, &v);
+
+                    Instrument* instr = DashboardSK::CreateInstrumentInstance(
+                        DashboardSK::GetClassIndex(v["class"].AsString()),
+                        m_edited_dashboard);
+                    if (!instr) {
+                        LOG_VERBOSE("DashboardSK_pi: Problem loading "
+                                    "instrument with class "
+                            + v["class"].AsString());
+                        continue;
+                    }
+                    instr->ReadConfig(v);
+                    m_edited_dashboard->AddInstrument(instr);
+                }
+            }
+            FillInstrumentList();
+            m_lbInstruments->SetSelection(m_lbInstruments->GetCount() - 1);
+        }
+    });
+    event.Skip();
 }
 
 //====================================
