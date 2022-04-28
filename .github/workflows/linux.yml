@@ -1,6 +1,6 @@
 ---
 # yamllint disable rule:line-length
-name: CMake
+name: Linux build
 
 on:
   push:
