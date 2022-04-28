@@ -75,15 +75,15 @@ MainConfigFrameImpl::MainConfigFrameImpl(dashboardsk_pi* dsk_pi,
 #else
     m_bpAddButton->SetBitmap(GetBitmapFromSVGFile(
         m_dsk_pi->GetDataDir() + "plus.svg", BMP_SZ, BMP_SZ));
-    m_bpAddButton->SetBitmap(GetBitmapFromSVGFile(
+    m_bpRemoveButton->SetBitmap(GetBitmapFromSVGFile(
         m_dsk_pi->GetDataDir() + "minus.svg", BMP_SZ, BMP_SZ));
-    m_bpAddButton->SetBitmap(GetBitmapFromSVGFile(
+    m_bpSaveInstrButton->SetBitmap(GetBitmapFromSVGFile(
         m_dsk_pi->GetDataDir() + "save.svg", BMP_SZ, BMP_SZ));
-    m_bpAddButton->SetBitmap(GetBitmapFromSVGFile(
+    m_bpImportInstrButton->SetBitmap(GetBitmapFromSVGFile(
         m_dsk_pi->GetDataDir() + "open.svg", BMP_SZ, BMP_SZ));
-    m_bpAddButton->SetBitmap(GetBitmapFromSVGFile(
+    m_bpMoveUpButton->SetBitmap(GetBitmapFromSVGFile(
         m_dsk_pi->GetDataDir() + "up.svg", BMP_SZ, BMP_SZ));
-    m_bpAddButton->SetBitmap(GetBitmapFromSVGFile(
+    m_bpMoveDownButton->SetBitmap(GetBitmapFromSVGFile(
         m_dsk_pi->GetDataDir() + "down.svg", BMP_SZ, BMP_SZ));
 #endif
     if (m_comboDashboard->GetCount() > 0) {
@@ -464,7 +464,7 @@ void MainConfigFrameImpl::m_bpAddButtonOnButtonClick(wxCommandEvent& event)
             m_edited_instrument = m_dsk_pi->GetDSK()->CreateInstrumentInstance(
                 dlg->GetSelection(), m_edited_dashboard);
             m_edited_dashboard->AddInstrument(m_edited_instrument);
-            m_lbInstruments->Append(m_edited_instrument->GetName());
+            FillInstrumentList();
             m_lbInstruments->Select(m_lbInstruments->GetCount() - 1);
             FillInstrumentDetails();
             EnableItems(true, true, true, true);
@@ -478,6 +478,9 @@ void MainConfigFrameImpl::m_bpAddButtonOnButtonClick(wxCommandEvent& event)
 void MainConfigFrameImpl::m_lbInstrumentsOnListBox(wxCommandEvent& event)
 {
     UpdateEditedInstrument();
+    int i = m_lbInstruments->GetSelection();
+    FillInstrumentList();
+    m_lbInstruments->SetSelection(i);
     m_edited_instrument
         = m_edited_dashboard->GetInstrument(m_lbInstruments->GetSelection());
     FillInstrumentDetails();
@@ -490,7 +493,7 @@ void MainConfigFrameImpl::m_bpRemoveButtonOnButtonClick(wxCommandEvent& event)
 {
     int i = m_lbInstruments->GetSelection();
     m_edited_instrument = nullptr;
-    // FillInstrumentDetails();
+    FillInstrumentList();
     m_edited_dashboard->DeleteInstrument(i);
     m_lbInstruments->Delete(i);
     i--;

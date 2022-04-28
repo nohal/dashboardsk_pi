@@ -48,6 +48,8 @@ The end user documentation integrates to the [OpenCPN plugin documentation frame
 
 ### Images
 
+Everything used from the code should be SVG, think at least twice before using a bitmap as the master source of the image. The only place where bitmaps make sense is the documentation.
+
 - Process all the SVG images with [svgo](https://github.com/svg/svgo) - run `svgo --multipass --pretty <your>.svg` on it
 - Process all PNG images with `optipng` or similar tool
 - Do not use JPEG or any other format using lossy compression for images (Why would you?)
@@ -67,7 +69,7 @@ Refer to `include/instrument.h` for documentation of the basic instrument interf
 
 Every new instrument must be added to the `INSTRUMENTS` table at [the beginning of](https://github.com/nohal/dashboardsk_pi/blob/main/include/dashboardsk.h#L54-L62) `include\dashboardsk.h` with a new ID and the exact name of the class implementing it. The respective code is then generated automagically by the preprocessor.
 
-When adding a new instrument please also update the documentation under `manual/modules/ROOT`
+When adding a new instrument please also update the documentation under `manual/modules/ROOT` with the information relevant to the new functionality.
 
 ### Tests
 
