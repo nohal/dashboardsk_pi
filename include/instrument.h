@@ -38,8 +38,8 @@
 
 PLUGIN_BEGIN_NAMESPACE
 
-#define LUMIMOSITY_NIGHT (-0.5)
-#define LUMIMOSITY_DUSK (-0.2)
+#define LUMIMOSITY_NIGHT (-0.8)
+#define LUMIMOSITY_DUSK (-0.5)
 
 // TODO: Rename the macro without SNI amd add the other "general" setting names
 #define DSK_SNI_ZONES "zones"
@@ -256,7 +256,7 @@ public:
     ///
     /// \param scheme Integer parameter specifying the color scheme (0 - RGB, 1
     /// - DAY, 2 - DUSK, 3 - NIGHT)
-    void SetColorScheme(int scheme) { m_color_scheme = scheme; };
+    void SetColorScheme(int scheme);
 
     /// Load configuration from JSON object
     /// Extended in child instrument classes

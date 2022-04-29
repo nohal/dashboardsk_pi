@@ -104,6 +104,11 @@ public:
     /// DAY, 2 - DUSK, 3 - NIGHT)
     void SetColorScheme(int cs);
 
+    /// Get color scheme of the dashboards
+    ///
+    /// \return Color scheme index
+    const int GetColorScheme();
+
     /// Get pointer to the SignalK object from the data tree
     ///
     ///\param path SignalK fully qualified path

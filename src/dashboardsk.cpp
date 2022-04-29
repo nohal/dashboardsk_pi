@@ -60,6 +60,7 @@ void DashboardSK::ReadConfig(wxJSONValue& config)
         for (int i = 0; i < config["dashboards"].Size(); i++) {
             auto* d = new Dashboard(this);
             d->ReadConfig(config["dashboards"][i]);
+            d->SetColorScheme(m_color_scheme);
             m_dashboards.emplace_back(*d);
         }
     } else {
@@ -84,6 +85,8 @@ void DashboardSK::SetColorScheme(int cs)
         dashboard.SetColorScheme(cs);
     }
 }
+
+const int DashboardSK::GetColorScheme() { return m_color_scheme; }
 
 const wxJSONValue* DashboardSK::GetSKData(const wxString& path)
 {

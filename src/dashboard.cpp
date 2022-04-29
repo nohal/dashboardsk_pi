@@ -46,6 +46,15 @@ Dashboard::Dashboard()
 {
 }
 
+Dashboard::Dashboard(DashboardSK* parent)
+    : Dashboard()
+{
+    m_parent = parent;
+    if (parent) {
+        m_color_scheme = parent->GetColorScheme();
+    }
+}
+
 void Dashboard::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
 {
     if (!m_enabled || m_canvas_nr != canvasIndex) {
@@ -133,6 +142,8 @@ void Dashboard::SetColorScheme(int cs)
         m_instrument->SetColorScheme(cs);
     }
 }
+
+const int Dashboard::GetColorScheme() { return m_color_scheme; }
 
 void Dashboard::ReadConfig(wxJSONValue& config)
 {

@@ -33,6 +33,7 @@ Instrument::~Instrument()
 {
     if (m_parent_dashboard) {
         m_parent_dashboard->Unsubscribe(this);
+        m_color_scheme = m_parent_dashboard->GetColorScheme();
     }
 }
 
@@ -100,6 +101,12 @@ void Instrument::SetSetting(const wxString& key, const int& value)
     } else {
         m_config_vals[UNORDERED_KEY(key)] = wxString::Format("%i", value);
     }
+}
+
+void Instrument::SetColorScheme(int scheme)
+{
+    m_color_scheme = scheme;
+    m_needs_redraw = true;
 }
 
 wxBitmap Instrument::ScaleBitmap(

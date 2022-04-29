@@ -85,11 +85,7 @@ public:
     /// Constructor
     ///
     /// \param parent Parent plugin object
-    explicit Dashboard(DashboardSK* parent)
-        : Dashboard()
-    {
-        m_parent = parent;
-    };
+    explicit Dashboard(DashboardSK* parent);
 
     /// Set user specified name of the dashboard
     ///
@@ -100,6 +96,11 @@ public:
     ///
     /// \return The string representing the name of the dashboard
     wxString GetName() { return m_name; };
+
+    /// Does the dashboard contain any instruments?
+    ///
+    /// \return Tru if there is at least one instrument in the dashboard
+    bool HasInstruments() { return m_instruments.size() > 0; }
 
     /// Set the number of the canvas on which the dashboard is displayed
     ///
@@ -169,11 +170,16 @@ public:
     /// \param canvasIndex The chart canvas index
     void Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex);
 
-    /// Set the color scheme of all the dashboards
+    /// Set the color scheme of the dashboard
     ///
     /// \param cs Integer parameter specifying the color scheme (0 - RGB, 1 -
     /// DAY, 2 - DUSK, 3 - NIGHT)
     void SetColorScheme(int cs);
+
+    /// Get color scheme of the dashboard
+    ///
+    /// \return Color scheme index
+    const int GetColorScheme();
 
     /// Read the config from JSON objects
     ///
@@ -218,6 +224,7 @@ public:
     /// \param instrument Pointer to the added instrument
     void AddInstrument(Instrument* instrument)
     {
+        instrument->SetColorScheme(m_color_scheme);
         m_instruments.push_back(instrument);
     }
 

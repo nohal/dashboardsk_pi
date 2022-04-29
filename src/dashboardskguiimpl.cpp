@@ -96,6 +96,7 @@ MainConfigFrameImpl::MainConfigFrameImpl(dashboardsk_pi* dsk_pi,
     }
     FillInstrumentList();
     EnableItemsForSelectedDashboard();
+    DimeWindow(this);
 }
 
 void MainConfigFrameImpl::EnableItems(bool dashboard_selection, bool instr_list,
@@ -185,10 +186,18 @@ void MainConfigFrameImpl::EnableItems(bool dashboard_selection, bool instr_list,
 void MainConfigFrameImpl::EnableItemsForSelectedDashboard()
 {
     if (m_comboDashboard->GetSelection() != wxNOT_FOUND) {
-        bool has_instrs
-            = false; // TODO: Does it actually have instruments or not?
-        EnableItems(m_comboDashboard->GetCount() > 0, has_instrs, true, false);
+        m_edited_dashboard = m_dsk_pi->GetDSK()->GetDashboard(
+            m_comboDashboard->GetSelection());
+        EnableItems(m_comboDashboard->GetCount() > 0,
+            m_edited_dashboard->HasInstruments(), true, false);
+        if (m_edited_dashboard->HasInstruments() && !m_edited_instrument) {
+            m_lbInstruments->SetSelection(0);
+            m_edited_instrument = m_edited_dashboard->GetInstrument(0);
+            FillInstrumentDetails();
+        }
         m_bpAddButton
+            ->Enable(); // We can always add a new instrument to a dashboard
+        m_bpImportInstrButton
             ->Enable(); // We can always add a new instrument to a dashboard
         m_stInstruments->Enable();
         m_lbInstruments->Enable();
@@ -235,10 +244,19 @@ void MainConfigFrameImpl::m_btnRemoveDashboardOnButtonClick(
             m_dsk_pi->GetDSK()->DeleteDashboard(i);
             m_edited_instrument = nullptr;
             m_edited_dashboard = nullptr;
-            m_comboDashboard->SetSelection(
-                wxMin(i, m_comboDashboard->GetCount() - 1));
             FillInstrumentList();
             FillInstrumentDetails();
+            if (m_comboDashboard->GetCount() > 0) {
+                i = wxMin(i, m_comboDashboard->GetCount() - 1);
+                m_comboDashboard->SetSelection(i);
+                m_edited_dashboard = m_dsk_pi->GetDSK()->GetDashboard(i);
+                if (m_edited_dashboard->HasInstruments()) {
+                    FillInstrumentList();
+                    m_lbInstruments->SetSelection(0);
+                    m_edited_instrument = m_edited_dashboard->GetInstrument(0);
+                    FillInstrumentDetails();
+                }
+            }
             EnableItemsForSelectedDashboard();
         }
     });
@@ -792,6 +810,7 @@ SKDataTreeImpl::SKDataTreeImpl(wxWindow* parent)
     m_scintillaCode->StyleSetBackground(
         wxSTC_JSON_ESCAPESEQUENCE, GetBackgroundColour());
 #endif
+    DimeWindow(this);
 }
 
 void SKDataTreeImpl::SetCodeSKTree(DashboardSK* dsk)
@@ -810,6 +829,7 @@ SKPathBrowserImpl::SKPathBrowserImpl(wxWindow* parent, wxWindowID id,
     const wxString& title, const wxPoint& pos, const wxSize& size, long style)
     : SKPathBrowser(parent, id, title, pos, size, style)
 {
+    DimeWindow(this);
 }
 
 wxString SKPathBrowserImpl::GetSKPath()
@@ -868,6 +888,7 @@ wxIMPLEMENT_DYNAMIC_CLASS_XTI(SKKeyCtrlImpl, wxPanel, "dashboardsdguiimpl.h")
 {
     m_tSKKey->SetValue(value);
     m_sk_tree = nullptr;
+    DimeWindow(this);
 }
 
 wxString SKKeyCtrlImpl::GetValue() const { return m_tSKKey->GetValue(); }
@@ -974,6 +995,7 @@ ZonesConfigDialogImpl::ZonesConfigDialogImpl(wxWindow* parent,
     }
     FillZoneControls();
     EnableControls();
+    DimeWindow(this);
 }
 
 vector<Zone> ZonesConfigDialogImpl::GetZones() { return m_zones; }
