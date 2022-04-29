@@ -576,6 +576,28 @@ void MainConfigFrameImpl::m_sdbSizerOnCancelButtonClick(wxCommandEvent& event)
     event.Skip();
 }
 
+void MainConfigFrameImpl::m_btnCfgEditOnButtonClick(wxCommandEvent& event)
+{
+    wxWindowPtr<SKDataTreeImpl> dlg(new SKDataTreeImpl(this));
+    wxString s;
+    wxJSONWriter w;
+    w.Write(m_dsk_pi->GetDSK()->GenerateJSONConfig(), s);
+    dlg->SetCodeConfig(s);
+    dlg->ShowWindowModalThenDo([this, dlg](int retcode) {
+        if (retcode == wxID_OK) {
+            wxJSONReader r;
+            wxJSONValue v;
+            r.Parse(dlg->GetValue(), &v);
+            m_dsk_pi->GetDSK()->ReadConfig(v);
+            // TODO: The above is VERY fragile, we should add as many checks as
+            // possible both hee and to the editing form before screwing up the
+            // configuration (Although on Cancel click we load the old one,
+            // which is not broken, so we are not a complete disaster)
+        }
+    });
+    event.Skip();
+}
+
 void MainConfigFrameImpl::UpdateEditedInstrument()
 {
     if (!m_edited_instrument) {
@@ -809,6 +831,7 @@ SKDataTreeImpl::SKDataTreeImpl(wxWindow* parent)
         wxSTC_JSON_ESCAPESEQUENCE, GetForegroundColour());
     m_scintillaCode->StyleSetBackground(
         wxSTC_JSON_ESCAPESEQUENCE, GetBackgroundColour());
+    m_scintillaCode->SetCaretForeground(GetForegroundColour());
 #endif
     DimeWindow(this);
 }

@@ -40,7 +40,9 @@ MainConfigFrame::MainConfigFrame(wxWindow* parent, wxWindowID id,
     fgSizerDashboards->Add(
         m_tSelf, 0, wxALIGN_CENTER_VERTICAL | wxALL | wxEXPAND, 5);
 
-    fgSizerDashboards->Add(0, 0, 1, wxEXPAND, 5);
+    m_btnCfgEdit = new wxButton(
+        this, wxID_ANY, _("Cfg Edit"), wxDefaultPosition, wxDefaultSize, 0);
+    fgSizerDashboards->Add(m_btnCfgEdit, 0, wxALL, 5);
 
     m_btnSignalK = new wxButton(
         this, wxID_ANY, _("SignalK"), wxDefaultPosition, wxDefaultSize, 0);
@@ -321,6 +323,9 @@ MainConfigFrame::MainConfigFrame(wxWindow* parent, wxWindowID id,
     this->Centre(wxBOTH);
 
     // Connect Events
+    m_btnCfgEdit->Connect(wxEVT_COMMAND_BUTTON_CLICKED,
+        wxCommandEventHandler(MainConfigFrame::m_btnCfgEditOnButtonClick), NULL,
+        this);
     m_btnSignalK->Connect(wxEVT_COMMAND_BUTTON_CLICKED,
         wxCommandEventHandler(MainConfigFrame::m_btnSignalKOnButtonClick), NULL,
         this);
@@ -385,6 +390,9 @@ MainConfigFrame::MainConfigFrame(wxWindow* parent, wxWindowID id,
 MainConfigFrame::~MainConfigFrame()
 {
     // Disconnect Events
+    m_btnCfgEdit->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED,
+        wxCommandEventHandler(MainConfigFrame::m_btnCfgEditOnButtonClick), NULL,
+        this);
     m_btnSignalK->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED,
         wxCommandEventHandler(MainConfigFrame::m_btnSignalKOnButtonClick), NULL,
         this);

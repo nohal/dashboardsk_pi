@@ -32,7 +32,7 @@
 #include "instrument.h"
 #include "pi_common.h"
 
-#define BMP_SZ 16 // Size of the bitmap fo wxBitmapButton
+#define BMP_SZ 16 // Size of the bitmap for wxBitmapButton
 
 PLUGIN_BEGIN_NAMESPACE
 
@@ -220,6 +220,11 @@ protected:
     ///
     /// \param event The event object reference
     virtual void m_sdbSizerOnOKButtonClick(wxCommandEvent& event);
+
+    /// Event handler for configurarion JSON editor
+    ///
+    /// \param item The event object reference
+    virtual void m_btnCfgEditOnButtonClick(wxCommandEvent& event);
 };
 
 /// Implementation of the form displaying JSON documents
@@ -243,8 +248,13 @@ public:
     /// Fill the form with configuration file
     void SetCodeConfig(const wxString& config)
     {
+        m_scintillaCode->SetReadOnly(false);
+        m_scintillaCode->SetText(config);
+        m_scintillaCode->SetSTCCursor(wxSTC_CURSORNORMAL);
         m_sdbSizerBtnsCancel->Show();
-    }; // TODO: For configuration JSON editing
+    };
+
+    const wxString GetValue() { return m_scintillaCode->GetText(); }
 };
 
 /// Implementation of the widget for editing SignalK path in a textbox or

@@ -45,6 +45,7 @@ private:
 protected:
     wxStaticText* m_stSelf;
     wxTextCtrl* m_tSelf;
+    wxButton* m_btnCfgEdit;
     wxButton* m_btnSignalK;
     wxStaticText* m_stDashboard;
     wxChoice* m_comboDashboard;
@@ -89,6 +90,10 @@ protected:
     wxButton* m_sdbSizerCancel;
 
     // Virtual event handlers, override them in your derived class
+    virtual void m_btnCfgEditOnButtonClick(wxCommandEvent& event)
+    {
+        event.Skip();
+    }
     virtual void m_btnSignalKOnButtonClick(wxCommandEvent& event)
     {
         event.Skip();
