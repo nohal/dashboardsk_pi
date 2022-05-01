@@ -61,15 +61,15 @@ TEST_CASE("SimpleNumberInstrument Configuration Storage - if JSON not "
     v = i.GenerateJSONConfig();
     w.Write(v, out);
 
-    REQUIRE(v[DSK_SNI_SK_KEY].AsString().IsSameAs(
+    REQUIRE(v[DSK_SETTING_SK_KEY].AsString().IsSameAs(
         "vessels.123456789.navigation.test"));
-    REQUIRE(v[DSK_SNI_TITLE_BG].AsString().StartsWith("#"));
-    REQUIRE(v[DSK_SNI_TITLE_FG].AsString().StartsWith("#"));
-    REQUIRE(v[DSK_SNI_BODY_BG].AsString().StartsWith("#"));
-    REQUIRE(v[DSK_SNI_BODY_FG].AsString().StartsWith("#"));
-    REQUIRE(v[DSK_SNI_BORDER_COLOR].AsString().StartsWith("#"));
-    REQUIRE(v[DSK_SNI_BODY_FONT].AsInt() > 1);
-    REQUIRE(v[DSK_SNI_BODY_FONT].AsInt() < 40);
-    REQUIRE(v[DSK_SNI_TITLE_FONT].AsInt() > 1);
-    REQUIRE(v[DSK_SNI_TITLE_FONT].AsInt() < 30);
+    REQUIRE(v[DSK_SETTING_TITLE_BG].AsString().StartsWith("#"));
+    REQUIRE(v[DSK_SETTING_TITLE_FG].AsString().StartsWith("#"));
+    REQUIRE(v[DSK_SETTING_BODY_BG].AsString().StartsWith("#"));
+    REQUIRE(v[DSK_SETTING_BODY_FG].AsString().StartsWith("#"));
+    REQUIRE(v[DSK_SETTING_BORDER_COLOR].AsString().StartsWith("#"));
+    REQUIRE(v[DSK_SETTING_BODY_FONT].AsInt() > 1);
+    REQUIRE(v[DSK_SETTING_BODY_FONT].AsInt() < 40);
+    REQUIRE(v[DSK_SETTING_TITLE_FONT].AsInt() > 1);
+    REQUIRE(v[DSK_SETTING_TITLE_FONT].AsInt() < 30);
 }

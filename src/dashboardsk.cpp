@@ -252,4 +252,11 @@ wxString DashboardSK::GetSignalKTreeText()
 
 wxJSONValue* DashboardSK::GetSignalKTree() { return &m_sk_data; }
 
+const wxString DashboardSK::SelfTranslate(const wxString path)
+{
+    wxString new_path = path;
+    new_path.Replace(Self(), "self");
+    return new_path;
+}
+
 PLUGIN_END_NAMESPACE

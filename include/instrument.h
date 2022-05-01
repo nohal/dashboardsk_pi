@@ -41,8 +41,64 @@ PLUGIN_BEGIN_NAMESPACE
 #define LUMIMOSITY_NIGHT (-0.8)
 #define LUMIMOSITY_DUSK (-0.5)
 
-// TODO: Rename the macro without SNI amd add the other "general" setting names
-#define DSK_SNI_ZONES "zones"
+// TODO: Add the other "general" setting names like DSK_SNI_TRANSFORMATION
+#define DSK_SETTING_ZONES "zones"
+#define DSK_SETTING_SK_KEY "sk_key"
+#define DSK_SETTING_FORMAT "format"
+#define DSK_SETTING_TRANSFORMATION "transformation"
+#define DSK_SETTING_SMOOTHING "smoothing"
+#define DSK_SETTING_TITLE_FONT "title_font"
+#define DSK_SETTING_BODY_FONT "body_font"
+#define DSK_SETTING_TITLE_BG "title_background"
+#define DSK_SETTING_TITLE_FG "title_color"
+#define DSK_SETTING_BODY_BG "body_background"
+#define DSK_SETTING_BODY_FG "body_color"
+#define DSK_SETTING_NOMINAL_BG "nominal_background"
+#define DSK_SETTING_NOMINAL_FG "nominal_color"
+#define DSK_SETTING_NORMAL_BG "normal_background"
+#define DSK_SETTING_NORMAL_FG "normal_color"
+#define DSK_SETTING_ALERT_BG "alert_background"
+#define DSK_SETTING_ALERT_FG "alert_color"
+#define DSK_SETTING_WARN_BG "warn_background"
+#define DSK_SETTING_WARN_FG "warn_color"
+#define DSK_SETTING_ALRM_BG "alarm_background"
+#define DSK_SETTING_ALRM_FG "alarm_color"
+#define DSK_SETTING_EMERG_BG "emergency_background"
+#define DSK_SETTING_EMERG_FG "emergency_color"
+#define DSK_SETTING_BORDER_COLOR "border_color"
+#define DSK_SETTING_INSTR_SIZE "instrument_size"
+
+// Table of transformations to be shown in the GUI
+#define DSK_UNIT_TRANSFORMATIONS                                               \
+    X(Instrument::transformation::none, _("None"))                             \
+    X(Instrument::transformation::rad2deg, _("RAD->DEG"))                      \
+    X(Instrument::transformation::ms2kn, _("m/s -> kn"))                       \
+    X(Instrument::transformation::ms2kmh, _("m/s -> km/h"))                    \
+    X(Instrument::transformation::ms2mih, _("m/s -> mph"))                     \
+    X(Instrument::transformation::m2ft, _("m -> feet"))                        \
+    X(Instrument::transformation::m2fm, _("m -> fathoms"))                     \
+    X(Instrument::transformation::m2nm, _("m -> NMi"))                         \
+    X(Instrument::transformation::degk2degc, _("\u00B0K -> \u00B0C"))          \
+    X(Instrument::transformation::degk2degf, _("\u00B0K -> \u00B0F"))          \
+    X(Instrument::transformation::ratio2perc, _("ratio -> %"))                 \
+    X(Instrument::transformation::pa2hpa, _("Pa -> hPa"))                      \
+    X(Instrument::transformation::pa2kpa, _("Pa -> kPa"))                      \
+    X(Instrument::transformation::pa2mpa, _("Pa -> MPa"))                      \
+    X(Instrument::transformation::pa2atm, _("Pa -> atm"))                      \
+    X(Instrument::transformation::pa2atm, _("Pa -> mmHg"))                     \
+    X(Instrument::transformation::pa2psi, _("Pa -> psi"))
+
+// Table of supported formats and the respective formatting strings
+#define DSK_VALUE_FORMATS                                                      \
+    X(0, "9.9", "%.1f")                                                        \
+    X(1, "9.99", "%.2f")                                                       \
+    X(2, "9.999", "%.3f")                                                      \
+    X(3, "9", "%.0f")                                                          \
+    X(4, "009", "%03.0f")                                                      \
+    X(5, "009.9", "%05.1f")                                                    \
+    X(6, "09.9", "%04.1f")                                                     \
+    X(7, "09.99", "%05.2f")                                                    \
+    X(8, "009.99", "%06.2f")
 
 /// Key-value pair unordered map for instrument configuration parameters
 #if wxCHECK_VERSION(3, 1, 0)
@@ -90,6 +146,45 @@ class Dashboard;
 
 /// Abstract parent class for all the instruments
 class Instrument {
+public:
+    /// Supported basic value transformations
+    /// New transformations to be added to DSK_BASIC_TRANSFORMATIONS macro and
+    /// implemented in #Instrument::Transform
+    enum class transformation {
+        none = 0,
+        /// Radians to degrees
+        rad2deg,
+        /// meters/second to knots
+        ms2kn,
+        /// meters/second to km/h
+        ms2kmh,
+        /// meters/second to miles per hour
+        ms2mph,
+        /// meters to feet
+        m2ft,
+        /// meters to fathoms
+        m2fm,
+        /// meters to nautical miles
+        m2nm,
+        /// Kelvin to Celsius
+        degk2degc,
+        /// Kelvin to Fahrenheit
+        degk2degf,
+        /// Ratio to percent
+        ratio2perc,
+        /// Pascal to hectopascal
+        pa2hpa,
+        /// Pascal to kilopascal
+        pa2kpa,
+        /// Pascal to megapascal
+        pa2mpa,
+        /// Pascal to atmosphere
+        pa2atm,
+        /// Pascal to mmHg
+        pa2mmhg,
+        /// Pascal to psi
+        pa2psi
+    };
 
 protected:
     /// User defined name of the instrument
@@ -135,6 +230,21 @@ protected:
     /// \return Version of the color adjusted to the current color scheme
     wxColor GetDimedColor(const wxColor& c) const;
 
+    /// Returns color corresponding to the provided value adjusted according to
+    /// the zone ot which the value falls. In case of overlapping zones the one
+    /// with highest severity takes precedence \param val The value to be
+    /// displayed \param nominal_color Color corresponding to nominal value (Not
+    /// in any zone) \param normal_color Color corresponding to normal value
+    /// \param alert_color Color corresponding to an alert
+    /// \param warn_color Color corresponding to a warning
+    /// \param alert_color Color corresponding to an alarm
+    /// \param emergency_color Color corresponding to an emergency
+    /// \return Color
+    const wxColor AdjustColorForZone(const double& val,
+        const wxColor& nominal_color, const wxColor& normal_color,
+        const wxColor& alert_color, const wxColor& warn_color,
+        const wxColor& alarm_color, const wxColor& emergency_color);
+
     Instrument()
         : m_name(wxEmptyString)
         , m_title(wxEmptyString)
@@ -159,6 +269,12 @@ protected:
     /// \return Scaled version of the bitmap
     static wxBitmap ScaleBitmap(
         wxBitmap& bmpIn, double scale, bool antialiasing);
+
+    /// Return semicolon separated supported items for the GUI
+    ///
+    /// \ param arr wxArrayString of values to concatenate
+    /// \return All format strings separated by semicolons
+    const wxString ConcatChoiceStrings(wxArrayString arr);
 
 public:
     /// Constructor
@@ -245,11 +361,7 @@ public:
     ///
     /// \param scale Double variable representing the scale (1.0 = 100%)
     /// \return Scaled bitmap
-    virtual wxBitmap Render(double scale)
-    {
-        m_new_data = false;
-        return wxNullBitmap;
-    };
+    virtual wxBitmap Render(double scale);
 
     /// Set color schema, the instrument should respect the application wide
     /// color schema and dime it's output accordingly
@@ -282,91 +394,40 @@ public:
     ///
     /// \param color String version of the color
     /// \return wxColor created from the string
-    static const wxColor ColorFromString(const wxString& color)
-    {
-        wxColor clr;
-        clr.Set(color);
-        return clr;
-    };
+    static const wxColor ColorFromString(const wxString& color);
 
     /// Get integer from a string numerical
     /// \param str String numerical
     /// \return Integer conversion of the string (0 if the conversion was
     /// unsuccessful)
-    static const int IntFromString(const wxString& str)
-    {
-        int i;
-#if (wxCHECK_VERSION(3, 1, 6))
-        if (str.ToInt(&i)) {
-            return i;
-        }
-#else
-        return wxAtoi(str);
-#endif
-        return 0;
-    };
+    static const int IntFromString(const wxString& str);
 
     /// Get double from a string numerical
     /// \param str String numerical
     /// \return Double conversion of the string (0.0 if the conversion was
     /// unsuccessful)
-    static const double DoubleFromString(const wxString& str)
-    {
-        double i;
-        if (str.ToDouble(&i)) {
-            return i;
-        }
-        return 0.0;
-    };
+    static const double DoubleFromString(const wxString& str);
 
     /// Get a string representation of a configuration parameter of the
     /// instrument
     ///
     /// \param key Identification key of the parameter
     /// \return Value of the parameter as string
-    virtual wxString GetStringSetting(const wxString& key)
-    {
-        if (key.IsSameAs(DSK_SNI_ZONES)) {
-            return Zone::ZonesToString(m_zones);
-        }
-        if (m_config_vals.find(UNORDERED_KEY(key)) != m_config_vals.end()) {
-            return m_config_vals[UNORDERED_KEY(key)];
-        }
-        return wxEmptyString;
-    };
+    virtual wxString GetStringSetting(const wxString& key);
 
     /// Get an integer representation of a configuration parameter of the
     /// instrument
     ///
     /// \param key Identification key of the parameter
     /// \return Value of the parameter as integer
-    virtual int GetIntSetting(const wxString& key)
-    {
-        int i = 0;
-        if (m_config_vals.find(UNORDERED_KEY(key)) != m_config_vals.end()) {
-#if (wxCHECK_VERSION(3, 1, 6))
-            m_config_vals[UNORDERED_KEY(key)].ToInt(&i);
-#else
-            i = wxAtoi(m_config_vals[UNORDERED_KEY(key)]);
-#endif
-        }
-        return i;
-    };
+    virtual int GetIntSetting(const wxString& key);
 
     /// Get a string representation of a configuration parameter of the
     /// instrument
     ///
     /// \param key Identification key of the parameter
     /// \return Value of the parameter as string
-    virtual wxColor GetColorSetting(const wxString& key)
-    {
-        if (m_config_vals.find(UNORDERED_KEY(key)) != m_config_vals.end()) {
-            wxColor col;
-            wxFromString(m_config_vals[UNORDERED_KEY(key)], &col);
-            return col;
-        }
-        return *wxCYAN;
-    };
+    virtual wxColor GetColorSetting(const wxString& key);
 
     /// Set a string representation of a configuration parameter of the
     /// instrument
@@ -389,6 +450,16 @@ public:
 
     /// Force redraw of the instrument on the next overlay refresh
     void ForceRedraw() { m_needs_redraw = true; };
+
+    /// Transform the value using function implemented for the value of
+    /// #m_transformation. Every transformation defined in
+    /// #Instrument::transformation and DSK_UNIT_TRANSFORMATIONS
+    /// macro has to be covered here.
+    ///
+    /// \param val Double value to be transformed
+    /// \param formula The transformation formula to be used
+    /// \return Transformed value
+    static double Transform(const double& val, const transformation& formula);
 };
 
 PLUGIN_END_NAMESPACE

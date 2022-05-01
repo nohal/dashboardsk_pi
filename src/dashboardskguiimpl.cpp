@@ -590,7 +590,7 @@ void MainConfigFrameImpl::m_btnCfgEditOnButtonClick(wxCommandEvent& event)
             r.Parse(dlg->GetValue(), &v);
             m_dsk_pi->GetDSK()->ReadConfig(v);
             // TODO: The above is VERY fragile, we should add as many checks as
-            // possible both hee and to the editing form before screwing up the
+            // possible both here and to the editing form before screwing up the
             // configuration (Although on Cancel click we load the old one,
             // which is not broken, so we are not a complete disaster)
         }

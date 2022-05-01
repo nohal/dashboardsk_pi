@@ -60,7 +60,7 @@ void Instrument::ReadConfig(wxJSONValue& config)
     m_name = config["name"].AsString();
     m_title = config["title"].AsString();
     m_allowed_age_sec = config["allowed_age"].AsInt();
-    m_zones = Zone::ParseZonesFromString(config[DSK_SNI_ZONES].AsString());
+    m_zones = Zone::ParseZonesFromString(config[DSK_SETTING_ZONES].AsString());
 }
 
 wxJSONValue Instrument::GenerateJSONConfig()
@@ -70,7 +70,7 @@ wxJSONValue Instrument::GenerateJSONConfig()
     v["title"] = m_title;
     v["class"] = GetClass();
     v["allowed_age"] = m_allowed_age_sec;
-    v[DSK_SNI_ZONES] = Zone::ZonesToString(m_zones);
+    v[DSK_SETTING_ZONES] = Zone::ZonesToString(m_zones);
     return v;
 }
 
@@ -82,7 +82,7 @@ void Instrument::SetSetting(const wxString& key, const wxString& value)
         m_title = value;
     } else if (key == "allowed_age") {
         m_allowed_age_sec = IntFromString(value);
-    } else if (key == DSK_SNI_ZONES) {
+    } else if (key == DSK_SETTING_ZONES) {
         m_zones = Zone::ParseZonesFromString(value);
     } else {
         m_config_vals[UNORDERED_KEY(key)] = value;
@@ -132,6 +132,164 @@ wxBitmap Instrument::ScaleBitmap(
     }
     inDC.SelectObject(wxNullBitmap);
     return bmpOut;
+}
+
+const wxColor Instrument::AdjustColorForZone(const double& val,
+    const wxColor& nominal_color, const wxColor& normal_color,
+    const wxColor& alert_color, const wxColor& warn_color,
+    const wxColor& alarm_color, const wxColor& emergency_color)
+{
+    wxColor c = nominal_color;
+    Zone::state high_state = Zone::state::nominal;
+    for (auto zone : m_zones) {
+        if (high_state < Zone::state::emergency && val >= zone.GetLowerLimit()
+            && val <= zone.GetUpperLimit() && high_state < zone.GetState()) {
+            high_state = zone.GetState();
+            switch (high_state) {
+            case Zone::state::normal:
+                c = normal_color;
+                break;
+            case Zone::state::alert:
+                c = alert_color;
+                break;
+            case Zone::state::warn:
+                c = warn_color;
+                break;
+            case Zone::state::alarm:
+                c = alarm_color;
+                break;
+            case Zone::state::emergency:
+                c = emergency_color;
+                break;
+            default:
+                c = nominal_color;
+            }
+        }
+    }
+    return c;
+}
+
+wxBitmap Instrument::Render(double scale)
+{
+    m_new_data = false;
+    return wxNullBitmap;
+}
+
+const wxColor Instrument::ColorFromString(const wxString& color)
+{
+    wxColor clr;
+    clr.Set(color);
+    return clr;
+}
+
+const int Instrument::IntFromString(const wxString& str)
+{
+    int i;
+#if (wxCHECK_VERSION(3, 1, 6))
+    if (str.ToInt(&i)) {
+        return i;
+    }
+#else
+    return wxAtoi(str);
+#endif
+    return 0;
+}
+
+const double Instrument::DoubleFromString(const wxString& str)
+{
+    double i;
+    if (str.ToDouble(&i)) {
+        return i;
+    }
+    return 0.0;
+}
+
+wxString Instrument::GetStringSetting(const wxString& key)
+{
+    if (key.IsSameAs(DSK_SETTING_ZONES)) {
+        return Zone::ZonesToString(m_zones);
+    }
+    if (m_config_vals.find(UNORDERED_KEY(key)) != m_config_vals.end()) {
+        return m_config_vals[UNORDERED_KEY(key)];
+    }
+    return wxEmptyString;
+}
+
+int Instrument::GetIntSetting(const wxString& key)
+{
+    int i = 0;
+    if (m_config_vals.find(UNORDERED_KEY(key)) != m_config_vals.end()) {
+#if (wxCHECK_VERSION(3, 1, 6))
+        m_config_vals[UNORDERED_KEY(key)].ToInt(&i);
+#else
+        i = wxAtoi(m_config_vals[UNORDERED_KEY(key)]);
+#endif
+    }
+    return i;
+}
+
+wxColor Instrument::GetColorSetting(const wxString& key)
+{
+    if (m_config_vals.find(UNORDERED_KEY(key)) != m_config_vals.end()) {
+        wxColor col;
+        wxFromString(m_config_vals[UNORDERED_KEY(key)], &col);
+        return col;
+    }
+    return *wxCYAN;
+}
+
+double Instrument::Transform(const double& val, const transformation& formula)
+{
+    switch (formula) {
+    case transformation::none:
+        return val;
+    case transformation::rad2deg:
+        return rad2deg(val);
+    case transformation::ms2kn:
+        return 1.943844 * val;
+    case transformation::ms2kmh:
+        return 3.6 * val;
+    case transformation::ms2mph:
+        return 2.236936 * val;
+    case transformation::m2ft:
+        return 3.28084 * val;
+    case transformation::m2fm:
+        return 0.546807 * val;
+    case transformation::m2nm:
+        return val / 1852;
+    case transformation::degk2degc:
+        return val - 273.15;
+    case transformation::degk2degf:
+        return val * 1.8 - 459.67;
+    case transformation::ratio2perc:
+        return val * 100;
+    case transformation::pa2hpa:
+        return val / 100;
+    case transformation::pa2kpa:
+        return val / 1000;
+    case transformation::pa2mpa:
+        return val / 1000000;
+    case transformation::pa2atm:
+        return val / 101325;
+    case transformation::pa2mmhg:
+        return val / 133.3223684;
+    case transformation::pa2psi:
+        return val / 6894.757;
+    default:
+        return val;
+    }
+}
+
+const wxString Instrument::ConcatChoiceStrings(wxArrayString arr)
+{
+    wxString s = wxEmptyString;
+    for (auto str : arr) {
+        if (!s.IsEmpty()) {
+            s.Append(";");
+        }
+        s.Append(str);
+    }
+    return s;
 }
 
 PLUGIN_END_NAMESPACE

@@ -36,16 +36,16 @@ void SimpleNumberInstrument::Init()
     // Define formatting and transformation data to be shared between settings
     // GUI and instrument logic (We need it to be consistent)
 #define X(a, b, c) m_supported_formats.Add(b);
-    DSK_SNI_FORMATS
+    DSK_VALUE_FORMATS
 #undef X
 #define X(a, b, c) m_format_strings.Add(c);
-    DSK_SNI_FORMATS
+    DSK_VALUE_FORMATS
 #undef X
 #define X(a, b) m_supported_transforms.Add(b);
-    DSK_SNI_TRANSFORMATIONS
+    DSK_UNIT_TRANSFORMATIONS
 #undef X
 
-    // Basic settings inherited from Instrument classs
+    // Basic settings inherited from Instrument class
     m_title = "???";
     m_name = _("New Simple Number");
     m_sk_key = wxEmptyString;
@@ -74,16 +74,17 @@ void SimpleNumberInstrument::SetSetting(
     const wxString& key, const wxString& value)
 {
     Instrument::SetSetting(key, value);
-    if (key == DSK_SNI_SK_KEY && !m_sk_key.IsSameAs(value)) {
+    if (key == DSK_SETTING_SK_KEY && !m_sk_key.IsSameAs(value)) {
         m_sk_key = wxString(value);
         if (m_parent_dashboard) {
             m_parent_dashboard->Unsubscribe(this);
             m_parent_dashboard->Subscribe(m_sk_key, this);
         }
-    } else if (key.IsSameAs(DSK_SNI_FORMAT)
-        || key.IsSameAs(DSK_SNI_TRANSFORMATION)
-        || key.IsSameAs(DSK_SNI_SMOOTHING) || key.IsSameAs(DSK_SNI_BODY_FONT)
-        || key.IsSameAs(DSK_SNI_TITLE_FONT)) {
+    } else if (key.IsSameAs(DSK_SETTING_FORMAT)
+        || key.IsSameAs(DSK_SETTING_TRANSFORMATION)
+        || key.IsSameAs(DSK_SETTING_SMOOTHING)
+        || key.IsSameAs(DSK_SETTING_BODY_FONT)
+        || key.IsSameAs(DSK_SETTING_TITLE_FONT)) {
         // TODO: The above manually maintained list should be replaced with
         // something using the information from the DSK_SNI_SETTINGS macro
         int i = 0;
@@ -99,15 +100,15 @@ void SimpleNumberInstrument::SetSetting(
 void SimpleNumberInstrument::SetSetting(const wxString& key, const int& value)
 {
     Instrument::SetSetting(key, value);
-    if (key.IsSameAs(DSK_SNI_FORMAT)) {
+    if (key.IsSameAs(DSK_SETTING_FORMAT)) {
         m_format_index = value;
-    } else if (key.IsSameAs(DSK_SNI_TRANSFORMATION)) {
+    } else if (key.IsSameAs(DSK_SETTING_TRANSFORMATION)) {
         m_transformation = static_cast<transformation>(value);
-    } else if (key.IsSameAs(DSK_SNI_TITLE_FONT)) {
+    } else if (key.IsSameAs(DSK_SETTING_TITLE_FONT)) {
         m_title_font.SetPointSize(value);
-    } else if (key.IsSameAs(DSK_SNI_BODY_FONT)) {
+    } else if (key.IsSameAs(DSK_SETTING_BODY_FONT)) {
         m_body_font.SetPointSize(value);
-    } else if (key.IsSameAs(DSK_SNI_SMOOTHING)) {
+    } else if (key.IsSameAs(DSK_SETTING_SMOOTHING)) {
         m_smoothing = value;
     }
 }
@@ -115,15 +116,15 @@ void SimpleNumberInstrument::SetSetting(const wxString& key, const int& value)
 wxBitmap SimpleNumberInstrument::Render(double scale)
 {
     wxString value;
-    wxColor ctb = GetDimedColor(GetColorSetting(DSK_SNI_TITLE_BG));
-    wxColor ctf = GetDimedColor(GetColorSetting(DSK_SNI_TITLE_FG));
-    wxColor cbb = GetDimedColor(GetColorSetting(DSK_SNI_BODY_BG));
-    wxColor cbf = GetDimedColor(GetColorSetting(DSK_SNI_BODY_FG));
-    wxColor cb = GetDimedColor(GetColorSetting(DSK_SNI_BORDER_COLOR));
+    wxColor ctb = GetDimedColor(GetColorSetting(DSK_SETTING_TITLE_BG));
+    wxColor ctf = GetDimedColor(GetColorSetting(DSK_SETTING_TITLE_FG));
+    wxColor cbb = GetDimedColor(GetColorSetting(DSK_SETTING_BODY_BG));
+    wxColor cbf = GetDimedColor(GetColorSetting(DSK_SETTING_BODY_FG));
+    wxColor cb = GetDimedColor(GetColorSetting(DSK_SETTING_BORDER_COLOR));
     if (!m_new_data) {
         value = "-----";
-        cbb = GetDimedColor(GetColorSetting(DSK_SNI_BODY_BG));
-        cbf = GetDimedColor(GetColorSetting(DSK_SNI_BODY_FG));
+        cbb = GetDimedColor(GetColorSetting(DSK_SETTING_BODY_BG));
+        cbf = GetDimedColor(GetColorSetting(DSK_SETTING_BODY_FG));
         if (!m_timed_out
             && (m_allowed_age_sec > 0
                 && (m_last_change.IsValid()
@@ -131,8 +132,8 @@ wxBitmap SimpleNumberInstrument::Render(double scale)
                         m_last_change, wxTimeSpan(m_allowed_age_sec))))) {
             m_needs_redraw = true;
             m_timed_out = true;
-            cbb = GetDimedColor(GetColorSetting(DSK_SNI_ALERT_BG));
-            cbf = GetDimedColor(GetColorSetting(DSK_SNI_ALERT_FG));
+            cbb = GetDimedColor(GetColorSetting(DSK_SETTING_ALERT_BG));
+            cbf = GetDimedColor(GetColorSetting(DSK_SETTING_ALERT_FG));
         }
     } else {
         m_new_data = false;
@@ -145,8 +146,8 @@ wxBitmap SimpleNumberInstrument::Render(double scale)
             if (m_format_index >= m_format_strings.GetCount()) {
                 value = wxString::Format(
                     "E: format", m_format_index, m_format_strings.GetCount());
-                cbb = GetDimedColor(GetColorSetting(DSK_SNI_ALERT_BG));
-                cbf = GetDimedColor(GetColorSetting(DSK_SNI_ALERT_FG));
+                cbb = GetDimedColor(GetColorSetting(DSK_SETTING_ALERT_BG));
+                cbf = GetDimedColor(GetColorSetting(DSK_SETTING_ALERT_FG));
             } else {
                 double dval = Transform(v.AsDouble());
                 if (m_old_value > std::numeric_limits<double>::lowest()) {
@@ -169,8 +170,8 @@ wxBitmap SimpleNumberInstrument::Render(double scale)
             }
         } else {
             value = _("Error!");
-            cbb = GetDimedColor(GetColorSetting(DSK_SNI_ALERT_BG));
-            cbf = GetDimedColor(GetColorSetting(DSK_SNI_ALERT_FG));
+            cbb = GetDimedColor(GetColorSetting(DSK_SETTING_ALERT_BG));
+            cbf = GetDimedColor(GetColorSetting(DSK_SETTING_ALERT_FG));
         }
     }
 
@@ -236,7 +237,7 @@ wxJSONValue SimpleNumberInstrument::GenerateJSONConfig()
     wxJSONValue v = Instrument::GenerateJSONConfig();
     // my own parameters
 #define X(a, b, c, d, e, f, g, h)                                              \
-    if (!wxString(b).IsSameAs(DSK_SNI_ZONES)) {                                \
+    if (!wxString(b).IsSameAs(DSK_SETTING_ZONES)) {                            \
         v[b] = h(b);                                                           \
     }
     DSK_SNI_SETTINGS
@@ -246,26 +247,56 @@ wxJSONValue SimpleNumberInstrument::GenerateJSONConfig()
 
 double SimpleNumberInstrument::Transform(const double& val)
 {
-    switch (m_transformation) {
-    case transformation::none:
-        return val;
-    case transformation::rad2deg:
-        return rad2deg(val);
-    case transformation::ms2kn:
-        return 1.943844 * val;
-    case transformation::ms2kmh:
-        return 3.6 * val;
-    case transformation::ms2mph:
-        return 2.236936 * val;
-    case transformation::m2ft:
-        return 3.28084 * val;
-    case transformation::m2fm:
-        return 0.546807 * val;
-    case transformation::m2nm:
-        return val / 1852;
-    default:
-        return val;
+    return Instrument::Transform(val, m_transformation);
+}
+
+const wxColor SimpleNumberInstrument::GetColor(
+    const double& val, const color_item item)
+{
+    wxColor c;
+    switch (item) {
+    case color_item::title_bg:
+        c = AdjustColorForZone(val, GetColorSetting(DSK_SETTING_TITLE_BG),
+            GetColorSetting(DSK_SETTING_TITLE_BG),
+            GetColorSetting(DSK_SETTING_TITLE_BG),
+            GetColorSetting(DSK_SETTING_TITLE_BG),
+            GetColorSetting(DSK_SETTING_TITLE_BG),
+            GetColorSetting(DSK_SETTING_TITLE_BG));
+        break;
+    case color_item::title_fg:
+        c = AdjustColorForZone(val, GetColorSetting(DSK_SETTING_TITLE_FG),
+            GetColorSetting(DSK_SETTING_TITLE_FG),
+            GetColorSetting(DSK_SETTING_TITLE_FG),
+            GetColorSetting(DSK_SETTING_TITLE_FG),
+            GetColorSetting(DSK_SETTING_TITLE_FG),
+            GetColorSetting(DSK_SETTING_TITLE_FG));
+        break;
+    case color_item::body_bg:
+        c = AdjustColorForZone(val, GetColorSetting(DSK_SETTING_BODY_BG),
+            GetColorSetting(DSK_SETTING_BODY_BG),
+            GetColorSetting(DSK_SETTING_ALERT_BG),
+            GetColorSetting(DSK_SETTING_WARN_BG),
+            GetColorSetting(DSK_SETTING_ALRM_BG),
+            GetColorSetting(DSK_SETTING_EMERG_BG));
+        break;
+    case color_item::body_fg:
+        c = AdjustColorForZone(val, GetColorSetting(DSK_SETTING_BODY_FG),
+            GetColorSetting(DSK_SETTING_BODY_FG),
+            GetColorSetting(DSK_SETTING_ALERT_FG),
+            GetColorSetting(DSK_SETTING_WARN_FG),
+            GetColorSetting(DSK_SETTING_ALRM_FG),
+            GetColorSetting(DSK_SETTING_EMERG_FG));
+        break;
+    case color_item::border:
+        c = AdjustColorForZone(val, GetColorSetting(DSK_SETTING_BORDER_COLOR),
+            GetColorSetting(DSK_SETTING_BORDER_COLOR),
+            GetColorSetting(DSK_SETTING_BORDER_COLOR),
+            GetColorSetting(DSK_SETTING_BORDER_COLOR),
+            GetColorSetting(DSK_SETTING_BORDER_COLOR),
+            GetColorSetting(DSK_SETTING_BORDER_COLOR));
+        break;
     }
+    return c;
 }
 
 PLUGIN_END_NAMESPACE

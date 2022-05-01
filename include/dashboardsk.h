@@ -35,14 +35,14 @@
 #include <unordered_map>
 
 // All the instrument class headers must be included here
+#include "simplegaugeinstrument.h"
 #include "simplenumberinstrument.h"
-//#include "someotherinstrument.h"
 //#include "andanotherinstrument.h"
 // All the instrument classes must be defined here
 #define INSTRUMENTS                                                            \
     X(0, SimpleNumberInstrument)                                               \
-    //X(1, SomeOtherInstrument) \
-//X(2, AndAnotherInstrument)
+    X(1, SimpleGaugeInstrument)                                                \
+    // X(2, AndAnotherInstrument)
 
 PLUGIN_BEGIN_NAMESPACE
 
@@ -294,6 +294,14 @@ public:
             d.ForceRedraw();
         }
     };
+
+    /// Translate own fully qualified ID to "self" in SignalK path
+    /// References to fully quallified IDs are usually not thransferable to
+    /// different environment
+    ///
+    /// \param path SignalK path
+    /// \return SignalK path with fully quallified ID replaced by keyword "self"
+    const wxString SelfTranslate(const wxString path);
 };
 
 PLUGIN_END_NAMESPACE

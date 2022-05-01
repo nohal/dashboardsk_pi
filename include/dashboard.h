@@ -267,8 +267,8 @@ public:
 
     /// Get pointer to the SignalK object from the data tree
     ///
-    ///\param path SignalK fully qualified path
-    ///\return Pointer to the data object or NULL if not found
+    /// \param path SignalK fully qualified path
+    /// \return Pointer to the data object or NULL if not found
     const wxJSONValue* GetSKData(const wxString& path);
 
     /// Force redraw of the instrument on the next overlay refresh

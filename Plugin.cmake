@@ -55,6 +55,7 @@ set(SRC_DASHBOARD
         ${CMAKE_SOURCE_DIR}/src/dashboard.cpp
         ${CMAKE_SOURCE_DIR}/src/instrument.cpp
         ${CMAKE_SOURCE_DIR}/src/simplenumberinstrument.cpp
+        ${CMAKE_SOURCE_DIR}/src/simplegaugeinstrument.cpp
         )
 
 

@@ -111,7 +111,7 @@ void Dashboard::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
                 }
                 y = start_pos + dir * row_offset + dir * row_nr * height;
                 current_row_size = wxMax(current_row_size, height);
-                dc->DrawBitmap(bmp, x, y, false);
+                dc->DrawBitmap(bmp, x, y, bmp.GetMask() != nullptr);
                 m_instrument->SetPlacement(x, y, width, height);
                 x += width + m_spacing_h;
             } else if (m_anchor == anchor_edge::left
@@ -127,7 +127,7 @@ void Dashboard::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
                 }
                 x = start_pos - row_offset - row_nr * width;
                 current_row_size = wxMax(current_row_size, width);
-                dc->DrawBitmap(bmp, x, y, false);
+                dc->DrawBitmap(bmp, x, y, bmp.GetMask() != nullptr);
                 m_instrument->SetPlacement(x, y, width, height);
                 y += height + m_spacing_v;
             }
