@@ -35,8 +35,7 @@ DashboardSK::DashboardSK()
     , m_self_ptr(nullptr)
     , m_color_scheme(0)
 {
-    wxJSONValue v;
-    m_sk_data["vessels"] = v;
+    m_sk_data["vessels"].AddComment("Root of the vessel tree");
 }
 
 void DashboardSK::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
@@ -160,9 +159,8 @@ void DashboardSK::SendSKDelta(wxJSONValue& message)
             if (!ptr->HasMember(token)) {
                 LOG_RECEIVE_DEBUG(ptr->GetInfo() + " does NOT have member "
                     + token + ", adding it");
-                wxJSONValue v;
-                (*ptr)[token] = v;
-                ptr = &v;
+                (*ptr)[token] = wxJSONValue();
+                ptr = &(*ptr)[token];
             } else {
                 LOG_RECEIVE_DEBUG(ptr->GetInfo() + " does have member " + token
                     + ", reusing it");
@@ -186,12 +184,11 @@ void DashboardSK::SendSKDelta(wxJSONValue& message)
         }
         // TODO: Some deltas may contain timestamp also as a value (ex.
         // position.timestamp), we could sometimes use or maybe even prefer them
-        wxJSONValue* val_ptr;
         wxString fullKeyWithPath;
         wxString source = message["updates"][i]["$source"].AsString();
         wxString utoken;
         for (int j = 0; j < message["updates"][i]["values"].Size(); j++) {
-            val_ptr = ptr;
+            wxJSONValue* val_ptr = ptr;
             fullKeyWithPath = fullKey;
             LOG_RECEIVE_DEBUG("processing value #%i (%s) under %s", j,
                 message["updates"][i]["values"][j]["path"].AsCString(),
@@ -207,9 +204,8 @@ void DashboardSK::SendSKDelta(wxJSONValue& message)
                     // branch if needed
                     LOG_RECEIVE_DEBUG(fullKeyWithPath
                         + " not yet in the tree, adding " + utoken);
-                    wxJSONValue v;
-                    (*val_ptr)[utoken] = v;
-                    val_ptr = &v;
+                    (*val_ptr)[utoken] = wxJSONValue();
+                    val_ptr = &(*val_ptr)[utoken];
                 } else {
                     LOG_RECEIVE_DEBUG(
                         fullKeyWithPath + " already exists in the tree");

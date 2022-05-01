@@ -57,7 +57,7 @@
 #define DSK_SGI_COLOR_TICK wxColor(15, 15, 15)
 #define DSK_SGI_COLOR_TICK_TXT wxColor(168, 168, 168)
 #define DSK_SGI_COLOR_NOMINAL wxColor(230, 230, 230)
-#define DSK_SGI_COLOR_NORMAL wxColor(230, 230, 230)
+#define DSK_SGI_COLOR_NORMAL wxColor(131, 189, 117)
 #define DSK_SGI_COLOR_ALERT wxColor(255, 224, 132)
 #define DSK_SGI_COLOR_WARN wxColor(255, 192, 87)
 #define DSK_SGI_COLOR_ALARM wxColor(249, 139, 96)
@@ -69,11 +69,15 @@
 #define DSK_SGI_INSTR_MAX_SIZE 500
 
 // Table of transformations to be shown in the GUI
+// Has to be in same order as gauge_type enum
 #define DSK_SGI_GAUGE_TYPES                                                    \
     X(SimpleGaugeInstrument::gauge_type::relative_angle, _("Relative angle"))  \
     X(SimpleGaugeInstrument::gauge_type::direction, _("Direction"))            \
     X(SimpleGaugeInstrument::gauge_type::percent, _("Percentile"))             \
-    X(SimpleGaugeInstrument::gauge_type::ranged, _("Ranged indicator"))
+    X(SimpleGaugeInstrument::gauge_type::ranged_adaptive,                      \
+        _("Adaptive range indicator"))                                         \
+    X(SimpleGaugeInstrument::gauge_type::ranged_fixed,                         \
+        _("Fixed range indicator"))
 
 // Setting name, default value, label, dskConfigCtrl control type, control
 // parameters string, wxJSONValue conversion function, getter function
@@ -133,15 +137,18 @@ PLUGIN_BEGIN_NAMESPACE
 class SimpleGaugeInstrument : public Instrument {
 
 protected:
+    /// Type of the gauge
     enum class gauge_type {
         /// Angle relative to the direction, -180..180 degrees
         relative_angle = 0,
         /// Direction, 0..360 degrees
         direction,
         /// Percent, 0..100
-        percent, // TODO
+        percent,
+        /// Ranged, with adaptive from-to
+        ranged_adaptive,
         /// Ranged, with fixed from-to
-        ranged // TODO
+        ranged_fixed // TODO
     };
 
     /// Enum to identify the part of the instrument graphical representation
@@ -195,6 +202,10 @@ protected:
     size_t m_smoothing;
     /// Previous value displayed by the instrument
     double m_old_value;
+    /// Maximum value recorded by the instrument
+    double m_max_val;
+    /// Minimum value recorded by the instrument
+    double m_min_val;
 
     wxCoord m_instrument_size;
 
@@ -204,11 +215,12 @@ protected:
     void DrawTicks(wxDC& dc, const int& start_angle, const int& angle_step,
         const wxCoord& xc, const wxCoord& yc, const wxCoord& r,
         const wxCoord& length, bool labels = false, int except_every = 0,
-        bool relative = false);
+        bool relative = false, int draw_from = 0, int draw_to = 360,
+        int labels_from = 0, int labels_step = 0);
 
     void DrawNeedle(wxDC& dc, const wxCoord& xc, const wxCoord& yc,
         const wxCoord& r, const wxCoord& angle, const int& perc_length,
-        const int& perc_width = 20);
+        const int& perc_width = 20, const int& start_angle = 270);
 
     wxBitmap RenderAngle(double scale, bool relative = true);
     wxBitmap RenderPercent(double scale);

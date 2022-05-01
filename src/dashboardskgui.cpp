@@ -42,11 +42,11 @@ MainConfigFrame::MainConfigFrame(wxWindow* parent, wxWindowID id,
 
     m_btnCfgEdit = new wxButton(
         this, wxID_ANY, _("Cfg Edit"), wxDefaultPosition, wxDefaultSize, 0);
-    fgSizerDashboards->Add(m_btnCfgEdit, 0, wxALL, 5);
+    fgSizerDashboards->Add(m_btnCfgEdit, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
     m_btnSignalK = new wxButton(
         this, wxID_ANY, _("SignalK"), wxDefaultPosition, wxDefaultSize, 0);
-    fgSizerDashboards->Add(m_btnSignalK, 0, wxALL, 5);
+    fgSizerDashboards->Add(m_btnSignalK, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
     m_stDashboard = new wxStaticText(
         this, wxID_ANY, _("Dashboard"), wxDefaultPosition, wxDefaultSize, 0);

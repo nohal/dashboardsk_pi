@@ -50,19 +50,32 @@ set(PKG_INFO_URL https://opencpn.org/OpenCPN/plugins/dashboardsk.html)
 add_definitions(-DDASHBOARDSK_USE_SVG)
 add_definitions(-DocpnUSE_GL)
 
+set(HDR_DASHBOARD
+        ${CMAKE_SOURCE_DIR}/include/dashboardsk.h
+        ${CMAKE_SOURCE_DIR}/include/dashboard.h
+        ${CMAKE_SOURCE_DIR}/include/instrument.h
+        ${CMAKE_SOURCE_DIR}/include/simplenumberinstrument.h
+        ${CMAKE_SOURCE_DIR}/include/simplegaugeinstrument.h
+        ${CMAKE_SOURCE_DIR}/include/simpletextinstrument.h
+        )
 set(SRC_DASHBOARD
         ${CMAKE_SOURCE_DIR}/src/dashboardsk.cpp
         ${CMAKE_SOURCE_DIR}/src/dashboard.cpp
         ${CMAKE_SOURCE_DIR}/src/instrument.cpp
         ${CMAKE_SOURCE_DIR}/src/simplenumberinstrument.cpp
         ${CMAKE_SOURCE_DIR}/src/simplegaugeinstrument.cpp
+        ${CMAKE_SOURCE_DIR}/src/simpletextinstrument.cpp
         )
 
 
 set(SRC
+        ${HDR_DASHBOARD}
         ${SRC_DASHBOARD}
+        ${CMAKE_SOURCE_DIR}/include/dashboardsk_pi.h
         ${CMAKE_SOURCE_DIR}/src/dashboardsk_pi.cpp
+        ${CMAKE_SOURCE_DIR}/include/dashboardskgui.h
         ${CMAKE_SOURCE_DIR}/src/dashboardskgui.cpp
+        ${CMAKE_SOURCE_DIR}/include/dashboardskguiimpl.h
         ${CMAKE_SOURCE_DIR}/src/dashboardskguiimpl.cpp
 )
 

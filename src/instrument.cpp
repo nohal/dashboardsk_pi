@@ -228,6 +228,19 @@ int Instrument::GetIntSetting(const wxString& key)
     return i;
 }
 
+int Instrument::GetDoubleSetting(const wxString& key)
+{
+    double i = 0.0;
+    if (m_config_vals.find(UNORDERED_KEY(key)) != m_config_vals.end()) {
+#if (wxCHECK_VERSION(3, 1, 6))
+        m_config_vals[UNORDERED_KEY(key)].ToDouble(&i);
+#else
+        i = wxAtof(m_config_vals[UNORDERED_KEY(key)]);
+#endif
+    }
+    return i;
+}
+
 wxColor Instrument::GetColorSetting(const wxString& key)
 {
     if (m_config_vals.find(UNORDERED_KEY(key)) != m_config_vals.end()) {
@@ -275,6 +288,8 @@ double Instrument::Transform(const double& val, const transformation& formula)
         return val / 133.3223684;
     case transformation::pa2psi:
         return val / 6894.757;
+    case transformation::hz2rpm:
+        return val * 60;
     default:
         return val;
     }

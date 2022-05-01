@@ -74,7 +74,7 @@ PLUGIN_BEGIN_NAMESPACE
     X(Instrument::transformation::rad2deg, _("RAD->DEG"))                      \
     X(Instrument::transformation::ms2kn, _("m/s -> kn"))                       \
     X(Instrument::transformation::ms2kmh, _("m/s -> km/h"))                    \
-    X(Instrument::transformation::ms2mih, _("m/s -> mph"))                     \
+    X(Instrument::transformation::ms2mph, _("m/s -> mph"))                     \
     X(Instrument::transformation::m2ft, _("m -> feet"))                        \
     X(Instrument::transformation::m2fm, _("m -> fathoms"))                     \
     X(Instrument::transformation::m2nm, _("m -> NMi"))                         \
@@ -86,7 +86,8 @@ PLUGIN_BEGIN_NAMESPACE
     X(Instrument::transformation::pa2mpa, _("Pa -> MPa"))                      \
     X(Instrument::transformation::pa2atm, _("Pa -> atm"))                      \
     X(Instrument::transformation::pa2atm, _("Pa -> mmHg"))                     \
-    X(Instrument::transformation::pa2psi, _("Pa -> psi"))
+    X(Instrument::transformation::pa2psi, _("Pa -> psi"))                      \
+    X(Instrument::transformation::hz2rpm, _("Hz -> RPM"))
 
 // Table of supported formats and the respective formatting strings
 #define DSK_VALUE_FORMATS                                                      \
@@ -113,6 +114,7 @@ enum class dskConfigCtrl {
     TextCtrl,
     ColourPickerCtrl,
     SpinCtrl,
+    SpinCtrlDouble,
     ChoiceCtrl,
     SignalKKeyCtrl,
     SignalKZonesCtrl
@@ -183,7 +185,9 @@ public:
         /// Pascal to mmHg
         pa2mmhg,
         /// Pascal to psi
-        pa2psi
+        pa2psi,
+        /// Hertz to revolutions per minute
+        hz2rpm
     };
 
 protected:
@@ -250,7 +254,7 @@ protected:
         , m_title(wxEmptyString)
         , m_color_scheme(0)
         , m_last_change(wxInvalidDateTime)
-        , m_allowed_age_sec(-1)
+        , m_allowed_age_sec(3)
         , m_parent_dashboard(nullptr)
         , m_x(0)
         , m_y(0)
@@ -421,6 +425,13 @@ public:
     /// \param key Identification key of the parameter
     /// \return Value of the parameter as integer
     virtual int GetIntSetting(const wxString& key);
+
+    /// Get an double representation of a configuration parameter of the
+    /// instrument
+    ///
+    /// \param key Identification key of the parameter
+    /// \return Value of the parameter as double
+    virtual int GetDoubleSetting(const wxString& key);
 
     /// Get a string representation of a configuration parameter of the
     /// instrument

@@ -57,7 +57,7 @@ void SimpleNumberInstrument::Init()
     m_body_font
         = wxFont(30, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
     m_smoothing = 0;
-    m_old_value = std::numeric_limits<double>::lowest();
+    m_old_value = std::numeric_limits<double>::min();
 
 #define X(a, b, c, d, e, f, g, h) SetSetting(b, c);
     DSK_SNI_SETTINGS
@@ -132,6 +132,7 @@ wxBitmap SimpleNumberInstrument::Render(double scale)
                         m_last_change, wxTimeSpan(m_allowed_age_sec))))) {
             m_needs_redraw = true;
             m_timed_out = true;
+            m_old_value = std::numeric_limits<double>::min();
             cbb = GetDimedColor(GetColorSetting(DSK_SETTING_ALERT_BG));
             cbf = GetDimedColor(GetColorSetting(DSK_SETTING_ALERT_FG));
         }
@@ -150,7 +151,7 @@ wxBitmap SimpleNumberInstrument::Render(double scale)
                 cbf = GetDimedColor(GetColorSetting(DSK_SETTING_ALERT_FG));
             } else {
                 double dval = Transform(v.AsDouble());
-                if (m_old_value > std::numeric_limits<double>::lowest()) {
+                if (m_old_value > std::numeric_limits<double>::min()) {
                     dval = (m_smoothing * m_old_value
                                + (DSK_SNI_SMOOTHING_MAX - m_smoothing + 1)
                                    * dval)

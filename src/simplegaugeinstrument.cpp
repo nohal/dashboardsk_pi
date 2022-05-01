@@ -54,9 +54,11 @@ void SimpleGaugeInstrument::Init()
     m_timed_out = false;
     m_needs_redraw = true;
     m_smoothing = 0;
-    m_old_value = std::numeric_limits<double>::lowest();
+    m_old_value = std::numeric_limits<double>::min();
     m_instrument_size = 200;
     m_gauge_type = gauge_type::relative_angle;
+    m_max_val = std::numeric_limits<double>::min();
+    m_min_val = std::numeric_limits<double>::max();
 
 #define X(a, b, c, d, e, f, g, h) SetSetting(b, c);
     DSK_SGI_SETTINGS
@@ -126,7 +128,7 @@ void SimpleGaugeInstrument::DrawArc(wxDC& dc, const int& start_angle,
 void SimpleGaugeInstrument::DrawTicks(wxDC& dc, const int& start_angle,
     const int& angle_step, const wxCoord& xc, const wxCoord& yc,
     const wxCoord& r, const wxCoord& length, bool labels, int except_every,
-    bool relative)
+    bool relative, int draw_from, int draw_to, int labels_from, int labels_step)
 {
     int angle = start_angle;
     wxCoord xStart;
@@ -134,27 +136,35 @@ void SimpleGaugeInstrument::DrawTicks(wxDC& dc, const int& start_angle,
     wxCoord xEnd;
     wxCoord yEnd;
     double c, s;
+    int tick = 0;
     while (angle <= 360) {
-        c = cos(deg2rad(270 + angle));
-        s = sin(deg2rad(270 + angle));
-        xStart = xc + c * r;
-        yStart = yc + s * r;
-        xEnd = xc + c * (r - length);
-        yEnd = yc + s * (r - length);
-        dc.DrawLine(xStart, yStart, xEnd, yEnd);
-        xEnd = xc + c * (r - length * 1.15);
-        yEnd = yc + s * (r - length * 1.15);
-        if (labels && angle < 360
-            && (except_every == 0 || angle % except_every != 0)) {
-            wxString val = wxString::Format("%i", angle);
-            if (relative && angle > 180) {
-                val = wxString::Format("%i", 180 - (angle - 180));
+        if (angle >= draw_from && angle <= draw_to) {
+            c = cos(deg2rad(270 + angle));
+            s = sin(deg2rad(270 + angle));
+            xStart = xc + c * r;
+            yStart = yc + s * r;
+            xEnd = xc + c * (r - length);
+            yEnd = yc + s * (r - length);
+            dc.DrawLine(xStart, yStart, xEnd, yEnd);
+            xEnd = xc + c * (r - length * 1.15);
+            yEnd = yc + s * (r - length * 1.15);
+            if (labels && angle < 360
+                && (except_every == 0 || angle % except_every != 0)) {
+                int lbl_val;
+                if (labels_step != 0) { // Custom labeling
+                    lbl_val = labels_from + tick * labels_step;
+                    tick++;
+                } else { // Angle labels
+                    lbl_val = (relative && angle > 180) ? 180 - (angle - 180)
+                                                        : angle;
+                }
+                wxString val = wxString::Format("%i", lbl_val);
+                wxCoord x = xEnd
+                    - cos(deg2rad(angle)) * dc.GetTextExtent(val).GetX() / 2;
+                wxCoord y = yEnd
+                    - sin(deg2rad(angle)) * dc.GetTextExtent(val).GetX() / 2;
+                dc.DrawRotatedText(val, x, y, -angle);
             }
-            wxCoord x
-                = xEnd - cos(deg2rad(angle)) * dc.GetTextExtent(val).GetX() / 2;
-            wxCoord y
-                = yEnd - sin(deg2rad(angle)) * dc.GetTextExtent(val).GetX() / 2;
-            dc.DrawRotatedText(val, x, y, -angle);
         }
         angle += angle_step;
     }
@@ -162,35 +172,45 @@ void SimpleGaugeInstrument::DrawTicks(wxDC& dc, const int& start_angle,
 
 void SimpleGaugeInstrument::DrawNeedle(wxDC& dc, const wxCoord& xc,
     const wxCoord& yc, const wxCoord& r, const wxCoord& angle,
-    const int& perc_length, const int& perc_width)
+    const int& perc_length, const int& perc_width, const int& start_angle)
 {
     wxPoint needle[3] {
-        wxPoint(r * (100 - perc_length) / 100 * cos(deg2rad(270 + angle))
-                - cos(deg2rad(angle)) * r * perc_width / 200,
-            r * (100 - perc_length) / 100 * sin(deg2rad(270 + angle))
-                - sin(deg2rad(angle)) * r * perc_width / 200),
-        wxPoint(r * (100 - perc_length) / 100 * cos(deg2rad(270 + angle))
-                + cos(deg2rad(angle)) * r * perc_width / 200,
-            r * (100 - perc_length) / 100 * sin(deg2rad(270 + angle))
-                + sin(deg2rad(angle)) * r * perc_width / 200),
-        wxPoint(r * cos(deg2rad(270 + angle)), r * sin(deg2rad(270 + angle)))
+        wxPoint(
+            r * (100 - perc_length) / 100 * cos(deg2rad(start_angle + angle))
+                - cos(deg2rad(angle - 270 + start_angle)) * r * perc_width
+                    / 200,
+            r * (100 - perc_length) / 100 * sin(deg2rad(start_angle + angle))
+                - sin(deg2rad(angle - 270 + start_angle)) * r * perc_width
+                    / 200),
+        wxPoint(
+            r * (100 - perc_length) / 100 * cos(deg2rad(start_angle + angle))
+                + cos(deg2rad(angle - 270 + start_angle)) * r * perc_width
+                    / 200,
+            r * (100 - perc_length) / 100 * sin(deg2rad(start_angle + angle))
+                + sin(deg2rad(angle - 270 + start_angle)) * r * perc_width
+                    / 200),
+        wxPoint(r * cos(deg2rad(start_angle + angle)),
+            r * sin(deg2rad(start_angle + angle)))
     };
     dc.DrawPolygon(3, needle, xc, yc);
 }
 
 wxBitmap SimpleGaugeInstrument::RenderAngle(double scale, bool relative)
 {
-    double dval = 0.0;
-    wxString value = wxEmptyString;
+    wxString value = "---";
 
-    const wxJSONValue* val = m_parent_dashboard->GetSKData(m_sk_key);
-    if (val) {
-        wxJSONValue v = val->Get("value", *val);
-        dval = Transform(v.AsDouble(), m_transformation);
-        m_old_value = dval;
-        value = wxString::Format(m_format_strings[m_format_index], abs(dval));
-        if (dval < 0) {
-            value.Prepend("-");
+    if (m_new_data) {
+        m_new_data = false;
+        if (!m_timed_out) {
+            value = wxString::Format(
+                m_format_strings[m_format_index], abs(m_old_value));
+            if (m_old_value < 0) {
+                value.Prepend("-");
+            }
+        }
+    } else {
+        if (!m_timed_out && m_bmp.IsOk()) {
+            return m_bmp;
         }
     }
 
@@ -252,16 +272,18 @@ wxBitmap SimpleGaugeInstrument::RenderAngle(double scale, bool relative)
     // Needle
     dc.SetBrush(wxBrush(GetDimedColor(GetColorSetting(DSK_SGI_NEEDLE_FG))));
     dc.SetPen(wxPen(GetDimedColor(GetColorSetting(DSK_SGI_NEEDLE_FG)), 3));
-    DrawNeedle(dc, xc, yc, r * 0.9, dval, 30);
+    DrawNeedle(dc, xc, yc, r * 0.9, m_old_value, 30);
     // Text
     // Label
-    dc.SetTextForeground(GetDimedColor(GetColor(dval, color_item::title)));
+    dc.SetTextForeground(
+        GetDimedColor(GetColor(m_old_value, color_item::title)));
     dc.SetFont(wxFont(size_x / 8, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL,
         wxFONTWEIGHT_NORMAL));
     dc.DrawText(m_title, xc - dc.GetTextExtent(m_title).GetX() / 2,
         yc - dc.GetTextExtent(m_title).GetY() * 1.5);
     // Data
-    dc.SetTextForeground(GetDimedColor(GetColor(dval, color_item::value)));
+    dc.SetTextForeground(
+        GetDimedColor(GetColor(m_old_value, color_item::value)));
     dc.SetFont(wxFont(
         size_x / 3, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
     dc.DrawText(value, xc - dc.GetTextExtent(value).GetX() / 2,
@@ -271,16 +293,339 @@ wxBitmap SimpleGaugeInstrument::RenderAngle(double scale, bool relative)
     return m_bmp;
 }
 
+wxBitmap SimpleGaugeInstrument::RenderAdaptive(double scale)
+{
+#define PERC 30
+    wxString value = "----";
+    bool has_value = false;
+
+    if (m_new_data) {
+        m_new_data = false;
+        if (!m_timed_out) {
+            has_value = true;
+            value = wxString::Format(
+                m_format_strings[m_format_index], abs(m_old_value));
+            if (m_old_value < 0) {
+                value.Prepend("-");
+            }
+        }
+    } else {
+        if (!m_timed_out && m_bmp.IsOk()) {
+            return m_bmp;
+        }
+    }
+
+    wxColor mask_color
+        = GetDimedColor(GetColorSetting(DSK_SETTING_BORDER_COLOR));
+    mask_color.SetRGB(mask_color.GetRGB() > 2 ? mask_color.GetRGB() - 1
+                                              : mask_color.GetRGB() + 1);
+
+    wxMemoryDC dc;
+
+    wxCoord size_x = m_instrument_size;
+    wxCoord size_y = m_instrument_size * (50 + PERC) / 100;
+    wxCoord xc = size_x / 2;
+    wxCoord yc = m_instrument_size / 2;
+    wxCoord r = size_x / 2 - size_x / 200 - 1;
+
+    m_bmp = wxBitmap(size_x, size_y);
+    dc.SelectObject(m_bmp);
+    dc.SetBackground(wxBrush(mask_color));
+    dc.Clear();
+    // Gauge background
+    dc.SetBrush(wxBrush(GetDimedColor(GetColorSetting(DSK_SGI_RIM_NOMINAL))));
+    dc.SetPen(wxPen(GetDimedColor(GetColorSetting(DSK_SETTING_BORDER_COLOR))));
+    dc.DrawCircle(xc, yc, r);
+    // Arcs for zones
+    for (auto zone : m_zones) {
+        // TODO: Angles have to be adapted to the value scale
+        int angle_from = zone.GetLowerLimit() * 1.8 - 90;
+        int angle_to = zone.GetUpperLimit() * 1.8 - 90;
+        wxString zone_color;
+        switch (zone.GetState()) {
+        case Zone::state::nominal:
+            zone_color = DSK_SETTING_NOMINAL_FG;
+            break;
+        case Zone::state::normal:
+            zone_color = DSK_SETTING_NORMAL_FG;
+            break;
+        case Zone::state::alert:
+            zone_color = DSK_SETTING_ALERT_FG;
+            break;
+        case Zone::state::warn:
+            zone_color = DSK_SETTING_WARN_FG;
+            break;
+        case Zone::state::alarm:
+            zone_color = DSK_SETTING_ALRM_FG;
+            break;
+        case Zone::state::emergency:
+            zone_color = DSK_SETTING_EMERG_FG;
+            break;
+        }
+        dc.SetBrush(wxBrush(GetDimedColor(GetColorSetting(zone_color))));
+        dc.SetPen(wxPen(GetDimedColor(GetColorSetting(zone_color))));
+        DrawArc(dc, angle_to, angle_from, xc, yc, r);
+    }
+    // Face
+    dc.SetBrush(wxBrush(GetDimedColor(GetColorSetting(DSK_SGI_DIAL_COLOR))));
+    dc.SetPen(wxPen(GetDimedColor(GetColorSetting(DSK_SGI_DIAL_COLOR))));
+    dc.DrawCircle(xc, yc, r * 0.85);
+    // Ticks
+    dc.SetTextForeground(GetDimedColor(GetColorSetting(DSK_SGI_TICK_LEGEND)));
+    dc.SetFont(wxFont(size_x / 12, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL,
+        wxFONTWEIGHT_NORMAL));
+    dc.SetPen(
+        wxPen(GetDimedColor(GetColorSetting(DSK_SGI_TICK_FG)), size_x / 200));
+    DrawTicks(dc, 0, 20, xc, yc, r, r * 0.15, false, 90, false, 0, 120);
+    DrawTicks(dc, 0, 10, xc, yc, r, r * 0.1, false, 90, false, 0, 120);
+    DrawTicks(dc, 0, 20, xc, yc, r, r * 0.15, false, 90, false, 240, 360);
+    DrawTicks(dc, 0, 10, xc, yc, r, r * 0.1, false, 90, false, 240, 360);
+    dc.SetPen(
+        wxPen(GetDimedColor(GetColorSetting(DSK_SGI_TICK_FG)), size_x / 100));
+    dc.SetFont(wxFont(size_x / 12, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL,
+        wxFONTWEIGHT_BOLD));
+    int magnitude = 0;
+    int upper = 0;
+    int lower = 0;
+    int step = 0;
+    if (has_value) {
+        double range = m_max_val - m_min_val;
+        while (range / pow(10, magnitude) > 10) {
+            magnitude++;
+        }
+
+        upper
+            = ceil(m_max_val / pow(10, magnitude + 1)) * pow(10, magnitude + 1);
+        lower = floor(m_min_val / pow(10, magnitude + 1))
+            * pow(10, magnitude + 1);
+        if (magnitude < 2) {
+            magnitude--;
+        }
+        step = (upper - lower) / pow(10, magnitude) / 6;
+
+        DrawTicks(dc, 0, 40, xc, yc, r, r * 0.2, true, 0, false, 0, 120,
+            lower / pow(10, magnitude) + 3 * step,
+            step); // TODO: Labels have to be adapted to the value scale
+        DrawTicks(dc, 0, 40, xc, yc, r, r * 0.2, true, 0, false, 240, 360,
+            lower / pow(10, magnitude),
+            step); // TODO: Labels may have to be further adapted to the value
+                   // scale
+    }
+    // Border
+    dc.SetBrush(*wxTRANSPARENT_BRUSH);
+    int border_width = size_x / 100 + 1;
+    dc.SetPen(wxPen(GetDimedColor(GetColorSetting(DSK_SETTING_BORDER_COLOR)),
+        border_width));
+    dc.DrawCircle(xc, yc, r);
+    int shift = r - sqrt(r * r - r * 2 * PERC * r * 2 * PERC / 10000);
+    dc.DrawLine(shift + border_width, size_y - border_width / 2,
+        size_x - shift - border_width, size_y - border_width / 2);
+    // Needle
+    if (has_value) {
+        dc.SetBrush(wxBrush(GetDimedColor(GetColorSetting(DSK_SGI_NEEDLE_FG))));
+        dc.SetPen(wxPen(GetDimedColor(GetColorSetting(DSK_SGI_NEEDLE_FG)), 3));
+        DrawNeedle(dc, xc, yc, r * 0.9,
+            m_old_value * 240 / (upper - lower) - 90, 30, 20, 240);
+        std::cout << m_old_value << " " << upper << " " << lower << "\n";
+    }
+    // Text
+    // Scale
+    wxString sscale;
+    if (magnitude >= 0) {
+        sscale = wxString::Format("x%.0f", powf(10, magnitude));
+    } else {
+        sscale = wxString::Format("/%.0f", powf(10, -magnitude));
+    }
+    dc.DrawText(sscale, xc - dc.GetTextExtent(sscale).GetX() / 2, r * 0.5);
+    // Label
+    dc.SetTextForeground(
+        GetDimedColor(GetColor(m_old_value, color_item::title)));
+    dc.SetFont(wxFont(size_x / 8, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL,
+        wxFONTWEIGHT_NORMAL));
+    dc.DrawText(m_title, xc - dc.GetTextExtent(m_title).GetX() / 2,
+        yc - dc.GetTextExtent(m_title).GetY() * 1.1);
+    // Data
+    dc.SetTextForeground(
+        GetDimedColor(GetColor(m_old_value, color_item::value)));
+    dc.SetFont(wxFont(
+        size_x / 3, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
+    dc.DrawText(value, xc - dc.GetTextExtent(value).GetX() / 2, yc);
+    dc.SelectObject(wxNullBitmap);
+    m_bmp.SetMask(new wxMask(m_bmp, mask_color));
+    return m_bmp;
+#undef PERC
+}
+
+wxBitmap SimpleGaugeInstrument::RenderPercent(double scale)
+{
+#define PERC 10
+    wxString value = "---";
+
+    if (m_new_data) {
+        m_new_data = false;
+        if (!m_timed_out) {
+            value = wxString::Format(
+                m_format_strings[m_format_index], abs(m_old_value));
+            if (m_old_value < 0) {
+                value.Prepend("-");
+            }
+        }
+    } else {
+        if (!m_timed_out && m_bmp.IsOk()) {
+            return m_bmp;
+        }
+    }
+
+    wxColor mask_color
+        = GetDimedColor(GetColorSetting(DSK_SETTING_BORDER_COLOR));
+    mask_color.SetRGB(mask_color.GetRGB() > 2 ? mask_color.GetRGB() - 1
+                                              : mask_color.GetRGB() + 1);
+
+    wxMemoryDC dc;
+
+    wxCoord size_x = m_instrument_size;
+    wxCoord size_y = m_instrument_size * (50 + PERC) / 100;
+    wxCoord xc = size_x / 2;
+    wxCoord yc = m_instrument_size / 2;
+    wxCoord r = size_x / 2 - size_x / 200 - 1;
+
+    m_bmp = wxBitmap(size_x, size_y);
+    dc.SelectObject(m_bmp);
+    dc.SetBackground(wxBrush(mask_color));
+    dc.Clear();
+    // Gauge background
+    dc.SetBrush(wxBrush(GetDimedColor(GetColorSetting(DSK_SGI_RIM_NOMINAL))));
+    dc.SetPen(wxPen(GetDimedColor(GetColorSetting(DSK_SETTING_BORDER_COLOR))));
+    dc.DrawCircle(xc, yc, r);
+    // Arcs for zones
+    for (auto zone : m_zones) {
+        int angle_from = zone.GetLowerLimit() * 1.8 - 90;
+        int angle_to = zone.GetUpperLimit() * 1.8 - 90;
+        wxString zone_color;
+        switch (zone.GetState()) {
+        case Zone::state::nominal:
+            zone_color = DSK_SETTING_NOMINAL_FG;
+            break;
+        case Zone::state::normal:
+            zone_color = DSK_SETTING_NORMAL_FG;
+            break;
+        case Zone::state::alert:
+            zone_color = DSK_SETTING_ALERT_FG;
+            break;
+        case Zone::state::warn:
+            zone_color = DSK_SETTING_WARN_FG;
+            break;
+        case Zone::state::alarm:
+            zone_color = DSK_SETTING_ALRM_FG;
+            break;
+        case Zone::state::emergency:
+            zone_color = DSK_SETTING_EMERG_FG;
+            break;
+        }
+        dc.SetBrush(wxBrush(GetDimedColor(GetColorSetting(zone_color))));
+        dc.SetPen(wxPen(GetDimedColor(GetColorSetting(zone_color))));
+        DrawArc(dc, angle_to, angle_from, xc, yc, r);
+        // std::cout << angle_from << " " << angle_to << "\n";
+    }
+    // Face
+    dc.SetBrush(wxBrush(GetDimedColor(GetColorSetting(DSK_SGI_DIAL_COLOR))));
+    dc.SetPen(wxPen(GetDimedColor(GetColorSetting(DSK_SGI_DIAL_COLOR))));
+    dc.DrawCircle(xc, yc, r * 0.85);
+    // Ticks
+    dc.SetTextForeground(GetDimedColor(GetColorSetting(DSK_SGI_TICK_LEGEND)));
+    dc.SetFont(wxFont(size_x / 12, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL,
+        wxFONTWEIGHT_NORMAL));
+    dc.SetPen(
+        wxPen(GetDimedColor(GetColorSetting(DSK_SGI_TICK_FG)), size_x / 200));
+    DrawTicks(dc, 0, 18, xc, yc, r, r * 0.15, false, 90, false, 0, 90);
+    DrawTicks(dc, 0, 9, xc, yc, r, r * 0.1, false, 90, false, 0, 90);
+    DrawTicks(dc, 0, 18, xc, yc, r, r * 0.15, false, 90, false, 270, 360);
+    DrawTicks(dc, 0, 9, xc, yc, r, r * 0.1, false, 90, false, 270, 360);
+    dc.SetPen(
+        wxPen(GetDimedColor(GetColorSetting(DSK_SGI_TICK_FG)), size_x / 100));
+    dc.SetFont(wxFont(size_x / 12, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL,
+        wxFONTWEIGHT_BOLD));
+    DrawTicks(dc, 0, 90, xc, yc, r, r * 0.2, false, 0, false, 0, 90);
+    DrawTicks(dc, 0, 90, xc, yc, r, r * 0.2, false, 0, false, 270, 360);
+    // Border
+    dc.SetBrush(*wxTRANSPARENT_BRUSH);
+    int border_width = size_x / 100 + 1;
+    dc.SetPen(wxPen(GetDimedColor(GetColorSetting(DSK_SETTING_BORDER_COLOR)),
+        border_width));
+    dc.DrawCircle(xc, yc, r);
+    int shift = r - sqrt(r * r - r * 2 * PERC * r * 2 * PERC / 100 / 100);
+    dc.DrawLine(shift + border_width, size_y - border_width / 2,
+        size_x - shift - border_width, size_y - border_width / 2);
+    // Needle
+    dc.SetBrush(wxBrush(GetDimedColor(GetColorSetting(DSK_SGI_NEEDLE_FG))));
+    dc.SetPen(wxPen(GetDimedColor(GetColorSetting(DSK_SGI_NEEDLE_FG)), 3));
+    DrawNeedle(dc, xc, yc, r * 0.9, m_old_value * 1.8 - 90, 30);
+    // Text
+    // Label
+    dc.SetTextForeground(
+        GetDimedColor(GetColor(m_old_value, color_item::title)));
+    dc.SetFont(wxFont(size_x / 8, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL,
+        wxFONTWEIGHT_NORMAL));
+    dc.DrawText(m_title, xc - dc.GetTextExtent(m_title).GetX() / 2,
+        yc - dc.GetTextExtent(m_title).GetY() * 2.2);
+    // Data
+    dc.SetTextForeground(
+        GetDimedColor(GetColor(m_old_value, color_item::value)));
+    dc.SetFont(wxFont(
+        size_x / 3, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
+    dc.DrawText(value, xc - dc.GetTextExtent(value).GetX() / 2,
+        yc - dc.GetTextExtent(value).GetY() / 1.8);
+    dc.SelectObject(wxNullBitmap);
+    m_bmp.SetMask(new wxMask(m_bmp, mask_color));
+    return m_bmp;
+#undef PERC
+}
+
 wxBitmap SimpleGaugeInstrument::Render(double scale)
 {
+    if (!m_new_data) {
+        if (!m_timed_out
+            && (m_allowed_age_sec > 0
+                && (m_last_change.IsValid()
+                    && !wxDateTime::Now().IsEqualUpTo(
+                        m_last_change, wxTimeSpan(m_allowed_age_sec))))) {
+            m_needs_redraw = true;
+            m_timed_out = true;
+            m_old_value = std::numeric_limits<double>::min();
+        }
+    } else {
+        m_needs_redraw = true;
+        m_last_change = wxDateTime::Now();
+        m_timed_out = false;
+        const wxJSONValue* val = m_parent_dashboard->GetSKData(m_sk_key);
+        if (val) {
+            wxJSONValue v = val->Get("value", *val);
+            double dval = Transform(v.AsDouble(), m_transformation);
+            if (m_old_value > std::numeric_limits<double>::min()) {
+                dval = (m_smoothing * m_old_value
+                           + (DSK_SGI_SMOOTHING_MAX - m_smoothing + 1) * dval)
+                    / (DSK_SGI_SMOOTHING_MAX + 1);
+            }
+            m_old_value = dval;
+            m_min_val = wxMin(dval, m_min_val);
+            m_max_val = wxMax(dval, m_max_val);
+        }
+    }
+
+    if (!m_needs_redraw) {
+        return m_bmp;
+    }
     switch (m_gauge_type) {
     case gauge_type::relative_angle:
         return RenderAngle(scale, true);
-        break;
     case gauge_type::direction:
-        RenderAngle(scale, true);
-        break;
-    // TODO: Percentile and ranged gauge
+        return RenderAngle(scale, false);
+    case gauge_type::percent:
+        return RenderPercent(scale);
+    case gauge_type::ranged_adaptive:
+        return RenderAdaptive(scale);
+    case gauge_type::ranged_fixed:
+        return RenderAdaptive(scale); // TODO
     default:
         return wxNullBitmap;
     }

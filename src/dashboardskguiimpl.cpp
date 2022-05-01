@@ -75,6 +75,8 @@ MainConfigFrameImpl::MainConfigFrameImpl(dashboardsk_pi* dsk_pi,
         m_dsk_pi->GetDataDir() + "up.svg", wxSize(BMP_SZ, BMP_SZ)));
     m_bpMoveDownButton->SetBitmap(wxBitmapBundle::FromSVGFile(
         m_dsk_pi->GetDataDir() + "down.svg", wxSize(BMP_SZ, BMP_SZ)));
+    m_btnSignalK->SetBitmap(wxBitmapBundle::FromSVGFile(
+        m_dsk_pi->GetDataDir() + "signalk_button.svg", wxSize(BMP_SZ, BMP_SZ)));
 #else
     m_bpAddButton->SetBitmap(GetBitmapFromSVGFile(
         m_dsk_pi->GetDataDir() + "plus.svg", BMP_SZ, BMP_SZ));
@@ -393,6 +395,50 @@ void MainConfigFrameImpl::FillInstrumentDetails()
                 new wxSpinCtrl(m_swConfig, wxID_ANY, wxEmptyString,
                     wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, min, max,
                     i, ctrl.key),
+                0, wxALIGN_CENTER_VERTICAL | wxALL | wxEXPAND, 5);
+            break;
+        }
+        case dskConfigCtrl::SpinCtrlDouble: {
+            double min = -99999.9;
+            double max = 99999.9;
+            if (!ctrl.control_settings.IsEmpty()) {
+                int pos = 0;
+                wxStringTokenizer tokenizer(ctrl.control_settings, ";");
+                while (tokenizer.HasMoreTokens()) {
+                    wxString token = tokenizer.GetNextToken();
+                    switch (pos) {
+                    case 0:
+#if (wxCHECK_VERSION(3, 1, 6))
+                        if (!token.ToDouble(&min)) {
+                            min = -99999.9;
+                        }
+#else
+                        min = wxAtof(token);
+#endif
+                        break;
+                    case 1:
+#if (wxCHECK_VERSION(3, 1, 6))
+                        if (!token.ToDouble(&max)) {
+                            max = 99999.9;
+                        }
+#else
+                        max = wxAtof(token);
+#endif
+                        break;
+                    default:
+                        LOG_VERBOSE(
+                            "Uncovered SpinCtrlDouble parameter %i", pos);
+                    }
+                    pos++;
+                }
+            }
+            double i = m_edited_instrument->GetDoubleSetting(ctrl.key);
+            i = wxMin(wxMax(i, min), max); // Adjust to limits
+
+            SettingsItemSizer->Add(
+                new wxSpinCtrlDouble(m_swConfig, wxID_ANY, wxEmptyString,
+                    wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, min, max,
+                    i, 1, ctrl.key),
                 0, wxALIGN_CENTER_VERTICAL | wxALL | wxEXPAND, 5);
             break;
         }

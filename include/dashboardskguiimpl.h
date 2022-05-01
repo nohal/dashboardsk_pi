@@ -264,7 +264,8 @@ class SKKeyCtrlImpl : public SKKeyCtrl {
 public:
     /// Constructor
     SKKeyCtrlImpl()
-        : SKKeyCtrl(NULL) {};
+        : SKKeyCtrl(NULL)
+        , m_sk_tree(nullptr) {};
 
     /// Constructor
     ///
@@ -375,7 +376,8 @@ private:
 public:
     /// Constructor
     SKZonesCtrlImpl()
-        : SKZonesCtrl(NULL) {};
+        : SKZonesCtrl(NULL)
+        , m_dsk_pi(nullptr) {};
 
     /// Constructor
     ///

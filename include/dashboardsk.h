@@ -37,12 +37,14 @@
 // All the instrument class headers must be included here
 #include "simplegaugeinstrument.h"
 #include "simplenumberinstrument.h"
+#include "simpletextinstrument.h"
 //#include "andanotherinstrument.h"
 // All the instrument classes must be defined here
 #define INSTRUMENTS                                                            \
     X(0, SimpleNumberInstrument)                                               \
     X(1, SimpleGaugeInstrument)                                                \
-    // X(2, AndAnotherInstrument)
+    X(2, SimpleTextInstrument)                                                 \
+    // X(3, AndAnotherInstrument)
 
 PLUGIN_BEGIN_NAMESPACE
 
@@ -132,8 +134,7 @@ public:
     {
         m_self = NormalizeID(self);
         if (!m_sk_data["vessels"].HasMember(m_self)) {
-            wxJSONValue v;
-            m_sk_data["vessels"][Self()] = v;
+            m_sk_data["vessels"][Self()].AddComment("Own vessel data");
         }
         m_self_ptr = &m_sk_data["vessels"][Self()];
     };
