@@ -98,10 +98,7 @@ wxBitmap SimpleTextInstrument::Render(double scale)
         wxJSONValue v = val->Get("value", wxJSONValue("----"));
         value = v.AsString();
     }
-    wxColor mask_color
-        = GetDimedColor(GetColorSetting(DSK_SETTING_BORDER_COLOR));
-    mask_color.SetRGB(mask_color.GetRGB() > 2 ? mask_color.GetRGB() - 1
-                                              : mask_color.GetRGB() + 1);
+
     wxColor ctb = GetDimedColor(GetColorSetting(DSK_SETTING_TITLE_BG));
     wxColor ctf = GetDimedColor(GetColorSetting(DSK_SETTING_TITLE_FG));
     wxColor cbb = GetDimedColor(GetColorSetting(DSK_SETTING_BODY_BG));
@@ -124,10 +121,11 @@ wxBitmap SimpleTextInstrument::Render(double scale)
     size_x = (wxMax(title_x + 2 * BORDER_SIZE, body_x) + 4 * BORDER_SIZE);
     size_y = (title_y + body_y + 3 * BORDER_SIZE);
     m_bmp = wxBitmap(size_x, size_y);
+    m_bmp.UseAlpha();
     mdc.SelectObject(m_bmp);
-    mdc.SetBackground(wxBrush(mask_color));
-    mdc.Clear();
     wxGCDC dc(mdc);
+    dc.SetBackground(*wxTRANSPARENT_BRUSH);
+    dc.Clear();
     // Draw stuff
     dc.SetPen(wxPen(cb, BORDER_LINE_WIDTH));
     dc.SetBrush(wxBrush(ctb));
@@ -146,7 +144,6 @@ wxBitmap SimpleTextInstrument::Render(double scale)
     dc.DrawText(value, 2 * BORDER_SIZE, title_y + 2 * BORDER_SIZE);
     // Done drawing
     mdc.SelectObject(wxNullBitmap);
-    m_bmp.SetMask(new wxMask(m_bmp, mask_color));
     return m_bmp;
 }
 
