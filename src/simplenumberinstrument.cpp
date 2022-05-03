@@ -186,21 +186,22 @@ wxBitmap SimpleNumberInstrument::Render(double scale)
     wxCoord title_x, title_y;
     wxCoord body_x, body_y;
     wxCoord dummy_x, dummy_y;
-    wxMemoryDC dc;
+    wxMemoryDC mdc;
 
     wxFont tf = m_title_font;
     tf.SetPointSize(m_title_font.GetPointSize() * scale);
-    dc.SetFont(tf);
-    dc.GetTextExtent(m_title, &title_x, &title_y);
+    mdc.SetFont(tf);
+    mdc.GetTextExtent(m_title, &title_x, &title_y);
     wxFont bf = m_body_font;
     bf.SetPointSize(m_body_font.GetPointSize() * scale);
-    dc.SetFont(bf);
-    dc.GetTextExtent(dummy_str, &dummy_x, &dummy_y);
-    dc.GetTextExtent(value, &body_x, &body_y);
+    mdc.SetFont(bf);
+    mdc.GetTextExtent(dummy_str, &dummy_x, &dummy_y);
+    mdc.GetTextExtent(value, &body_x, &body_y);
     size_x = (wxMax(title_x, wxMax(body_x, dummy_x)) + 2 * BORDER_SIZE);
     size_y = (title_y + body_y + 4 * BORDER_SIZE);
     m_bmp = wxBitmap(size_x, size_y);
-    dc.SelectObject(m_bmp);
+    mdc.SelectObject(m_bmp);
+    wxGCDC dc(mdc);
     // Draw stuff
     dc.SetBrush(wxBrush(cbb));
     dc.DrawRectangle(0, 0, size_x, size_y);
@@ -217,7 +218,7 @@ wxBitmap SimpleNumberInstrument::Render(double scale)
     dc.DrawRectangle(BORDER_LINE_WIDTH / 2, BORDER_LINE_WIDTH / 2,
         size_x - BORDER_LINE_WIDTH, size_y - BORDER_LINE_WIDTH);
     // Done drawing
-    dc.SelectObject(wxNullBitmap);
+    mdc.SelectObject(wxNullBitmap);
     return m_bmp;
 }
 

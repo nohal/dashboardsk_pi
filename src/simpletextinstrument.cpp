@@ -111,22 +111,23 @@ wxBitmap SimpleTextInstrument::Render(double scale)
     wxCoord body_x, body_y;
     wxCoord size_x, size_y;
 
-    wxMemoryDC dc;
+    wxMemoryDC mdc;
 
     wxFont tf = m_title_font;
     tf.SetPointSize(m_title_font.GetPointSize() * scale);
-    dc.SetFont(tf);
-    dc.GetTextExtent(m_title, &title_x, &title_y);
+    mdc.SetFont(tf);
+    mdc.GetTextExtent(m_title, &title_x, &title_y);
     wxFont bf = m_body_font;
     bf.SetPointSize(m_body_font.GetPointSize() * scale);
-    dc.SetFont(bf);
-    dc.GetTextExtent(value, &body_x, &body_y);
+    mdc.SetFont(bf);
+    mdc.GetTextExtent(value, &body_x, &body_y);
     size_x = (wxMax(title_x + 2 * BORDER_SIZE, body_x) + 4 * BORDER_SIZE);
     size_y = (title_y + body_y + 3 * BORDER_SIZE);
     m_bmp = wxBitmap(size_x, size_y);
-    dc.SelectObject(m_bmp);
-    dc.SetBackground(wxBrush(mask_color));
-    dc.Clear();
+    mdc.SelectObject(m_bmp);
+    mdc.SetBackground(wxBrush(mask_color));
+    mdc.Clear();
+    wxGCDC dc(mdc);
     // Draw stuff
     dc.SetPen(wxPen(cb, BORDER_LINE_WIDTH));
     dc.SetBrush(wxBrush(ctb));
@@ -144,7 +145,7 @@ wxBitmap SimpleTextInstrument::Render(double scale)
     dc.SetTextForeground(cbf);
     dc.DrawText(value, 2 * BORDER_SIZE, title_y + 2 * BORDER_SIZE);
     // Done drawing
-    dc.SelectObject(wxNullBitmap);
+    mdc.SelectObject(wxNullBitmap);
     m_bmp.SetMask(new wxMask(m_bmp, mask_color));
     return m_bmp;
 }

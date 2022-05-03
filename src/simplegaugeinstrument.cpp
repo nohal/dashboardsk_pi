@@ -219,7 +219,7 @@ wxBitmap SimpleGaugeInstrument::RenderAngle(double scale, bool relative)
     mask_color.SetRGB(mask_color.GetRGB() > 2 ? mask_color.GetRGB() - 1
                                               : mask_color.GetRGB() + 1);
 
-    wxMemoryDC dc;
+    wxMemoryDC mdc;
 
     wxCoord size_x = m_instrument_size;
     wxCoord size_y = m_instrument_size;
@@ -228,9 +228,10 @@ wxBitmap SimpleGaugeInstrument::RenderAngle(double scale, bool relative)
     wxCoord r = size_y / 2 - size_x / 200;
 
     m_bmp = wxBitmap(size_x, size_y);
-    dc.SelectObject(m_bmp);
-    dc.SetBackground(wxBrush(mask_color));
-    dc.Clear();
+    mdc.SelectObject(m_bmp);
+    mdc.SetBackground(wxBrush(mask_color));
+    mdc.Clear();
+    wxGCDC dc(mdc);
     // Gauge background
     dc.SetBrush(wxBrush(GetDimedColor(GetColorSetting(DSK_SGI_RIM_NOMINAL))));
     dc.SetPen(wxPen(GetDimedColor(GetColorSetting(DSK_SETTING_BORDER_COLOR))));
@@ -288,7 +289,7 @@ wxBitmap SimpleGaugeInstrument::RenderAngle(double scale, bool relative)
         size_x / 3, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
     dc.DrawText(value, xc - dc.GetTextExtent(value).GetX() / 2,
         yc - dc.GetTextExtent(value).GetY() / 4);
-    dc.SelectObject(wxNullBitmap);
+    mdc.SelectObject(wxNullBitmap);
     m_bmp.SetMask(new wxMask(m_bmp, mask_color));
     return m_bmp;
 }
@@ -320,8 +321,6 @@ wxBitmap SimpleGaugeInstrument::RenderAdaptive(double scale)
     mask_color.SetRGB(mask_color.GetRGB() > 2 ? mask_color.GetRGB() - 1
                                               : mask_color.GetRGB() + 1);
 
-    wxMemoryDC dc;
-
     wxCoord size_x = m_instrument_size;
     wxCoord size_y = m_instrument_size * (50 + PERC) / 100;
     wxCoord xc = size_x / 2;
@@ -329,9 +328,11 @@ wxBitmap SimpleGaugeInstrument::RenderAdaptive(double scale)
     wxCoord r = size_x / 2 - size_x / 200 - 1;
 
     m_bmp = wxBitmap(size_x, size_y);
-    dc.SelectObject(m_bmp);
-    dc.SetBackground(wxBrush(mask_color));
-    dc.Clear();
+    wxMemoryDC mdc;
+    mdc.SelectObject(m_bmp);
+    mdc.SetBackground(wxBrush(mask_color));
+    mdc.Clear();
+    wxGCDC dc(mdc);
     // Gauge background
     dc.SetBrush(wxBrush(GetDimedColor(GetColorSetting(DSK_SGI_RIM_NOMINAL))));
     dc.SetPen(wxPen(GetDimedColor(GetColorSetting(DSK_SETTING_BORDER_COLOR))));
@@ -450,7 +451,7 @@ wxBitmap SimpleGaugeInstrument::RenderAdaptive(double scale)
     dc.SetFont(wxFont(
         size_x / 3, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
     dc.DrawText(value, xc - dc.GetTextExtent(value).GetX() / 2, yc);
-    dc.SelectObject(wxNullBitmap);
+    mdc.SelectObject(wxNullBitmap);
     m_bmp.SetMask(new wxMask(m_bmp, mask_color));
     return m_bmp;
 #undef PERC
@@ -481,7 +482,7 @@ wxBitmap SimpleGaugeInstrument::RenderPercent(double scale)
     mask_color.SetRGB(mask_color.GetRGB() > 2 ? mask_color.GetRGB() - 1
                                               : mask_color.GetRGB() + 1);
 
-    wxMemoryDC dc;
+    wxMemoryDC mdc;
 
     wxCoord size_x = m_instrument_size;
     wxCoord size_y = m_instrument_size * (50 + PERC) / 100;
@@ -490,9 +491,10 @@ wxBitmap SimpleGaugeInstrument::RenderPercent(double scale)
     wxCoord r = size_x / 2 - size_x / 200 - 1;
 
     m_bmp = wxBitmap(size_x, size_y);
-    dc.SelectObject(m_bmp);
-    dc.SetBackground(wxBrush(mask_color));
-    dc.Clear();
+    mdc.SelectObject(m_bmp);
+    mdc.SetBackground(wxBrush(mask_color));
+    mdc.Clear();
+    wxGCDC dc(mdc);
     // Gauge background
     dc.SetBrush(wxBrush(GetDimedColor(GetColorSetting(DSK_SGI_RIM_NOMINAL))));
     dc.SetPen(wxPen(GetDimedColor(GetColorSetting(DSK_SETTING_BORDER_COLOR))));
@@ -575,7 +577,7 @@ wxBitmap SimpleGaugeInstrument::RenderPercent(double scale)
         size_x / 3, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
     dc.DrawText(value, xc - dc.GetTextExtent(value).GetX() / 2,
         yc - dc.GetTextExtent(value).GetY() / 1.8);
-    dc.SelectObject(wxNullBitmap);
+    mdc.SelectObject(wxNullBitmap);
     m_bmp.SetMask(new wxMask(m_bmp, mask_color));
     return m_bmp;
 #undef PERC
