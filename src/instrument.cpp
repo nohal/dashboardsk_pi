@@ -87,6 +87,7 @@ void Instrument::SetSetting(const wxString& key, const wxString& value)
     } else {
         m_config_vals[UNORDERED_KEY(key)] = value;
     }
+    m_needs_redraw = true;
 }
 
 void Instrument::SetSetting(const wxString& key, const wxColor& value)
