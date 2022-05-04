@@ -250,6 +250,8 @@ class SKPathBrowser : public wxDialog {
 private:
 protected:
     wxTreeCtrl* m_treePaths;
+    wxButton* m_btnCollapse;
+    wxButton* m_btnSelf;
     wxStdDialogButtonSizer* m_sdbSizerButtons;
     wxButton* m_sdbSizerButtonsOK;
     wxButton* m_sdbSizerButtonsCancel;
@@ -259,6 +261,11 @@ protected:
     {
         event.Skip();
     }
+    virtual void m_btnCollapseOnButtonClick(wxCommandEvent& event)
+    {
+        event.Skip();
+    }
+    virtual void m_btnSelfOnButtonClick(wxCommandEvent& event) { event.Skip(); }
     virtual void m_sdbSizerButtonsOnCancelButtonClick(wxCommandEvent& event)
     {
         event.Skip();

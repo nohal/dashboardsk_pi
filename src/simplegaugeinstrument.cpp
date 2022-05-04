@@ -418,7 +418,6 @@ wxBitmap SimpleGaugeInstrument::RenderAdaptive(double scale)
         dc.SetPen(wxPen(GetDimedColor(GetColorSetting(DSK_SGI_NEEDLE_FG)), 3));
         DrawNeedle(dc, xc, yc, r * 0.9,
             m_old_value * 240 / (upper - lower) - 90, 30, 20, 240);
-        std::cout << m_old_value << " " << upper << " " << lower << "\n";
     }
     // Text
     // Scale
@@ -513,7 +512,6 @@ wxBitmap SimpleGaugeInstrument::RenderPercent(double scale)
         dc.SetBrush(wxBrush(GetDimedColor(GetColorSetting(zone_color))));
         dc.SetPen(wxPen(GetDimedColor(GetColorSetting(zone_color))));
         DrawArc(dc, angle_to, angle_from, xc, yc, r);
-        // std::cout << angle_from << " " << angle_to << "\n";
     }
     // Face
     dc.SetBrush(wxBrush(GetDimedColor(GetColorSetting(DSK_SGI_DIAL_COLOR))));

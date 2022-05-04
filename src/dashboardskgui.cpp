@@ -623,6 +623,19 @@ SKPathBrowser::SKPathBrowser(wxWindow* parent, wxWindowID id,
         this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTR_DEFAULT_STYLE);
     bSizerMain->Add(m_treePaths, 1, wxALL | wxEXPAND, 5);
 
+    wxBoxSizer* bSizerButtons;
+    bSizerButtons = new wxBoxSizer(wxHORIZONTAL);
+
+    m_btnCollapse = new wxButton(
+        this, wxID_ANY, _("Collapse"), wxDefaultPosition, wxDefaultSize, 0);
+    bSizerButtons->Add(m_btnCollapse, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+    m_btnSelf = new wxButton(
+        this, wxID_ANY, _("Own vessel"), wxDefaultPosition, wxDefaultSize, 0);
+    bSizerButtons->Add(m_btnSelf, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+    bSizerButtons->Add(0, 0, 1, wxEXPAND, 5);
+
     m_sdbSizerButtons = new wxStdDialogButtonSizer();
     m_sdbSizerButtonsOK = new wxButton(this, wxID_OK);
     m_sdbSizerButtons->AddButton(m_sdbSizerButtonsOK);
@@ -630,7 +643,9 @@ SKPathBrowser::SKPathBrowser(wxWindow* parent, wxWindowID id,
     m_sdbSizerButtons->AddButton(m_sdbSizerButtonsCancel);
     m_sdbSizerButtons->Realize();
 
-    bSizerMain->Add(m_sdbSizerButtons, 0, wxEXPAND, 5);
+    bSizerButtons->Add(m_sdbSizerButtons, 0, wxEXPAND, 5);
+
+    bSizerMain->Add(bSizerButtons, 0, wxEXPAND, 5);
 
     this->SetSizer(bSizerMain);
     this->Layout();
@@ -640,6 +655,12 @@ SKPathBrowser::SKPathBrowser(wxWindow* parent, wxWindowID id,
     // Connect Events
     m_treePaths->Connect(wxEVT_COMMAND_TREE_SEL_CHANGED,
         wxTreeEventHandler(SKPathBrowser::m_treeCtrl1OnTreeSelChanged), NULL,
+        this);
+    m_btnCollapse->Connect(wxEVT_COMMAND_BUTTON_CLICKED,
+        wxCommandEventHandler(SKPathBrowser::m_btnCollapseOnButtonClick), NULL,
+        this);
+    m_btnSelf->Connect(wxEVT_COMMAND_BUTTON_CLICKED,
+        wxCommandEventHandler(SKPathBrowser::m_btnSelfOnButtonClick), NULL,
         this);
     m_sdbSizerButtonsCancel->Connect(wxEVT_COMMAND_BUTTON_CLICKED,
         wxCommandEventHandler(
@@ -655,6 +676,12 @@ SKPathBrowser::~SKPathBrowser()
     // Disconnect Events
     m_treePaths->Disconnect(wxEVT_COMMAND_TREE_SEL_CHANGED,
         wxTreeEventHandler(SKPathBrowser::m_treeCtrl1OnTreeSelChanged), NULL,
+        this);
+    m_btnCollapse->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED,
+        wxCommandEventHandler(SKPathBrowser::m_btnCollapseOnButtonClick), NULL,
+        this);
+    m_btnSelf->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED,
+        wxCommandEventHandler(SKPathBrowser::m_btnSelfOnButtonClick), NULL,
         this);
     m_sdbSizerButtonsCancel->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED,
         wxCommandEventHandler(

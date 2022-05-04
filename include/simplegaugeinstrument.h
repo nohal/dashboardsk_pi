@@ -206,24 +206,79 @@ protected:
     double m_max_val;
     /// Minimum value recorded by the instrument
     double m_min_val;
-
+    /// Size of the instrument in device independent pixels
     wxCoord m_instrument_size;
 
+    /// Draw arc sector. The arc is drawn counterclockwise from \c start_angle
+    /// to  \c end_angle
+    ///
+    /// \param dc Canvas to draw on
+    /// \param start_angle start angle in degrees
+    /// \param end_angle end angle in degrees
+    /// \param xc Horizontal coordinate of the center
+    /// \param yc Vertical coordinate of the center
+    /// \param r Radius
     void DrawArc(wxDC& dc, const int& start_angle, const int& end_angle,
         const wxCoord& xc, const wxCoord& yc, const wxCoord& r);
 
+    /// Draw tick marks on the perimeter of a circle
+    ///
+    /// \param dc Canvas to draw on
+    /// \param start_angle
+    /// \param angle_step
+    /// \param xc Horizontal coordinate of the center
+    /// \param yc Vertical coordinate of the center
+    /// \param r Outer radius
+    /// \param length Length of the tick towards the center
+    /// \param labels Whether labels should be attached to the tick marks
+    /// \param except_every Every except_every degree the label will not be
+    /// drawn \param relative If true, label -180..180 instead of 0..360 \param
+    /// draw_from Angular position of the first tick mark to draw \param draw_to
+    /// Angular position of the last tick mark to draw \param labels_from
+    /// Initial label value \param labels_step Step between labels
     void DrawTicks(wxDC& dc, const int& start_angle, const int& angle_step,
         const wxCoord& xc, const wxCoord& yc, const wxCoord& r,
         const wxCoord& length, bool labels = false, int except_every = 0,
         bool relative = false, int draw_from = 0, int draw_to = 360,
         int labels_from = 0, int labels_step = 0);
 
+    /// Draw the needle pointing to a point on the rim of the instrument
+    /// \param dc Canvas to draw on
+    /// \param xc Horizontal coordinate of the center
+    /// \param yc Vertical coordinate of the center
+    /// \param r Outer radius
+    /// \param angle Angle the needle points to
+    /// \param perc_length Length of the needle in percent of r
+    /// \param perc_width Width of the base of the needle in percent of r
+    /// \param start_angle Angle where the instrument scale starts
     void DrawNeedle(wxDC& dc, const wxCoord& xc, const wxCoord& yc,
         const wxCoord& r, const wxCoord& angle, const int& perc_length,
         const int& perc_width = 20, const int& start_angle = 270);
 
-    wxBitmap RenderAngle(double scale, bool relative = true);
+    /// Render an instrument visualizing percentages (= value on the 0..100
+    /// scale) into a bitmap
+    ///
+    /// \param scale scale of the instrument to be rendered (1.0 = natural
+    /// scale) \return Instrument rendered into a bitmap with alpha channel
     wxBitmap RenderPercent(double scale);
+
+    /// Render an instrument visualizing numerical value in a gauge with scale
+    /// automatically adapting to the values displayed The instrument adjusts
+    /// the range dynamically to be able to accomodate all the values
+    /// rhistorically received The scale uses nerarest power of 10 not to
+    /// fluctuate excessively and be able to label the ticks with integers
+    ///
+    /// \param scale scale of the instrument to be rendered (1.0 = natural
+    /// scale) \param relative True if the displayed angle value is relative to
+    /// the vessel (-180..180), false if absolute (0.360) \return Instrument
+    /// rendered into a bitmap with alpha channel
+    wxBitmap RenderAngle(double scale, bool relative = true);
+
+    /// Render the instrument visualizing percentages (= value on the 0..100
+    /// scale) into a bitmap
+    ///
+    /// \param scale scale of the instrument to be rendered (1.0 = natural
+    /// scale) \return Instrument rendered into a bitmap with alpha channel
     wxBitmap RenderAdaptive(double scale);
 
     /// Get color for a part of the instrument corresponding to a value to be

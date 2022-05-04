@@ -223,7 +223,7 @@ protected:
 
     /// Event handler for configurarion JSON editor
     ///
-    /// \param item The event object reference
+    /// \param event The event object reference
     virtual void m_btnCfgEditOnButtonClick(wxCommandEvent& event);
 };
 
@@ -254,6 +254,9 @@ public:
         m_sdbSizerBtnsCancel->Show();
     };
 
+    /// Get the displayed document as text
+    ///
+    /// \return (Hopefully) JSON text
     const wxString GetValue() { return m_scintillaCode->GetText(); }
 };
 

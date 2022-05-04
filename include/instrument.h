@@ -241,7 +241,7 @@ protected:
     /// in any zone) \param normal_color Color corresponding to normal value
     /// \param alert_color Color corresponding to an alert
     /// \param warn_color Color corresponding to a warning
-    /// \param alert_color Color corresponding to an alarm
+    /// \param alarm_color Color corresponding to an alarm
     /// \param emergency_color Color corresponding to an emergency
     /// \return Color
     const wxColor AdjustColorForZone(const double& val,
@@ -463,7 +463,7 @@ public:
     void ForceRedraw() { m_needs_redraw = true; };
 
     /// Transform the value using function implemented for the value of
-    /// #m_transformation. Every transformation defined in
+    /// #transformation. Every transformation defined in
     /// #Instrument::transformation and DSK_UNIT_TRANSFORMATIONS
     /// macro has to be covered here.
     ///
