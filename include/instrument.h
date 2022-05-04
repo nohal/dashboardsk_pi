@@ -43,10 +43,13 @@ PLUGIN_BEGIN_NAMESPACE
 
 #if defined(__WXGTK__)
 #define AUTO_TEXT_SIZE_COEF 1.5
+#define AUTO_TEXT_SHIFT_COEF 1.0
 #elif defined(__WXMSW__)
-#define AUTO_TEXT_SIZE_COEF 1.5
+#define AUTO_TEXT_SIZE_COEF 1.2
+#define AUTO_TEXT_SHIFT_COEF 1.2
 #else
 #define AUTO_TEXT_SIZE_COEF 1.0
+#define AUTO_TEXT_SHIFT_COEF 1.0
 #endif
 
 // TODO: Add the other "general" setting names like DSK_SNI_TRANSFORMATION

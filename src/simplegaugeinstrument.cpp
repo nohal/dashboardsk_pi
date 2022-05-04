@@ -220,7 +220,7 @@ wxBitmap SimpleGaugeInstrument::RenderAngle(double scale, bool relative)
     wxCoord size_y = m_instrument_size;
     wxCoord xc = size_x / 2;
     wxCoord yc = size_y / 2;
-    wxCoord r = size_y / 2 - size_x / 200;
+    wxCoord r = size_y / 2 - size_x / 200 - 1;
 
     m_bmp = wxBitmap(size_x, size_y);
 #ifndef __WXGTK__
@@ -289,7 +289,7 @@ wxBitmap SimpleGaugeInstrument::RenderAngle(double scale, bool relative)
     dc.SetFont(wxFont(size_x / 3 / AUTO_TEXT_SIZE_COEF, wxFONTFAMILY_SWISS,
         wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
     dc.DrawText(value, xc - dc.GetTextExtent(value).GetX() / 2,
-        yc - dc.GetTextExtent(value).GetY() / 4);
+        yc - dc.GetTextExtent(value).GetY() / 4 * AUTO_TEXT_SHIFT_COEF);
     mdc.SelectObject(wxNullBitmap);
     return m_bmp;
 }
@@ -450,7 +450,8 @@ wxBitmap SimpleGaugeInstrument::RenderAdaptive(double scale)
         GetDimedColor(GetColor(m_old_value, color_item::value)));
     dc.SetFont(wxFont(size_x / 3 / AUTO_TEXT_SIZE_COEF, wxFONTFAMILY_SWISS,
         wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
-    dc.DrawText(value, xc - dc.GetTextExtent(value).GetX() / 2, yc);
+    dc.DrawText(value, xc - dc.GetTextExtent(value).GetX() / 2,
+        yc / AUTO_TEXT_SHIFT_COEF);
     mdc.SelectObject(wxNullBitmap);
     return m_bmp;
 #undef PERC
@@ -575,7 +576,7 @@ wxBitmap SimpleGaugeInstrument::RenderPercent(double scale)
     dc.SetFont(wxFont(size_x / 3 / AUTO_TEXT_SIZE_COEF, wxFONTFAMILY_SWISS,
         wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
     dc.DrawText(value, xc - dc.GetTextExtent(value).GetX() / 2,
-        yc - dc.GetTextExtent(value).GetY() / 1.8);
+        yc - dc.GetTextExtent(value).GetY() / 1.8 * AUTO_TEXT_SHIFT_COEF);
     mdc.SelectObject(wxNullBitmap);
     return m_bmp;
 #undef PERC
