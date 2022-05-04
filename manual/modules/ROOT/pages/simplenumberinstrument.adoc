@@ -1,0 +1,8 @@
+:imagesdir: ../images/
+== Simple number instrument
+
+image::simplenumberinstrument_screenshot.png[Simple number instrument]
+
+=== Configuration parameters
+
+* TODO

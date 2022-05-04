@@ -1,0 +1,18 @@
+:imagesdir: ../images/
+== Installation
+
+* Open the OpenCPN Toolbox by clicking on the cogwheel icon in the main toolbar
+* Navigate to the `Plugins` tab
+* Update the plugin catalog using the button on the bottom
+* Find the DashboardSK tile in the list of available plugins and click on it
+* In the presented dialog click the `Install` button
+
+image::pluginmanager.png[OpenCPN plugin manager]
+
+=== Configuration
+
+* Open the OpenCPN Toolbox by clicking on the cogwheel icon in the main toolbar
+* Navigate to the `Plugins` tab
+* Select the DashboardSK tile and click on the `Preferences` button
+
+image::preferences.png[DashboardSK preferences dialog]

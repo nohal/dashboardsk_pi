@@ -1,7 +1,7 @@
 :imagesdir: ../images/
 == Plugin DashboardSK_pi
 
-image::dashboardsk_pi_icon.png[]]
+image::dashboardsk_pi_icon.png[DashboardSK in action screenshot]
 
 === Features
 
@@ -12,17 +12,38 @@ The data is displayed using configurable overlay instruments docked to any edge 
 
 ==== Simple number
 
-Simple instrument displaying a value of one SignalK path with configurable formatting and transformations.
+Simple instrument displaying a numerical value of one SignalK path with configurable formatting and transformations.
 
 Example uses: speed, wind speed, temperature, voltage, heading etc.
 
+* xref:simplenumberinstrument.adoc[Detailed documentation]
+
+==== Simple gauge
+
+Simple gauge instrument displaying a numerical value of one SignalK path with configurable formatting and transformations.
+Especially suitable for angles, directions and ratios, but also supports arbitrary numerical values.
+
+Example uses: wind angle, COG, tank level, like `environment.wind.angleApparent` or `tank.*.currentLevel`
+
+==== Simple text
+
+Simple instrument displaying a textual SignalK value
+
+Example uses: all SignalK `enum` paths, like `navigation.state`
+
+==== Simple position
+
+Simple instrument displaying a geographic position in configurable text format
+
+Example uses: all SignalK position paths, like `navigation.position`
+
 === Installation
 
-Use the integrated plugin manager to install the plugin.
+Use the xref:installation.adoc[integrated plugin manager] to install the plugin.
 
 === Configuration
 
-The configuration of the plugin can be accessed from the _Plugins_ tab of the _OpenCPN Toolbox_ by clicking the _Preferences_ button on the tile representing the DashboardSK plugin.
+The xref:installation.adoc[configuration of the plugin] can be accessed from the _Plugins_ tab of the _OpenCPN Toolbox_ by clicking the _Preferences_ button on the tile representing the DashboardSK plugin.
 
 === Links
 
