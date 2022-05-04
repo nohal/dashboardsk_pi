@@ -51,7 +51,7 @@ The end user documentation integrates to the [OpenCPN plugin documentation frame
 Everything used from the code should be SVG, think at least twice before using a bitmap as the master source of the image. The only place where bitmaps make sense is the documentation.
 
 - Process all the SVG images with [svgo](https://github.com/svg/svgo) - run `svgo --multipass --pretty <your>.svg` on it
-- Process all PNG images with `optipng` or similar tool
+- Process all PNG images with `oxipng`, `optipng` or similar tool (In case you use `pre-commit` hooks as configured in this repository, the PNG images are optimized automatically before being commited to the repository)
 - Do not use JPEG or any other format using lossy compression for images (Why would you?)
 
 ### GUI
