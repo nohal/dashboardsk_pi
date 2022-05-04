@@ -1,0 +1,8 @@
+:imagesdir: ../images/
+== Simple text instrument
+
+image::simpletextinstrument_screenshot.png[Simple text instrument]
+
+=== Configuration parameters
+
+* TODO

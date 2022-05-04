@@ -1,0 +1,8 @@
+:imagesdir: ../images/
+== Simple gauge instrument
+
+image::simplegaugeinstrument_screenshot.png[Simple gauge instrument]
+
+=== Configuration parameters
+
+* TODO

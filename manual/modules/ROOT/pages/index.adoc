@@ -25,17 +25,23 @@ Especially suitable for angles, directions and ratios, but also supports arbitra
 
 Example uses: wind angle, COG, tank level, like `environment.wind.angleApparent` or `tank.*.currentLevel`
 
+* xref:simplegaugeinstrument.adoc[Detailed documentation]
+
 ==== Simple text
 
-Simple instrument displaying a textual SignalK value
+Simple instrument displaying a textual SignalK value. The instrument is not suitable to display compound balues like position, use the respective specialozed instruments for these.
 
 Example uses: all SignalK `enum` paths, like `navigation.state`
 
+* xref:simpletextinstrument.adoc[Detailed documentation]
+
 ==== Simple position
 
-Simple instrument displaying a geographic position in configurable text format
+Simple instrument displaying a geographic position in configurable text format.
 
 Example uses: all SignalK position paths, like `navigation.position`
+
+* xref:simplepositioninstrument.adoc[Detailed documentation]
 
 === Installation
 

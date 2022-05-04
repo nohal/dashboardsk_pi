@@ -1,0 +1,8 @@
+:imagesdir: ../images/
+== Simple position instrument
+
+image::simplepositioninstrument_screenshot.png[Simple position instrument]
+
+=== Configuration parameters
+
+* TODO
