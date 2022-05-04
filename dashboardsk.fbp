@@ -3484,7 +3484,7 @@
                         <property name="window_extra_style"></property>
                         <property name="window_name"></property>
                         <property name="window_style"></property>
-                        <event name="OnTreeSelChanged">m_treeCtrl1OnTreeSelChanged</event>
+                        <event name="OnTreeSelChanged">m_treePathOnTreeSelChanged</event>
                     </object>
                 </object>
                 <object class="sizeritem" expanded="0">

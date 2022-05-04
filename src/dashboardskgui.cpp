@@ -654,7 +654,7 @@ SKPathBrowser::SKPathBrowser(wxWindow* parent, wxWindowID id,
 
     // Connect Events
     m_treePaths->Connect(wxEVT_COMMAND_TREE_SEL_CHANGED,
-        wxTreeEventHandler(SKPathBrowser::m_treeCtrl1OnTreeSelChanged), NULL,
+        wxTreeEventHandler(SKPathBrowser::m_treePathOnTreeSelChanged), NULL,
         this);
     m_btnCollapse->Connect(wxEVT_COMMAND_BUTTON_CLICKED,
         wxCommandEventHandler(SKPathBrowser::m_btnCollapseOnButtonClick), NULL,
@@ -675,7 +675,7 @@ SKPathBrowser::~SKPathBrowser()
 {
     // Disconnect Events
     m_treePaths->Disconnect(wxEVT_COMMAND_TREE_SEL_CHANGED,
-        wxTreeEventHandler(SKPathBrowser::m_treeCtrl1OnTreeSelChanged), NULL,
+        wxTreeEventHandler(SKPathBrowser::m_treePathOnTreeSelChanged), NULL,
         this);
     m_btnCollapse->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED,
         wxCommandEventHandler(SKPathBrowser::m_btnCollapseOnButtonClick), NULL,

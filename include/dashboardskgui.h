@@ -257,7 +257,7 @@ protected:
     wxButton* m_sdbSizerButtonsCancel;
 
     // Virtual event handlers, override them in your derived class
-    virtual void m_treeCtrl1OnTreeSelChanged(wxTreeEvent& event)
+    virtual void m_treePathOnTreeSelChanged(wxTreeEvent& event)
     {
         event.Skip();
     }
