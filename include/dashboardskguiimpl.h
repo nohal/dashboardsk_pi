@@ -302,6 +302,12 @@ public:
     /// \param sk_tree Pointer to the \c wxJSONValue holding the data
     void SetSKTree(wxJSONValue* sk_tree);
 
+    // Set ID of own vessel
+    /// Must be called before \c SetSKTree
+    ///
+    /// \param self String SignalK  ID of the own vessel
+    void SetSelf(const wxString& self);
+
 protected:
     /// Event handler for click on the button invoking the path selection from a
     /// tree of known values
@@ -313,6 +319,9 @@ protected:
 private:
     /// Pointer to the \c wxJSONValue object holding SignalK data
     wxJSONValue* m_sk_tree;
+
+    /// ID of the own vessel
+    wxString m_self;
 
     /// Obligatory for the widget
     wxDECLARE_DYNAMIC_CLASS(SKKeyCtrlImpl);
@@ -356,6 +365,16 @@ public:
     /// \param sk_tree Pointer to the \c wxJSONValue holding the data
     void SetSKTree(wxJSONValue* sk_tree);
 
+    /// Set ID of own vessel
+    /// Must be called before \c SetSKTree
+    ///
+    /// \param self String SignalK  ID of the own vessel
+    void SetSelf(const wxString& self);
+
+protected:
+    virtual void m_btnCollapseOnButtonClick(wxCommandEvent& event);
+    virtual void m_btnSelfOnButtonClick(wxCommandEvent& event);
+
 private:
     /// Recursively populate the tree control with known children from the
     /// SignalK data
@@ -367,6 +386,12 @@ private:
 
     /// Pointer to the object holding the SignalK data
     wxJSONValue m_sk_tree;
+
+    /// ID of the own vessel
+    wxString m_self;
+
+    /// Tree item ID of the own vessel
+    wxTreeItemId m_self_item_id;
 };
 
 /// Implementation of the widget for editing warning and alarm zones. To obtain

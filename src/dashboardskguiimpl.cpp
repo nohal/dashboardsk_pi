@@ -191,7 +191,8 @@ void MainConfigFrameImpl::EnableItemsForSelectedDashboard()
         m_edited_dashboard = m_dsk_pi->GetDSK()->GetDashboard(
             m_comboDashboard->GetSelection());
         EnableItems(m_comboDashboard->GetCount() > 0,
-            m_edited_dashboard->HasInstruments(), true, false);
+            m_edited_dashboard->HasInstruments(), true,
+            m_edited_dashboard->HasInstruments());
         if (m_edited_dashboard->HasInstruments() && !m_edited_instrument) {
             m_lbInstruments->SetSelection(0);
             m_edited_instrument = m_edited_dashboard->GetInstrument(0);
@@ -467,6 +468,7 @@ void MainConfigFrameImpl::FillInstrumentDetails()
             auto* skk = new SKKeyCtrlImpl(m_swConfig);
             skk->SetName(ctrl.key);
             skk->SetValue(m_edited_instrument->GetStringSetting(ctrl.key));
+            skk->SetSelf(m_dsk_pi->GetDSK()->Self());
             skk->SetSKTree(m_dsk_pi->GetDSK()->GetSignalKTree());
             SettingsItemSizer->Add(
                 skk, 0, wxALIGN_CENTER_VERTICAL | wxALL | wxEXPAND, 5);
@@ -899,6 +901,8 @@ SKPathBrowserImpl::SKPathBrowserImpl(wxWindow* parent, wxWindowID id,
     : SKPathBrowser(parent, id, title, pos, size, style)
 {
     DimeWindow(this);
+    m_self = wxEmptyString;
+    m_self_item_id = m_treePaths->GetRootItem();
 }
 
 wxString SKPathBrowserImpl::GetSKPath()
@@ -925,8 +929,10 @@ void SKPathBrowserImpl::SetSKTree(wxJSONValue* sk_tree)
     if (!root.IsOk()) {
         root = m_treePaths->AddRoot("SignalK");
     }
+    m_self_item_id = root;
     AddChildren(root, m_sk_tree);
     m_treePaths->ExpandAll();
+    m_btnCollapse->SetLabel(_("Collapse"));
 }
 
 void SKPathBrowserImpl::AddChildren(wxTreeItemId parent, wxJSONValue& json_node)
@@ -938,11 +944,33 @@ void SKPathBrowserImpl::AddChildren(wxTreeItemId parent, wxJSONValue& json_node)
                 // TODO: Isn't there a "legal" node with some of the above
                 // names?
                 wxTreeItemId child = m_treePaths->AppendItem(parent, member);
+                if (member.IsSameAs(m_self)) {
+                    m_self_item_id = child;
+                }
                 AddChildren(child, json_node[member]);
             }
         }
     }
 }
+
+void SKPathBrowserImpl::m_btnCollapseOnButtonClick(wxCommandEvent& event)
+{
+    if (m_treePaths->IsExpanded(m_treePaths->GetRootItem())) {
+        m_treePaths->CollapseAll();
+        m_btnCollapse->SetLabel(_("Expand"));
+    } else {
+        m_treePaths->ExpandAll();
+        m_btnCollapse->SetLabel(_("Collapse"));
+    }
+    event.Skip();
+}
+
+void SKPathBrowserImpl::m_btnSelfOnButtonClick(wxCommandEvent& event)
+{
+    m_treePaths->SetFocusedItem(m_self_item_id);
+}
+
+void SKPathBrowserImpl::SetSelf(const wxString& self) { m_self = self; }
 
 //====================================
 // SKKeyCtrlImpl
@@ -969,6 +997,8 @@ void SKKeyCtrlImpl::SetValue(const wxString& value) const
 
 void SKKeyCtrlImpl::SetSKTree(wxJSONValue* sk_tree) { m_sk_tree = sk_tree; }
 
+void SKKeyCtrlImpl::SetSelf(const wxString& self) { m_self = self; }
+
 wxSize SKKeyCtrlImpl::DoGetBestSize() const
 {
     wxSize s1 = m_tSKKey->GetBestSize();
@@ -981,6 +1011,7 @@ void SKKeyCtrlImpl::m_btnSelectOnButtonClick(wxCommandEvent& event)
 {
     wxWindowPtr<SKPathBrowserImpl> dlg(
         new SKPathBrowserImpl(this, wxID_ANY, m_tSKKey->GetValue()));
+    dlg->SetSelf(m_self);
     dlg->SetSKTree(m_sk_tree);
     dlg->ShowWindowModalThenDo([this, dlg](int retcode) {
         if (retcode == wxID_OK) {
