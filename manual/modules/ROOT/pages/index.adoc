@@ -1,12 +1,15 @@
 :imagesdir: ../images/
 == Plugin DashboardSK_pi
 
-image::dashboardsk_pi_icon.png[DashboardSK in action screenshot]
+image::dashboardsk_pi_icon.png[DashboardSK logo]
 
 === Features
 
 The plugin provides universal data display based on the https://signalk.org[SignalK] data model.
-The data is displayed using configurable overlay instruments docked to any edge of chart canvas.
+The data is displayed using configurable overlay instruments anchored to any edge of chart canvas.
+The instruments may also be configured to trigger alarms based on the values they process.
+
+image::screenshot.png[DashboardSK in action screenshot]
 
 === Available instruments
 
