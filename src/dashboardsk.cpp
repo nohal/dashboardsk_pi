@@ -40,6 +40,7 @@ DashboardSK::DashboardSK()
 
 void DashboardSK::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
 {
+    Dashboard::ClearOffsets();
     for (auto& dashboard : m_dashboards) {
         dashboard.Draw(dc, vp, canvasIndex);
     }

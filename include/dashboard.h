@@ -32,6 +32,8 @@
 #include "ocpn_plugin.h"
 #include "pi_common.h"
 #include "wx/jsonval.h"
+#include <map>
+#include <tuple>
 
 #define DEFAULT_OFFSET_X 50
 #define DEFAULT_OFFSET_Y 40
@@ -77,6 +79,27 @@ private:
     DashboardSK* m_parent;
     /// Color scheme
     int m_color_scheme;
+
+    struct canvas_edge_anchor {
+    public:
+        int canvas;
+        anchor_edge edge;
+
+        canvas_edge_anchor(int c, anchor_edge e)
+            : canvas(c)
+            , edge(e) {};
+
+        bool operator<(const canvas_edge_anchor& R) const
+        {
+            return std::tie(canvas, edge) < std::tie(R.canvas, R.edge);
+        }
+    };
+
+    /// Cumulative offsets from the edges
+    /// Increased as each dashboard is drawn
+    /// Have to be nulled by DashboardSK  calling \c ClearOffsets before each
+    /// round of rendering
+    static map<canvas_edge_anchor, wxCoord> m_offsets;
 
 public:
     /// Constructor
@@ -278,6 +301,10 @@ public:
             i->ForceRedraw();
         }
     };
+
+    /// Clear the cumulative offsets from the canvas edges, needs to be called
+    /// every time before the dashboard rendering loop
+    static void ClearOffsets() { m_offsets.clear(); }
 };
 
 PLUGIN_END_NAMESPACE

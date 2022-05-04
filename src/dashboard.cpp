@@ -32,6 +32,8 @@ PLUGIN_BEGIN_NAMESPACE
 vector<wxString> Dashboard::AnchorEdgeLabels { _("Bottom"), _("Top"), _("Left"),
     _("Right") };
 
+map<Dashboard::canvas_edge_anchor, wxCoord> Dashboard::m_offsets;
+
 Dashboard::Dashboard()
     : m_name(wxEmptyString)
     , m_canvas_nr(0)
@@ -65,28 +67,34 @@ void Dashboard::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
     wxCoord start_pos;
     int dir = 1;
     size_t row_nr = 0;
+    wxCoord dashboard_offset = 0;
+    if (m_offsets.find(canvas_edge_anchor(canvasIndex, m_anchor))
+        != m_offsets.end()) {
+        dashboard_offset = m_offsets[canvas_edge_anchor(canvasIndex, m_anchor)];
+        m_offsets[canvas_edge_anchor(canvasIndex, m_anchor)] = 0;
+    }
     switch (m_anchor) {
     case anchor_edge::bottom:
         dir = -1;
         row_offset = m_offset_y;
         x = m_offset_x;
-        start_pos = canvas_height;
+        start_pos = canvas_height - dashboard_offset;
         row_nr = 1;
         break;
     case anchor_edge::top:
         dir = 1;
         row_offset = m_offset_y;
         x = m_offset_x;
-        start_pos = 0;
+        start_pos = dashboard_offset;
         break;
     case anchor_edge::left:
         dir = 1;
         y = m_offset_y;
-        start_pos = m_offset_x;
+        start_pos = m_offset_x + dashboard_offset;
         break;
     case anchor_edge::right:
         dir = -1;
-        start_pos = canvas_width - m_offset_x;
+        start_pos = canvas_width - m_offset_x - dashboard_offset;
         row_nr = 1;
         y = m_offset_y;
         break;
@@ -133,6 +141,8 @@ void Dashboard::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
             }
         }
     }
+    m_offsets[canvas_edge_anchor(canvasIndex, m_anchor)]
+        += row_offset + current_row_size;
 }
 
 void Dashboard::SetColorScheme(int cs)
