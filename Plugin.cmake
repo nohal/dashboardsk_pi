@@ -57,6 +57,7 @@ set(HDR_DASHBOARD
         ${CMAKE_SOURCE_DIR}/include/simplenumberinstrument.h
         ${CMAKE_SOURCE_DIR}/include/simplegaugeinstrument.h
         ${CMAKE_SOURCE_DIR}/include/simpletextinstrument.h
+        ${CMAKE_SOURCE_DIR}/include/simplepositioninstrument.h
         )
 set(SRC_DASHBOARD
         ${CMAKE_SOURCE_DIR}/src/dashboardsk.cpp
@@ -65,6 +66,7 @@ set(SRC_DASHBOARD
         ${CMAKE_SOURCE_DIR}/src/simplenumberinstrument.cpp
         ${CMAKE_SOURCE_DIR}/src/simplegaugeinstrument.cpp
         ${CMAKE_SOURCE_DIR}/src/simpletextinstrument.cpp
+        ${CMAKE_SOURCE_DIR}/src/simplepositioninstrument.cpp
         )
 
 

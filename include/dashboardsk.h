@@ -37,6 +37,7 @@
 // All the instrument class headers must be included here
 #include "simplegaugeinstrument.h"
 #include "simplenumberinstrument.h"
+#include "simplepositioninstrument.h"
 #include "simpletextinstrument.h"
 //#include "andanotherinstrument.h"
 // All the instrument classes must be defined here
@@ -44,7 +45,8 @@
     X(0, SimpleNumberInstrument)                                               \
     X(1, SimpleGaugeInstrument)                                                \
     X(2, SimpleTextInstrument)                                                 \
-    // X(3, AndAnotherInstrument)
+    X(3, SimplePositionInstrument)                                             \
+    // X(4, AndAnotherInstrument)
 
 PLUGIN_BEGIN_NAMESPACE
 

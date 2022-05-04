@@ -89,7 +89,7 @@ PLUGIN_BEGIN_NAMESPACE
     X(Instrument::transformation::pa2psi, _("Pa -> psi"))                      \
     X(Instrument::transformation::hz2rpm, _("Hz -> RPM"))
 
-// Table of supported formats and the respective formatting strings
+// Table of supported numerical formats and the respective formatting strings
 #define DSK_VALUE_FORMATS                                                      \
     X(0, "9.9", "%.1f")                                                        \
     X(1, "9.99", "%.2f")                                                       \
@@ -100,6 +100,16 @@ PLUGIN_BEGIN_NAMESPACE
     X(6, "09.9", "%04.1f")                                                     \
     X(7, "09.99", "%05.2f")                                                    \
     X(8, "009.99", "%06.2f")
+
+// Table of supported position formats
+#define DSK_POSITION_FORMATS                                                   \
+    X(Instrument::position_format::decimal_deg, "DDD.ddddd")                   \
+    X(Instrument::position_format::deg_decimal_min, "DDD\u00B0MM.mmm'H")       \
+    X(Instrument::position_format::deg_min_sec, "DDD\u00B0MM'SS.s\"H")         \
+    X(Instrument::position_format::decimal_deg_hem, "DDD.dddddH")              \
+    X(Instrument::position_format::hem_decimal_deg, "HDDD.ddddd")              \
+    X(Instrument::position_format::hem_deg_decimal_min, "HDDD\u00B0MM.mmm'")   \
+    X(Instrument::position_format::hem_deg_min_sec, "HDD\u00B0MM'SS.s\"")
 
 /// Key-value pair unordered map for instrument configuration parameters
 #if wxCHECK_VERSION(3, 1, 0)
@@ -188,6 +198,25 @@ public:
         pa2psi,
         /// Hertz to revolutions per minute
         hz2rpm
+    };
+
+    /// Supported formats for position
+    enum class position_format {
+        /// Decimal degrees
+        decimal_deg = 0,
+        /// Degrees, decimal minutes with hemisphere
+        deg_decimal_min,
+        /// Degrees, minutes, seconds with hemisphere
+        deg_min_sec,
+        /// Decimal degrees with hemisphere
+        decimal_deg_hem,
+        /// Decimal degrees with hemisphere at the beginning
+        hem_decimal_deg,
+        /// Degrees and decimal minutes with hemisphere at the beginning
+        hem_deg_decimal_min,
+        /// Degrees minutes and seconds with hemisphere at the beginning
+        hem_deg_min_sec
+
     };
 
 protected:
