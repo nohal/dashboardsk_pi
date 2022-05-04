@@ -110,7 +110,7 @@ public:
     MainConfigFrameImpl(dashboardsk_pi* dsk_pi, wxWindow* parent,
         wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString,
         const wxPoint& pos = wxDefaultPosition,
-        const wxSize& size = wxSize(640, 500),
+        const wxSize& size = wxSize(650, 520),
         long style = wxDEFAULT_FRAME_STYLE | wxTAB_TRAVERSAL);
     ~MainConfigFrameImpl() = default;
 

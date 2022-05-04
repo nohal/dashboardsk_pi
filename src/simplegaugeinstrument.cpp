@@ -223,7 +223,9 @@ wxBitmap SimpleGaugeInstrument::RenderAngle(double scale, bool relative)
     wxCoord r = size_y / 2 - size_x / 200;
 
     m_bmp = wxBitmap(size_x, size_y);
+#ifndef __WXGTK__
     m_bmp.UseAlpha();
+#endif
     mdc.SelectObject(m_bmp);
     wxGCDC dc(mdc);
     dc.SetBackground(*wxTRANSPARENT_BRUSH);
@@ -318,7 +320,9 @@ wxBitmap SimpleGaugeInstrument::RenderAdaptive(double scale)
     wxCoord r = size_x / 2 - size_x / 200 - 1;
 
     m_bmp = wxBitmap(size_x, size_y);
+#ifndef __WXGTK__
     m_bmp.UseAlpha();
+#endif
     wxMemoryDC mdc;
     mdc.SelectObject(m_bmp);
     wxGCDC dc(mdc);
@@ -475,7 +479,9 @@ wxBitmap SimpleGaugeInstrument::RenderPercent(double scale)
     wxCoord r = size_x / 2 - size_x / 200 - 1;
 
     m_bmp = wxBitmap(size_x, size_y);
+#ifndef __WXGTK__
     m_bmp.UseAlpha();
+#endif
     mdc.SelectObject(m_bmp);
     wxGCDC dc(mdc);
     dc.SetBackground(*wxTRANSPARENT_BRUSH);

@@ -121,7 +121,9 @@ wxBitmap SimpleTextInstrument::Render(double scale)
     size_x = (wxMax(title_x + 2 * BORDER_SIZE, body_x) + 4 * BORDER_SIZE);
     size_y = (title_y + body_y + 3 * BORDER_SIZE);
     m_bmp = wxBitmap(size_x, size_y);
+#ifndef __WXGTK__
     m_bmp.UseAlpha();
+#endif
     mdc.SelectObject(m_bmp);
     wxGCDC dc(mdc);
     dc.SetBackground(*wxTRANSPARENT_BRUSH);
