@@ -41,6 +41,14 @@ PLUGIN_BEGIN_NAMESPACE
 #define LUMIMOSITY_NIGHT (-0.8)
 #define LUMIMOSITY_DUSK (-0.5)
 
+#if defined(__WXGTK__)
+#define AUTO_TEXT_SIZE_COEF 1.5
+#elif defined(__WXMSW__)
+#define AUTO_TEXT_SIZE_COEF 1.5
+#else
+#define AUTO_TEXT_SIZE_COEF 1.0
+#endif
+
 // TODO: Add the other "general" setting names like DSK_SNI_TRANSFORMATION
 #define DSK_SETTING_ZONES "zones"
 #define DSK_SETTING_SK_KEY "sk_key"

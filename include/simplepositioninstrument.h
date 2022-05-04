@@ -157,7 +157,7 @@ public:
     /// their respective unique value
     ///
     /// \return Name of the instrument gauge
-    static wxString DisplayType() { return _("Simple text"); };
+    static wxString DisplayType() { return _("Simple position"); };
 
     wxBitmap Render(double scale) override;
 

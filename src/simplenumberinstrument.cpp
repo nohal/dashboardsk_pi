@@ -201,7 +201,10 @@ wxBitmap SimpleNumberInstrument::Render(double scale)
     size_y = (title_y + body_y + 4 * BORDER_SIZE);
     m_bmp = wxBitmap(size_x, size_y);
 #ifndef __WXGTK__
+    m_bmp = wxBitmap(size_x, size_y);
     m_bmp.UseAlpha();
+#else
+    m_bmp = wxBitmap(size_x, size_y, 32);
 #endif
     mdc.SelectObject(m_bmp);
     wxGCDC dc(mdc);

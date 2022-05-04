@@ -224,7 +224,10 @@ wxBitmap SimpleGaugeInstrument::RenderAngle(double scale, bool relative)
 
     m_bmp = wxBitmap(size_x, size_y);
 #ifndef __WXGTK__
+    m_bmp = wxBitmap(size_x, size_y);
     m_bmp.UseAlpha();
+#else
+    m_bmp = wxBitmap(size_x, size_y, 32);
 #endif
     mdc.SelectObject(m_bmp);
     wxGCDC dc(mdc);
@@ -252,16 +255,16 @@ wxBitmap SimpleGaugeInstrument::RenderAngle(double scale, bool relative)
     dc.DrawCircle(xc, yc, r * 0.85);
     // Ticks
     dc.SetTextForeground(GetDimedColor(GetColorSetting(DSK_SGI_TICK_LEGEND)));
-    dc.SetFont(wxFont(size_x / 12, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL,
-        wxFONTWEIGHT_NORMAL));
+    dc.SetFont(wxFont(size_x / 12 / AUTO_TEXT_SIZE_COEF, wxFONTFAMILY_SWISS,
+        wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
     dc.SetPen(
         wxPen(GetDimedColor(GetColorSetting(DSK_SGI_TICK_FG)), size_x / 200));
     DrawTicks(dc, 0, 30, xc, yc, r, r * 0.15, true, 90, relative);
     DrawTicks(dc, 0, 10, xc, yc, r, r * 0.1);
     dc.SetPen(
         wxPen(GetDimedColor(GetColorSetting(DSK_SGI_TICK_FG)), size_x / 100));
-    dc.SetFont(wxFont(size_x / 12, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL,
-        wxFONTWEIGHT_BOLD));
+    dc.SetFont(wxFont(size_x / 12 / AUTO_TEXT_SIZE_COEF, wxFONTFAMILY_SWISS,
+        wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
     DrawTicks(dc, 0, 90, xc, yc, r, r * 0.2, true, 0, relative);
     // Border
     dc.SetBrush(*wxTRANSPARENT_BRUSH);
@@ -276,15 +279,15 @@ wxBitmap SimpleGaugeInstrument::RenderAngle(double scale, bool relative)
     // Label
     dc.SetTextForeground(
         GetDimedColor(GetColor(m_old_value, color_item::title)));
-    dc.SetFont(wxFont(size_x / 8, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL,
-        wxFONTWEIGHT_NORMAL));
+    dc.SetFont(wxFont(size_x / 8 / AUTO_TEXT_SIZE_COEF, wxFONTFAMILY_SWISS,
+        wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
     dc.DrawText(m_title, xc - dc.GetTextExtent(m_title).GetX() / 2,
         yc - dc.GetTextExtent(m_title).GetY() * 1.5);
     // Data
     dc.SetTextForeground(
         GetDimedColor(GetColor(m_old_value, color_item::value)));
-    dc.SetFont(wxFont(
-        size_x / 3, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
+    dc.SetFont(wxFont(size_x / 3 / AUTO_TEXT_SIZE_COEF, wxFONTFAMILY_SWISS,
+        wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
     dc.DrawText(value, xc - dc.GetTextExtent(value).GetX() / 2,
         yc - dc.GetTextExtent(value).GetY() / 4);
     mdc.SelectObject(wxNullBitmap);
@@ -321,7 +324,10 @@ wxBitmap SimpleGaugeInstrument::RenderAdaptive(double scale)
 
     m_bmp = wxBitmap(size_x, size_y);
 #ifndef __WXGTK__
+    m_bmp = wxBitmap(size_x, size_y);
     m_bmp.UseAlpha();
+#else
+    m_bmp = wxBitmap(size_x, size_y, 32);
 #endif
     wxMemoryDC mdc;
     mdc.SelectObject(m_bmp);
@@ -368,8 +374,8 @@ wxBitmap SimpleGaugeInstrument::RenderAdaptive(double scale)
     dc.DrawCircle(xc, yc, r * 0.85);
     // Ticks
     dc.SetTextForeground(GetDimedColor(GetColorSetting(DSK_SGI_TICK_LEGEND)));
-    dc.SetFont(wxFont(size_x / 12, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL,
-        wxFONTWEIGHT_NORMAL));
+    dc.SetFont(wxFont(size_x / 12 / AUTO_TEXT_SIZE_COEF, wxFONTFAMILY_SWISS,
+        wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
     dc.SetPen(
         wxPen(GetDimedColor(GetColorSetting(DSK_SGI_TICK_FG)), size_x / 200));
     DrawTicks(dc, 0, 20, xc, yc, r, r * 0.15, false, 90, false, 0, 120);
@@ -378,8 +384,8 @@ wxBitmap SimpleGaugeInstrument::RenderAdaptive(double scale)
     DrawTicks(dc, 0, 10, xc, yc, r, r * 0.1, false, 90, false, 240, 360);
     dc.SetPen(
         wxPen(GetDimedColor(GetColorSetting(DSK_SGI_TICK_FG)), size_x / 100));
-    dc.SetFont(wxFont(size_x / 12, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL,
-        wxFONTWEIGHT_BOLD));
+    dc.SetFont(wxFont(size_x / 12 / AUTO_TEXT_SIZE_COEF, wxFONTFAMILY_SWISS,
+        wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
     int magnitude = 0;
     int upper = 0;
     int lower = 0;
@@ -435,15 +441,15 @@ wxBitmap SimpleGaugeInstrument::RenderAdaptive(double scale)
     // Label
     dc.SetTextForeground(
         GetDimedColor(GetColor(m_old_value, color_item::title)));
-    dc.SetFont(wxFont(size_x / 8, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL,
-        wxFONTWEIGHT_NORMAL));
+    dc.SetFont(wxFont(size_x / 8 / AUTO_TEXT_SIZE_COEF, wxFONTFAMILY_SWISS,
+        wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
     dc.DrawText(m_title, xc - dc.GetTextExtent(m_title).GetX() / 2,
         yc - dc.GetTextExtent(m_title).GetY() * 1.1);
     // Data
     dc.SetTextForeground(
         GetDimedColor(GetColor(m_old_value, color_item::value)));
-    dc.SetFont(wxFont(
-        size_x / 3, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
+    dc.SetFont(wxFont(size_x / 3 / AUTO_TEXT_SIZE_COEF, wxFONTFAMILY_SWISS,
+        wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
     dc.DrawText(value, xc - dc.GetTextExtent(value).GetX() / 2, yc);
     mdc.SelectObject(wxNullBitmap);
     return m_bmp;
@@ -480,7 +486,10 @@ wxBitmap SimpleGaugeInstrument::RenderPercent(double scale)
 
     m_bmp = wxBitmap(size_x, size_y);
 #ifndef __WXGTK__
+    m_bmp = wxBitmap(size_x, size_y);
     m_bmp.UseAlpha();
+#else
+    m_bmp = wxBitmap(size_x, size_y, 32);
 #endif
     mdc.SelectObject(m_bmp);
     wxGCDC dc(mdc);
@@ -525,8 +534,8 @@ wxBitmap SimpleGaugeInstrument::RenderPercent(double scale)
     dc.DrawCircle(xc, yc, r * 0.85);
     // Ticks
     dc.SetTextForeground(GetDimedColor(GetColorSetting(DSK_SGI_TICK_LEGEND)));
-    dc.SetFont(wxFont(size_x / 12, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL,
-        wxFONTWEIGHT_NORMAL));
+    dc.SetFont(wxFont(size_x / 12 / AUTO_TEXT_SIZE_COEF, wxFONTFAMILY_SWISS,
+        wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
     dc.SetPen(
         wxPen(GetDimedColor(GetColorSetting(DSK_SGI_TICK_FG)), size_x / 200));
     DrawTicks(dc, 0, 18, xc, yc, r, r * 0.15, false, 90, false, 0, 90);
@@ -535,8 +544,8 @@ wxBitmap SimpleGaugeInstrument::RenderPercent(double scale)
     DrawTicks(dc, 0, 9, xc, yc, r, r * 0.1, false, 90, false, 270, 360);
     dc.SetPen(
         wxPen(GetDimedColor(GetColorSetting(DSK_SGI_TICK_FG)), size_x / 100));
-    dc.SetFont(wxFont(size_x / 12, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL,
-        wxFONTWEIGHT_BOLD));
+    dc.SetFont(wxFont(size_x / 12 / AUTO_TEXT_SIZE_COEF, wxFONTFAMILY_SWISS,
+        wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
     DrawTicks(dc, 0, 90, xc, yc, r, r * 0.2, false, 0, false, 0, 90);
     DrawTicks(dc, 0, 90, xc, yc, r, r * 0.2, false, 0, false, 270, 360);
     // Border
@@ -556,15 +565,15 @@ wxBitmap SimpleGaugeInstrument::RenderPercent(double scale)
     // Label
     dc.SetTextForeground(
         GetDimedColor(GetColor(m_old_value, color_item::title)));
-    dc.SetFont(wxFont(size_x / 8, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL,
-        wxFONTWEIGHT_NORMAL));
+    dc.SetFont(wxFont(size_x / 8 / AUTO_TEXT_SIZE_COEF, wxFONTFAMILY_SWISS,
+        wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
     dc.DrawText(m_title, xc - dc.GetTextExtent(m_title).GetX() / 2,
         yc - dc.GetTextExtent(m_title).GetY() * 2.2);
     // Data
     dc.SetTextForeground(
         GetDimedColor(GetColor(m_old_value, color_item::value)));
-    dc.SetFont(wxFont(
-        size_x / 3, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
+    dc.SetFont(wxFont(size_x / 3 / AUTO_TEXT_SIZE_COEF, wxFONTFAMILY_SWISS,
+        wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
     dc.DrawText(value, xc - dc.GetTextExtent(value).GetX() / 2,
         yc - dc.GetTextExtent(value).GetY() / 1.8);
     mdc.SelectObject(wxNullBitmap);
