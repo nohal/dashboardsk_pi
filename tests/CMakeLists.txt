@@ -55,3 +55,6 @@ target_link_libraries(tests ocpn::wxjson)
 include(CTest)
 include(Catch)
 catch_discover_tests(tests)
+
+add_custom_command(TARGET tests PRE_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/tests/samples ${CMAKE_CURRENT_BINARY_DIR}/samples)

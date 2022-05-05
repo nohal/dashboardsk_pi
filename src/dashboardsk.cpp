@@ -188,51 +188,84 @@ void DashboardSK::SendSKDelta(wxJSONValue& message)
         wxString fullKeyWithPath;
         wxString source = message["updates"][i]["$source"].AsString();
         wxString utoken;
-        for (int j = 0; j < message["updates"][i]["values"].Size(); j++) {
-            wxJSONValue* val_ptr = ptr;
-            fullKeyWithPath = fullKey;
-            LOG_RECEIVE_DEBUG("processing value #%i (%s) under %s", j,
-                message["updates"][i]["values"][j]["path"].AsCString(),
-                fullKeyWithPath.c_str());
-            wxStringTokenizer path_tokenizer(
-                message["updates"][i]["values"][j]["path"].AsString(), ".");
-            while (path_tokenizer.HasMoreTokens()) {
-                utoken = path_tokenizer.GetNextToken();
-                fullKeyWithPath.Append(".").Append(utoken);
-                if (!val_ptr->HasMember(utoken)
-                    && path_tokenizer.HasMoreTokens()) {
-                    // If we are not done parsing the path yet, we add another
-                    // branch if needed
-                    LOG_RECEIVE_DEBUG(fullKeyWithPath
-                        + " not yet in the tree, adding " + utoken);
-                    (*val_ptr)[utoken] = wxJSONValue();
-                    val_ptr = &(*val_ptr)[utoken];
-                } else {
+        if (message["updates"][i].HasMember("values")) {
+            for (int j = 0; j < message["updates"][i]["values"].Size(); j++) {
+                wxJSONValue* val_ptr = ptr;
+                fullKeyWithPath = fullKey;
+                LOG_RECEIVE_DEBUG("processing value #%i (%s) under %s", j,
+                    message["updates"][i]["values"][j]["path"].AsCString(),
+                    fullKeyWithPath.c_str());
+                wxStringTokenizer path_tokenizer(
+                    message["updates"][i]["values"][j]["path"].AsString(), ".");
+                while (path_tokenizer.HasMoreTokens()) {
+                    utoken = path_tokenizer.GetNextToken();
+                    fullKeyWithPath.Append(".").Append(utoken);
+                    if (!val_ptr->HasMember(utoken)
+                        && path_tokenizer.HasMoreTokens()) {
+                        // If we are not done parsing the path yet, we add
+                        // another branch if needed
+                        LOG_RECEIVE_DEBUG(fullKeyWithPath
+                            + " not yet in the tree, adding " + utoken);
+                        (*val_ptr)[utoken] = wxJSONValue();
+                        val_ptr = &(*val_ptr)[utoken];
+                    } else {
+                        LOG_RECEIVE_DEBUG(
+                            fullKeyWithPath + " already exists in the tree");
+                        val_ptr = &(*val_ptr)[utoken];
+                    }
+                }
+                // TODO: What if we get same stuff from multiple sources (Like
+                // two GPS or depth sensors on board)? For now we just overwrite
+                // the value with newest, unless they use different
+                // path/context, but could probably save all of them and let the
+                // user select what to show
+                if (!message["updates"][i]["values"][j]["value"].IsNull()) {
+                    // We ignore NULL values received from SignalK
+                    // TODO: Are some NULLs in SignalK data actually good for
+                    // something? (If they are, we want to ignore them later
+                    // selectively when the instrument processes it's data)
+                    (*val_ptr)["value"]
+                        = message["updates"][i]["values"][j]["value"];
+                    (*val_ptr)["timestamp"] = ts.FormatISOCombined();
+                    (*val_ptr)["source"] = source;
+
                     LOG_RECEIVE_DEBUG(
-                        fullKeyWithPath + " already exists in the tree");
-                    val_ptr = &(*val_ptr)[utoken];
+                        "Notifying update to path " + fullKeyWithPath);
+                    for (auto instr :
+                        m_path_subscriptions[UNORDERED_KEY(fullKeyWithPath)]) {
+                        instr->NotifyNewData(fullKeyWithPath);
+                    }
                 }
             }
-            // TODO: What if we get same stuff from multiple sources (Like two
-            // GPS or depth sensors on board)? For now we just overwrite the
-            // value with newest, unless they use different path/context, but
-            // could probably save all of them and let the user select what to
-            // show
-            if (!message["updates"][i]["values"][j]["value"].IsNull()) {
-                // We ignore NULL values received from SignalK
-                // TODO: Are some NULLs in SignalK data actually good for
-                // something? (If they are, we want to ignore them later
-                // selectively when the instrument processes it's data)
-                (*val_ptr)["value"]
-                    = message["updates"][i]["values"][j]["value"];
-                (*val_ptr)["timestamp"] = ts.FormatISOCombined();
-                (*val_ptr)["source"] = source;
-
-                LOG_RECEIVE_DEBUG(
-                    "Notifying update to path " + fullKeyWithPath);
-                for (auto instr :
-                    m_path_subscriptions[UNORDERED_KEY(fullKeyWithPath)]) {
-                    instr->NotifyNewData(fullKeyWithPath);
+        } else if (message["updates"][i].HasMember("meta")) {
+            for (int j = 0; j < message["updates"][i]["meta"].Size(); j++) {
+                wxJSONValue* val_ptr = ptr;
+                fullKeyWithPath = fullKey;
+                LOG_RECEIVE_DEBUG("processing value #%i (%s) under %s", j,
+                    message["updates"][i]["meta"][j]["path"].AsCString(),
+                    fullKeyWithPath.c_str());
+                wxStringTokenizer path_tokenizer(
+                    message["updates"][i]["meta"][j]["path"].AsString(), ".");
+                while (path_tokenizer.HasMoreTokens()) {
+                    utoken = path_tokenizer.GetNextToken();
+                    fullKeyWithPath.Append(".").Append(utoken);
+                    if (!val_ptr->HasMember(utoken)
+                        && path_tokenizer.HasMoreTokens()) {
+                        // If we are not done parsing the path yet, we add
+                        // another branch if needed
+                        LOG_RECEIVE_DEBUG(fullKeyWithPath
+                            + " not yet in the tree, adding " + utoken);
+                        (*val_ptr)[utoken] = wxJSONValue();
+                        val_ptr = &(*val_ptr)[utoken];
+                    } else {
+                        LOG_RECEIVE_DEBUG(
+                            fullKeyWithPath + " already exists in the tree");
+                        val_ptr = &(*val_ptr)[utoken];
+                    }
+                }
+                if (!message["updates"][i]["meta"][j].IsNull()) {
+                    (*val_ptr)["meta"]
+                        = message["updates"][i]["meta"][j]["value"];
                 }
             }
         }

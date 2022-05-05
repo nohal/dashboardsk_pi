@@ -29,6 +29,8 @@
 #include "pi_common.h"
 #include "wx/jsonreader.h"
 #include "wx/jsonval.h"
+#include "wx/jsonwriter.h"
+#include <wx/wfstream.h>
 
 #include "dashboard.h"
 #include "dashboardsk.h"
@@ -71,4 +73,25 @@ TEST_CASE("DashboardSK - ID normalization")
     REQUIRE(d.NormalizeID("tel:+420603200300")
                 .IsSameAs("urn:mrn:tel:+420603200300"));
     REQUIRE(d.NormalizeID("") == ("urn:mrn:imo:mmsi:223456789"));
+}
+
+TEST_CASE("DashboardSK - Meta Delta")
+{
+    DashboardSK d;
+    wxJSONValue v;
+    wxJSONReader r;
+    wxFileInputStream s("samples/delta/docs-data_model_meta_deltas.json");
+    r.Parse(s, &v);
+    d.SendSKDelta(v);
+    wxJSONWriter w;
+    wxString st;
+    w.Write(*d.GetSignalKTree(), st);
+
+    REQUIRE((*d.GetSignalKTree())["vessels"]["urn:mrn:imo:mmsi:234567890"]
+                                 ["environment"]["wind"]["speedApparent"]
+                                     .HasMember("meta"));
+    REQUIRE((*d.GetSignalKTree())["vessels"]["urn:mrn:imo:mmsi:234567890"]
+                                 ["environment"]["wind"]["speedApparent"]
+                                 ["meta"]["zones"]
+                                     .IsArray());
 }

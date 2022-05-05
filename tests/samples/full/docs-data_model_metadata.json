@@ -1,0 +1,69 @@
+{
+  "self": "urn:mrn:signalk:uuid:c0d79334-4e25-4245-8892-54e8ccc8021d",
+  "vessels": {
+    "urn:mrn:signalk:uuid:c0d79334-4e25-4245-8892-54e8ccc8021d": {
+      "uuid": "urn:mrn:signalk:uuid:c0d79334-4e25-4245-8892-54e8ccc8021d",
+      "propulsion": {
+        "instance0": {
+          "label": "Port Engine",
+          "revolutions": {
+            "value": 1280,
+            "timestamp": "2014-08-15T19:00:15.402Z",
+            "$source": "foo.bar",
+            "meta": {
+              "displayName": "Port Tachometer",
+              "longName": "Engine 2 Tachometer",
+              "shortName": "Tacho",
+              "description": "Engine revolutions (x60 for RPM)",
+              "units": "Hz",
+              "timeout": 1,
+              "displayScale": {
+                "lower": 0,
+                "upper": 75,
+                "type": "linear"
+              },
+              "alertMethod": [
+                "visual"
+              ],
+              "warnMethod": [
+                "visual"
+              ],
+              "alarmMethod": [
+                "sound",
+                "visual"
+              ],
+              "emergencyMethod": [
+                "sound",
+                "visual"
+              ],
+              "zones": [
+                {
+                  "upper": 4,
+                  "state": "alarm",
+                  "message": "Stopped or very slow"
+                },
+                {
+                  "lower": 4,
+                  "upper": 60,
+                  "state": "normal"
+                },
+                {
+                  "lower": 60,
+                  "upper": 65,
+                  "state": "warn",
+                  "message": "Approaching maximum"
+                },
+                {
+                  "lower": 65,
+                  "state": "alarm",
+                  "message": "Exceeding maximum"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0.0"
+}
