@@ -58,6 +58,22 @@ jobs:
 
           shell: /bin/sh
 
+          install: |
+            case "${{ matrix.distro }}" in
+              ubuntu*|jessie|stretch|buster|bullseye)
+                apt-get update -q -y
+                apt-get install -q -y sudo
+                ;;
+              fedora*)
+                dnf -y update
+                dnf -y install sudo
+                ;;
+              alpine*)
+                apk update
+                apk add sudo
+                ;;
+            esac
+
           run: |
             ./ci/github-pre-build.sh
             cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
