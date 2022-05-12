@@ -48,6 +48,8 @@ private:
     double m_upper_limit;
     /// Alarm state assigned to the zone
     state m_state;
+    /// Message to be used when value is in the zone
+    wxString m_message;
 
 public:
     /// Constructor
@@ -56,6 +58,16 @@ public:
         m_lower_limit = 0.0;
         m_upper_limit = 0.0;
         m_state = state::nominal;
+        m_message = wxEmptyString;
+    };
+
+    Zone(double lower, double upper, state st = state::nominal,
+        const wxString& msg = wxEmptyString)
+    {
+        m_lower_limit = lower;
+        m_upper_limit = upper;
+        m_state = st;
+        m_message = msg;
     };
 
     /// Destructor
@@ -81,12 +93,22 @@ public:
     /// \return The upper limit
     const double GetUpperLimit() { return m_upper_limit; };
 
-    /// Set the alarm state assignd to the zone
+    /// Set the message assigned to the zone
     ///
-    /// \param val value of the limit
+    /// \param val Text of the message
+    void SetMessage(const wxString& val) { m_message = val; };
+
+    /// Get the message assigned to the zne
+    ///
+    /// \return The alarm state of the zone
+    const wxString GetMessage() { return m_message; };
+
+    /// Set the alarm state assigned to the zone
+    ///
+    /// \param val The alarm state of the zone
     void SetState(const state val) { m_state = val; };
 
-    /// Get the alarm state of the zne
+    /// Get the alarm state of the zone
     ///
     /// \return The alarm state of the zone
     state GetState() { return m_state; };
@@ -111,9 +133,9 @@ public:
             StringFromState(m_state).c_str());
     }
 
-    /// Get state from the string obtained (usualy) from the SignalK metadata
+    /// Get state from the string obtained (usually) from the SignalK metadata
     ///
-    /// \param val value of the limit
+    /// \param val String representaion of the state
     static const state StateFromString(const wxString& val)
     {
         if (val.IsSameAs("normal")) {

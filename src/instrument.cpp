@@ -308,4 +308,28 @@ const wxString Instrument::ConcatChoiceStrings(wxArrayString arr)
     return s;
 }
 
+void Instrument::ConfigureFromMeta(wxJSONValue& sk_meta)
+{
+    if (sk_meta.HasMember("shortName") && m_title != "???") {
+        m_title = sk_meta["shortName"].AsString();
+    }
+    if (sk_meta.HasMember("displayName") && m_name.StartsWith("New ")) {
+        m_name = sk_meta["displayName"].AsString();
+    } else if (sk_meta.HasMember("longName") && m_name.StartsWith("New ")) {
+        m_name = sk_meta["longName"].AsString();
+    }
+    if (sk_meta.HasMember("zones") && sk_meta["zones"].IsArray()) {
+        for (int i = 0; i < sk_meta["zones"].Size(); i++) {
+            m_zones.emplace_back(Zone(sk_meta["zones"][i]["lower"].AsDouble(),
+                sk_meta["zones"][i]["upper"].AsDouble(),
+                Zone::StateFromString(sk_meta["zones"][i]["state"].AsString()),
+                sk_meta["zones"][i].HasMember("message")
+                    ? sk_meta["zones"][i].AsString()
+                    : ""));
+        }
+    }
+    // TODO: displayScale (not universal, do in SimpleGauge where we need it or
+    // make universal as it may be needed on many places?)
+}
+
 PLUGIN_END_NAMESPACE

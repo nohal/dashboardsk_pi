@@ -511,6 +511,11 @@ public:
     /// \param formula The transformation formula to be used
     /// \return Transformed value
     static double Transform(const double& val, const transformation& formula);
+
+    /// Configure the instrument using the SignalK metadata
+    ///
+    /// \param sk_meta reference to the metadata
+    virtual void ConfigureFromMeta(wxJSONValue& sk_meta);
 };
 
 PLUGIN_END_NAMESPACE
