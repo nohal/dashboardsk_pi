@@ -65,11 +65,11 @@ if [ -n "$BUILD_WX31" ]; then
     sed -i  '/runtime-version/s/stable/beta/'  $manifest
     flatpak install --user -y --or-update --noninteractive \
         flathub-beta  org.opencpn.OpenCPN//beta
-    cmake -DCMAKE_BUILD_TYPE=Release -DOCPN_WX_ABI=wx315  ..
+    cmake -DWITH_TESTS=OFF -DCMAKE_BUILD_TYPE=Release -DOCPN_WX_ABI=wx315  ..
 else
     flatpak install --user -y --or-update --noninteractive \
         flathub  org.opencpn.OpenCPN
-    cmake -DCMAKE_BUILD_TYPE=Release ..
+    cmake -DWITH_TESTS=OFF -DCMAKE_BUILD_TYPE=Release ..
 fi
 make -j $(nproc) VERBOSE=1 flatpak
 
