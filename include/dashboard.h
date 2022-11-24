@@ -236,7 +236,7 @@ public:
     /// \return Pointer to the instrument
     Instrument* GetInstrument(int item)
     {
-        if (item < 0 || item >= m_instruments.size()) {
+        if (item < 0 || (unsigned)item >= m_instruments.size()) {
             return nullptr;
         }
         return m_instruments[item];
@@ -256,7 +256,7 @@ public:
     /// \param item Index of the instrument
     void DeleteInstrument(int item)
     {
-        if (item < 0 || item >= m_instruments.size()) {
+        if (item < 0 || (unsigned)item >= m_instruments.size()) {
             return;
         }
         m_instruments.erase(m_instruments.begin() + item);
@@ -279,8 +279,8 @@ public:
     /// move towards end)
     void MoveInstrument(const int pos, const int steps)
     {
-        if (pos < 0 || pos >= m_instruments.size() || pos + steps < 0
-            || pos + steps >= m_instruments.size()) {
+        if (pos < 0 || (unsigned)pos >= m_instruments.size() || pos + steps < 0
+            || (unsigned)pos + steps >= m_instruments.size()) {
             return;
         }
         auto old = m_instruments.at(pos);

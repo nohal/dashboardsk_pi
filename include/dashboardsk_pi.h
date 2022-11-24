@@ -32,7 +32,7 @@
 #include "pi_common.h"
 
 #define MY_API_VERSION_MAJOR 1
-#define MY_API_VERSION_MINOR 16
+#define MY_API_VERSION_MINOR 18
 
 #include "dashboardsk.h"
 
@@ -47,7 +47,7 @@ PLUGIN_BEGIN_NAMESPACE
 //    The PlugIn Class Definition
 //----------------------------------------------------------------------------------------------------------
 /// Class representing the plugin for OpenCPN Plugin API
-class dashboardsk_pi : public opencpn_plugin_116 {
+class dashboardsk_pi : public opencpn_plugin_118 {
 private:
     /// Parent window pointer
     wxWindow* m_parent_window;
@@ -145,18 +145,20 @@ public:
     /// \param dc
     /// \param vp
     /// \param canvasIndex
+    /// \param priority
     /// \return
     bool RenderOverlayMultiCanvas(
-        wxDC& dc, PlugIn_ViewPort* vp, int canvasIndex);
+        wxDC& dc, PlugIn_ViewPort* vp, int canvasIndex, int priority);
 
     /// Render the overlay on the chart canvas in OpenGL mode
     ///
     /// \param pcontext
     /// \param vp
     /// \param canvasIndex
+    /// \param priority
     /// \return
-    bool RenderGLOverlayMultiCanvas(
-        wxGLContext* pcontext, PlugIn_ViewPort* vp, int canvasIndex);
+    bool RenderGLOverlayMultiCanvas(wxGLContext* pcontext, PlugIn_ViewPort* vp,
+        int canvasIndex, int priority);
 
     /// Get the number of toolbar icons the plugin provides
     int GetToolbarToolCount();

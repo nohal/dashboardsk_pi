@@ -144,7 +144,7 @@ wxBitmap SimpleNumberInstrument::Render(double scale)
         const wxJSONValue* val = m_parent_dashboard->GetSKData(m_sk_key);
         if (val) {
             wxJSONValue v = val->Get("value", *val);
-            if (m_format_index >= m_format_strings.GetCount()) {
+            if ((unsigned)m_format_index >= m_format_strings.GetCount()) {
                 value = wxString::Format(
                     "E: format", m_format_index, m_format_strings.GetCount());
                 cbb = GetDimedColor(GetColorSetting(DSK_SETTING_ALERT_BG));

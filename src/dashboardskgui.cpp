@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version 3.10.1-0-g8feb16b)
+// C++ code generated with wxFormBuilder (version 3.10.1-254-gc2ef7767)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -315,7 +315,7 @@ MainConfigFrame::MainConfigFrame(wxWindow* parent, wxWindowID id,
     m_sdbSizer->AddButton(m_sdbSizerCancel);
     m_sdbSizer->Realize();
 
-    MainSizer->Add(m_sdbSizer, 0, wxEXPAND, 5);
+    MainSizer->Add(m_sdbSizer, 0, wxALL | wxEXPAND, 5);
 
     this->SetSizer(MainSizer);
     this->Layout();

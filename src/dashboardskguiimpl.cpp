@@ -299,7 +299,8 @@ void MainConfigFrameImpl::EnableInstrumentListButtons()
         } else {
             m_bpMoveUpButton->Disable();
         }
-        if (m_lbInstruments->GetSelection() < m_lbInstruments->GetCount() - 1) {
+        if ((unsigned)m_lbInstruments->GetSelection()
+            < m_lbInstruments->GetCount() - 1) {
             m_bpMoveDownButton->Enable();
         } else {
             m_bpMoveDownButton->Disable();
@@ -1144,7 +1145,7 @@ void ZonesConfigDialogImpl::UpdateList()
         m_lbZones->Append(zone.ToUIString());
     }
     m_lbZones->SetSelection(sel);
-    if (sel >= 0 && sel < m_zones.size()) {
+    if (sel >= 0 && (unsigned)sel < m_zones.size()) {
         m_edited_zone = &m_zones.at(sel);
     }
 }
@@ -1175,7 +1176,7 @@ void ZonesConfigDialogImpl::m_bpRemoveOnButtonClick(wxCommandEvent& event)
     m_zones.erase(m_zones.begin() + sel);
     m_lbZones->Delete(sel);
     sel = wxMin(sel, m_lbZones->GetCount() - 1);
-    if (sel >= 0 && sel < m_zones.size()) {
+    if (sel >= 0 && (unsigned)sel < m_zones.size()) {
         m_lbZones->SetSelection(sel);
         m_edited_zone = &m_zones.at(sel);
     }

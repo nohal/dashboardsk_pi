@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version 3.10.1-0-g8feb16b)
+// C++ code generated with wxFormBuilder (version 3.10.1-254-gc2ef7767)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -158,7 +158,7 @@ public:
     MainConfigFrame(wxWindow* parent, wxWindowID id = wxID_ANY,
         const wxString& title = _("DashboardSK Configuration"),
         const wxPoint& pos = wxDefaultPosition,
-        const wxSize& size = wxSize(650, 520),
+        const wxSize& size = wxSize(820, 600),
         long style = wxDEFAULT_DIALOG_STYLE | wxTAB_TRAVERSAL);
 
     ~MainConfigFrame();

@@ -83,7 +83,7 @@ set(SRC
         ${CMAKE_SOURCE_DIR}/src/dashboardskguiimpl.cpp
 )
 
-set(PKG_API_LIB api-16)  #  A dir in opencpn-libs/ e. g., api-17 or api-16
+set(PKG_API_LIB api-18)  #  A dir in opencpn-libs/ e. g., api-17 or api-16
 
 macro(late_init)
         # Perform initialization after the PACKAGE_NAME library, compilers

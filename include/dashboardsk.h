@@ -213,7 +213,7 @@ public:
     /// \param item Index of the dashboard
     Dashboard* GetDashboard(int item)
     {
-        if (item < 0 || item >= m_dashboards.size()) {
+        if (item < 0 || (unsigned)item >= m_dashboards.size()) {
             return nullptr;
         }
         return &m_dashboards[item];
@@ -224,7 +224,7 @@ public:
     /// \param item Index of the dashboard
     void DeleteDashboard(int item)
     {
-        if (item < 0 || item >= m_dashboards.size()) {
+        if (item < 0 || (unsigned)item >= m_dashboards.size()) {
             return;
         }
         m_dashboards.erase(m_dashboards.begin() + item);

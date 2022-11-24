@@ -54,7 +54,7 @@ extern "C" DECL_EXP void destroy_pi(opencpn_plugin* p) { delete p; }
 //---------------------------------------------------------------------------------------------------------
 
 dashboardsk_pi::dashboardsk_pi(void* ppimgr)
-    : opencpn_plugin_116(ppimgr)
+    : opencpn_plugin_118(ppimgr)
     , m_leftclick_tool_id(-1)
     , m_color_scheme(PI_GLOBAL_COLOR_SCHEME_RGB)
     , m_shown(false)
@@ -186,8 +186,11 @@ void dashboardsk_pi::SaveConfig()
 }
 
 bool dashboardsk_pi::RenderOverlayMultiCanvas(
-    wxDC& dc, PlugIn_ViewPort* vp, int canvasIndex)
+    wxDC& dc, PlugIn_ViewPort* vp, int canvasIndex, int priority)
 {
+    if (priority != OVERLAY_OVER_UI) {
+        return false;
+    }
     if (GetCanvasCount() > canvasIndex + 1) {
         // return false;
     }
@@ -210,8 +213,11 @@ bool dashboardsk_pi::RenderOverlayMultiCanvas(
 }
 
 bool dashboardsk_pi::RenderGLOverlayMultiCanvas(
-    wxGLContext* pcontext, PlugIn_ViewPort* vp, int canvasIndex)
+    wxGLContext* pcontext, PlugIn_ViewPort* vp, int canvasIndex, int priority)
 {
+    if (priority != OVERLAY_OVER_EMBOSS) {
+        return false;
+    }
     if (GetCanvasCount() > canvasIndex + 1) {
         // return false;
     }
