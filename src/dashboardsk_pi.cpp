@@ -260,7 +260,8 @@ void dashboardsk_pi::SetPluginMessage(
 
 wxString dashboardsk_pi::GetDataDir()
 {
-    return GetPluginDataDir("DashboardSK") + wxFileName::GetPathSeparator();
+    return GetPluginDataDir("DashboardSK_pi") + wxFileName::GetPathSeparator()
+        + "data" + wxFileName::GetPathSeparator();
 }
 
 wxBitmap dashboardsk_pi::GetBitmapFromSVG(
