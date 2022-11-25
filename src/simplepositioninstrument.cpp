@@ -37,7 +37,7 @@ void SimplePositionInstrument::Init()
     DSK_POSITION_FORMATS
 #undef X
     // Basic settings inherited from Instrument class
-    m_title = "???";
+    m_title = DUMMY_TITLE;
     m_name = _("New Simple Position");
     m_sk_key = wxEmptyString;
     // SimplePositionInstrument's own settings

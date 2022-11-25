@@ -225,6 +225,8 @@ public:
     /// \param val Double value to be transformed
     /// \return Transformed value
     double Transform(const double& val);
+
+    wxString GetPrimarySKKey() const override { return m_sk_key; };
 };
 
 PLUGIN_END_NAMESPACE

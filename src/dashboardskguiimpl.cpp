@@ -667,6 +667,8 @@ void MainConfigFrameImpl::UpdateEditedInstrument()
                 ctrl->GetWindow()->GetName(), ExtractValue(ctrl->GetWindow()));
         }
     }
+    m_edited_instrument->ConfigureFromKey(
+        m_edited_instrument->GetPrimarySKKey());
 }
 
 void MainConfigFrameImpl::FillDashboardDetails()

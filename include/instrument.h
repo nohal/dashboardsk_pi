@@ -122,6 +122,8 @@ PLUGIN_BEGIN_NAMESPACE
     X(Instrument::position_format::hem_deg_decimal_min, "HDDD\u00B0MM.mmm'")   \
     X(Instrument::position_format::hem_deg_min_sec, "HDD\u00B0MM'SS.s\"")
 
+#define DUMMY_TITLE "???"
+
 /// Key-value pair unordered map for instrument configuration parameters
 #if wxCHECK_VERSION(3, 1, 0)
 typedef unordered_map<wxString, wxString> config_map_t;
@@ -231,7 +233,9 @@ public:
     };
 
 protected:
-    /// User defined name of the instrument
+    /// User defined name of the instrument. The default name should start with
+    /// "New " as it is used as a magic value to detect whether it should be
+    /// replaced by a value derived from SignalK info.
     wxString m_name;
     /// User defined title for the rendered instrument
     wxString m_title;
@@ -516,6 +520,16 @@ public:
     ///
     /// \param sk_meta reference to the metadata
     virtual void ConfigureFromMeta(wxJSONValue& sk_meta);
+
+    /// Configure the instrument using the SignalK key path
+    ///
+    /// \param key SignalK key
+    virtual void ConfigureFromKey(const wxString& key);
+
+    /// Get the most significant SignalK key used by the instrument.
+    ///
+    /// \return Dot separated SignalK path
+    virtual wxString GetPrimarySKKey() const { return wxEmptyString; };
 };
 
 PLUGIN_END_NAMESPACE

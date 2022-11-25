@@ -47,7 +47,7 @@ void SimpleGaugeInstrument::Init()
 #undef X
     // Instrument::Init();
     //  Basic settings inherited from Instrument class
-    m_title = "???";
+    m_title = DUMMY_TITLE;
     m_name = _("New Simple Gauge");
     m_sk_key = wxEmptyString;
     // SimpleGaugeInstrument's own settings
@@ -232,9 +232,8 @@ wxBitmap SimpleGaugeInstrument::RenderAngle(double scale, bool relative)
     wxGCDC dc(mdc);
     dc.SetBackground(*wxTRANSPARENT_BRUSH);
     dc.Clear();
-    // mdc.SelectObject(wxNullBitmap);
-    // return m_bmp;
-    //  Gauge background
+
+    // Gauge background
     dc.SetBrush(wxBrush(GetDimedColor(GetColorSetting(DSK_SGI_RIM_NOMINAL))));
     dc.SetPen(wxPen(GetDimedColor(GetColorSetting(DSK_SETTING_BORDER_COLOR))));
     dc.DrawCircle(xc, yc, r);

@@ -46,7 +46,7 @@ void SimpleNumberInstrument::Init()
 #undef X
 
     // Basic settings inherited from Instrument class
-    m_title = "???";
+    m_title = DUMMY_TITLE;
     m_name = _("New Simple Number");
     m_sk_key = wxEmptyString;
     // SimpleNumberInstrument's own settings

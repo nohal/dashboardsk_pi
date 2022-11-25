@@ -34,7 +34,7 @@ PLUGIN_BEGIN_NAMESPACE
 void SimpleTextInstrument::Init()
 {
     // Basic settings inherited from Instrument class
-    m_title = "???";
+    m_title = DUMMY_TITLE;
     m_name = _("New Simple Text");
     m_sk_key = wxEmptyString;
     // SimpleTextInstrument's own settings

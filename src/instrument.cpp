@@ -310,7 +310,7 @@ const wxString Instrument::ConcatChoiceStrings(wxArrayString arr)
 
 void Instrument::ConfigureFromMeta(wxJSONValue& sk_meta)
 {
-    if (sk_meta.HasMember("shortName") && m_title != "???") {
+    if (sk_meta.HasMember("shortName") && m_title != DUMMY_TITLE) {
         m_title = sk_meta["shortName"].AsString();
     }
     if (sk_meta.HasMember("displayName") && m_name.StartsWith("New ")) {
@@ -330,6 +330,16 @@ void Instrument::ConfigureFromMeta(wxJSONValue& sk_meta)
     }
     // TODO: displayScale (not universal, do in SimpleGauge where we need it or
     // make universal as it may be needed on many places?)
+}
+
+void Instrument::ConfigureFromKey(const wxString& key)
+{
+    if (!key.IsEmpty() && m_title == DUMMY_TITLE) {
+        m_title = key.AfterLast('.');
+    }
+    if (!key.IsEmpty() && m_name.StartsWith("New ")) {
+        m_name = key.AfterLast('.');
+    }
 }
 
 PLUGIN_END_NAMESPACE
