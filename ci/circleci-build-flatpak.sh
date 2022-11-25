@@ -39,6 +39,10 @@ if [ -n "$CI" ]; then
     # Avoid using outdated TLS certificates, see #210.
     sudo apt install --reinstall  ca-certificates
 
+    # Use updated flatpak to workaround build failure on ARM64
+    sudo add-apt-repository -y ppa:alexlarsson/flatpak
+    sudo apt update
+
     # Install flatpak and flatpak-builder
     sudo apt install flatpak flatpak-builder
 fi
