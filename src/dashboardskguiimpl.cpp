@@ -628,6 +628,7 @@ void MainConfigFrameImpl::m_sdbSizerOnCancelButtonClick(wxCommandEvent& event)
 void MainConfigFrameImpl::m_btnCfgEditOnButtonClick(wxCommandEvent& event)
 {
     wxWindowPtr<SKDataTreeImpl> dlg(new SKDataTreeImpl(this));
+    dlg->SetTitle(_("Configuration data (Edit carefully!)"));
     wxString s;
     wxJSONWriter w;
     w.Write(m_dsk_pi->GetDSK()->GenerateJSONConfig(), s);
