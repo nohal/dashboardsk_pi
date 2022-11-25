@@ -222,7 +222,6 @@ wxBitmap SimpleGaugeInstrument::RenderAngle(double scale, bool relative)
     wxCoord yc = size_y / 2;
     wxCoord r = size_y / 2 - size_x / 200 - 1;
 
-    m_bmp = wxBitmap(size_x, size_y);
 #ifndef __WXGTK__
     m_bmp = wxBitmap(size_x, size_y);
     m_bmp.UseAlpha();
@@ -233,7 +232,9 @@ wxBitmap SimpleGaugeInstrument::RenderAngle(double scale, bool relative)
     wxGCDC dc(mdc);
     dc.SetBackground(*wxTRANSPARENT_BRUSH);
     dc.Clear();
-    // Gauge background
+    // mdc.SelectObject(wxNullBitmap);
+    // return m_bmp;
+    //  Gauge background
     dc.SetBrush(wxBrush(GetDimedColor(GetColorSetting(DSK_SGI_RIM_NOMINAL))));
     dc.SetPen(wxPen(GetDimedColor(GetColorSetting(DSK_SETTING_BORDER_COLOR))));
     dc.DrawCircle(xc, yc, r);
@@ -484,7 +485,6 @@ wxBitmap SimpleGaugeInstrument::RenderPercent(double scale)
     wxCoord yc = m_instrument_size / 2;
     wxCoord r = size_x / 2 - size_x / 200 - 1;
 
-    m_bmp = wxBitmap(size_x, size_y);
 #ifndef __WXGTK__
     m_bmp = wxBitmap(size_x, size_y);
     m_bmp.UseAlpha();

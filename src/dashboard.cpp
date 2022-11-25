@@ -135,7 +135,7 @@ void Dashboard::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
                 }
                 x = start_pos - row_offset - row_nr * width;
                 current_row_size = wxMax(current_row_size, width);
-                dc->DrawBitmap(bmp, x, y, bmp.GetMask() != nullptr);
+                dc->DrawBitmap(bmp, x, y, bmp.HasAlpha());
                 m_instrument->SetPlacement(x, y, width, height);
                 y += height + m_spacing_v;
             }
