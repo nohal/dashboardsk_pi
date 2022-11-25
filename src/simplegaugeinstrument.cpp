@@ -109,6 +109,8 @@ void SimpleGaugeInstrument::SetSetting(const wxString& key, const int& value)
         m_instrument_size = value;
     } else if (key.IsSameAs(DSK_SGI_GAUGE_TYPE)) {
         m_gauge_type = static_cast<gauge_type>(value);
+    } else if (key.IsSameAs(DSK_SETTING_SMOOTHING)) {
+        m_smoothing = value;
     }
 }
 
