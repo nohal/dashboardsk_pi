@@ -5,3 +5,4 @@ build
 cmake-build*
 ./*.h
 ./*.cpp
+.vscode
