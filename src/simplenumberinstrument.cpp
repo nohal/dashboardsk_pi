@@ -199,7 +199,6 @@ wxBitmap SimpleNumberInstrument::Render(double scale)
     mdc.GetTextExtent(value, &body_x, &body_y);
     size_x = (wxMax(title_x, wxMax(body_x, dummy_x)) + 2 * BORDER_SIZE);
     size_y = (title_y + body_y + 4 * BORDER_SIZE);
-    m_bmp = wxBitmap(size_x, size_y);
 #ifndef __WXGTK__
     m_bmp = wxBitmap(size_x, size_y);
     m_bmp.UseAlpha();

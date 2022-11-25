@@ -322,7 +322,6 @@ wxBitmap SimpleGaugeInstrument::RenderAdaptive(double scale)
     wxCoord yc = m_instrument_size / 2;
     wxCoord r = size_x / 2 - size_x / 200 - 1;
 
-    m_bmp = wxBitmap(size_x, size_y);
 #ifndef __WXGTK__
     m_bmp = wxBitmap(size_x, size_y);
     m_bmp.UseAlpha();
