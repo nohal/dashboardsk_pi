@@ -124,6 +124,9 @@ PLUGIN_BEGIN_NAMESPACE
 
 #define DUMMY_TITLE "???"
 
+#define STRINGIFY2(X) #X
+#define STRINGIFY(X) STRINGIFY2(X)
+
 /// Key-value pair unordered map for instrument configuration parameters
 #if wxCHECK_VERSION(3, 1, 0)
 typedef unordered_map<wxString, wxString> config_map_t;

@@ -66,7 +66,7 @@
     X(3, DSK_SETTING_ZONES, wxString(wxEmptyString), _("Zones"),               \
         SignalKZonesCtrl, wxEmptyString, AsString, GetStringSetting)           \
     X(4, DSK_SETTING_SMOOTHING, m_smoothing, _("Data smoothing"), SpinCtrl,    \
-        "0;DSK_SNI_SMOOTHING_MAX", AsInt, GetIntSetting)                       \
+        "0;" STRINGIFY(DSK_SNI_SMOOTHING_MAX), AsInt, GetIntSetting)           \
     X(5, DSK_SETTING_TITLE_FONT, m_title_font.GetPointSize(), _("Title size"), \
         SpinCtrl, "5;40", AsInt, GetIntSetting)                                \
     X(6, DSK_SETTING_BODY_FONT, m_body_font.GetPointSize(), _("Body size"),    \

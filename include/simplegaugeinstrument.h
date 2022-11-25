@@ -93,10 +93,12 @@
     X(4, DSK_SETTING_ZONES, wxString(wxEmptyString), _("Zones"),               \
         SignalKZonesCtrl, wxEmptyString, AsString, GetStringSetting)           \
     X(5, DSK_SETTING_SMOOTHING, m_smoothing, _("Data smoothing"), SpinCtrl,    \
-        "0;DSK_SGI_SMOOTHING_MAX", AsInt, GetIntSetting)                       \
+        "0;" STRINGIFY(DSK_SGI_SMOOTHING_MAX), AsInt, GetIntSetting)           \
     X(6, DSK_SETTING_INSTR_SIZE, m_instrument_size, _("Instrument size"),      \
-        SpinCtrl, "DSK_SGI_INSTR_MIN_SIZE;DSK_SGI_INSTR_MAX_SIZE", AsInt,      \
-        GetIntSetting)                                                         \
+        SpinCtrl,                                                              \
+        STRINGIFY(DSK_SGI_INSTR_MIN_SIZE) ";" STRINGIFY(                       \
+            DSK_SGI_INSTR_MAX_SIZE),                                           \
+        AsInt, GetIntSetting)                                                  \
     X(7, DSK_SGI_NEEDLE_FG, DSK_SGI_COLOR_NEEDLE, _("Needle color"),           \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
     X(7, DSK_SGI_RIM_NOMINAL, DSK_SGI_COLOR_RIM, _("Rim color"),               \
