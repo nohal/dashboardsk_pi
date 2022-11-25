@@ -76,3 +76,7 @@ When adding a new instrument please also update the documentation under `manual/
 It is not a completely bad idea to cover your code with tests where feasible (It is not very feasible for the GUI part, but the logic should usually be pretty well testable). The project uses the current branch of [Catch2](https://github.com/catchorg/Catch2) testing framework (Because we use C++17) and the testcases reside under `tests`.
 Building the tests is enabled by default and may be disabled by running cmake `cmake` with `-DWITH_TESTS=OFF` parameter.
 To execute the tests, simply run `ctest` in the build directory.
+
+### Sanitizers support
+
+To configure the build to enable sanitizer support, run cmake with `-DSANITIZE=<commaseparated list of sanitizers>, eg. `cmake -DSANITIZE=address ..` to enable the adderess sanitizer reporting memory leaks.
