@@ -769,7 +769,6 @@ void MainConfigFrameImpl::m_bpSaveInstrButtonOnButtonClick(
                 output_stream.Close();
                 wxString s;
                 w.Write(m_edited_instrument->GenerateJSONConfig(), s);
-                wxMessageBox(s);
                 LOG_INFO("Cannot save current contents in file '%s'.",
                     dlg->GetPath());
             }
@@ -782,7 +781,7 @@ void MainConfigFrameImpl::m_bpImportInstrButtonOnButtonClick(
     wxCommandEvent& event)
 {
     wxWindowPtr<wxFileDialog> dlg(
-        new wxFileDialog(this, _("Load instrument(s) to file"), "", "",
+        new wxFileDialog(this, _("Load instrument(s) from file(s)"), "", "",
             "DashboardSK JSON files (*.json)|*.json",
             wxFD_OPEN | wxFD_MULTIPLE | wxFD_FILE_MUST_EXIST));
     dlg->ShowWindowModalThenDo([this, dlg](int retcode) {
@@ -803,6 +802,12 @@ void MainConfigFrameImpl::m_bpImportInstrButtonOnButtonClick(
                         LOG_VERBOSE("DashboardSK_pi: Problem loading "
                                     "instrument with class "
                             + v["class"].AsString());
+                        wxMessageBox(
+                            wxString::Format(
+                                _("The file %s does not seem to be a "
+                                  "DashboardSK instrument JSON definition."),
+                                p.c_str()),
+                            _("Error during import"), wxICON_EXCLAMATION);
                         continue;
                     }
                     instr->ReadConfig(v);
@@ -811,6 +816,77 @@ void MainConfigFrameImpl::m_bpImportInstrButtonOnButtonClick(
             }
             FillInstrumentList();
             m_lbInstruments->SetSelection(m_lbInstruments->GetCount() - 1);
+        }
+    });
+    event.Skip();
+}
+
+void MainConfigFrameImpl::m_btnExportDashboardOnButtonClick(
+    wxCommandEvent& event)
+{
+    wxString fn;
+    if (m_edited_dashboard) {
+        fn = m_edited_dashboard->GetName();
+    }
+    wxWindowPtr<wxFileDialog> dlg(
+        new wxFileDialog(this, _("Save dashboard to file"), "", fn,
+            "DashboardSK JSON files (*.json)|*.json",
+            wxFD_SAVE | wxFD_OVERWRITE_PROMPT));
+    dlg->ShowWindowModalThenDo([this, dlg](int retcode) {
+        if (retcode == wxID_OK && m_edited_instrument) {
+            wxFileOutputStream output_stream(dlg->GetPath());
+            if (output_stream.IsOk()) {
+                wxJSONWriter w;
+                w.Write(
+                    m_edited_dashboard->GenerateJSONConfig(), output_stream);
+                output_stream.Close();
+                wxString s;
+                w.Write(m_edited_dashboard->GenerateJSONConfig(), s);
+                LOG_INFO("Cannot save current contents in file '%s'.",
+                    dlg->GetPath());
+            }
+        }
+    });
+    event.Skip();
+}
+
+void MainConfigFrameImpl::m_btnImportDashboardOnButtonClick(
+    wxCommandEvent& event)
+{
+    wxWindowPtr<wxFileDialog> dlg(
+        new wxFileDialog(this, _("Load dashboard(s) from file(s)"), "", "",
+            "DashboardSK JSON files (*.json)|*.json",
+            wxFD_OPEN | wxFD_MULTIPLE | wxFD_FILE_MUST_EXIST));
+    dlg->ShowWindowModalThenDo([this, dlg](int retcode) {
+        if (retcode == wxID_OK) {
+            wxArrayString paths;
+            dlg->GetPaths(paths);
+            for (auto& p : paths) {
+                wxFileInputStream input_stream(p);
+                if (input_stream.IsOk()) {
+                    wxJSONValue v;
+                    wxJSONReader r;
+                    r.Parse(input_stream, &v);
+                    if (v.HasMember("instruments")) {
+                        m_edited_dashboard = m_dsk_pi->GetDSK()->AddDashboard();
+                        m_edited_dashboard->ReadConfig(v);
+                        m_edited_instrument = nullptr;
+                        m_comboDashboard->Append(m_edited_dashboard->GetName());
+                        m_comboDashboard->SetSelection(
+                            m_comboDashboard->GetCount() - 1);
+                        FillInstrumentList();
+                        FillInstrumentDetails();
+                        EnableItemsForSelectedDashboard();
+                    } else {
+                        wxMessageBox(
+                            wxString::Format(
+                                _("The file %s does not seem to be a "
+                                  "DashboardSK dashboard JSON definition."),
+                                p.c_str()),
+                            _("Error during import"), wxICON_EXCLAMATION);
+                    }
+                }
+            }
         }
     });
     event.Skip();

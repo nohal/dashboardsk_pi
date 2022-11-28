@@ -218,7 +218,7 @@ wxString Instrument::GetStringSetting(const wxString& key)
 
 int Instrument::GetIntSetting(const wxString& key)
 {
-    int i;
+    int i = 0;
     if (m_config_vals.find(UNORDERED_KEY(key)) != m_config_vals.end()) {
 #if (wxCHECK_VERSION(3, 1, 6))
         if (!m_config_vals[UNORDERED_KEY(key)].ToInt(&i)) {
@@ -233,7 +233,7 @@ int Instrument::GetIntSetting(const wxString& key)
 
 int Instrument::GetDoubleSetting(const wxString& key)
 {
-    double i;
+    double i = 0.0;
     if (m_config_vals.find(UNORDERED_KEY(key)) != m_config_vals.end()) {
 #if (wxCHECK_VERSION(3, 1, 6))
         if (!m_config_vals[UNORDERED_KEY(key)].ToDouble(&i)) {

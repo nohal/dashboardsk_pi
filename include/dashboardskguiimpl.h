@@ -163,16 +163,24 @@ protected:
     virtual void m_bpMoveDownButtonOnButtonClick(wxCommandEvent& event);
 
     /// Event handler for instrument import.
-    /// \todo Implement this functionality
     ///
     /// \param event The event object reference
     virtual void m_bpSaveInstrButtonOnButtonClick(wxCommandEvent& event);
 
     /// Event handler for instrument export.
-    /// \todo Implement this functionality
     ///
     /// \param event The event object reference
     virtual void m_bpImportInstrButtonOnButtonClick(wxCommandEvent& event);
+
+    /// Event handler for dashboard export.
+    ///
+    /// \param event The event object reference
+    virtual void m_btnExportDashboardOnButtonClick(wxCommandEvent& event);
+
+    /// Event handler for dashboard import.
+    ///
+    /// \param event The event object reference
+    virtual void m_btnImportDashboardOnButtonClick(wxCommandEvent& event);
 
     /// Event handler for change of parameter of edited dashboard
     ///
