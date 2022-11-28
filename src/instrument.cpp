@@ -31,9 +31,9 @@ PLUGIN_BEGIN_NAMESPACE
 
 Instrument::~Instrument()
 {
+    cout << "Instrument destructor";
     if (m_parent_dashboard) {
         m_parent_dashboard->Unsubscribe(this);
-        m_color_scheme = m_parent_dashboard->GetColorScheme();
     }
 }
 

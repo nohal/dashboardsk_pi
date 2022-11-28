@@ -259,6 +259,7 @@ public:
         if (item < 0 || (unsigned)item >= m_instruments.size()) {
             return;
         }
+        delete m_instruments[item];
         m_instruments.erase(m_instruments.begin() + item);
     }
 

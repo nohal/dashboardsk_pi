@@ -184,7 +184,16 @@ public:
     /// \param instrument Pointer to the instrument to unsubscribe
     void Unsubscribe(Instrument* instrument)
     {
-        // TODO: Implement unsubscription
+        for (auto& sub : m_path_subscriptions) {
+            std::vector<Instrument*>::iterator it = sub.second.begin();
+            while (it != sub.second.end()) {
+                if (*it == instrument) {
+                    it = sub.second.erase(it);
+                } else {
+                    ++it;
+                }
+            }
+        }
     }
 
     /// Get list of all dashboards
