@@ -15,10 +15,10 @@ cmake_minimum_required(VERSION 3.12.0)
 include(${CMAKE_SOURCE_DIR}/cmake/CmakeSetup.cmake NO_POLICY_SCOPE)
 message(STATUS "Cmake version: ${CMAKE_VERSION}.")
 
-option(WITH_TESTS "Whether or not to build the tests" ON)
+option(WITH_TESTS "Whether or not to build the tests" OFF)
 option(SANITIZE "What sanitizers to use" "")
 
-if(NOT "${SANITIZE}" STREQUAL "")
+if(NOT "${SANITIZE}" STREQUAL "OFF" AND NOT "${SANITIZE}" STREQUAL "")
   add_compile_options(-fsanitize=${SANITIZE} -fno-omit-frame-pointer)
   add_link_options(-fsanitize=${SANITIZE} -fno-omit-frame-pointer)
 endif()

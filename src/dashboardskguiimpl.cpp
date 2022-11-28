@@ -660,7 +660,7 @@ void MainConfigFrameImpl::UpdateEditedInstrument()
     // And now the instrument specific parameters that we generated for the
     // instrument
     int child = 0;
-    for (auto ctrl : SettingsItemSizer->GetChildren()) {
+    for (auto& ctrl : SettingsItemSizer->GetChildren()) {
         ++child;
         if (child % 2 == 0) { // Every other control is a user input (The one
                               // before is the wxStaticText label)
@@ -789,7 +789,7 @@ void MainConfigFrameImpl::m_bpImportInstrButtonOnButtonClick(
         if (retcode == wxID_OK && m_edited_dashboard) {
             wxArrayString paths;
             dlg->GetPaths(paths);
-            for (auto p : paths) {
+            for (auto& p : paths) {
                 wxFileInputStream input_stream(p);
                 if (input_stream.IsOk() && m_edited_dashboard) {
                     wxJSONValue v;
@@ -1144,7 +1144,7 @@ void ZonesConfigDialogImpl::UpdateList()
     m_edited_zone = nullptr;
     int sel = m_lbZones->GetSelection();
     m_lbZones->Clear();
-    for (auto zone : m_zones) {
+    for (auto& zone : m_zones) {
         m_lbZones->Append(zone.ToUIString());
     }
     m_lbZones->SetSelection(sel);

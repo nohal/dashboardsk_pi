@@ -70,9 +70,11 @@ void SimpleTextInstrument::SetSetting(
         || key.IsSameAs(DSK_SETTING_TITLE_FONT)) {
         // TODO: The above manually maintained list should be replaced with
         // something using the information from the DSK_STI_SETTINGS macro
-        int i = 0;
+        int i;
 #if (wxCHECK_VERSION(3, 1, 6))
-        value.ToInt(&i);
+        if (!value.ToInt(&i)) {
+            i = 0;
+        }
 #else
         i = wxAtoi(value);
 #endif

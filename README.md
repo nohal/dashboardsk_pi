@@ -5,7 +5,7 @@ This project provides an universal instrument dashboard display for [OpenCPN](ht
 
 ## Dependencies
 
-The plugin requires wxWidgets 3.0 (3.1+ very strongly encouraged, support for 3.0 will be completely dropped as soon as 3.2 makes it to the major Linux distributions) or newer and targets OpenCPN 5.6 or newer.
+The plugin uses wxWidgets 3.2 or newer (although building against wxWidgets 3.0 may still be possible until we start to hard-enforce use of wxBitmapBundle) and targets OpenCPN 5.7 or newer with plugin API 1.18.
 
 ## Compiling
 
@@ -56,7 +56,7 @@ Everything used from the code should be SVG, think at least twice before using a
 
 ### GUI
 
-The protoypes for the forms are designed using [wxFormBuilder](https://github.com/wxFormBuilder/wxFormBuilder) and the generated code resides in `include/dashboardskgui.h` and `src/dashboardskgui.cpp`. Never edit the generated files manually.
+The prototypes for the forms are designed using [wxFormBuilder](https://github.com/wxFormBuilder/wxFormBuilder) and the generated code resides in `include/dashboardskgui.h` and `src/dashboardskgui.cpp`. Never edit the generated files manually.
 The actual implementation of the GUI functionality is in `include/dashboardskguiimpl.h` and `src/dashboardskguiimpl.cpp`.
 If you consider it necessary to break the above and feel it is necessary to start writing the whole GUI code by hand, please think it twice and include a bulletproof justification in the description of the respective pull request, as the change will be hardly reversible and we all probably agree that writing GUI completely by hand tends to be little rewarding activity.
 
@@ -79,4 +79,4 @@ To execute the tests, simply run `ctest` in the build directory.
 
 ### Sanitizers support
 
-To configure the build to enable sanitizer support, run cmake with `-DSANITIZE=<commaseparated list of sanitizers>, eg. `cmake -DSANITIZE=address ..` to enable the adderess sanitizer reporting memory leaks.
+To configure the build to enable sanitizer support, run cmake with `-DSANITIZE=<comma separated list of sanitizers>, eg. `cmake -DSANITIZE=address ..` to enable the adderess sanitizer reporting memory leaks.

@@ -142,7 +142,7 @@ const wxColor Instrument::AdjustColorForZone(const double& val,
 {
     wxColor c = nominal_color;
     Zone::state high_state = Zone::state::nominal;
-    for (auto zone : m_zones) {
+    for (auto& zone : m_zones) {
         if (high_state < Zone::state::emergency && val >= zone.GetLowerLimit()
             && val <= zone.GetUpperLimit() && high_state < zone.GetState()) {
             high_state = zone.GetState();
@@ -218,10 +218,12 @@ wxString Instrument::GetStringSetting(const wxString& key)
 
 int Instrument::GetIntSetting(const wxString& key)
 {
-    int i = 0;
+    int i;
     if (m_config_vals.find(UNORDERED_KEY(key)) != m_config_vals.end()) {
 #if (wxCHECK_VERSION(3, 1, 6))
-        m_config_vals[UNORDERED_KEY(key)].ToInt(&i);
+        if (!m_config_vals[UNORDERED_KEY(key)].ToInt(&i)) {
+            i = 0;
+        }
 #else
         i = wxAtoi(m_config_vals[UNORDERED_KEY(key)]);
 #endif
@@ -231,10 +233,12 @@ int Instrument::GetIntSetting(const wxString& key)
 
 int Instrument::GetDoubleSetting(const wxString& key)
 {
-    double i = 0.0;
+    double i;
     if (m_config_vals.find(UNORDERED_KEY(key)) != m_config_vals.end()) {
 #if (wxCHECK_VERSION(3, 1, 6))
-        m_config_vals[UNORDERED_KEY(key)].ToDouble(&i);
+        if (!m_config_vals[UNORDERED_KEY(key)].ToDouble(&i)) {
+            i = 0.0;
+        }
 #else
         i = wxAtof(m_config_vals[UNORDERED_KEY(key)]);
 #endif
@@ -299,7 +303,7 @@ double Instrument::Transform(const double& val, const transformation& formula)
 const wxString Instrument::ConcatChoiceStrings(wxArrayString arr)
 {
     wxString s = wxEmptyString;
-    for (auto str : arr) {
+    for (auto& str : arr) {
         if (!s.IsEmpty()) {
             s.Append(";");
         }

@@ -193,7 +193,7 @@ public:
     wxArrayString GetDashboardNames()
     {
         wxArrayString as;
-        for (auto dashboard : m_dashboards) {
+        for (auto& dashboard : m_dashboards) {
             as.Add(dashboard.GetName());
         }
         return as;
@@ -293,7 +293,7 @@ public:
     /// Force redraw of the instrument on the next overlay refresh
     void ForceRedraw()
     {
-        for (auto d : m_dashboards) {
+        for (auto& d : m_dashboards) {
             d.ForceRedraw();
         }
     };

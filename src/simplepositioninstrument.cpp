@@ -74,9 +74,11 @@ void SimplePositionInstrument::SetSetting(
         || key.IsSameAs(DSK_SETTING_FORMAT)) {
         // TODO: The above manually maintained list should be replaced with
         // something using the information from the DSK_SPI_SETTINGS macro
-        int i = 0;
+        int i;
 #if (wxCHECK_VERSION(3, 1, 6))
-        value.ToInt(&i);
+        if (!value.ToInt(&i)) {
+            i = 0;
+        }
 #else
         i = wxAtoi(value);
 #endif

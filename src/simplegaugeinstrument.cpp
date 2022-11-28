@@ -88,9 +88,11 @@ void SimpleGaugeInstrument::SetSetting(
         || key.IsSameAs(DSK_SGI_GAUGE_TYPE)) {
         // TODO: The above manually maintained list should be replaced with
         // something using the information from the DSK_SNI_SETTINGS macro
-        int i = 0;
+        int i;
 #if (wxCHECK_VERSION(3, 1, 6))
-        value.ToInt(&i);
+        if (!value.ToInt(&i)) {
+            i = 0;
+        }
 #else
         i = wxAtoi(value);
 #endif
@@ -340,7 +342,7 @@ wxBitmap SimpleGaugeInstrument::RenderAdaptive(double scale)
     dc.SetPen(wxPen(GetDimedColor(GetColorSetting(DSK_SETTING_BORDER_COLOR))));
     dc.DrawCircle(xc, yc, r);
     // Arcs for zones
-    for (auto zone : m_zones) {
+    for (auto& zone : m_zones) {
         // TODO: Angles have to be adapted to the value scale
         int angle_from = zone.GetLowerLimit() * 1.8 - 90;
         int angle_to = zone.GetUpperLimit() * 1.8 - 90;
@@ -501,7 +503,7 @@ wxBitmap SimpleGaugeInstrument::RenderPercent(double scale)
     dc.SetPen(wxPen(GetDimedColor(GetColorSetting(DSK_SETTING_BORDER_COLOR))));
     dc.DrawCircle(xc, yc, r);
     // Arcs for zones
-    for (auto zone : m_zones) {
+    for (auto& zone : m_zones) {
         int angle_from = zone.GetLowerLimit() * 1.8 - 90;
         int angle_to = zone.GetUpperLimit() * 1.8 - 90;
         wxString zone_color;
@@ -630,7 +632,6 @@ wxBitmap SimpleGaugeInstrument::Render(double scale)
     default:
         return wxNullBitmap;
     }
-    return RenderAngle(scale, false);
 }
 
 void SimpleGaugeInstrument::ReadConfig(wxJSONValue& config)
