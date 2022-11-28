@@ -186,9 +186,13 @@ const wxColor Instrument::ColorFromString(const wxString& color)
 const int Instrument::IntFromString(const wxString& str)
 {
     int i;
+#if (wxCHECK_VERSION(3, 1, 6))
     if (str.ToInt(&i)) {
         return i;
     }
+#else
+    return wxAtoi(str);
+#endif
     return 0;
 }
 
@@ -214,22 +218,30 @@ wxString Instrument::GetStringSetting(const wxString& key)
 
 int Instrument::GetIntSetting(const wxString& key)
 {
-    int i = 0;
+    int i;
     if (m_config_vals.find(UNORDERED_KEY(key)) != m_config_vals.end()) {
+#if (wxCHECK_VERSION(3, 1, 6))
         if (!m_config_vals[UNORDERED_KEY(key)].ToInt(&i)) {
             i = 0;
         }
+#else
+        i = wxAtoi(m_config_vals[UNORDERED_KEY(key)]);
+#endif
     }
     return i;
 }
 
 int Instrument::GetDoubleSetting(const wxString& key)
 {
-    double i = 0.0;
+    double i;
     if (m_config_vals.find(UNORDERED_KEY(key)) != m_config_vals.end()) {
+#if (wxCHECK_VERSION(3, 1, 6))
         if (!m_config_vals[UNORDERED_KEY(key)].ToDouble(&i)) {
             i = 0.0;
         }
+#else
+        i = wxAtof(m_config_vals[UNORDERED_KEY(key)]);
+#endif
     }
     return i;
 }

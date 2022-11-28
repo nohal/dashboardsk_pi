@@ -71,9 +71,13 @@ void SimpleTextInstrument::SetSetting(
         // TODO: The above manually maintained list should be replaced with
         // something using the information from the DSK_STI_SETTINGS macro
         int i;
+#if (wxCHECK_VERSION(3, 1, 6))
         if (!value.ToInt(&i)) {
             i = 0;
         }
+#else
+        i = wxAtoi(value);
+#endif
         SetSetting(key, i);
     }
 }

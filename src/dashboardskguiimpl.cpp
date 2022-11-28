@@ -51,11 +51,18 @@ MainConfigFrameImpl::MainConfigFrameImpl(dashboardsk_pi* dsk_pi,
 {
     m_dsk_pi = dsk_pi;
     m_chAnchor->Clear();
+#if wxCHECK_VERSION(3, 1, 0)
     m_chAnchor->Append(Dashboard::AnchorEdgeLabels);
+#else
+    for (auto lbl : Dashboard::AnchorEdgeLabels) {
+        m_chAnchor->Append(wxString(lbl));
+    }
+#endif
     m_orig_config = m_dsk_pi->GetDSK()->GenerateJSONConfig();
     m_tSelf->SetValue(m_dsk_pi->GetDSK()->Self());
     m_comboDashboard->Append(m_dsk_pi->GetDSK()->GetDashboardNames());
 
+#if (wxCHECK_VERSION(3, 1, 6))
     m_bpAddButton->SetBitmap(wxBitmapBundle::FromSVGFile(
         m_dsk_pi->GetDataDir() + "plus.svg", wxSize(BMP_SZ, BMP_SZ)));
     m_bpRemoveButton->SetBitmap(wxBitmapBundle::FromSVGFile(
@@ -70,6 +77,20 @@ MainConfigFrameImpl::MainConfigFrameImpl(dashboardsk_pi* dsk_pi,
         m_dsk_pi->GetDataDir() + "down.svg", wxSize(BMP_SZ, BMP_SZ)));
     m_btnSignalK->SetBitmap(wxBitmapBundle::FromSVGFile(
         m_dsk_pi->GetDataDir() + "signalk_button.svg", wxSize(BMP_SZ, BMP_SZ)));
+#else
+    m_bpAddButton->SetBitmap(GetBitmapFromSVGFile(
+        m_dsk_pi->GetDataDir() + "plus.svg", BMP_SZ, BMP_SZ));
+    m_bpRemoveButton->SetBitmap(GetBitmapFromSVGFile(
+        m_dsk_pi->GetDataDir() + "minus.svg", BMP_SZ, BMP_SZ));
+    m_bpSaveInstrButton->SetBitmap(GetBitmapFromSVGFile(
+        m_dsk_pi->GetDataDir() + "save.svg", BMP_SZ, BMP_SZ));
+    m_bpImportInstrButton->SetBitmap(GetBitmapFromSVGFile(
+        m_dsk_pi->GetDataDir() + "open.svg", BMP_SZ, BMP_SZ));
+    m_bpMoveUpButton->SetBitmap(GetBitmapFromSVGFile(
+        m_dsk_pi->GetDataDir() + "up.svg", BMP_SZ, BMP_SZ));
+    m_bpMoveDownButton->SetBitmap(GetBitmapFromSVGFile(
+        m_dsk_pi->GetDataDir() + "down.svg", BMP_SZ, BMP_SZ));
+#endif
     if (m_comboDashboard->GetCount() > 0) {
         m_comboDashboard->SetSelection(0);
         m_edited_dashboard = m_dsk_pi->GetDSK()->GetDashboard(
@@ -346,14 +367,22 @@ void MainConfigFrameImpl::FillInstrumentDetails()
                     wxString token = tokenizer.GetNextToken();
                     switch (pos) {
                     case 0:
+#if (wxCHECK_VERSION(3, 1, 6))
                         if (!token.ToInt(&min)) {
                             min = -99999;
                         }
+#else
+                        min = wxAtoi(token);
+#endif
                         break;
                     case 1:
+#if (wxCHECK_VERSION(3, 1, 6))
                         if (!token.ToInt(&max)) {
                             max = 99999;
                         }
+#else
+                        max = wxAtoi(token);
+#endif
                         break;
                     default:
                         LOG_VERBOSE("Uncovered SpinCtrl parameter %i", pos);
@@ -381,14 +410,22 @@ void MainConfigFrameImpl::FillInstrumentDetails()
                     wxString token = tokenizer.GetNextToken();
                     switch (pos) {
                     case 0:
+#if (wxCHECK_VERSION(3, 1, 6))
                         if (!token.ToDouble(&min)) {
                             min = -99999.9;
                         }
+#else
+                        min = wxAtof(token);
+#endif
                         break;
                     case 1:
+#if (wxCHECK_VERSION(3, 1, 6))
                         if (!token.ToDouble(&max)) {
                             max = 99999.9;
                         }
+#else
+                        max = wxAtof(token);
+#endif
                         break;
                     default:
                         LOG_VERBOSE(
@@ -791,6 +828,7 @@ SKDataTreeImpl::SKDataTreeImpl(wxWindow* parent)
         wxSTC_STYLE_DEFAULT, GetForegroundColour());
     m_scintillaCode->StyleSetBackground(
         wxSTC_STYLE_DEFAULT, GetBackgroundColour());
+#if wxCHECK_VERSION(3, 1, 0)
     m_scintillaCode->SetLexer(wxSTC_LEX_JSON);
     m_scintillaCode->StyleSetForeground(
         wxSTC_JSON_DEFAULT, GetForegroundColour());
@@ -846,6 +884,7 @@ SKDataTreeImpl::SKDataTreeImpl(wxWindow* parent)
     m_scintillaCode->StyleSetBackground(
         wxSTC_JSON_ESCAPESEQUENCE, GetBackgroundColour());
     m_scintillaCode->SetCaretForeground(GetForegroundColour());
+#endif
     DimeWindow(this);
 }
 
@@ -1040,10 +1079,17 @@ ZonesConfigDialogImpl::ZonesConfigDialogImpl(wxWindow* parent,
 {
     m_dsk_pi = dsk_pi;
     if (m_dsk_pi) {
+#if (wxCHECK_VERSION(3, 1, 6))
         m_bpAdd->SetBitmap(wxBitmapBundle::FromSVGFile(
             m_dsk_pi->GetDataDir() + "plus.svg", wxSize(BMP_SZ, BMP_SZ)));
         m_bpRemove->SetBitmap(wxBitmapBundle::FromSVGFile(
             m_dsk_pi->GetDataDir() + "minus.svg", wxSize(BMP_SZ, BMP_SZ)));
+#else
+        m_bpAdd->SetBitmap(GetBitmapFromSVGFile(
+            m_dsk_pi->GetDataDir() + "plus.svg", BMP_SZ, BMP_SZ));
+        m_bpRemove->SetBitmap(GetBitmapFromSVGFile(
+            m_dsk_pi->GetDataDir() + "minus.svg", BMP_SZ, BMP_SZ));
+#endif
     }
     m_zones = Zone::ParseZonesFromString(value);
     if (!m_zones.empty()) {
