@@ -308,6 +308,19 @@ MainConfigFrame::MainConfigFrame(wxWindow* parent, wxWindowID id,
 
     MainSizer->Add(ConfigSizer, 1, wxEXPAND, 5);
 
+    wxBoxSizer* BottomButtonsSizer;
+    BottomButtonsSizer = new wxBoxSizer(wxHORIZONTAL);
+
+    m_btnExportDashboard = new wxButton(
+        this, wxID_ANY, _("Export"), wxDefaultPosition, wxDefaultSize, 0);
+    BottomButtonsSizer->Add(m_btnExportDashboard, 0, wxALL, 5);
+
+    m_btnImportDashboard = new wxButton(
+        this, wxID_ANY, _("Import"), wxDefaultPosition, wxDefaultSize, 0);
+    BottomButtonsSizer->Add(m_btnImportDashboard, 0, wxALL, 5);
+
+    BottomButtonsSizer->Add(0, 0, 1, wxEXPAND, 5);
+
     m_sdbSizer = new wxStdDialogButtonSizer();
     m_sdbSizerOK = new wxButton(this, wxID_OK);
     m_sdbSizer->AddButton(m_sdbSizerOK);
@@ -315,7 +328,9 @@ MainConfigFrame::MainConfigFrame(wxWindow* parent, wxWindowID id,
     m_sdbSizer->AddButton(m_sdbSizerCancel);
     m_sdbSizer->Realize();
 
-    MainSizer->Add(m_sdbSizer, 0, wxALL | wxEXPAND, 5);
+    BottomButtonsSizer->Add(m_sdbSizer, 0, wxALL | wxEXPAND, 5);
+
+    MainSizer->Add(BottomButtonsSizer, 0, wxEXPAND, 5);
 
     this->SetSizer(MainSizer);
     this->Layout();
@@ -379,6 +394,14 @@ MainConfigFrame::MainConfigFrame(wxWindow* parent, wxWindowID id,
     m_spSpacingV->Connect(wxEVT_COMMAND_SPINCTRL_UPDATED,
         wxSpinEventHandler(MainConfigFrame::m_spSpacingVOnSpinCtrl), NULL,
         this);
+    m_btnExportDashboard->Connect(wxEVT_COMMAND_BUTTON_CLICKED,
+        wxCommandEventHandler(
+            MainConfigFrame::m_btnExportDashboardOnButtonClick),
+        NULL, this);
+    m_btnImportDashboard->Connect(wxEVT_COMMAND_BUTTON_CLICKED,
+        wxCommandEventHandler(
+            MainConfigFrame::m_btnImportDashboardOnButtonClick),
+        NULL, this);
     m_sdbSizerCancel->Connect(wxEVT_COMMAND_BUTTON_CLICKED,
         wxCommandEventHandler(MainConfigFrame::m_sdbSizerOnCancelButtonClick),
         NULL, this);
@@ -446,6 +469,14 @@ MainConfigFrame::~MainConfigFrame()
     m_spSpacingV->Disconnect(wxEVT_COMMAND_SPINCTRL_UPDATED,
         wxSpinEventHandler(MainConfigFrame::m_spSpacingVOnSpinCtrl), NULL,
         this);
+    m_btnExportDashboard->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED,
+        wxCommandEventHandler(
+            MainConfigFrame::m_btnExportDashboardOnButtonClick),
+        NULL, this);
+    m_btnImportDashboard->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED,
+        wxCommandEventHandler(
+            MainConfigFrame::m_btnImportDashboardOnButtonClick),
+        NULL, this);
     m_sdbSizerCancel->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED,
         wxCommandEventHandler(MainConfigFrame::m_sdbSizerOnCancelButtonClick),
         NULL, this);

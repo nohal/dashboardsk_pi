@@ -85,6 +85,8 @@ protected:
     wxSpinCtrl* m_spSpacingH;
     wxStaticText* m_stSpacingV;
     wxSpinCtrl* m_spSpacingV;
+    wxButton* m_btnExportDashboard;
+    wxButton* m_btnImportDashboard;
     wxStdDialogButtonSizer* m_sdbSizer;
     wxButton* m_sdbSizerOK;
     wxButton* m_sdbSizerCancel;
@@ -145,6 +147,14 @@ protected:
     virtual void m_spOffsetYOnSpinCtrl(wxSpinEvent& event) { event.Skip(); }
     virtual void m_spSpacingHOnSpinCtrl(wxSpinEvent& event) { event.Skip(); }
     virtual void m_spSpacingVOnSpinCtrl(wxSpinEvent& event) { event.Skip(); }
+    virtual void m_btnExportDashboardOnButtonClick(wxCommandEvent& event)
+    {
+        event.Skip();
+    }
+    virtual void m_btnImportDashboardOnButtonClick(wxCommandEvent& event)
+    {
+        event.Skip();
+    }
     virtual void m_sdbSizerOnCancelButtonClick(wxCommandEvent& event)
     {
         event.Skip();
