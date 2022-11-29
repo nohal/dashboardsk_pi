@@ -41,9 +41,11 @@ PLUGIN_BEGIN_NAMESPACE
 #define LUMIMOSITY_NIGHT (-0.8)
 #define LUMIMOSITY_DUSK (-0.5)
 
+// The font sizing logic is inconsistent between platforms, define some magic
+// constants used to improve the look of the instruments
 #if defined(__WXGTK__)
 #define AUTO_TEXT_SIZE_COEF 1.5
-#define AUTO_TEXT_SHIFT_COEF 1.0
+#define AUTO_TEXT_SHIFT_COEF 1.2
 #elif defined(__WXMSW__)
 #define AUTO_TEXT_SIZE_COEF 1.2
 #define AUTO_TEXT_SHIFT_COEF 1.2
