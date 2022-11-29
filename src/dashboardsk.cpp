@@ -282,10 +282,23 @@ wxString DashboardSK::GetSignalKTreeText()
 
 wxJSONValue* DashboardSK::GetSignalKTree() { return &m_sk_data; }
 
-const wxString DashboardSK::SelfTranslate(const wxString path)
+const wxString DashboardSK::SelfTranslate(const wxString& path)
 {
+    if (Self().IsEmpty()) {
+        return path;
+    }
     wxString new_path = path;
-    new_path.Replace(Self(), "self");
+    new_path.Replace("." + Self(), ".self");
+    return new_path;
+}
+
+const wxString DashboardSK::SelfPopulate(const wxString& path)
+{
+    if (Self().IsEmpty()) {
+        return path;
+    }
+    wxString new_path = path;
+    new_path.Replace(".self", "." + Self());
     return new_path;
 }
 

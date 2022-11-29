@@ -308,12 +308,20 @@ public:
     };
 
     /// Translate own fully qualified ID to "self" in SignalK path
-    /// References to fully quallified IDs are usually not thransferable to
+    /// References to fully quallified IDs are usually not transferable to
     /// different environment
     ///
     /// \param path SignalK path
     /// \return SignalK path with fully quallified ID replaced by keyword "self"
-    const wxString SelfTranslate(const wxString path);
+    const wxString SelfTranslate(const wxString& path);
+
+    /// Reverse functionality to SeflTranslate
+    /// References to fully quallified IDs are usually not transferable to
+    /// different environment
+    ///
+    /// \param path SignalK path with "self"
+    /// \return SignalK path with fully quallified ID
+    const wxString SelfPopulate(const wxString& path);
 };
 
 PLUGIN_END_NAMESPACE

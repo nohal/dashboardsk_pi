@@ -33,6 +33,7 @@
 #include <wx/dialog.h>
 #include <wx/msgdlg.h>
 #include <wx/tokenzr.h>
+#include <wx/txtstrm.h>
 #include <wx/wfstream.h>
 #include <wx/windowptr.h>
 
@@ -98,6 +99,7 @@ MainConfigFrameImpl::MainConfigFrameImpl(dashboardsk_pi* dsk_pi,
     }
     FillInstrumentList();
     EnableItemsForSelectedDashboard();
+    EnableInstrumentListButtons();
     DimeWindow(this);
 }
 
@@ -590,6 +592,7 @@ void MainConfigFrameImpl::m_bpMoveUpButtonOnButtonClick(wxCommandEvent& event)
     m_lbInstruments->Delete(pos);
     m_lbInstruments->Insert(val, pos - 1);
     m_lbInstruments->SetSelection(pos - 1);
+    EnableInstrumentListButtons();
     event.Skip();
 }
 
@@ -606,6 +609,7 @@ void MainConfigFrameImpl::m_bpMoveDownButtonOnButtonClick(wxCommandEvent& event)
     m_lbInstruments->Delete(pos);
     m_lbInstruments->Insert(val, pos + 1);
     m_lbInstruments->SetSelection(pos + 1);
+    EnableInstrumentListButtons();
     event.Skip();
 }
 
@@ -748,6 +752,16 @@ void MainConfigFrameImpl::m_spSpacingVOnSpinCtrl(wxSpinEvent& event)
     UpdateEditedDashboard();
 }
 
+wxString LoadStringFromFile(wxFileInputStream& fis)
+{
+    wxString s;
+    wxTextInputStream tis(fis);
+    while (!fis.Eof()) {
+        s = s.Append(tis.ReadLine()).Append('\n');
+    }
+    return s;
+}
+
 void MainConfigFrameImpl::m_bpSaveInstrButtonOnButtonClick(
     wxCommandEvent& event)
 {
@@ -764,11 +778,11 @@ void MainConfigFrameImpl::m_bpSaveInstrButtonOnButtonClick(
             wxFileOutputStream output_stream(dlg->GetPath());
             if (output_stream.IsOk()) {
                 wxJSONWriter w;
-                w.Write(
-                    m_edited_instrument->GenerateJSONConfig(), output_stream);
-                output_stream.Close();
                 wxString s;
+                wxTextOutputStream tos(output_stream);
                 w.Write(m_edited_instrument->GenerateJSONConfig(), s);
+                tos.WriteString(m_dsk_pi->GetDSK()->SelfTranslate(s));
+                output_stream.Close();
                 LOG_INFO("Cannot save current contents in file '%s'.",
                     dlg->GetPath());
             }
@@ -793,7 +807,8 @@ void MainConfigFrameImpl::m_bpImportInstrButtonOnButtonClick(
                 if (input_stream.IsOk() && m_edited_dashboard) {
                     wxJSONValue v;
                     wxJSONReader r;
-                    r.Parse(input_stream, &v);
+                    wxString s = LoadStringFromFile(input_stream);
+                    r.Parse(m_dsk_pi->GetDSK()->SelfPopulate(s), &v);
 
                     Instrument* instr = DashboardSK::CreateInstrumentInstance(
                         DashboardSK::GetClassIndex(v["class"].AsString()),
@@ -812,10 +827,13 @@ void MainConfigFrameImpl::m_bpImportInstrButtonOnButtonClick(
                     }
                     instr->ReadConfig(v);
                     m_edited_dashboard->AddInstrument(instr);
+                    m_edited_instrument = instr;
                 }
             }
             FillInstrumentList();
             m_lbInstruments->SetSelection(m_lbInstruments->GetCount() - 1);
+            FillInstrumentDetails();
+            EnableInstrumentListButtons();
         }
     });
     event.Skip();
@@ -837,11 +855,11 @@ void MainConfigFrameImpl::m_btnExportDashboardOnButtonClick(
             wxFileOutputStream output_stream(dlg->GetPath());
             if (output_stream.IsOk()) {
                 wxJSONWriter w;
-                w.Write(
-                    m_edited_dashboard->GenerateJSONConfig(), output_stream);
-                output_stream.Close();
                 wxString s;
+                wxTextOutputStream tos(output_stream);
                 w.Write(m_edited_dashboard->GenerateJSONConfig(), s);
+                tos.WriteString(m_dsk_pi->GetDSK()->SelfTranslate(s));
+                output_stream.Close();
                 LOG_INFO("Cannot save current contents in file '%s'.",
                     dlg->GetPath());
             }
@@ -866,7 +884,9 @@ void MainConfigFrameImpl::m_btnImportDashboardOnButtonClick(
                 if (input_stream.IsOk()) {
                     wxJSONValue v;
                     wxJSONReader r;
-                    r.Parse(input_stream, &v);
+                    r.Parse(m_dsk_pi->GetDSK()->SelfPopulate(
+                                LoadStringFromFile(input_stream)),
+                        &v);
                     if (v.HasMember("instruments")) {
                         m_edited_dashboard = m_dsk_pi->GetDSK()->AddDashboard();
                         m_edited_dashboard->ReadConfig(v);
@@ -877,6 +897,7 @@ void MainConfigFrameImpl::m_btnImportDashboardOnButtonClick(
                         FillInstrumentList();
                         FillInstrumentDetails();
                         EnableItemsForSelectedDashboard();
+                        EnableInstrumentListButtons();
                     } else {
                         wxMessageBox(
                             wxString::Format(
