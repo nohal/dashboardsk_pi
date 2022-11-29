@@ -37,23 +37,35 @@ class dskDC : public piDC {
 private:
     /// Scale factor of the context
     double m_scale_factor = 1.0;
+    bool m_is_gl;
 
 public:
     /// Constructor
     ///
     /// \param canvas OpenGL canvas to draw on
     dskDC(wxGLCanvas& canvas)
-        : piDC(canvas) {};
+        : piDC(canvas)
+    {
+        m_is_gl = true;
+    };
 
     /// Constructor
     ///
     /// \param pdc Non-OpenGL device context to draw on
     dskDC(wxDC& pdc)
-        : piDC(pdc) {};
+        : piDC(pdc)
+    {
+        m_is_gl = false;
+    };
 
     /// Constructor
     dskDC()
-        : piDC() {};
+        : piDC()
+    {
+        m_is_gl = true;
+    };
+
+    bool IsGL() { return m_is_gl; }
 
     /// Get the scale factor of the device context
     ///

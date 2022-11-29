@@ -199,6 +199,10 @@ bool dashboardsk_pi::RenderOverlayMultiCanvas(
         return false;
     }
 
+    if (m_oDC && m_oDC->IsGL()) {
+        delete m_oDC;
+        m_oDC = nullptr;
+    }
     if (!m_oDC) {
         m_oDC = new dskDC(dc);
     }
@@ -226,6 +230,10 @@ bool dashboardsk_pi::RenderGLOverlayMultiCanvas(
         return false;
     }
 
+    if (m_oDC && !m_oDC->IsGL()) {
+        delete m_oDC;
+        m_oDC = nullptr;
+    }
     if (!m_oDC) {
         m_oDC = new dskDC();
         GLint dims[4] = { 0 };
