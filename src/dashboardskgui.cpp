@@ -552,7 +552,7 @@ SKDataTree::SKDataTree(wxWindow* parent, wxWindowID id, const wxString& title,
     m_sdbSizerBtns->AddButton(m_sdbSizerBtnsCancel);
     m_sdbSizerBtns->Realize();
 
-    bSizerMain->Add(m_sdbSizerBtns, 0, wxEXPAND, 5);
+    bSizerMain->Add(m_sdbSizerBtns, 0, wxALL | wxEXPAND, 5);
 
     this->SetSizer(bSizerMain);
     this->Layout();
@@ -812,7 +812,7 @@ ZonesConfigDialog::ZonesConfigDialog(wxWindow* parent, wxWindowID id,
     m_sdbSizerButtons->AddButton(m_sdbSizerButtonsCancel);
     m_sdbSizerButtons->Realize();
 
-    bSizerMain->Add(m_sdbSizerButtons, 0, wxEXPAND, 5);
+    bSizerMain->Add(m_sdbSizerButtons, 0, wxALL | wxEXPAND, 5);
 
     this->SetSizer(bSizerMain);
     this->Layout();
