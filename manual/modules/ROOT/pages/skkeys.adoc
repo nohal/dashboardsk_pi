@@ -1,0 +1,23 @@
+:imagesdir: ../images/
+== SignalK key selection
+
+Each instrument requires binding to a SignalK data object represented by a path pointing to a specific leaf of the data tree. The path to the data node has to be fully qualified, reresenting the whole path from the root of the data tree to the node eg. `vessels.urn:mrn:signalk:uuid:76bb2350-c92e-4e47-b3c3-e12273f21155.navigation.datetime`
+
+If the full path is known, it can be written or copy-pasted directly to the text part of the control.
+
+image::skkey_ctrl.png[SignalK key selection control]
+
+By clicking on the button to the right of the key field, a dialog allowing interactive selection of the key from the data tree structure is shown.
+
+image::skkey_dlg.png[SignalK key selection dialog]
+
+== SignalK data inspection
+
+The SignalK data collected from the received delta messages are stored in a tree data structure. By clicking on the *SignalK* button in the upper right corner of the preferences dialog all the data avialable is displayed in human readable JSON format.
+
+image::sk_browser.png[SignalK data browser]
+
+== External references
+
+* https://signalk.org/specification/1.7.0/doc/vesselsBranch.html[SignalK keys reference for vessels]
+* https://signalk.org/specification/1.7.0/doc/otherBranches.html[SignalK keys reference for other entities]

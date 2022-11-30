@@ -1,0 +1,105 @@
+:imagesdir: ../images/
+
+== Configuration
+
+* Open the OpenCPN Toolbox by clicking on the cogwheel icon in the main toolbar
+* Navigate to the `Plugins` tab
+* Select the DashboardSK tile and click on the `Preferences` button
+
+image::preferences.png[DashboardSK preferences dialog]
+
+[[own-vessel]]
+=== Own vessel identifier (1)
+
+SignalK context of the own vessel. The initial *vessels.* must be ommited. The value is normally filled automatically as soon as it is received from the OpenCPN core application and there is no need to edit it manually.
+
+=== Configuration data editor (2)
+
+The JSON configuration data of the plugin can be edited directly using a visual editor after clicking on the *Cfg edit* button. This option is recommended for experienced users and general caution is strongly recommended.
+
+image::config_json_editor.png[Configuration data editor]
+
+=== SignalK data tree viewer (3)
+
+The data tree constructed from the received SignalK delta messages can be displayed as a collapsible tree structure by clicking on the *SignalK* button.
+
+image::data_tree.png[SignalK data tree viewer]
+
+=== Dashboard list (4)
+
+The dashboard to be configured can be selected from the dropdown.
+
+=== Dashboard deletion (5)
+
+Clicking on the *Delete* button removes the currently selected button.
+
+=== Dashboard creation (6)
+
+Clicking on the *New* button opens a dialog allowing the user to specify the name of the newly created dashboard.
+
+=== Instrument list (7)
+
+List of instruments in the currently selected dashboard
+
+.Buttons
+[cols="1,10"]
+|===
+|Icon |Description
+a|image::plus.svg[Add instrument]
+|Add new instrument to the current dashboard
+a|image::minus.svg[Remove instrument]
+|Remove selected instrument
+a|image::up.svg[Move instrument up]
+|Move the selected instrument up one position
+a|image::down.svg[Move instrument down]
+|Move the selected instrument down one position
+a|image::save.svg[Export instrument to JSON file]
+|Export the defienition of the selected instrument to JSON file
+a|image::open.svg[Import instrument from JSON file]
+|Import an instrument from a JSON file and add it to the current dashboard
+|===
+
+[[instrument-settings]]
+=== Instrument settings (8)
+
+Detailed configuration of the selected instrument. Refer to the documentation of individual instruments for detail about the parameters each of them has.
+Changes in parameters are reflected in the displayed instrument as soon as an action out of this are is performed, for example different instrument is selected form the list on the left, but not persisted until the *OK* button is pressed.
+
+=== Dashboard placement and appearance (9)
+
+.Options
+[cols="1h,10"]
+|===
+|Option |Description
+
+|Enabled
+|Checkbox enabling/disabling the dashboard
+
+|Canvas
+|Id of the chart canvas on which the dashboard is displayed
+
+|Anchor
+|Edge of the screen to which the dashboard is docked
+
+|Offset h
+|Horizontal offset from the edge of the screen
+
+|Offset v
+|Vertical offset from the edge of the screen
+
+|Spacing h
+|Horizontal spacing between the instruments in the dashboard
+
+|Spacing v
+|Vertical spacing between the instruments in the dashboard
+|===
+
+Changes performed in this area are immediately reflected on screen, but not persisted until the *OK* button is pressed.
+
+=== Dashboard Export and Import (10)
+The buttons in the lower left corner allow exporting the complete definition of the current dashboard and all the instruments it contains to a JSON file which can be imported back to the plugin. All the keys refering to own vessel are converted to *vessel.self* during export. During import, the *vessel.self* paths are converted to point to the paths refering to the <<own-vessel,own vessel identifier>>.
+
+=== Preferences persistency (11)
+The changes in configuration are reflected in the displayed instruments as soon as feasible - dashboard appearance settings immediately, instrument settings as soon as an action is performed out of the <<instrument-settings, instrument settings>> part of the dialog.
+This allows an immediate inspection of the effect of the configuration changes performed, but the configurstion is persisted and permanently applied only after the *OK* button in the lower right corner of the preferences is pressed.
+In case the *Cancel* button is pressed or the dialog is closed, the plugin remembers the original state of the configuration from the moment the preferences dialog was opened and reverts back to it.

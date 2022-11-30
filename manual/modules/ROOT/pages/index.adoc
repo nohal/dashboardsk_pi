@@ -52,7 +52,7 @@ Use the xref:installation.adoc[integrated plugin manager] to install the plugin.
 
 === Configuration
 
-The xref:installation.adoc[configuration of the plugin] can be accessed from the _Plugins_ tab of the _OpenCPN Toolbox_ by clicking the _Preferences_ button on the tile representing the DashboardSK plugin.
+The xref:configuration.adoc[configuration of the plugin] can be accessed from the _Plugins_ tab of the _OpenCPN Toolbox_ by clicking the _Preferences_ button on the tile representing the DashboardSK plugin.
 
 === Links
 

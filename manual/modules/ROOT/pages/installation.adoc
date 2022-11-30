@@ -15,4 +15,5 @@ image::pluginmanager.png[OpenCPN plugin manager]
 * Navigate to the `Plugins` tab
 * Select the DashboardSK tile and click on the `Preferences` button
 
-image::preferences.png[DashboardSK preferences dialog]
+Refer to the documentation of the DashboardSK plugin xref:configuration.adoc[preferences dialog] for information about the configuration of the plugin.
+Detailed documentation for each of the individual instruments is available from the list on the xref:index.adoc[documentation homepage].

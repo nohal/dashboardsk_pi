@@ -1,0 +1,12 @@
+:imagesdir: ../images/
+== Zones
+
+The zones build on the concept of https://signalk.org/specification/1.7.0/doc/notifications.html[SignalK notifications and alarms].
+
+To define zones, click on the button in the right part of the control and open the zone definition dialog.
+
+image::zones_ctrl.png[Zone control]
+
+Each zone is defined by it's lower and upper boundary and alarm state. Tehere is no need to define zones at all and the zones defined  don't have to cover all the possible values of the observed data field - Any value not being covered by a zone is considered normal and displayed as such.
+
+image::zones_dlg.png[Zone control]

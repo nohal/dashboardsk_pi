@@ -799,11 +799,11 @@ ZonesConfigDialog::ZonesConfigDialog(wxWindow* parent, wxWindowID id,
 
     bSizerMain->Add(bSizerData, 1, wxEXPAND, 5);
 
-    m_stNominal = new wxStaticText(this, wxID_ANY,
-        _("All values not covered by the zones are considered nominal."),
+    m_stNormal = new wxStaticText(this, wxID_ANY,
+        _("All values not covered by the zones are considered normal."),
         wxDefaultPosition, wxDefaultSize, 0);
-    m_stNominal->Wrap(-1);
-    bSizerMain->Add(m_stNominal, 0, wxALL, 5);
+    m_stNormal->Wrap(-1);
+    bSizerMain->Add(m_stNormal, 0, wxALL, 5);
 
     m_sdbSizerButtons = new wxStdDialogButtonSizer();
     m_sdbSizerButtonsOK = new wxButton(this, wxID_OK);

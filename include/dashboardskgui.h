@@ -311,7 +311,7 @@ protected:
     wxSpinCtrlDouble* m_spUpper;
     wxStaticText* m_stState;
     wxChoice* m_choiceState;
-    wxStaticText* m_stNominal;
+    wxStaticText* m_stNormal;
     wxStdDialogButtonSizer* m_sdbSizerButtons;
     wxButton* m_sdbSizerButtonsOK;
     wxButton* m_sdbSizerButtonsCancel;

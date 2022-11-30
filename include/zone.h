@@ -57,11 +57,11 @@ public:
     {
         m_lower_limit = 0.0;
         m_upper_limit = 0.0;
-        m_state = state::nominal;
+        m_state = state::normal;
         m_message = wxEmptyString;
     };
 
-    Zone(double lower, double upper, state st = state::nominal,
+    Zone(double lower, double upper, state st = state::normal,
         const wxString& msg = wxEmptyString)
     {
         m_lower_limit = lower;

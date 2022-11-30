@@ -3,6 +3,143 @@
 
 image::simplenumberinstrument_screenshot.png[Simple number instrument]
 
-=== Configuration parameters
+A rectangular instrument displaying a single numerical value. Allows to select formatting and unit conversion from the SI units used by SignalK to usual units used in navigation.
 
-* TODO
+.Configuration parameters
+[cols="1h,5,1"]
+|===
+|Parameter |Description |Example
+
+|Name
+|Name of the instrument
+|Time from primary GPS
+
+|Title
+|Title of the instrument to be displayed
+|GPS Time
+
+|Timeout
+|Timeout in seconds. If the set numeber of seconds passes since the last update for the SignalK key displayed by the instrument pass without receiving an update, the value is considerd timed out and is replaced by dashes.
+|3
+
+|SK key
+|Fully qualified SignalK path to the value displayed by the instrument
+|vessels.urn:mrn:signalk:uuid:76bb2350-c92e-4e47-b3c3-e12273f21155.environment.depth.belowTransducer
+
+|Format
+a|Format of the displayed number.
+
+.Supported formats
+* 9.9
+* 9.99
+* 9.999
+* 9
+* 009
+* 009.9
+* 09.9
+* 09.99
+* 009.99
+|
+
+|Transformation
+a|Function to be used to convert the value from the SI unit used by SignalK to human readable form
+
+.Supported transformation functions
+* None
+* RAD->DEG
+* m/s -> kn
+* m/s -> km/h
+* m/s -> mph
+* m -> feet
+* m -> fathoms
+* m -> NMi
+* Kelvin -> Celsius
+* Kelvin -> Fahrenheit
+* ratio -> percent
+* Pa -> hPa
+* Pa -> kPa
+* Pa -> MPa
+* Pa -> atm
+* Pa -> mmHg
+* Pa -> psi
+* Hz -> RPM
+|
+
+|Zones
+|Value zones used to trigger visual alarm (Changing the colors of the instrument if the displayed value is within a zone). Refer to the xref:zones.adoc[detailed documentation].
+|
+
+|Data smoothing
+|Degree of data smoothing. The value between 0 and 9 configuring how smooth the transition between values received from the data stream should be.
+
+O means no smoothing, the latest value received from the data stream is directly displayed.
+
+Values between 1 and 9 regulate how aggressive the smoothing algorithm is.
+
+1 means the latest received value has 90% influence on what is displayed, 10% the earlier values. Lower values are suitable for data possibly changing fast in real world and the sensors with steady output, like depth.
+
+9 means the latest received value has only 10% influence on the displayed value and 90% the earlier values. This makes the transition between values very smooth, not fluctuating wildly, but means a signifiant delay in reaching close to the actual value received from the sensor.
+Higher values are suitable for data not changing fast in real world and coming from sensors suffering big fluctuation coming from boat movement and other factors, for example wind strength and direction.
+|1
+
+|Title size
+|Font size of the instrument Title
+|10
+
+|Body size
+|Font size for the instrument value
+|15
+
+|Title background
+|Background color of the title part of the instrument
+|
+
+|Title color
+|Text color of the title part of the instrument
+|
+
+|Body background
+|Background color of the value part of the instrument
+|
+
+|Body color
+|Text color of the value part of the instrument
+|
+
+|Alert background
+|Background color of the value part of the instrument when the value is within an alert zone
+|
+
+|Alert color
+|Text color of the value part of the instrument when the value is within an alert zone
+|
+
+|Warning background
+|Background color of the value part of the instrument when the value is within a warning zone
+|
+
+|Warning color
+|Text color of the value part of the instrument when the value is within a warning zone
+|
+
+|Alarm background
+|Background color of the value part of the instrument when the value is within an alarm zone
+|
+
+|Alarm color
+|Text color of the value part of the instrument when the value is within an alarm zone
+|
+
+|Emergency background
+|Background color of the value part of the instrument when the value is within an emergency zone
+|
+
+|Emergency color
+|Text color of the value part of the instrument when the value is within an emergency zone
+|
+
+|Border color
+|Color of the border of the instrument
+|
+
+|===
