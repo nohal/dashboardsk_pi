@@ -639,14 +639,21 @@ void MainConfigFrameImpl::m_btnCfgEditOnButtonClick(wxCommandEvent& event)
     dlg->SetCodeConfig(s);
     dlg->ShowWindowModalThenDo([this, dlg](int retcode) {
         if (retcode == wxID_OK) {
-            wxJSONReader r;
+            wxJSONReader r(wxJSONREADER_STRICT);
             wxJSONValue v;
-            r.Parse(dlg->GetValue(), &v);
-            m_dsk_pi->GetDSK()->ReadConfig(v);
-            // TODO: The above is VERY fragile, we should add as many checks as
-            // possible both here and to the editing form before screwing up the
-            // configuration (Although on Cancel click we load the old one,
-            // which is not broken, so we are not a complete disaster)
+            int ret = r.Parse(dlg->GetValue(), &v);
+            if (0 == ret && v.HasMember("signalk")) {
+                m_dsk_pi->GetDSK()->ReadConfig(v);
+                // TODO: The above is VERY fragile, we should add as many checks
+                // as possible both here and to the editing form before screwing
+                // up the configuration (Although on Cancel click we load the
+                // old one, which is not broken, so we are not a complete
+                // disaster)
+            } else {
+                wxMessageBox(_("The configration data were not a valid JSON "
+                               "document and could ot be used!"),
+                    _("JSON not valid"), wxOK | wxCENTRE | wxICON_ERROR);
+            }
         }
     });
     event.Skip();
