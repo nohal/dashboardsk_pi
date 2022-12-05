@@ -164,8 +164,7 @@ wxBitmap SimpleNumberInstrument::Render(double scale)
                 value = wxString::Format(
                     m_format_strings[m_format_index], abs(dval));
                 if (dval < 0
-                    and !m_supported_formats[m_format_index].StartsWith(
-                        "ABS")) {
+                    && !m_supported_formats[m_format_index].StartsWith("ABS")) {
                     value.Prepend("-");
                 }
                 ctb = GetDimedColor(GetColor(dval, color_item::title_bg));
