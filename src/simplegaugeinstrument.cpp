@@ -360,10 +360,11 @@ wxBitmap SimpleGaugeInstrument::RenderAdaptive(double scale)
             = ceil(m_max_val / pow(10, magnitude + 1)) * pow(10, magnitude + 1);
         lower = floor(m_min_val / pow(10, magnitude + 1))
             * pow(10, magnitude + 1);
-        if (magnitude < 2) {
-            magnitude--;
-        }
-        step = (upper - lower) / pow(10, magnitude) / 6;
+        // if (magnitude < 2) {
+        //     magnitude--;
+        // }
+        step = (upper - lower) / pow(10, magnitude) / 5;
+        upper = lower + 6 * pow(10, magnitude) * step;
     }
     // Arcs for zones
     for (auto& zone : m_zones) {
@@ -518,8 +519,8 @@ wxBitmap SimpleGaugeInstrument::RenderFixed(double scale)
     int lower = 0;
     int step = 0;
 
-    double zone_lowest = lower;
-    double zone_highest = upper;
+    double zone_lowest = 9999.0;
+    double zone_highest = -9999.0;
     for (auto& zone : m_zones) {
         if (zone.GetLowerLimit() < zone_lowest) {
             zone_lowest = zone.GetLowerLimit();
@@ -528,20 +529,15 @@ wxBitmap SimpleGaugeInstrument::RenderFixed(double scale)
             zone_highest = zone.GetUpperLimit();
         }
     }
-    double range = zone_highest - zone_lowest;
+    double range = abs(zone_highest - zone_lowest);
     while (range / pow(10, magnitude) > 10) {
         magnitude++;
     }
 
-    if (magnitude < 2) {
-        magnitude--;
-    }
-
-    upper = zone_highest;
-    lower = zone_lowest;
+    upper = ceil(zone_highest);
+    lower = floor(zone_lowest);
     step = (upper - lower) / pow(10, magnitude) / 5;
-    upper = lower + 6 * step;
-
+    upper = lower + 6 * step * pow(10, magnitude);
     // Arcs for zones
     for (auto& zone : m_zones) {
         int angle_from
@@ -609,7 +605,7 @@ wxBitmap SimpleGaugeInstrument::RenderFixed(double scale)
     dc.DrawLine(shift + border_width, size_y - border_width / 2,
         size_x - shift - border_width, size_y - border_width / 2);
     // Needle
-    if (has_value && m_old_value > zone_lowest && m_old_value < zone_highest) {
+    if (has_value && m_old_value > zone_lowest && m_old_value <= upper) {
         dc.SetBrush(wxBrush(GetDimedColor(GetColorSetting(DSK_SGI_NEEDLE_FG))));
         dc.SetPen(wxPen(GetDimedColor(GetColorSetting(DSK_SGI_NEEDLE_FG)), 3));
         DrawNeedle(dc, xc, yc, r * 0.9,
