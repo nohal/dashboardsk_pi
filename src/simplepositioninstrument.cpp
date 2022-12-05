@@ -65,6 +65,9 @@ void SimplePositionInstrument::SetSetting(
     Instrument::SetSetting(key, value);
     if (key == DSK_SETTING_SK_KEY && !m_sk_key.IsSameAs(value)) {
         m_sk_key = wxString(value);
+        if (m_sk_key.EndsWith("latitude") || m_sk_key.EndsWith("longitude")) {
+            m_sk_key = m_sk_key.BeforeLast('.');
+        }
         if (m_parent_dashboard) {
             m_parent_dashboard->Unsubscribe(this);
             m_parent_dashboard->Subscribe(m_sk_key, this);
@@ -103,10 +106,10 @@ wxBitmap SimplePositionInstrument::Render(double scale)
     wxString value = "----, ----";
     const wxJSONValue* val = m_parent_dashboard->GetSKData(m_sk_key);
     if (val) {
-        wxJSONValue v = val->Get("value", wxJSONValue("----, ----"));
+        wxJSONValue v = *val;
         if (v.HasMember("latitude") && v.HasMember("longitude")) {
-            double lat = v["latitude"].AsDouble();
-            double lon = v["longitude"].AsDouble();
+            double lat = v["latitude"]["value"].AsDouble();
+            double lon = v["longitude"]["value"].AsDouble();
             switch (m_format) {
             case Instrument::position_format::deg_decimal_min: {
                 value = wxString::Format(

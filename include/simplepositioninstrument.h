@@ -93,7 +93,7 @@ protected:
     wxFont m_title_font;
     /// Font used for the body of the instrument
     wxFont m_body_font;
-    /// SignalK fully quakified path whose value is to be displayed by the
+    /// SignalK fully qualified path whose value is to be displayed by the
     /// instrument
     wxString m_sk_key;
     /// Array of names of supported formats

@@ -104,6 +104,23 @@ const wxJSONValue* DashboardSK::GetSKData(const wxString& path)
     return ptr;
 }
 
+void DashboardSK::ProcessComplexValue(wxJSONValue* parent,
+    const wxJSONValue& value, const wxDateTime& ts, const wxString& source)
+{
+    if (value.IsObject()) {
+        wxArrayString vals = value.GetMemberNames();
+        for (wxString val : vals) {
+            (*parent)[val] = wxJSONValue();
+            ProcessComplexValue(
+                &(*parent)[val], value.Get(val, wxJSONValue()), ts, source);
+        }
+    } else {
+        (*parent)["value"] = value;
+        (*parent)["timestamp"] = ts.FormatISOCombined();
+        (*parent)["source"] = source;
+    }
+}
+
 void DashboardSK::SendSKDelta(wxJSONValue& message)
 {
     LOG_RECEIVE("Received SK message: " + message.AsString());
@@ -220,13 +237,14 @@ void DashboardSK::SendSKDelta(wxJSONValue& message)
                     // something? (If they are, we want to ignore them later
                     // selectively when the instrument processes it's data)
                     if (!source.IsEmpty()) {
-                        (*val_ptr)[source] = wxJSONValue();
-                        val_ptr = &(*val_ptr)[source];
+                        wxString src_key = SRC_MAGIC_STRING + source;
+                        src_key.Replace(".", "-", true);
+                        (*val_ptr)[src_key] = wxJSONValue();
+                        val_ptr = &(*val_ptr)[src_key];
                     }
-                    (*val_ptr)["value"]
-                        = message["updates"][i]["values"][j]["value"];
-                    (*val_ptr)["timestamp"] = ts.FormatISOCombined();
-                    (*val_ptr)["source"] = source;
+                    ProcessComplexValue(val_ptr,
+                        message["updates"][i]["values"][j]["value"], ts,
+                        source);
 
                     LOG_RECEIVE_DEBUG(
                         "Notifying update to path " + fullKeyWithPath);

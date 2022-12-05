@@ -152,7 +152,8 @@ wxBitmap SimpleNumberInstrument::Render(double scale)
                 cbb = GetDimedColor(GetColorSetting(DSK_SETTING_ALERT_BG));
                 cbf = GetDimedColor(GetColorSetting(DSK_SETTING_ALERT_FG));
             } else {
-                double dval = Transform(v.AsDouble());
+                double dval
+                    = Transform(v.IsDouble() ? v.AsDouble() : v.AsLong());
                 if (m_old_value > std::numeric_limits<double>::min()) {
                     dval = (m_smoothing * m_old_value
                                + (DSK_SNI_SMOOTHING_MAX - m_smoothing + 1)

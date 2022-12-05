@@ -48,6 +48,8 @@
     X(3, SimplePositionInstrument)                                             \
     // X(4, AndAnotherInstrument)
 
+#define SRC_MAGIC_STRING "SRC:"
+
 PLUGIN_BEGIN_NAMESPACE
 
 class dskDC;
@@ -75,6 +77,16 @@ private:
 #endif
     /// Color scheme to be used when rendering the dashboards on screen
     int m_color_scheme;
+
+    /// Process the SK value and if it is an object, extend the data structure
+    /// to make the actual values leaves
+    ///
+    /// \param parent Pointer to the branch of the tree where the value belongs
+    /// \param value Value to be processed
+    /// \param ts Timestamp
+    /// \param source Data source name
+    void ProcessComplexValue(wxJSONValue* parent, const wxJSONValue& value,
+        const wxDateTime& ts, const wxString& source);
 
 public:
     /// Get current log level
@@ -176,7 +188,8 @@ public:
     /// \param instrument Pointer to the subscribed instrument
     void Subscribe(const wxString& path, Instrument* instrument)
     {
-        m_path_subscriptions[UNORDERED_KEY(path)].push_back(instrument);
+        wxString ps = path.Left(path.Find(SRC_MAGIC_STRING) - 1);
+        m_path_subscriptions[UNORDERED_KEY(ps)].push_back(instrument);
     }
 
     /// Unsubscribe instrument from all paths
