@@ -208,7 +208,8 @@ wxBitmap SimpleGaugeInstrument::RenderAngle(double scale, bool relative)
         if (!m_timed_out) {
             value = wxString::Format(
                 m_format_strings[m_format_index], abs(m_old_value));
-            if (m_old_value < 0) {
+            if (m_old_value < 0
+                && !m_supported_formats[m_format_index].StartsWith("ABS")) {
                 value.Prepend("-");
             }
         }
@@ -293,7 +294,9 @@ wxBitmap SimpleGaugeInstrument::RenderAngle(double scale, bool relative)
     dc.SetFont(wxFont(size_x / 3 / AUTO_TEXT_SIZE_COEF, wxFONTFAMILY_SWISS,
         wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
     dc.DrawText(value, xc - dc.GetTextExtent(value).GetX() / 2,
-        yc - dc.GetTextExtent(value).GetY() / 4 * AUTO_TEXT_SHIFT_COEF);
+        yc
+            - (wxCoord)round(dc.GetTextExtent(value).GetY() / 4
+                * (float)AUTO_TEXT_SHIFT_COEF));
     mdc.SelectObject(wxNullBitmap);
     return m_bmp;
 }
