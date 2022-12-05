@@ -39,6 +39,7 @@ a|Format of the displayed number.
 * 09.9
 * 09.99
 * 009.99
+If displaying a sign in front of the number for negative values is undesirable, select the format marked by `ABS`, eg. `ABS(009)`.
 |
 
 |Transformation

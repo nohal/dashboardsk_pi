@@ -45,7 +45,7 @@ a|Type of the gauge
 !Arbitrary numerical value with adaptive range. The instrument scale is dynamically updated based on the received data.
 
 !Fixed range indicator
-!Arbitrary numerical value with fixed range. The instrument scale is static and never changes.
+!Arbitrary numerical value with fixed range. The instrument scale is static and set based on the minimal and maximal value set for the Zones. In case the actual value is out of the range, the needle is not displayed (but the numerical value in the center of the gauge is.)
 !===
 
 |
@@ -63,6 +63,8 @@ a|Format of the displayed number.
 * 09.9
 * 09.99
 * 009.99
+If displaying a sign in front of the number for negative values is undesirable, select the format marked by `ABS`, eg. `ABS(009)`.
+
 |
 
 |Transformation
