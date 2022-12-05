@@ -313,7 +313,8 @@ wxBitmap SimpleGaugeInstrument::RenderAdaptive(double scale)
             has_value = true;
             value = wxString::Format(
                 m_format_strings[m_format_index], abs(m_old_value));
-            if (m_old_value < 0) {
+            if (m_old_value < 0
+                && !m_supported_formats[m_format_index].StartsWith("ABS")) {
                 value.Prepend("-");
             }
         }
@@ -344,11 +345,32 @@ wxBitmap SimpleGaugeInstrument::RenderAdaptive(double scale)
     dc.SetBrush(wxBrush(GetDimedColor(GetColorSetting(DSK_SGI_RIM_NOMINAL))));
     dc.SetPen(wxPen(GetDimedColor(GetColorSetting(DSK_SETTING_BORDER_COLOR))));
     dc.DrawCircle(xc, yc, r);
+
+    int magnitude = 0;
+    int upper = 0;
+    int lower = 0;
+    int step = 0;
+    if (has_value) {
+        double range = m_max_val - m_min_val;
+        while (range / pow(10, magnitude) > 10) {
+            magnitude++;
+        }
+
+        upper
+            = ceil(m_max_val / pow(10, magnitude + 1)) * pow(10, magnitude + 1);
+        lower = floor(m_min_val / pow(10, magnitude + 1))
+            * pow(10, magnitude + 1);
+        if (magnitude < 2) {
+            magnitude--;
+        }
+        step = (upper - lower) / pow(10, magnitude) / 6;
+    }
     // Arcs for zones
     for (auto& zone : m_zones) {
-        // TODO: Angles have to be adapted to the value scale
-        int angle_from = zone.GetLowerLimit() * 1.8 - 90;
-        int angle_to = zone.GetUpperLimit() * 1.8 - 90;
+        int angle_from
+            = wxMax(zone.GetLowerLimit(), lower) * 240 / (upper - lower) - 120;
+        int angle_to
+            = wxMin(upper, zone.GetUpperLimit()) * 240 / (upper - lower) - 120;
         wxString zone_color;
         switch (zone.GetState()) {
         case Zone::state::nominal:
@@ -392,28 +414,11 @@ wxBitmap SimpleGaugeInstrument::RenderAdaptive(double scale)
         wxPen(GetDimedColor(GetColorSetting(DSK_SGI_TICK_FG)), size_x / 100));
     dc.SetFont(wxFont(size_x / 12 / AUTO_TEXT_SIZE_COEF, wxFONTFAMILY_SWISS,
         wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
-    int magnitude = 0;
-    int upper = 0;
-    int lower = 0;
-    int step = 0;
+
     if (has_value) {
-        double range = m_max_val - m_min_val;
-        while (range / pow(10, magnitude) > 10) {
-            magnitude++;
-        }
-
-        upper
-            = ceil(m_max_val / pow(10, magnitude + 1)) * pow(10, magnitude + 1);
-        lower = floor(m_min_val / pow(10, magnitude + 1))
-            * pow(10, magnitude + 1);
-        if (magnitude < 2) {
-            magnitude--;
-        }
-        step = (upper - lower) / pow(10, magnitude) / 6;
-
         DrawTicks(dc, 0, 40, xc, yc, r, r * 0.2, true, 0, false, 0, 120,
             lower / pow(10, magnitude) + 3 * step,
-            step); // TODO: Labels have to be adapted to the value scale
+            step); // TODO: Labels have to be apdapted to the value scale
         DrawTicks(dc, 0, 40, xc, yc, r, r * 0.2, true, 0, false, 240, 360,
             lower / pow(10, magnitude),
             step); // TODO: Labels may have to be further adapted to the value
@@ -463,6 +468,181 @@ wxBitmap SimpleGaugeInstrument::RenderAdaptive(double scale)
 #undef PERC
 }
 
+wxBitmap SimpleGaugeInstrument::RenderFixed(double scale)
+{
+#define PERC 30
+    wxString value = "----";
+    bool has_value = false;
+
+    if (m_new_data) {
+        m_new_data = false;
+        if (!m_timed_out) {
+            has_value = true;
+            value = wxString::Format(
+                m_format_strings[m_format_index], abs(m_old_value));
+            if (m_old_value < 0
+                && !m_supported_formats[m_format_index].StartsWith("ABS")) {
+                value.Prepend("-");
+            }
+        }
+    } else {
+        if (!m_timed_out && m_bmp.IsOk()) {
+            return m_bmp;
+        }
+    }
+
+    wxCoord size_x = m_instrument_size;
+    wxCoord size_y = m_instrument_size * (50 + PERC) / 100;
+    wxCoord xc = size_x / 2;
+    wxCoord yc = m_instrument_size / 2;
+    wxCoord r = size_x / 2 - size_x / 200 - 1;
+
+#ifndef __WXGTK__
+    m_bmp = wxBitmap(size_x, size_y);
+    m_bmp.UseAlpha();
+#else
+    m_bmp = wxBitmap(size_x, size_y, 32);
+#endif
+    wxMemoryDC mdc;
+    mdc.SelectObject(m_bmp);
+    wxGCDC dc(mdc);
+    dc.SetBackground(*wxTRANSPARENT_BRUSH);
+    dc.Clear();
+    // Gauge background
+    dc.SetBrush(wxBrush(GetDimedColor(GetColorSetting(DSK_SGI_RIM_NOMINAL))));
+    dc.SetPen(wxPen(GetDimedColor(GetColorSetting(DSK_SETTING_BORDER_COLOR))));
+    dc.DrawCircle(xc, yc, r);
+
+    int magnitude = 0;
+    int upper = 1;
+    int lower = 0;
+    int step = 0;
+
+    double zone_lowest = lower;
+    double zone_highest = upper;
+    for (auto& zone : m_zones) {
+        if (zone.GetLowerLimit() < zone_lowest) {
+            zone_lowest = zone.GetLowerLimit();
+        }
+        if (zone.GetUpperLimit() > zone_highest) {
+            zone_highest = zone.GetUpperLimit();
+        }
+    }
+    double range = zone_highest - zone_lowest;
+    while (range / pow(10, magnitude) > 10) {
+        magnitude++;
+    }
+
+    if (magnitude < 2) {
+        magnitude--;
+    }
+
+    upper = zone_highest;
+    lower = zone_lowest;
+    step = (upper - lower) / pow(10, magnitude) / 5;
+    upper = lower + 6 * step;
+
+    // Arcs for zones
+    for (auto& zone : m_zones) {
+        int angle_from
+            = wxMax(zone.GetLowerLimit(), lower) * 240 / (upper - lower) - 120;
+        int angle_to
+            = wxMin(upper, zone.GetUpperLimit()) * 240 / (upper - lower) - 120;
+        wxString zone_color;
+        switch (zone.GetState()) {
+        case Zone::state::nominal:
+            zone_color = DSK_SETTING_NOMINAL_FG;
+            break;
+        case Zone::state::normal:
+            zone_color = DSK_SETTING_NORMAL_FG;
+            break;
+        case Zone::state::alert:
+            zone_color = DSK_SETTING_ALERT_FG;
+            break;
+        case Zone::state::warn:
+            zone_color = DSK_SETTING_WARN_FG;
+            break;
+        case Zone::state::alarm:
+            zone_color = DSK_SETTING_ALRM_FG;
+            break;
+        case Zone::state::emergency:
+            zone_color = DSK_SETTING_EMERG_FG;
+            break;
+        }
+        dc.SetBrush(wxBrush(GetDimedColor(GetColorSetting(zone_color))));
+        dc.SetPen(wxPen(GetDimedColor(GetColorSetting(zone_color))));
+        DrawArc(dc, angle_to, angle_from, xc, yc, r);
+    }
+    // Face
+    dc.SetBrush(wxBrush(GetDimedColor(GetColorSetting(DSK_SGI_DIAL_COLOR))));
+    dc.SetPen(wxPen(GetDimedColor(GetColorSetting(DSK_SGI_DIAL_COLOR))));
+    dc.DrawCircle(xc, yc, r * 0.85);
+    // Ticks
+    dc.SetTextForeground(GetDimedColor(GetColorSetting(DSK_SGI_TICK_LEGEND)));
+    dc.SetFont(wxFont(size_x / 12 / AUTO_TEXT_SIZE_COEF, wxFONTFAMILY_SWISS,
+        wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
+    dc.SetPen(
+        wxPen(GetDimedColor(GetColorSetting(DSK_SGI_TICK_FG)), size_x / 200));
+    DrawTicks(dc, 0, 20, xc, yc, r, r * 0.15, false, 90, false, 0, 120);
+    DrawTicks(dc, 0, 10, xc, yc, r, r * 0.1, false, 90, false, 0, 120);
+    DrawTicks(dc, 0, 20, xc, yc, r, r * 0.15, false, 90, false, 240, 360);
+    DrawTicks(dc, 0, 10, xc, yc, r, r * 0.1, false, 90, false, 240, 360);
+    dc.SetPen(
+        wxPen(GetDimedColor(GetColorSetting(DSK_SGI_TICK_FG)), size_x / 100));
+    dc.SetFont(wxFont(size_x / 12 / AUTO_TEXT_SIZE_COEF, wxFONTFAMILY_SWISS,
+        wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
+
+    DrawTicks(dc, 0, 40, xc, yc, r, r * 0.2, true, 0, false, 0, 120,
+        lower / pow(10, magnitude) + 3 * step,
+        step); // TODO: Labels have to be apdapted to the value scale
+    DrawTicks(dc, 0, 40, xc, yc, r, r * 0.2, true, 0, false, 240, 360,
+        lower / pow(10, magnitude),
+        step); // TODO: Labels may have to be further adapted to the value
+               // scale
+    // Border
+    dc.SetBrush(*wxTRANSPARENT_BRUSH);
+    int border_width = size_x / 100 + 1;
+    dc.SetPen(wxPen(GetDimedColor(GetColorSetting(DSK_SETTING_BORDER_COLOR)),
+        border_width));
+    dc.DrawCircle(xc, yc, r);
+    int shift = r - sqrt(r * r - r * 2 * PERC * r * 2 * PERC / 10000);
+    dc.DrawLine(shift + border_width, size_y - border_width / 2,
+        size_x - shift - border_width, size_y - border_width / 2);
+    // Needle
+    if (has_value && m_old_value > zone_lowest && m_old_value < zone_highest) {
+        dc.SetBrush(wxBrush(GetDimedColor(GetColorSetting(DSK_SGI_NEEDLE_FG))));
+        dc.SetPen(wxPen(GetDimedColor(GetColorSetting(DSK_SGI_NEEDLE_FG)), 3));
+        DrawNeedle(dc, xc, yc, r * 0.9,
+            m_old_value * 240 / (upper - lower) - 90, 30, 20, 240);
+    }
+    // Text
+    // Scale
+    wxString sscale;
+    if (magnitude >= 0) {
+        sscale = wxString::Format("x%.0f", powf(10, magnitude));
+    } else {
+        sscale = wxString::Format("/%.0f", powf(10, -magnitude));
+    }
+    dc.DrawText(sscale, xc - dc.GetTextExtent(sscale).GetX() / 2, r * 0.5);
+    // Label
+    dc.SetTextForeground(
+        GetDimedColor(GetColor(m_old_value, color_item::title)));
+    dc.SetFont(wxFont(size_x / 8 / AUTO_TEXT_SIZE_COEF, wxFONTFAMILY_SWISS,
+        wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
+    dc.DrawText(m_title, xc - dc.GetTextExtent(m_title).GetX() / 2,
+        yc - dc.GetTextExtent(m_title).GetY() * 1.1);
+    // Data
+    dc.SetTextForeground(
+        GetDimedColor(GetColor(m_old_value, color_item::value)));
+    dc.SetFont(wxFont(size_x / 3 / AUTO_TEXT_SIZE_COEF, wxFONTFAMILY_SWISS,
+        wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
+    dc.DrawText(value, xc - dc.GetTextExtent(value).GetX() / 2,
+        yc / AUTO_TEXT_SHIFT_COEF);
+    mdc.SelectObject(wxNullBitmap);
+    return m_bmp;
+#undef PERC
+}
+
 wxBitmap SimpleGaugeInstrument::RenderPercent(double scale)
 {
 #define PERC 10
@@ -473,7 +653,8 @@ wxBitmap SimpleGaugeInstrument::RenderPercent(double scale)
         if (!m_timed_out) {
             value = wxString::Format(
                 m_format_strings[m_format_index], abs(m_old_value));
-            if (m_old_value < 0) {
+            if (m_old_value < 0
+                && !m_supported_formats[m_format_index].StartsWith("ABS")) {
                 value.Prepend("-");
             }
         }
@@ -631,7 +812,7 @@ wxBitmap SimpleGaugeInstrument::Render(double scale)
     case gauge_type::ranged_adaptive:
         return RenderAdaptive(scale);
     case gauge_type::ranged_fixed:
-        return RenderAdaptive(scale); // TODO
+        return RenderFixed(scale);
     default:
         return wxNullBitmap;
     }

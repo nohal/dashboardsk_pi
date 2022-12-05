@@ -261,7 +261,8 @@ protected:
     /// scale) into a bitmap
     ///
     /// \param scale scale of the instrument to be rendered (1.0 = natural
-    /// scale) \return Instrument rendered into a bitmap with alpha channel
+    /// scale)
+    /// \return Instrument rendered into a bitmap with alpha channel
     wxBitmap RenderPercent(double scale);
 
     /// Render an instrument visualizing numerical value in a gauge with scale
@@ -271,17 +272,27 @@ protected:
     /// fluctuate excessively and be able to label the ticks with integers
     ///
     /// \param scale scale of the instrument to be rendered (1.0 = natural
-    /// scale) \param relative True if the displayed angle value is relative to
-    /// the vessel (-180..180), false if absolute (0.360) \return Instrument
+    /// scale)
+    /// \param relative True if the displayed angle value is relative to
+    /// the vessel (-180..180), false if absolute (0.360)
+    /// \return Instrument
     /// rendered into a bitmap with alpha channel
     wxBitmap RenderAngle(double scale, bool relative = true);
 
-    /// Render the instrument visualizing percentages (= value on the 0..100
-    /// scale) into a bitmap
+    /// Render the instrument with range adapting to the received values
     ///
     /// \param scale scale of the instrument to be rendered (1.0 = natural
-    /// scale) \return Instrument rendered into a bitmap with alpha channel
+    /// scale)
+    /// \return Instrument rendered into a bitmap with alpha channel
     wxBitmap RenderAdaptive(double scale);
+
+    /// Render the instrument with range set from the zone list minimum/maximum
+    /// value
+    ///
+    /// \param scale scale of the instrument to be rendered (1.0 = natural
+    /// scale)
+    /// \return Instrument rendered into a bitmap with alpha channel
+    wxBitmap RenderFixed(double scale);
 
     /// Get color for a part of the instrument corresponding to a value to be
     /// displayed
