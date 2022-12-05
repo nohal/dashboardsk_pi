@@ -214,16 +214,15 @@ void DashboardSK::SendSKDelta(wxJSONValue& message)
                         val_ptr = &(*val_ptr)[utoken];
                     }
                 }
-                // TODO: What if we get same stuff from multiple sources (Like
-                // two GPS or depth sensors on board)? For now we just overwrite
-                // the value with newest, unless they use different
-                // path/context, but could probably save all of them and let the
-                // user select what to show
                 if (!message["updates"][i]["values"][j]["value"].IsNull()) {
                     // We ignore NULL values received from SignalK
                     // TODO: Are some NULLs in SignalK data actually good for
                     // something? (If they are, we want to ignore them later
                     // selectively when the instrument processes it's data)
+                    if (!source.IsEmpty()) {
+                        (*val_ptr)[source] = wxJSONValue();
+                        val_ptr = &(*val_ptr)[source];
+                    }
                     (*val_ptr)["value"]
                         = message["updates"][i]["values"][j]["value"];
                     (*val_ptr)["timestamp"] = ts.FormatISOCombined();
