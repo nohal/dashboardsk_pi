@@ -59,7 +59,7 @@ class dskDC;
 class DashboardSK {
 private:
     /// Vector of dashboards
-    vector<Dashboard> m_dashboards;
+    vector<Dashboard*> m_dashboards;
     /// Storage object for SignalK full data dynamically updated from the
     /// received deltas
     wxJSONValue m_sk_data;
@@ -96,6 +96,15 @@ public:
 
     /// Constructor
     DashboardSK();
+
+    /// Constructor
+    ~DashboardSK()
+    {
+        for (auto db : m_dashboards) {
+            delete db;
+        }
+        m_dashboards.clear();
+    }
 
     /// Draw all the active dashboards on a canvas
     ///
@@ -215,8 +224,8 @@ public:
     wxArrayString GetDashboardNames()
     {
         wxArrayString as;
-        for (auto& dashboard : m_dashboards) {
-            as.Add(dashboard.GetName());
+        for (auto dashboard : m_dashboards) {
+            as.Add(dashboard->GetName());
         }
         return as;
     }
@@ -226,8 +235,8 @@ public:
     /// \return Pointer to the newly created dashboard
     Dashboard* AddDashboard()
     {
-        m_dashboards.emplace_back(this);
-        return &m_dashboards.back();
+        m_dashboards.emplace_back(new Dashboard(this));
+        return m_dashboards.back();
     }
 
     /// Get pointer to a dashboard with given index
@@ -238,7 +247,7 @@ public:
         if (item < 0 || (unsigned)item >= m_dashboards.size()) {
             return nullptr;
         }
-        return &m_dashboards[item];
+        return *m_dashboards.begin() + item;
     }
 
     /// Delete dashboard
@@ -249,6 +258,7 @@ public:
         if (item < 0 || (unsigned)item >= m_dashboards.size()) {
             return;
         }
+        delete *(m_dashboards.begin() + item);
         m_dashboards.erase(m_dashboards.begin() + item);
     }
 
@@ -315,8 +325,8 @@ public:
     /// Force redraw of the instrument on the next overlay refresh
     void ForceRedraw()
     {
-        for (auto& d : m_dashboards) {
-            d.ForceRedraw();
+        for (auto d : m_dashboards) {
+            d->ForceRedraw();
         }
     };
 

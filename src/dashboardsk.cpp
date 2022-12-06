@@ -41,14 +41,17 @@ DashboardSK::DashboardSK()
 void DashboardSK::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
 {
     Dashboard::ClearOffsets();
-    for (auto& dashboard : m_dashboards) {
-        dashboard.Draw(dc, vp, canvasIndex);
+    for (auto dashboard : m_dashboards) {
+        dashboard->Draw(dc, vp, canvasIndex);
     }
 }
 
 void DashboardSK::ReadConfig(wxJSONValue& config)
 {
     LOG_VERBOSE("DashboardSK_pi: Reading DashboardSK config");
+    for (auto db : m_dashboards) {
+        delete db;
+    }
     m_dashboards.clear();
     if (config["signalk"].HasMember("self")) {
         SetSelf(config["signalk"]["self"].AsString());
@@ -61,7 +64,7 @@ void DashboardSK::ReadConfig(wxJSONValue& config)
             auto* d = new Dashboard(this);
             d->ReadConfig(config["dashboards"][i]);
             d->SetColorScheme(m_color_scheme);
-            m_dashboards.emplace_back(*d);
+            m_dashboards.emplace_back(d);
         }
     } else {
         LOG_VERBOSE("DashboardSK_pi: No dashboards array");
@@ -72,8 +75,8 @@ wxJSONValue DashboardSK::GenerateJSONConfig()
 {
     wxJSONValue v;
     v["signalk"]["self"] = m_self;
-    for (auto& dashboard : m_dashboards) {
-        v["dashboards"].Append(dashboard.GenerateJSONConfig());
+    for (auto dashboard : m_dashboards) {
+        v["dashboards"].Append(dashboard->GenerateJSONConfig());
     }
     return v;
 }
@@ -81,8 +84,8 @@ wxJSONValue DashboardSK::GenerateJSONConfig()
 void DashboardSK::SetColorScheme(int cs)
 {
     m_color_scheme = cs;
-    for (auto& dashboard : m_dashboards) {
-        dashboard.SetColorScheme(cs);
+    for (auto dashboard : m_dashboards) {
+        dashboard->SetColorScheme(cs);
     }
 }
 

@@ -110,6 +110,14 @@ public:
     /// \param parent Parent plugin object
     explicit Dashboard(DashboardSK* parent);
 
+    ~Dashboard()
+    {
+        for (auto instr : m_instruments) {
+            delete instr;
+        }
+        m_instruments.clear();
+    }
+
     /// Set user specified name of the dashboard
     ///
     /// \param name The name
