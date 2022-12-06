@@ -352,7 +352,7 @@ wxBitmap SimpleGaugeInstrument::RenderAdaptive(double scale)
     int step = 0;
     if (has_value) {
         double range = m_max_val - m_min_val;
-        while (range / pow(10, magnitude) > 10) {
+        while (range / pow(10, magnitude) >= 10) {
             magnitude++;
         }
 
@@ -360,18 +360,21 @@ wxBitmap SimpleGaugeInstrument::RenderAdaptive(double scale)
             = ceil(m_max_val / pow(10, magnitude + 1)) * pow(10, magnitude + 1);
         lower = floor(m_min_val / pow(10, magnitude + 1))
             * pow(10, magnitude + 1);
-        // if (magnitude < 2) {
-        //     magnitude--;
-        // }
+
         step = (upper - lower) / pow(10, magnitude) / 5;
+        if (step == 0) {
+            ++step;
+        }
         upper = lower + 6 * pow(10, magnitude) * step;
     }
     // Arcs for zones
     for (auto& zone : m_zones) {
-        int angle_from
-            = wxMax(zone.GetLowerLimit(), lower) * 240 / (upper - lower) - 120;
-        int angle_to
-            = wxMin(upper, zone.GetUpperLimit()) * 240 / (upper - lower) - 120;
+        int angle_from = (wxMax(zone.GetLowerLimit(), lower) - lower) * 240
+                / (upper - lower)
+            - 120;
+        int angle_to = (wxMin(upper, zone.GetUpperLimit()) - lower) * 240
+                / (upper - lower)
+            - 120;
         wxString zone_color;
         switch (zone.GetState()) {
         case Zone::state::nominal:
@@ -419,7 +422,7 @@ wxBitmap SimpleGaugeInstrument::RenderAdaptive(double scale)
     if (has_value) {
         DrawTicks(dc, 0, 40, xc, yc, r, r * 0.2, true, 0, false, 0, 120,
             lower / pow(10, magnitude) + 3 * step,
-            step); // TODO: Labels have to be apdapted to the value scale
+            step); // TODO: Labels have to be adapted to the value scale
         DrawTicks(dc, 0, 40, xc, yc, r, r * 0.2, true, 0, false, 240, 360,
             lower / pow(10, magnitude),
             step); // TODO: Labels may have to be further adapted to the value
@@ -439,7 +442,7 @@ wxBitmap SimpleGaugeInstrument::RenderAdaptive(double scale)
         dc.SetBrush(wxBrush(GetDimedColor(GetColorSetting(DSK_SGI_NEEDLE_FG))));
         dc.SetPen(wxPen(GetDimedColor(GetColorSetting(DSK_SGI_NEEDLE_FG)), 3));
         DrawNeedle(dc, xc, yc, r * 0.9,
-            m_old_value * 240 / (upper - lower) - 90, 30, 20, 240);
+            (m_old_value - lower) * 240 / (upper - lower) - 90, 30, 20, 240);
     }
     // Text
     // Scale
@@ -530,20 +533,26 @@ wxBitmap SimpleGaugeInstrument::RenderFixed(double scale)
         }
     }
     double range = abs(zone_highest - zone_lowest);
-    while (range / pow(10, magnitude) > 10) {
+    while (range / pow(10, magnitude) >= 10) {
         magnitude++;
     }
-
+    magnitude--;
     upper = ceil(zone_highest);
+
     lower = floor(zone_lowest);
-    step = (upper - lower) / pow(10, magnitude) / 5;
+    step = ceil((double)(upper - lower) / pow(10, magnitude) / 6);
+    if (step == 0) {
+        ++step;
+    }
     upper = lower + 6 * step * pow(10, magnitude);
     // Arcs for zones
     for (auto& zone : m_zones) {
-        int angle_from
-            = wxMax(zone.GetLowerLimit(), lower) * 240 / (upper - lower) - 120;
-        int angle_to
-            = wxMin(upper, zone.GetUpperLimit()) * 240 / (upper - lower) - 120;
+        int angle_from = (wxMax(zone.GetLowerLimit(), lower) - lower) * 240
+                / (upper - lower)
+            - 120;
+        int angle_to = (wxMin(upper, zone.GetUpperLimit()) - lower) * 240
+                / (upper - lower)
+            - 120;
         wxString zone_color;
         switch (zone.GetState()) {
         case Zone::state::nominal:
@@ -590,7 +599,7 @@ wxBitmap SimpleGaugeInstrument::RenderFixed(double scale)
 
     DrawTicks(dc, 0, 40, xc, yc, r, r * 0.2, true, 0, false, 0, 120,
         lower / pow(10, magnitude) + 3 * step,
-        step); // TODO: Labels have to be apdapted to the value scale
+        step); // TODO: Labels have to be adapted to the value scale
     DrawTicks(dc, 0, 40, xc, yc, r, r * 0.2, true, 0, false, 240, 360,
         lower / pow(10, magnitude),
         step); // TODO: Labels may have to be further adapted to the value
@@ -605,11 +614,11 @@ wxBitmap SimpleGaugeInstrument::RenderFixed(double scale)
     dc.DrawLine(shift + border_width, size_y - border_width / 2,
         size_x - shift - border_width, size_y - border_width / 2);
     // Needle
-    if (has_value && m_old_value > zone_lowest && m_old_value <= upper) {
+    if (has_value && m_old_value >= lower && m_old_value <= upper) {
         dc.SetBrush(wxBrush(GetDimedColor(GetColorSetting(DSK_SGI_NEEDLE_FG))));
         dc.SetPen(wxPen(GetDimedColor(GetColorSetting(DSK_SGI_NEEDLE_FG)), 3));
         DrawNeedle(dc, xc, yc, r * 0.9,
-            m_old_value * 240 / (upper - lower) - 90, 30, 20, 240);
+            (m_old_value - lower) * 240 / (upper - lower) - 90, 30, 20, 240);
     }
     // Text
     // Scale
@@ -782,8 +791,15 @@ wxBitmap SimpleGaugeInstrument::Render(double scale)
         m_timed_out = false;
         const wxJSONValue* val = m_parent_dashboard->GetSKData(m_sk_key);
         if (val) {
-            wxJSONValue v = val->Get("value", *val);
-            double dval = Transform(v.AsDouble(), m_transformation);
+            wxJSONValue v = *val;
+            if (val->IsObject()) {
+                v = v["value"];
+            }
+
+            double dval = Transform(v.IsDouble() ? v.AsDouble()
+                    : v.IsLong()                 ? v.AsLong()
+                                                 : 0.0,
+                m_transformation);
             if (m_old_value > std::numeric_limits<double>::min()) {
                 dval = (m_smoothing * m_old_value
                            + (DSK_SGI_SMOOTHING_MAX - m_smoothing + 1) * dval)
