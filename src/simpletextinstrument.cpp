@@ -120,7 +120,7 @@ wxBitmap SimpleTextInstrument::Render(double scale)
     bf.SetPointSize(m_body_font.GetPointSize() * scale);
     mdc.SetFont(bf);
     mdc.GetTextExtent(value, &body_x, &body_y);
-    size_x = (wxMax(title_x + 2 * BORDER_SIZE, body_x) + 4 * BORDER_SIZE);
+    size_x = (wxMax(title_x + 3 * BORDER_SIZE, body_x) + 4 * BORDER_SIZE);
     size_y = (title_y + body_y + 3 * BORDER_SIZE);
 #ifndef __WXGTK__
     m_bmp = wxBitmap(size_x, size_y);
