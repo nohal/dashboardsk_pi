@@ -247,7 +247,7 @@ public:
         if (item < 0 || (unsigned)item >= m_dashboards.size()) {
             return nullptr;
         }
-        return *m_dashboards.begin() + item;
+        return *(m_dashboards.begin() + item);
     }
 
     /// Delete dashboard
