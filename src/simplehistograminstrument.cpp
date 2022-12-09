@@ -327,7 +327,7 @@ wxBitmap SimpleHistogramInstrument::Render(double scale)
     int max_labels
         = m_instrument_width / (dc.GetTextExtent("100s").GetWidth() * 1.5);
     int current_label = 1;
-    for (auto v : vals) {
+    for (auto& v : vals) {
         if (cnt > 0) {
             // We only draw continuous line if the values are not timed out
             auto age = std::chrono::duration_cast<std::chrono::seconds>(
@@ -384,24 +384,24 @@ wxBitmap SimpleHistogramInstrument::Render(double scale)
             (m_instrument_height - dc.GetTextExtent(s).GetHeight()) / 2);
     }
     // Mean
-    dc.SetPen(wxPen(GetDimedColor(GetColor(color_item::mean_fg)),
-        BORDER_LINE_WIDTH, wxPENSTYLE_SOLID));
-    if (m_value_order == value_order::lowest_highest) {
-        dc.DrawLine(0, vertical_shift + (sum / cnt - min) * height_coef,
-            m_instrument_width,
-            vertical_shift + (sum / cnt - min) * height_coef);
-    } else {
-        dc.DrawLine(0,
-            m_instrument_height
-                - (vertical_shift + (sum / cnt - min) * height_coef),
-            m_instrument_width,
-            m_instrument_height
-                - (vertical_shift + (sum / cnt - min) * height_coef));
-    }
-    dc.SetTextForeground(GetDimedColor(GetColor(color_item::mean_fg)));
-    dc.SetFont(wxFont(m_instrument_height / 8 / AUTO_TEXT_SIZE_COEF,
-        wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
-    if (cnt > 0) {
+    if (cnt > 1) {
+        dc.SetPen(wxPen(GetDimedColor(GetColor(color_item::mean_fg)),
+            BORDER_LINE_WIDTH, wxPENSTYLE_SOLID));
+        if (m_value_order == value_order::lowest_highest) {
+            dc.DrawLine(0, vertical_shift + (sum / cnt - min) * height_coef,
+                m_instrument_width,
+                vertical_shift + (sum / cnt - min) * height_coef);
+        } else {
+            dc.DrawLine(0,
+                m_instrument_height
+                    - (vertical_shift + (sum / cnt - min) * height_coef),
+                m_instrument_width,
+                m_instrument_height
+                    - (vertical_shift + (sum / cnt - min) * height_coef));
+        }
+        dc.SetTextForeground(GetDimedColor(GetColor(color_item::mean_fg)));
+        dc.SetFont(wxFont(m_instrument_height / 8 / AUTO_TEXT_SIZE_COEF,
+            wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
         if (m_value_order == value_order::lowest_highest) {
             dc.DrawText(FormatValue(sum / cnt), BORDER_LINE_WIDTH,
                 (sum / cnt - min) * height_coef);

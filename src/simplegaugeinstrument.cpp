@@ -295,8 +295,9 @@ wxBitmap SimpleGaugeInstrument::RenderAngle(double scale, bool relative)
         wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
     dc.DrawText(value, xc - dc.GetTextExtent(value).GetX() / 2,
         yc
-            - (wxCoord)round(dc.GetTextExtent(value).GetY() / 4
-                * (float)AUTO_TEXT_SHIFT_COEF));
+            - (wxCoord)round(
+                  dc.GetTextExtent(value).GetY() * AUTO_TEXT_SHIFT_COEF)
+                / 4);
     mdc.SelectObject(wxNullBitmap);
     return m_bmp;
 }
@@ -346,7 +347,7 @@ wxBitmap SimpleGaugeInstrument::RenderAdaptive(double scale)
     dc.SetPen(wxPen(GetDimedColor(GetColorSetting(DSK_SETTING_BORDER_COLOR))));
     dc.DrawCircle(xc, yc, r);
 
-    int magnitude = 0;
+    int magnitude = -3;
     int upper = 0;
     int lower = 0;
     int step = 0;
@@ -366,6 +367,11 @@ wxBitmap SimpleGaugeInstrument::RenderAdaptive(double scale)
             ++step;
         }
         upper = lower + 6 * pow(10, magnitude) * step;
+    } else {
+        magnitude = 0;
+    }
+    if (upper == lower) {
+        upper++;
     }
     // Arcs for zones
     for (auto& zone : m_zones) {

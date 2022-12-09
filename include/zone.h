@@ -127,7 +127,7 @@ public:
     /// processed
     ///
     /// \return String representation of the zone parameters
-    const wxString ToString()
+    wxString ToString() const
     {
         return wxString::Format(_("%.1f,%.1f,%s"), m_lower_limit, m_upper_limit,
             StringFromState(m_state).c_str());
@@ -234,7 +234,7 @@ public:
     static const wxString ZonesToString(const vector<Zone>& zones)
     {
         wxString v = wxEmptyString;
-        for (auto z : zones) {
+        for (auto& z : zones) {
             if (!v.IsEmpty()) {
                 v.Append(";");
             }
