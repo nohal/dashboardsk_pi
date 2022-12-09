@@ -1,4 +1,4 @@
-## INSTALL: Building Plugins generic README.
+## INSTALL: Building Plugins generic README
 
 Install build dependencies as described in the
 [manual](https://opencpn-manuals.github.io/main/AlternativeWorkflow/Local-Build.html)
@@ -24,7 +24,7 @@ Historically, it has been possible to build legacy packages like
 an NSIS installer on Windows and .deb packages on Linux. This ability
 has been removed in the 5.6.0 cycle.
 
-#### Building for Android
+### Building for Android
 
 Builds for android requires an ndk installation and an updated cmake,
 see manual (above).
@@ -39,12 +39,13 @@ To build an android armhf tarball
     $ cmake -DCMAKE_TOOLCHAIN_FILE=cmake/android-armhf-toolchain.cmake ..
     $ make
 
-#### Building on windows (MSVC)
+### Building on windows (MSVC)
+
 On Windows, build is performed in the _build_ directory using a CMD shell:
 
     > set PATH=C:\ProgramData\chocolatey\bin;C:\Windows\system32;C:\Windows
     > ..\buildwin\win_deps.bat
-    > cmake -T v141_xp -G "Visual Studio 15 2017" ^
+    > cmake -T v143 -G "Visual Studio 17 2022" ^
            -DCMAKE_BUILD_TYPE=RelWithDebInfo  ..
     > cmake --build . --target tarball --config RelWithDebInfo
 

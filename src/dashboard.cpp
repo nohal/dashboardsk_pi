@@ -178,9 +178,8 @@ void Dashboard::ReadConfig(wxJSONValue& config)
         LOG_VERBOSE("DashboardSK_pi: Dashboard has instruments");
         if (config["instruments"].IsArray()) {
             LOG_VERBOSE("DashboardSK_pi: instruments are an array");
-            Instrument* instr;
             for (int i = 0; i < config["instruments"].Size(); i++) {
-                instr = DashboardSK::CreateInstrumentInstance(
+                auto instr = DashboardSK::CreateInstrumentInstance(
                     DashboardSK::GetClassIndex(
                         config["instruments"][i]["config"]["class"].AsString()),
                     this);
@@ -214,7 +213,6 @@ wxJSONValue Dashboard::GenerateJSONConfig()
     v["enabled"] = m_enabled;
     for (auto& m_instrument : m_instruments) {
         wxJSONValue instr;
-        // instr["class"] = m_instrument->GetClass();
         instr["config"] = m_instrument->GenerateJSONConfig();
         v["instruments"].Append(instr);
     }
