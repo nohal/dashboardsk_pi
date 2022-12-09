@@ -167,17 +167,27 @@ wxBitmap SimpleHistogramInstrument::Render(double scale)
     if (!m_new_data) {
         if (!m_timed_out
             && (m_allowed_age_sec > 0
-                && (m_last_change.IsValid()
-                    && !wxDateTime::Now().IsEqualUpTo(
-                        m_last_change, wxTimeSpan(m_allowed_age_sec))))) {
+                && std::chrono::duration_cast<std::chrono::seconds>(
+                       std::chrono::system_clock::now() - m_last_change)
+                        .count()
+                    > m_allowed_age_sec)) {
             m_needs_redraw = true;
             m_timed_out = true;
             m_old_value = std::numeric_limits<double>::min();
+        } else {
+            if (std::chrono::duration_cast<std::chrono::seconds>(
+                    std::chrono::system_clock::now() - m_last_change)
+                    .count()
+                > 5) {
+                // Even timed out we want to redraw from time to time to shift
+                // the graph
+                m_needs_redraw = true;
+            }
         }
     } else {
         m_new_data = false;
         m_needs_redraw = true;
-        m_last_change = wxDateTime::Now();
+        m_last_change = std::chrono::system_clock::now();
         m_timed_out = false;
         const wxJSONValue* val = m_parent_dashboard->GetSKData(m_sk_key);
         if (val) {
@@ -213,6 +223,11 @@ wxBitmap SimpleHistogramInstrument::Render(double scale)
     std::vector<HistoryValue> vals;
     double min = std::numeric_limits<double>::max();
     double max = -std::numeric_limits<double>::max();
+    if (m_timed_out) {
+        // If we are timed out, we still want to push the graph off the screen
+        HistoryValue dummy;
+        vals.push_back(dummy);
+    }
     for (auto it = m_history.m_last_minute.rbegin();
          it != m_history.m_last_minute.rend(); ++it) {
         if (m_history_length == history_length::len_1min
@@ -285,7 +300,7 @@ wxBitmap SimpleHistogramInstrument::Render(double scale)
             vals.push_back(*it);
         }
     }
-    if (vals.size() == 0) {
+    if (vals.size() <= 1) {
         min = 0.0;
         max = 0.0;
     }
@@ -314,7 +329,7 @@ wxBitmap SimpleHistogramInstrument::Render(double scale)
     int current_label = 1;
     for (auto v : vals) {
         if (cnt > 0) {
-            // We only drive continuous line if the values are not timed out
+            // We only draw continuous line if the values are not timed out
             auto age = std::chrono::duration_cast<std::chrono::seconds>(
                 lastval.ts - v.ts)
                            .count();
@@ -358,6 +373,15 @@ wxBitmap SimpleHistogramInstrument::Render(double scale)
         lastval = v;
         sum += lastval.GetMean();
         ++cnt;
+    }
+    if (m_timed_out) {
+        dc.SetTextForeground(GetDimedColor(GetColor(color_item::mean_fg)));
+        dc.SetFont(wxFont(m_instrument_height / 4 / AUTO_TEXT_SIZE_COEF,
+            wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
+        wxString s = _("NO DATA");
+        dc.DrawText(s,
+            (m_instrument_width - dc.GetTextExtent(s).GetWidth()) / 2,
+            (m_instrument_height - dc.GetTextExtent(s).GetHeight()) / 2);
     }
     // Mean
     dc.SetPen(wxPen(GetDimedColor(GetColor(color_item::mean_fg)),

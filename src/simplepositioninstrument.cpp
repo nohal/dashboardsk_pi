@@ -104,76 +104,99 @@ void SimplePositionInstrument::SetSetting(const wxString& key, const int& value)
 wxBitmap SimplePositionInstrument::Render(double scale)
 {
     wxString value = "----, ----";
-    const wxJSONValue* val = m_parent_dashboard->GetSKData(m_sk_key);
-    if (val) {
-        wxJSONValue v = *val;
-        if (v.HasMember("latitude") && v.HasMember("longitude")) {
-            double lat = v["latitude"]["value"].AsDouble();
-            double lon = v["longitude"]["value"].AsDouble();
-            switch (m_format) {
-            case Instrument::position_format::deg_decimal_min: {
-                value = wxString::Format(
-                    "%.0f\u00B0%06.03f'%s, %.0f\u00B0%06.03f'%s",
-                    floor(abs(lat)), (abs(lat) - floor(abs(lat))) * 60,
-                    lat >= 0 ? "N" : "S", floor(abs(lon)),
-                    (abs(lon) - floor(abs(lon))) * 60, lon >= 0 ? "E" : "W");
-                break;
-            }
-            case Instrument::position_format::deg_min_sec: {
-                value = wxString::Format(
-                    "%.0f\u00B0%.0f'%.0f\"%s, %.0f\u00B0%.0f'%.0f\"%s",
-                    floor(abs(lat)), (abs(lat) - floor(abs(lat))) * 60,
-                    ((abs(lat) - floor(abs(lat))) * 60
-                        - (abs(lat) - floor(abs(lat))) * 60)
-                        * 60,
-                    lat >= 0 ? "N" : "S", floor(abs(lon)),
-                    (abs(lon) - floor(abs(lon))) * 60,
-                    ((abs(lon) - floor(abs(lon))) * 60
-                        - (abs(lon) - floor(abs(lon))) * 60)
-                        * 60,
-                    lon >= 0 ? "E" : "W");
-                break;
-            }
-            case Instrument::position_format::decimal_deg_hem: {
-                value = wxString::Format("%08.5f %s, %09.5f %s", abs(lat),
-                    lat >= 0 ? "N" : "S", abs(lon), lon >= 0 ? "E" : "W");
-                break;
-            }
-            case Instrument::position_format::hem_decimal_deg: {
-                value = wxString::Format("%s %08.5f, %s %09.5f",
-                    lat >= 0 ? "N" : "S", abs(lat), lon >= 0 ? "E" : "W",
-                    abs(lon));
-                break;
-            }
-            case Instrument::position_format::hem_deg_decimal_min: {
-                value = wxString::Format(
-                    "%s %.0f\u00B0%06.03f', %s %.0f\u00B0%06.03f'",
-                    lat >= 0 ? "N" : "S", floor(abs(lat)),
-                    (abs(lat) - floor(abs(lat))) * 60, lon >= 0 ? "E" : "W",
-                    floor(abs(lon)), (abs(lon) - floor(abs(lon))) * 60);
-                break;
-            }
-            case Instrument::position_format::hem_deg_min_sec: {
-                value = wxString::Format(
-                    "%s %.0f\u00B0%.0f'%.0f\", %s %i\u00B0%.0f'%.0f\"",
-                    lat >= 0 ? "N" : "S", floor(abs(lat)),
-                    (abs(lat) - floor(abs(lat))) * 60,
-                    ((abs(lat) - floor(abs(lat))) * 60
-                        - (abs(lat) - floor(abs(lat))) * 60)
-                        * 60,
-                    lon >= 0 ? "E" : "W", floor(abs(lon)),
-                    (abs(lon) - floor(abs(lon))) * 60,
-                    ((abs(lon) - floor(abs(lon))) * 60
-                        - (abs(lon) - floor(abs(lon))) * 60)
-                        * 60);
-                break;
-            }
-            default: {
-                value = wxString::Format("%08.5f, %09.5f", lat, lon);
-            }
+    if (!m_new_data) {
+        if (!m_timed_out
+            && (m_allowed_age_sec > 0
+                && std::chrono::duration_cast<std::chrono::seconds>(
+                       std::chrono::system_clock::now() - m_last_change)
+                        .count()
+                    > m_allowed_age_sec)) {
+            m_needs_redraw = true;
+            m_timed_out = true;
+        }
+    } else {
+        m_new_data = false;
+        m_needs_redraw = true;
+        m_last_change = std::chrono::system_clock::now();
+        m_timed_out = false;
+        const wxJSONValue* val = m_parent_dashboard->GetSKData(m_sk_key);
+        if (val) {
+            wxJSONValue v = *val;
+            if (v.HasMember("latitude") && v.HasMember("longitude")) {
+                m_last_change = std::chrono::system_clock::now();
+                double lat = v["latitude"]["value"].AsDouble();
+                double lon = v["longitude"]["value"].AsDouble();
+                switch (m_format) {
+                case Instrument::position_format::deg_decimal_min: {
+                    value = wxString::Format(
+                        "%.0f\u00B0%06.03f'%s, %.0f\u00B0%06.03f'%s",
+                        floor(abs(lat)), (abs(lat) - floor(abs(lat))) * 60,
+                        lat >= 0 ? "N" : "S", floor(abs(lon)),
+                        (abs(lon) - floor(abs(lon))) * 60,
+                        lon >= 0 ? "E" : "W");
+                    break;
+                }
+                case Instrument::position_format::deg_min_sec: {
+                    value = wxString::Format(
+                        "%.0f\u00B0%.0f'%.0f\"%s, %.0f\u00B0%.0f'%.0f\"%s",
+                        floor(abs(lat)), (abs(lat) - floor(abs(lat))) * 60,
+                        ((abs(lat) - floor(abs(lat))) * 60
+                            - (abs(lat) - floor(abs(lat))) * 60)
+                            * 60,
+                        lat >= 0 ? "N" : "S", floor(abs(lon)),
+                        (abs(lon) - floor(abs(lon))) * 60,
+                        ((abs(lon) - floor(abs(lon))) * 60
+                            - (abs(lon) - floor(abs(lon))) * 60)
+                            * 60,
+                        lon >= 0 ? "E" : "W");
+                    break;
+                }
+                case Instrument::position_format::decimal_deg_hem: {
+                    value = wxString::Format("%08.5f %s, %09.5f %s", abs(lat),
+                        lat >= 0 ? "N" : "S", abs(lon), lon >= 0 ? "E" : "W");
+                    break;
+                }
+                case Instrument::position_format::hem_decimal_deg: {
+                    value = wxString::Format("%s %08.5f, %s %09.5f",
+                        lat >= 0 ? "N" : "S", abs(lat), lon >= 0 ? "E" : "W",
+                        abs(lon));
+                    break;
+                }
+                case Instrument::position_format::hem_deg_decimal_min: {
+                    value = wxString::Format(
+                        "%s %.0f\u00B0%06.03f', %s %.0f\u00B0%06.03f'",
+                        lat >= 0 ? "N" : "S", floor(abs(lat)),
+                        (abs(lat) - floor(abs(lat))) * 60, lon >= 0 ? "E" : "W",
+                        floor(abs(lon)), (abs(lon) - floor(abs(lon))) * 60);
+                    break;
+                }
+                case Instrument::position_format::hem_deg_min_sec: {
+                    value = wxString::Format(
+                        "%s %.0f\u00B0%.0f'%.0f\", %s %i\u00B0%.0f'%.0f\"",
+                        lat >= 0 ? "N" : "S", floor(abs(lat)),
+                        (abs(lat) - floor(abs(lat))) * 60,
+                        ((abs(lat) - floor(abs(lat))) * 60
+                            - (abs(lat) - floor(abs(lat))) * 60)
+                            * 60,
+                        lon >= 0 ? "E" : "W", floor(abs(lon)),
+                        (abs(lon) - floor(abs(lon))) * 60,
+                        ((abs(lon) - floor(abs(lon))) * 60
+                            - (abs(lon) - floor(abs(lon))) * 60)
+                            * 60);
+                    break;
+                }
+                default: {
+                    value = wxString::Format("%08.5f, %09.5f", lat, lon);
+                }
+                }
             }
         }
     }
+
+    if (!m_needs_redraw) {
+        return m_bmp;
+    }
+    m_needs_redraw = false;
 
     wxColor ctb = GetDimedColor(GetColorSetting(DSK_SETTING_TITLE_BG));
     wxColor ctf = GetDimedColor(GetColorSetting(DSK_SETTING_TITLE_FG));

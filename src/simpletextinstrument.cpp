@@ -95,11 +95,33 @@ void SimpleTextInstrument::SetSetting(const wxString& key, const int& value)
 wxBitmap SimpleTextInstrument::Render(double scale)
 {
     wxString value = "----";
-    const wxJSONValue* val = m_parent_dashboard->GetSKData(m_sk_key);
-    if (val) {
-        wxJSONValue v = val->Get("value", wxJSONValue(value));
-        value = v.AsString();
+    if (!m_new_data) {
+        if (!m_timed_out
+            && (m_allowed_age_sec > 0
+                && std::chrono::duration_cast<std::chrono::seconds>(
+                       std::chrono::system_clock::now() - m_last_change)
+                        .count()
+                    > m_allowed_age_sec)) {
+            m_needs_redraw = true;
+            m_timed_out = true;
+        }
+    } else {
+        m_new_data = false;
+        m_needs_redraw = true;
+        m_last_change = std::chrono::system_clock::now();
+        m_timed_out = false;
+        const wxJSONValue* val = m_parent_dashboard->GetSKData(m_sk_key);
+        if (val) {
+            m_last_change = std::chrono::system_clock::now();
+            wxJSONValue v = val->Get("value", wxJSONValue(value));
+            value = v.AsString();
+        }
     }
+
+    if (!m_needs_redraw) {
+        return m_bmp;
+    }
+    m_needs_redraw = false;
 
     wxColor ctb = GetDimedColor(GetColorSetting(DSK_SETTING_TITLE_BG));
     wxColor ctf = GetDimedColor(GetColorSetting(DSK_SETTING_TITLE_FG));

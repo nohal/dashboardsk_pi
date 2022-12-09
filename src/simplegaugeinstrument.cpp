@@ -778,16 +778,17 @@ wxBitmap SimpleGaugeInstrument::Render(double scale)
     if (!m_new_data) {
         if (!m_timed_out
             && (m_allowed_age_sec > 0
-                && (m_last_change.IsValid()
-                    && !wxDateTime::Now().IsEqualUpTo(
-                        m_last_change, wxTimeSpan(m_allowed_age_sec))))) {
+                && std::chrono::duration_cast<std::chrono::seconds>(
+                       std::chrono::system_clock::now() - m_last_change)
+                        .count()
+                    > m_allowed_age_sec)) {
             m_needs_redraw = true;
             m_timed_out = true;
             m_old_value = std::numeric_limits<double>::min();
         }
     } else {
         m_needs_redraw = true;
-        m_last_change = wxDateTime::Now();
+        m_last_change = std::chrono::system_clock::now();
         m_timed_out = false;
         const wxJSONValue* val = m_parent_dashboard->GetSKData(m_sk_key);
         if (val) {

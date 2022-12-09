@@ -34,6 +34,7 @@
 #include <wx/dcgraph.h>
 
 #include "wx/jsonval.h"
+#include <chrono>
 #include <unordered_map>
 
 PLUGIN_BEGIN_NAMESPACE
@@ -301,7 +302,7 @@ protected:
     int m_color_scheme;
     /// Timestamp of last update of the value displayed by the instrument
     /// instance
-    wxDateTime m_last_change;
+    std::chrono::system_clock::time_point m_last_change;
     /// Maximum allowed age of the displayed value before it is considered
     /// unusable
     int m_allowed_age_sec;
@@ -351,7 +352,7 @@ protected:
         : m_name(wxEmptyString)
         , m_title(wxEmptyString)
         , m_color_scheme(0)
-        , m_last_change(wxInvalidDateTime)
+        , m_last_change(std::chrono::system_clock::now())
         , m_allowed_age_sec(3)
         , m_parent_dashboard(nullptr)
         , m_x(0)
