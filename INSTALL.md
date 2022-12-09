@@ -46,7 +46,8 @@ On Windows, build is performed in the _build_ directory using a CMD shell:
     > set PATH=C:\ProgramData\chocolatey\bin;C:\Windows\system32;C:\Windows
     > ..\buildwin\win_deps.bat
     > cmake -T v143 -G "Visual Studio 17 2022" ^
-           -DCMAKE_BUILD_TYPE=RelWithDebInfo  ..
+            -DCMAKE_GENERATOR_PLATFORM=Win32 ^
+            -DCMAKE_BUILD_TYPE=RelWithDebInfo  ..
     > cmake --build . --target tarball --config RelWithDebInfo
 
 _win\_deps.bat_ needs administrative privileges on the first run when it
