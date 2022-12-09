@@ -497,22 +497,23 @@ void MainConfigFrameImpl::FillInstrumentDetails()
 wxString MainConfigFrameImpl::ExtractValue(wxWindow* ctrl)
 {
     if (wxString(ctrl->GetClassInfo()->GetClassName()) == "wxTextCtrl") {
-        return ((wxTextCtrl*)ctrl)->GetValue();
+        return static_cast<wxTextCtrl*>(ctrl)->GetValue();
     } else if (wxString(ctrl->GetClassInfo()->GetClassName())
         == "wxColourPickerCtrl") {
-        return ((wxColourPickerCtrl*)ctrl)
-            ->GetColour()
-            .GetAsString(wxC2S_HTML_SYNTAX);
+        return static_cast<wxColourPickerCtrl*>(ctrl)->GetColour().GetAsString(
+            wxC2S_HTML_SYNTAX);
     } else if (wxString(ctrl->GetClassInfo()->GetClassName()) == "wxSpinCtrl") {
-        return wxString::Format("%i", ((wxSpinCtrl*)ctrl)->GetValue());
+        return wxString::Format(
+            "%i", static_cast<wxSpinCtrl*>(ctrl)->GetValue());
     } else if (wxString(ctrl->GetClassInfo()->GetClassName()) == "wxChoice") {
-        return wxString::Format("%i", ((wxChoice*)ctrl)->GetSelection());
+        return wxString::Format(
+            "%i", static_cast<wxChoice*>(ctrl)->GetSelection());
     } else if (wxString(ctrl->GetClassInfo()->GetClassName())
         == "SKKeyCtrlImpl") {
-        return ((SKKeyCtrlImpl*)ctrl)->GetValue();
+        return static_cast<SKKeyCtrlImpl*>(ctrl)->GetValue();
     } else if (wxString(ctrl->GetClassInfo()->GetClassName())
         == "SKZonesCtrlImpl") {
-        return ((SKZonesCtrlImpl*)ctrl)->GetValue();
+        return static_cast<SKZonesCtrlImpl*>(ctrl)->GetValue();
     } // TODO: Other supported controls defined in dskConfigCtrl
     LOG_VERBOSE("DashboardSK: Unknown control class %s",
         ctrl->GetClassInfo()->GetClassName());

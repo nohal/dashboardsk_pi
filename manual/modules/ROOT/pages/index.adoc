@@ -46,6 +46,12 @@ Example uses: all SignalK position paths, like `navigation.position`
 
 * xref:simplepositioninstrument.adoc[Detailed documentation]
 
+==== Simple histogram
+
+Simple instrument showing history of a single SignalK path numerical value.
+
+* xref:simplehistograminstrument.adoc[Detailed documentation]
+
 === Installation
 
 Use the xref:installation.adoc[integrated plugin manager] to install the plugin.

@@ -36,7 +36,7 @@ PLUGIN_BEGIN_NAMESPACE
 
 extern "C" DECL_EXP opencpn_plugin* create_pi(void* ppimgr)
 {
-    return (opencpn_plugin*)new dashboardsk_pi(ppimgr);
+    return static_cast<opencpn_plugin*>(new dashboardsk_pi(ppimgr));
 }
 
 extern "C" DECL_EXP void destroy_pi(opencpn_plugin* p) { delete p; }

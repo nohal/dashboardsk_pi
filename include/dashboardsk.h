@@ -36,6 +36,7 @@
 
 // All the instrument class headers must be included here
 #include "simplegaugeinstrument.h"
+#include "simplehistograminstrument.h"
 #include "simplenumberinstrument.h"
 #include "simplepositioninstrument.h"
 #include "simpletextinstrument.h"
@@ -46,6 +47,7 @@
     X(1, SimpleGaugeInstrument)                                                \
     X(2, SimpleTextInstrument)                                                 \
     X(3, SimplePositionInstrument)                                             \
+    X(4, SimpleHistogramInstrument)                                            \
     // X(4, AndAnotherInstrument)
 
 #define SRC_MAGIC_STRING "SRC:"

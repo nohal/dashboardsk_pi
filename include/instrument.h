@@ -80,6 +80,12 @@ PLUGIN_BEGIN_NAMESPACE
 #define DSK_SETTING_EMERG_FG "emergency_color"
 #define DSK_SETTING_BORDER_COLOR "border_color"
 #define DSK_SETTING_INSTR_SIZE "instrument_size"
+#define DSK_SETTING_INSTR_WIDTH "instrument_width"
+#define DSK_SETTING_INSTR_HEIGHT "instrument_height"
+#define DSK_SETTING_MEAN_FG "mean_color"
+#define DSK_SETTING_TIME_FG "time_color"
+#define DSK_SETTING_ORDER "instrument_order"
+#define DSK_SETTING_HISTORY "history_length"
 
 // Table of transformations to be shown in the GUI
 #define DSK_UNIT_TRANSFORMATIONS                                               \
@@ -132,6 +138,19 @@ PLUGIN_BEGIN_NAMESPACE
     X(Instrument::position_format::hem_decimal_deg, "HDDD.ddddd")              \
     X(Instrument::position_format::hem_deg_decimal_min, "HDDD\u00B0MM.mmm'")   \
     X(Instrument::position_format::hem_deg_min_sec, "HDD\u00B0MM'SS.s\"")
+
+#define DSK_VALUE_ORDER                                                        \
+    X(Instrument::value_order::lowest_highest, _("Lowest to highest"))         \
+    X(Instrument::value_order::highest_lowest, _("Highest to lowest"))
+
+#define DSK_HISTORY_LENGTH                                                     \
+    X(Instrument::history_length::len_1min, _("1 minute"))                     \
+    X(Instrument::history_length::len_5min, _("5 minutes"))                    \
+    X(Instrument::history_length::len_15min, _("15 minutes"))                  \
+    X(Instrument::history_length::len_30min, _("30 minutes"))                  \
+    X(Instrument::history_length::len_1hour, _("1 hour"))                      \
+    X(Instrument::history_length::len_1day, _("1 day"))                        \
+    X(Instrument::history_length::len_3days, _("3 days"))
 
 #define DUMMY_TITLE "???"
 
@@ -244,6 +263,27 @@ public:
         /// Degrees minutes and seconds with hemisphere at the beginning
         hem_deg_min_sec
 
+    };
+
+    /// @brief Order of values
+    enum class value_order {
+        /// @brief From lowest to highest (lowest value on the bottom or left) -
+        /// Suitable for eg. atmpospheric pressure
+        lowest_highest,
+        /// @brief From highest to lowest (lowest value on the top or right) -
+        /// Suitable for eg. depth
+        highest_lowest
+    };
+
+    /// @brief Supported lengths of history
+    enum class history_length {
+        len_1min,
+        len_5min,
+        len_15min,
+        len_30min,
+        len_1hour,
+        len_1day,
+        len_3days
     };
 
 protected:

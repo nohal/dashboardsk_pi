@@ -97,7 +97,7 @@ wxBitmap SimpleTextInstrument::Render(double scale)
     wxString value = "----";
     const wxJSONValue* val = m_parent_dashboard->GetSKData(m_sk_key);
     if (val) {
-        wxJSONValue v = val->Get("value", wxJSONValue("----"));
+        wxJSONValue v = val->Get("value", wxJSONValue(value));
         value = v.AsString();
     }
 

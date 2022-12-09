@@ -171,7 +171,7 @@ protected:
     SimpleGaugeInstrument() { Init(); };
 
     /// Initialize the default parameters of the instrument
-    virtual void Init();
+    void Init();
     /// SignalK fully quakified path whose value is to be displayed by the
     /// instrument
     wxString m_sk_key;

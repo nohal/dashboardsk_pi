@@ -1,0 +1,123 @@
+:imagesdir: ../images/
+== Simple histogram instrument
+
+image::simplehistograminstrument_screenshot.png[Simple gauge instrument]
+
+A resctangular instrument displaying a single numerical value history. Allows to select formatting and unit conversion from the SI units used by SignalK to usual units used in navigation as well as the length of the history shown by the instrument.
+
+.Configuration parameters
+[cols="1h,5,1"]
+|===
+|Parameter |Description |Example
+
+|Name
+|Name of the instrument
+|Time from primary GPS
+
+|Title
+|Title of the instrument to be displayed
+|GPS Time
+
+|Timeout
+|Timeout in seconds. If the set numeber of seconds passes since the last update for the SignalK key displayed by the instrument pass without receiving an update, the value is considerd timed out and is replaced by dashes.
+|3
+
+|SK key
+|Fully qualified SignalK path to the value displayed by the instrument
+|vessels.urn:mrn:signalk:uuid:76bb2350-c92e-4e47-b3c3-e12273f21155.environment.depth.belowTransducer
+
+|Format
+a|Format of the displayed number.
+
+.Supported formats
+* 9.9
+* 9.99
+* 9.999
+* 9
+* 009
+* 009.9
+* 09.9
+* 09.99
+* 009.99
+If displaying a sign in front of the number for negative values is undesirable, select the format marked by `ABS`, eg. `ABS(009)`.
+
+|
+
+|Transformation
+a|Function to be used to convert the value from the SI unit used by SignalK to human readable form
+
+.Supported transformation functions
+* None
+* RAD->DEG
+* m/s -> kn
+* m/s -> km/h
+* m/s -> mph
+* m -> feet
+* m -> fathoms
+* m -> NMi
+* Kelvin -> Celsius
+* Kelvin -> Fahrenheit
+* ratio -> percent
+* Pa -> hPa
+* Pa -> kPa
+* Pa -> MPa
+* Pa -> atm
+* Pa -> mmHg
+* Pa -> psi
+* Hz -> RPM
+|
+
+|Order
+a|Order of values in the graph
+
+.Value order
+[cols="1h,5"]
+!===
+!Lowest to highest
+!Lowest values drawn on top. Suitable for depth.
+
+!Highest to lowest
+!Highest values drawn on top. Suitable for speed etc.
+!===
+
+|
+
+|History
+a|Length of the history shown by the instrument. Selectable between 1 minute and 3 days.
+
+* The data for the last 1 minute are internally stored with resolution of 1 second.
+* The data for the last 1 hour are internally stored with resolution of 10 seconds
+* Older data are stored with resolution of 5 minutes
+
+The data with different resolution are seamlessly combined together for longer time ranges.
+|5 minutes
+
+|Instrument width
+|Width of the instrument on screen
+|200
+
+|Instrument height
+|Height of the instrument on screen
+|200
+
+|Title color
+|Color of the instrument title in upper right corner
+|
+
+|Graph color
+|Color of the graph line and Y-axis labels
+|
+
+|Mean color
+|Color of the dynamically calculated mean value line and label
+|
+
+|Time color
+|Color of the bottom labels for time
+|
+
+|Border color
+|Color of the border of the instrument
+|
+
+|===

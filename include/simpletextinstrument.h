@@ -104,7 +104,7 @@ protected:
     SimpleTextInstrument() { Init(); };
 
     /// Initialize the default parameters of the instrument
-    virtual void Init();
+    void Init();
 
     /// Get color for a part of the instrument corresponding to a value to be
     /// displayed

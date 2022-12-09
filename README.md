@@ -68,6 +68,7 @@ The easiest way to start implementing a new instrument is to copy a similar inst
 Refer to `include/instrument.h` for documentation of the basic instrument interface.
 
 Every new instrument must be added to the `INSTRUMENTS` table at [the beginning of](https://github.com/nohal/dashboardsk_pi/blob/main/include/dashboardsk.h#L54-L62) `include\dashboardsk.h` with a new ID and the exact name of the class implementing it. The respective code is then generated automagically by the preprocessor.
+New source files have to be added to `HDR_DASHBOARD` and `SRC_DASHBOARD` lists in `Plugin.cmake`.
 
 When adding a new instrument please also update the documentation under `manual/modules/ROOT` with the information relevant to the new functionality.
 
