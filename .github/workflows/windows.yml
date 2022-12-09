@@ -8,6 +8,8 @@ on:
       - main
     paths-ignore:
       - 'manual/**'
+    tags:
+      - '*'
   pull_request:
     branches:
       - main
@@ -17,6 +19,8 @@ on:
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
+  CLOUDSMITH_API_KEY: ${{ secrets.CLOUDSMITH_API_KEY }}
+
 
 jobs:
   build:
@@ -60,5 +64,11 @@ jobs:
           call buildwin/win_deps.bat
           cmake -A win32 -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} ${{ matrix.cmake_defines }}
           cmake --build build
+        shell: cmd
+      - name: "[Windows] Publish to cloudsmith"
+        if: runner.os == 'Windows' && startsWith(github.ref, 'v')
+        run: |
+          cd build
+          .\upload.bat
         shell: cmd
 ...
