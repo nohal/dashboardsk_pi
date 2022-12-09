@@ -14,10 +14,10 @@
 set(CMAKE_SYSTEM_NAME Android)
 set(CMAKE_SYSTEM_VERSION 21)
 set(CMAKE_ANDROID_ARCH_ABI arm64-v8a)
-if (DEFINED ENV{NDK_HOME})
+if(DEFINED ENV{NDK_HOME})
   set(CMAKE_ANDROID_NDK $ENV{NDK_HOME})
-else ()
+else()
   set(CMAKE_ANDROID_NDK /opt/android/ndk)
-endif ()
+endif()
 
 set(ARM_ARCH aarch64 CACHE STRING "Selected arm architecture" FORCE)

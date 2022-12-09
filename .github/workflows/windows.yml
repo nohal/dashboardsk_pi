@@ -34,7 +34,7 @@ jobs:
             runner: windows-latest
             no_sudo: 1
             # TODO: Tests don't link on Windows, investigate and fix later
-            cmake_defines: -DWITH_TESTS=OFF -DCMAKE_CXX_STANDARD=11 -DCMAKE_C_COMPILER=cl.exe -DCMAKE_CXX_COMPILER=cl.exe
+            cmake_defines: -T v143 -DCMAKE_GENERATOR_PLATFORM=win32 -DWITH_TESTS=OFF -DCMAKE_CXX_STANDARD=17
             cmake_generator: Ninja
 
     env:

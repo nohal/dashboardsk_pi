@@ -41,6 +41,8 @@ for pkg in $(sed '/#/d' < $here/../build-deps/macos-deps);  do
     brew link --overwrite $pkg || brew install $pkg
 done
 
+export OPENSSL_ROOT_DIR='/usr/local/opt/openssl'
+
 # Install the pre-built wxWidgets package
 
 wget -q https://download.opencpn.org/s/MCiRiq4fJcKD56r/download \
@@ -55,7 +57,6 @@ cmake \
   -DwxWidgets_CONFIG_OPTIONS="--prefix=/tmp/wx315_opencpn50_macos1010" \
   -DCMAKE_INSTALL_PREFIX= \
   -DCMAKE_OSX_DEPLOYMENT_TARGET=10.10 \
-  -DWITH_TESTS=OFF \
   ..
 
 if [[ -z "$CI" ]]; then

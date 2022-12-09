@@ -31,7 +31,7 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")           # Apple is AppleClang
   string(APPEND CMAKE_CXX_FLAGS " -Wno-potentially-evaluated-expression")
   string(APPEND CMAKE_SHARED_LINKER_FLAGS " -Wl -undefined dynamic_lookup")
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-  add_definitions(-D_CRT_NONSTDC_NO_DEPRECATE -D_CRT_SECURE_NO_DEPRECATE -DNOMINMAX)
+  add_definitions(-D_CRT_NONSTDC_NO_DEPRECATE -D_CRT_SECURE_NO_DEPRECATE)
 endif()
 
 if(UNIX AND NOT APPLE)   # linux, see OpenCPN/OpenCPN#1977

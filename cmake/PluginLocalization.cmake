@@ -15,7 +15,7 @@ find_program(GETTEXT_XGETTEXT_EXECUTABLE xgettext)
 
 string(REPLACE "_pi" "" I18N_NAME ${PACKAGE_NAME})
 
-if (GETTEXT_XGETTEXT_EXECUTABLE)
+if(GETTEXT_XGETTEXT_EXECUTABLE)
   add_custom_command(
     OUTPUT po/${PACKAGE_NAME}.pot.dummy
     COMMAND
@@ -32,13 +32,13 @@ if (GETTEXT_XGETTEXT_EXECUTABLE)
     COMMENT "[${PACKAGE_NAME}]-pot-update: Done."
     DEPENDS po/${PACKAGE_NAME}.pot.dummy
   )
-endif (GETTEXT_XGETTEXT_EXECUTABLE)
+endif()
 
-macro (GETTEXT_UPDATE_PO _potFile)
+macro(GETTEXT_UPDATE_PO _potFile)
   set(_poFiles ${_potFile})
   get_filename_component(_absPotFile ${_potFile} ABSOLUTE)
 
-  foreach (_currentPoFile ${ARGN})
+  foreach(_currentPoFile ${ARGN})
     get_filename_component(_absFile ${_currentPoFile} ABSOLUTE)
     get_filename_component(_poBasename ${_absFile} NAME_WE)
 
@@ -50,23 +50,23 @@ macro (GETTEXT_UPDATE_PO _potFile)
       COMMENT "${I18N_NAME}-po-update [${_poBasename}]: Updated po file."
     )
     set(_poFiles ${_poFiles} ${_absFile}.dummy)
-  endforeach (_currentPoFile)
+  endforeach()
 
   add_custom_target(
     ${I18N_NAME}-po-update
     COMMENT "[${PACKAGE_NAME}]-po-update: Done."
     DEPENDS ${_poFiles}
   )
-endmacro (GETTEXT_UPDATE_PO)
+endmacro()
 
-if (GETTEXT_MSGMERGE_EXECUTABLE)
+if(GETTEXT_MSGMERGE_EXECUTABLE)
   file(GLOB PACKAGE_PO_FILES po/*.po)
   gettext_update_po(po/${PACKAGE_NAME}.pot ${PACKAGE_PO_FILES})
-endif (GETTEXT_MSGMERGE_EXECUTABLE)
+endif()
 
 set(_gmoFiles)
-macro (GETTEXT_BUILD_MO)
-  foreach (_poFile ${ARGN})
+macro(GETTEXT_BUILD_MO)
+  foreach(_poFile ${ARGN})
     get_filename_component(_absFile ${_poFile} ABSOLUTE)
     get_filename_component(_poBasename ${_absFile} NAME_WE)
     set(_gmoFile ${CMAKE_CURRENT_BINARY_DIR}/${_poBasename}.mo)
@@ -79,25 +79,25 @@ macro (GETTEXT_BUILD_MO)
       DEPENDS ${_absFile}
       COMMENT "${I18N_NAME}-i18n [${_poBasename}]: Created mo file."
     )
-    if (APPLE)
+    if(APPLE)
       install(
         FILES ${_gmoFile}
         DESTINATION OpenCPN.app/Contents/Resources/${_poBasename}.lproj
         RENAME opencpn-${PACKAGE_NAME}.mo
       )
-    else (APPLE)
+    else()
       install(
         FILES ${_gmoFile}
         DESTINATION share/locale/${_poBasename}/LC_MESSAGES
         RENAME opencpn-${PACKAGE_NAME}.mo
       )
-    endif (APPLE)
+    endif()
 
     set(_gmoFiles ${_gmoFiles} ${_gmoFile})
-  endforeach (_poFile)
-endmacro (GETTEXT_BUILD_MO)
+  endforeach()
+endmacro()
 
-if (GETTEXT_MSGFMT_EXECUTABLE)
+if(GETTEXT_MSGFMT_EXECUTABLE)
   file(GLOB PACKAGE_PO_FILES po/*.po)
   gettext_build_mo(${PACKAGE_PO_FILES})
   add_custom_target(
@@ -106,5 +106,5 @@ if (GETTEXT_MSGFMT_EXECUTABLE)
     DEPENDS ${_gmoFiles}
   )
   add_dependencies(${PACKAGE_NAME} ${I18N_NAME}-i18n)
-  add_dependencies( tarball ${I18N_NAME}-i18n)
-endif (GETTEXT_MSGFMT_EXECUTABLE)
+  add_dependencies(tarball ${I18N_NAME}-i18n)
+endif()

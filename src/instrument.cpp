@@ -123,7 +123,11 @@ wxBitmap Instrument::ScaleBitmap(
     wxMemoryDC inDC(bmpIn);
 
     if (antialiasing && scale < 0.4) {
+#if wxUSE_GRAPHICS_CONTEXT
         wxGCDC outDC(bmpOut);
+#else
+        wxMemoryDC outDC(bmpOut);
+#endif
         outDC.StretchBlit(wxPoint(0, 0), sizeOut, &inDC, wxPoint(0, 0), sizeIn);
     } else {
         wxMemoryDC outDC(bmpOut);

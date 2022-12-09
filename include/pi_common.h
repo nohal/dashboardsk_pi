@@ -43,6 +43,7 @@
 #define PLUGIN_END_NAMESPACE }
 
 // For OpenGL
+/*
 extern "C" {
 
 #ifdef __WXGTK__
@@ -52,6 +53,8 @@ extern "C" {
 #elif __WXMAC__
 #include <OpenGL/gl3.h> // from ..../Frameworks/OpenGL.framework/Headers/gl.h
 #define GL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED
+#elif __WXQT__
+// TODO
 #else
 #include <winsock2.h>
 #include <ws2tcpip.h>
@@ -67,15 +70,15 @@ extern "C" {
 #endif
 
 } // end "extern C"
-
-#include "wx/wxprec.h"
+*/
+#include <wx/wxprec.h>
 #ifdef __WXOSX__
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wpotentially-evaluated-expression"
 #endif
-#include "wx/aui/aui.h"
-#include "wx/aui/framemanager.h"
-#include "wx/wx.h"
+#include <wx/aui/aui.h>
+#include <wx/aui/framemanager.h>
+#include <wx/wx.h>
 #ifdef __WXOSX__
 #pragma clang diagnostic pop
 #endif

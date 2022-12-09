@@ -204,14 +204,18 @@ wxBitmap SimpleNumberInstrument::Render(double scale)
     mdc.GetTextExtent(value, &body_x, &body_y);
     size_x = (wxMax(title_x, wxMax(body_x, dummy_x)) + 2 * BORDER_SIZE);
     size_y = (title_y + body_y + 4 * BORDER_SIZE);
-#ifndef __WXGTK__
+#if defined(__WXGTK__) || defined(__WXQT__)
+    m_bmp = wxBitmap(size_x, size_y, 32);
+#else
     m_bmp = wxBitmap(size_x, size_y);
     m_bmp.UseAlpha();
-#else
-    m_bmp = wxBitmap(size_x, size_y, 32);
 #endif
     mdc.SelectObject(m_bmp);
+#if wxUSE_GRAPHICS_CONTEXT
     wxGCDC dc(mdc);
+#else
+    wxMemoryDC& dc(mdc);
+#endif
     dc.SetBackground(*wxTRANSPARENT_BRUSH);
     dc.Clear();
     // Draw stuff

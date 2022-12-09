@@ -227,14 +227,18 @@ wxBitmap SimpleGaugeInstrument::RenderAngle(double scale, bool relative)
     wxCoord yc = size_y / 2;
     wxCoord r = size_y / 2 - size_x / 200 - 1;
 
-#ifndef __WXGTK__
+#if defined(__WXGTK__) || defined(__WXQT__)
+    m_bmp = wxBitmap(size_x, size_y, 32);
+#else
     m_bmp = wxBitmap(size_x, size_y);
     m_bmp.UseAlpha();
-#else
-    m_bmp = wxBitmap(size_x, size_y, 32);
 #endif
     mdc.SelectObject(m_bmp);
+#if wxUSE_GRAPHICS_CONTEXT
     wxGCDC dc(mdc);
+#else
+    wxMemoryDC& dc(mdc);
+#endif
     dc.SetBackground(*wxTRANSPARENT_BRUSH);
     dc.Clear();
 
@@ -331,15 +335,19 @@ wxBitmap SimpleGaugeInstrument::RenderAdaptive(double scale)
     wxCoord yc = m_instrument_size / 2;
     wxCoord r = size_x / 2 - size_x / 200 - 1;
 
-#ifndef __WXGTK__
+#if defined(__WXGTK__) || defined(__WXQT__)
+    m_bmp = wxBitmap(size_x, size_y, 32);
+#else
     m_bmp = wxBitmap(size_x, size_y);
     m_bmp.UseAlpha();
-#else
-    m_bmp = wxBitmap(size_x, size_y, 32);
 #endif
     wxMemoryDC mdc;
     mdc.SelectObject(m_bmp);
+#if wxUSE_GRAPHICS_CONTEXT
     wxGCDC dc(mdc);
+#else
+    wxMemoryDC& dc(mdc);
+#endif
     dc.SetBackground(*wxTRANSPARENT_BRUSH);
     dc.Clear();
     // Gauge background
@@ -507,15 +515,19 @@ wxBitmap SimpleGaugeInstrument::RenderFixed(double scale)
     wxCoord yc = m_instrument_size / 2;
     wxCoord r = size_x / 2 - size_x / 200 - 1;
 
-#ifndef __WXGTK__
+#if defined(__WXGTK__) || defined(__WXQT__)
+    m_bmp = wxBitmap(size_x, size_y, 32);
+#else
     m_bmp = wxBitmap(size_x, size_y);
     m_bmp.UseAlpha();
-#else
-    m_bmp = wxBitmap(size_x, size_y, 32);
 #endif
     wxMemoryDC mdc;
     mdc.SelectObject(m_bmp);
+#if wxUSE_GRAPHICS_CONTEXT
     wxGCDC dc(mdc);
+#else
+    wxMemoryDC& dc(mdc);
+#endif
     dc.SetBackground(*wxTRANSPARENT_BRUSH);
     dc.Clear();
     // Gauge background
@@ -683,14 +695,18 @@ wxBitmap SimpleGaugeInstrument::RenderPercent(double scale)
     wxCoord yc = m_instrument_size / 2;
     wxCoord r = size_x / 2 - size_x / 200 - 1;
 
-#ifndef __WXGTK__
+#if defined(__WXGTK__) || defined(__WXQT__)
+    m_bmp = wxBitmap(size_x, size_y, 32);
+#else
     m_bmp = wxBitmap(size_x, size_y);
     m_bmp.UseAlpha();
-#else
-    m_bmp = wxBitmap(size_x, size_y, 32);
 #endif
     mdc.SelectObject(m_bmp);
+#if wxUSE_GRAPHICS_CONTEXT
     wxGCDC dc(mdc);
+#else
+    wxMemoryDC& dc(mdc);
+#endif
     dc.SetBackground(*wxTRANSPARENT_BRUSH);
     dc.Clear();
     // Gauge background

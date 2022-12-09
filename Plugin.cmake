@@ -47,8 +47,18 @@ set(PKG_IS_OPEN_SOURCE "yes")
 set(PKG_HOMEPAGE https://github.com/nohal/dashboardsk_pi)
 set(PKG_INFO_URL https://opencpn.org/OpenCPN/plugins/dashboardsk.html)
 
+option(WITH_TESTS "Whether or not to build the tests" OFF)
+option(SANITIZE "What sanitizers to use" "")
+
+if(NOT "${SANITIZE}" STREQUAL "OFF" AND NOT "${SANITIZE}" STREQUAL "")
+  add_compile_options(-fsanitize=${SANITIZE} -fno-omit-frame-pointer)
+  add_link_options(-fsanitize=${SANITIZE} -fno-omit-frame-pointer)
+endif()
+
 add_definitions(-DDASHBOARDSK_USE_SVG)
 add_definitions(-DocpnUSE_GL)
+
+include_directories(${CMAKE_SOURCE_DIR}/include)
 
 set(HDR_DASHBOARD
         ${CMAKE_SOURCE_DIR}/include/dashboardsk.h
@@ -72,7 +82,6 @@ set(SRC_DASHBOARD
         ${CMAKE_SOURCE_DIR}/src/simplepositioninstrument.cpp
         ${CMAKE_SOURCE_DIR}/src/simplehistograminstrument.cpp
         )
-
 
 set(SRC
         ${HDR_DASHBOARD}
@@ -110,3 +119,20 @@ macro(add_plugin_libraries)
         add_subdirectory("opencpn-libs/wxJSON")
         target_link_libraries(${PACKAGE_NAME} ocpn::wxjson)
 endmacro()
+
+if(${WITH_TESTS})
+  include(CTest)
+  add_subdirectory("${CMAKE_SOURCE_DIR}/tests")
+  add_dependencies(${CMAKE_PROJECT_NAME} tests)
+endif()
+
+add_custom_target(doxygen-docs
+  COMMAND doxygen
+  WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+)
+
+add_custom_target(asciidoxy-docs
+  COMMAND asciidoxy -D apidocs --spec-file packages.toml api.adoc
+  WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+  DEPENDS doxygen-docs
+)

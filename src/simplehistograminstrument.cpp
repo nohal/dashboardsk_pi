@@ -209,14 +209,18 @@ wxBitmap SimpleHistogramInstrument::Render(double scale)
     m_needs_redraw = false;
     wxMemoryDC mdc;
 
-#ifndef __WXGTK__
+#if defined(__WXGTK__) || defined(__WXQT__)
+    m_bmp = wxBitmap(m_instrument_width, m_instrument_height, 32);
+#else
     m_bmp = wxBitmap(m_instrument_width, m_instrument_height);
     m_bmp.UseAlpha();
-#else
-    m_bmp = wxBitmap(m_instrument_width, m_instrument_height, 32);
 #endif
     mdc.SelectObject(m_bmp);
+#if wxUSE_GRAPHICS_CONTEXT
     wxGCDC dc(mdc);
+#else
+    wxMemoryDC& dc(mdc);
+#endif
     dc.SetBackground(GetDimedColor(GetColor(color_item::body_bg)));
     dc.Clear();
     // Draw graph

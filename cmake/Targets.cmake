@@ -1,7 +1,7 @@
 # ~~~
 # Summary:     Add primary build targets
 # License:     GPLv3+
-# Copyright(c) 2020-2021 Alec Leamas
+# Copyright (c) 2020-2021 Alec Leamas
 #
 # Add the primary build targets android, flatpak and tarball together
 # with helper targets. Also sets up the default target.
@@ -10,7 +10,7 @@
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 3 of the License, or
-#(at your option) any later version.
+# (at your option) any later version.
 
 
 
@@ -70,7 +70,6 @@ set(_cs_script "
   configure_file(
     ${CMAKE_BINARY_DIR}/${pkg_displayname}.xml.in
     ${CMAKE_BINARY_DIR}/${pkg_xmlname}.xml
-    NEWLINE_STYLE LF
     @ONLY
   )
 ")
@@ -181,21 +180,32 @@ function(flatpak_target manifest)
       $ENV{CMAKE_BUILD_OPTS}
       ${CMAKE_BINARY_DIR}
   )
+
+  # Script used to copy out files from the flatpak sandbox
+  file(WRITE ${CMAKE_BINARY_DIR}/copy_out [=[
+    appdir=$(find /run/build -maxdepth 3 -iname $1)
+    appdir=$(ls -t $appdir)       # Sort entries if there is more than one
+    appdir=${appdir%% *}          # Pick first entry
+    appdir=${appdir%%/lib*so}     # Drop filename, use remaining dir part
+    cp -ar $appdir/app $2
+  ]=])
+
   set(_fp_script "
     execute_process(
       COMMAND
         flatpak-builder --force-clean --keep-build-dirs
-          ${CMAKE_CURRENT_BINARY_DIR}/app ${manifest}
+          ${CMAKE_BINARY_DIR}/app ${manifest}
     )
     # Copy the data out of the sandbox to installation directory
     execute_process(
+      WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
       COMMAND
-        flatpak-builder  --run app ${manifest}  bash -c \"
-          set -x\; stable_link=$(find /run/build -maxdepth 1 -type l)\; \
-          cp -ar $stable_link/app/files/*           \
-              ${CMAKE_CURRENT_BINARY_DIR}/app/files
-        \"
+        flatpak-builder --run app ${manifest}
+          bash copy_out lib${PACKAGE_NAME}.so ${CMAKE_BINARY_DIR}
     )
+    if(NOT EXISTS app/files/lib/opencpn/lib${PACKAGE_NAME}.so)
+      message(FATAL_ERROR \"Cannot find generated file lib${PACKAGE_NAME}.so\")
+    endif()
     execute_process(
       COMMAND bash -c \"sed -e '/@checksum@/d' \
           < ${pkg_xmlname}.xml.in > app/files/metadata.xml\"

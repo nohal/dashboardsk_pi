@@ -12,7 +12,7 @@
 # (at your option) any later version.
 
 set -e
-MANIFEST=$(cd flatpak; ls org.opencpn.OpenCPN.Plugin*yaml)
+MANIFEST=$(cd flatpak; ls org.opencpn.OpenCPN.Plugin*yaml*)
 echo "Using manifest file: $MANIFEST"
 set -x
 
@@ -39,11 +39,11 @@ if [ -n "$CI" ]; then
     # Avoid using outdated TLS certificates, see #210.
     sudo apt install --reinstall  ca-certificates
 
-    # Use updated flatpak to workaround build failure on ARM64
+    # Use updated flatpak (#457)
     sudo add-apt-repository -y ppa:alexlarsson/flatpak
     sudo apt update
 
-    # Install flatpak and flatpak-builder
+    # Install or update flatpak and flatpak-builder
     sudo apt install flatpak flatpak-builder
 fi
 
@@ -58,23 +58,26 @@ flatpak remote-add --user --if-not-exists flathub-beta \
 flatpak remote-add --user --if-not-exists \
     flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
+    # FIXME (leamas) revert to stable when 058 is published there
 flatpak install --user -y --noninteractive \
-    flathub org.freedesktop.Sdk//20.08
+    flathub org.freedesktop.Sdk//22.08
+
+set -x
+cd $builddir
+
+# Patch the manifest to use correct branch and runtime unconditionally
+manifest=$(ls ../flatpak/org.opencpn.OpenCPN.Plugin*yaml.tpl)
+sed -i  '/-DBUILD_TYPE/s/$/ -DOCPN_WX_ABI=wx32/' $manifest
+    # FIXME (leamas) restore beta -> stable when O58 is published
+sed -i  '/^runtime-version/s/:.*/: beta/'  $manifest
+
+flatpak install --user -y --or-update --noninteractive \
+    flathub-beta  org.opencpn.OpenCPN
+flatpak remote-add --user --if-not-exists \
+    flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
 # Configure and build the plugin tarball and metadata.
-cd $builddir
-if [ -n "$BUILD_WX31" ]; then
-    manifest=$(ls ../flatpak/org.opencpn.OpenCPN.Plugin*yaml)
-    sed -i  '/STRING=TARBALL/s/$/ -DOCPN_WX_ABI=wx315/' $manifest
-    sed -i  '/runtime-version/s/stable/beta/'  $manifest
-    flatpak install --user -y --or-update --noninteractive \
-        flathub-beta  org.opencpn.OpenCPN//beta
-    cmake -DWITH_TESTS=OFF -DCMAKE_BUILD_TYPE=Release -DOCPN_WX_ABI=wx315  ..
-else
-    flatpak install --user -y --or-update --noninteractive \
-        flathub  org.opencpn.OpenCPN
-    cmake -DWITH_TESTS=OFF -DCMAKE_BUILD_TYPE=Release ..
-fi
+cmake -DCMAKE_BUILD_TYPE=Release -DOCPN_WX_ABI=wx32 ..
 make -j $(nproc) VERBOSE=1 flatpak
 
 # Restore permissions and owner in build tree.
