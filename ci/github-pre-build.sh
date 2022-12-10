@@ -45,6 +45,8 @@ case $(uname -s) in
             brew link --overwrite $pkg || brew install $pkg
         done
 
+	pip3 install --upgrade cloudsmith-cli
+
         if [ ${USE_HOMEBREW:-0} -ne 1 ]; then
             # Install the pre-built wxWidgets package
             wget -q https://download.opencpn.org/s/MCiRiq4fJcKD56r/download \

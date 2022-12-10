@@ -8,6 +8,8 @@ on:
       - main
     paths-ignore:
       - 'manual/**'
+    tags:
+      - '*'
   pull_request:
     branches:
       - main
@@ -29,8 +31,9 @@ jobs:
           - name: macOS latest Homebrew wxOSX
             runner: macos-12
             cmake_generator: Xcode
-            cmake_defines: -DCMAKE_CXX_STANDARD=11
+            cmake_defines: -DCMAKE_CXX_STANDARD=17
             use_homebrew: 1
+            push_cloudsmith: 1
           - name: macOS 11 wxOSX
             runner: macos-11
             cmake_generator: Xcode
@@ -42,6 +45,7 @@ jobs:
 
     env:
       wxGTK_VERSION: ${{ matrix.gtk_version && matrix.gtk_version || 3 }}
+      CLOUDSMITH_API_KEY: ${{ secrets.CLOUDSMITH_API_KEY }}
 
     # Use bash as the shell, even under MSW where the default is PowerShell.
     defaults:
@@ -64,6 +68,14 @@ jobs:
 
       - name: Build
         run: cmake --build build --config ${{env.BUILD_TYPE}}
+
+      - name: Upload to Cloudsmith
+        if: matrix.push_cloudsmith == 1
+        run: |
+          ./upload.sh
+        working-directory: build
+        env:
+          UPLOAD_CLOUDSMITH: ${{ matrix.push_cloudsmith }}
 
       - name: Test
         # TODO: The tests do not work in headless Linux containers (GTK crashes) with wxWidgets 3.0 available in Ubuntu

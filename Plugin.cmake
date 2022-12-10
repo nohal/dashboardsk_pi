@@ -31,7 +31,7 @@ set(OCPN_RELEASE_REPO
 #
 # -------  Plugin setup --------
 #
-set(PKG_NAME DashboardSK)
+set(PKG_NAME DashboardSK_pi)
 set(PKG_VERSION "0.1.0")
 set(PKG_PRERELEASE "beta")  # Empty, or a tag like 'beta'
 

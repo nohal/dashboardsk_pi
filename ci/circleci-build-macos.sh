@@ -45,16 +45,19 @@ export OPENSSL_ROOT_DIR='/usr/local/opt/openssl'
 
 # Install the pre-built wxWidgets package
 
-wget -q https://download.opencpn.org/s/MCiRiq4fJcKD56r/download \
-    -O /tmp/wx315_opencpn50_macos1010.tar.xz
-tar -C /tmp -xJf /tmp/wx315_opencpn50_macos1010.tar.xz
+# Old prebuilt bundle
+#wget -q https://download.opencpn.org/s/MCiRiq4fJcKD56r/download \
+#    -O /tmp/wx315_opencpn50_macos1010.tar.xz
+#tar -C /tmp -xJf /tmp/wx315_opencpn50_macos1010.tar.xz
+
+brew install wxwidgets
+#Once Homebrew moves to an incompatible version, we will need something like this:
+#brew install nohal/navutils/wxwidgets@3.2.1
 
 # Build and package
 cd build-osx
 cmake \
   -DCMAKE_BUILD_TYPE=Release \
-  -DwxWidgets_CONFIG_EXECUTABLE=/tmp/wx315_opencpn50_macos1010/bin/wx-config \
-  -DwxWidgets_CONFIG_OPTIONS="--prefix=/tmp/wx315_opencpn50_macos1010" \
   -DCMAKE_INSTALL_PREFIX= \
   -DCMAKE_OSX_DEPLOYMENT_TARGET=10.10 \
   ..

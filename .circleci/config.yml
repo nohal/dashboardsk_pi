@@ -192,19 +192,19 @@ jobs:
         default: "fp-x86-20-v2"
     <<: *flatpak-steps
 
-  build-macos:
-    macos:
-      xcode: "12.5.1"
-    environment:
-      - OCPN_TARGET: macos
-      - CMAKE_BUILD_PARALLEL_LEVEL: 2
-    steps:
-      - checkout
-      - run: ci/circleci-build-macos.sh
-      - run: >
-          sh -c "otool -L build-osx/app/*/OpenCPN.app/Contents/PlugIns/*.dylib"
-      - run: cd build-osx; /bin/bash < upload.sh
-      - run: ci/git-push.sh  build-osx
+  #build-macos:
+  #  macos:
+  #    xcode: "12.5.1"
+  #  environment:
+  #    - OCPN_TARGET: macos
+  #    - CMAKE_BUILD_PARALLEL_LEVEL: 2
+  #  steps:
+  #    - checkout
+  #    - run: ci/circleci-build-macos.sh
+  #    - run: >
+  #        sh -c "otool -L build-osx/app/*/OpenCPN.app/Contents/PlugIns/*.dylib"
+  #    - run: cd build-osx; /bin/bash < upload.sh
+  #    - run: ci/git-push.sh  build-osx
 
   #TODO: wxStyledTextCtrl does not exist in wxQT, so we would have to replace it.
   #      And there will be more for sure.
@@ -250,9 +250,9 @@ workflows:
       - build-flatpak-x86:
           <<: *std-filters
 
-      - build-macos:
-          <<: *std-filters
-
+#      - build-macos:
+#          <<: *std-filters
+#
 #      - build-android-arm64:
 #          <<: *std-filters
 #
