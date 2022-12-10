@@ -3171,7 +3171,7 @@
             <property name="minimum_size">200,200</property>
             <property name="name">SKDataTree</property>
             <property name="pos"></property>
-            <property name="size">500,450</property>
+            <property name="size">500,500</property>
             <property name="style">wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER</property>
             <property name="subclass">; ; forward_declare</property>
             <property name="title">SignalK data tree</property>
@@ -3636,7 +3636,7 @@
             <property name="minimum_size">200,200</property>
             <property name="name">SKPathBrowser</property>
             <property name="pos"></property>
-            <property name="size">500,300</property>
+            <property name="size">500,500</property>
             <property name="style">wxDEFAULT_FRAME_STYLE</property>
             <property name="subclass">; ; forward_declare</property>
             <property name="title">SignalK Browser</property>
