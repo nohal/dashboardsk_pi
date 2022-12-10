@@ -17,12 +17,12 @@ set(OCPN_TEST_REPO
         CACHE STRING "Default repository for untagged builds"
 )
 set(OCPN_BETA_REPO
-        "nohal/opencpn-plugins"
+        "nohal/dashboardsk_pi-beta"
         CACHE STRING
         "Default repository for tagged builds matching 'beta'"
 )
 set(OCPN_RELEASE_REPO
-        "nohal/opencpn-plugins"
+        "nohal/dashboardsk_pi-stable"
         CACHE STRING
         "Default repository for tagged builds not matching 'beta'"
 )
@@ -31,12 +31,12 @@ set(OCPN_RELEASE_REPO
 #
 # -------  Plugin setup --------
 #
-set(PKG_NAME DashboardSK_pi)
-set(PKG_VERSION  0.0.1)
-set(PKG_PRERELEASE "")  # Empty, or a tag like 'beta'
+set(PKG_NAME DashboardSK)
+set(PKG_VERSION "0.1.0")
+set(PKG_PRERELEASE "beta")  # Empty, or a tag like 'beta'
 
 set(DISPLAY_NAME DashboardSK)    # Dialogs, installer artifacts, ...
-set(PLUGIN_API_NAME DashboardSK) # As of GetCommonName() in plugin API
+set(PLUGIN_API_NAME dashboardsk_pi) # As of GetCommonName() in plugin API
 set(PKG_SUMMARY "DashboardSK plugin for OpenCPN")
 set(PKG_DESCRIPTION [=[
 DashboardSK plugin for OpenCPN

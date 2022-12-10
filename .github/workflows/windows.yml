@@ -65,8 +65,8 @@ jobs:
           cmake -A win32 -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} ${{ matrix.cmake_defines }}
           cmake --build build
         shell: cmd
-      - name: "[Windows] Publish to cloudsmith"
-        if: runner.os == 'Windows' && startsWith(github.ref, 'v')
+      - name: "[Windows] Publish to Cloudsmith"
+        if: runner.os == 'Windows'
         run: |
           cd build
           .\upload.bat
