@@ -13,18 +13,18 @@
 # -------- Options ----------
 
 set(OCPN_TEST_REPO
-        "nohal/opencpn-plugins"
-        CACHE STRING "Default repository for untagged builds"
+  "nohal/opencpn-plugins"
+  CACHE STRING "Default repository for untagged builds"
 )
 set(OCPN_BETA_REPO
-        "nohal/dashboardsk_pi-beta"
-        CACHE STRING
-        "Default repository for tagged builds matching 'beta'"
+  "nohal/dashboardsk_pi-beta"
+  CACHE STRING
+  "Default repository for tagged builds matching 'beta'"
 )
 set(OCPN_RELEASE_REPO
-        "nohal/dashboardsk_pi-stable"
-        CACHE STRING
-        "Default repository for tagged builds not matching 'beta'"
+  "nohal/dashboardsk_pi-stable"
+  CACHE STRING
+  "Default repository for tagged builds not matching 'beta'"
 )
 
 #
@@ -61,63 +61,68 @@ add_definitions(-DocpnUSE_GL)
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
 set(HDR_DASHBOARD
-        ${CMAKE_SOURCE_DIR}/include/dashboardsk.h
-        ${CMAKE_SOURCE_DIR}/include/dashboard.h
-        ${CMAKE_SOURCE_DIR}/include/instrument.h
-        ${CMAKE_SOURCE_DIR}/include/simplenumberinstrument.h
-        ${CMAKE_SOURCE_DIR}/include/simplegaugeinstrument.h
-        ${CMAKE_SOURCE_DIR}/include/simpletextinstrument.h
-        ${CMAKE_SOURCE_DIR}/include/simplepositioninstrument.h
-        ${CMAKE_SOURCE_DIR}/include/simplehistograminstrument.h
-        ${CMAKE_SOURCE_DIR}/include/zone.h
-        ${CMAKE_SOURCE_DIR}/include/displayscale.h
-        )
+  ${CMAKE_SOURCE_DIR}/include/dashboardsk.h
+  ${CMAKE_SOURCE_DIR}/include/dashboard.h
+  ${CMAKE_SOURCE_DIR}/include/instrument.h
+  ${CMAKE_SOURCE_DIR}/include/simplenumberinstrument.h
+  ${CMAKE_SOURCE_DIR}/include/simplegaugeinstrument.h
+  ${CMAKE_SOURCE_DIR}/include/simpletextinstrument.h
+  ${CMAKE_SOURCE_DIR}/include/simplepositioninstrument.h
+  ${CMAKE_SOURCE_DIR}/include/simplehistograminstrument.h
+  ${CMAKE_SOURCE_DIR}/include/zone.h
+  ${CMAKE_SOURCE_DIR}/include/displayscale.h
+  )
 set(SRC_DASHBOARD
-        ${CMAKE_SOURCE_DIR}/src/dashboardsk.cpp
-        ${CMAKE_SOURCE_DIR}/src/dashboard.cpp
-        ${CMAKE_SOURCE_DIR}/src/instrument.cpp
-        ${CMAKE_SOURCE_DIR}/src/simplenumberinstrument.cpp
-        ${CMAKE_SOURCE_DIR}/src/simplegaugeinstrument.cpp
-        ${CMAKE_SOURCE_DIR}/src/simpletextinstrument.cpp
-        ${CMAKE_SOURCE_DIR}/src/simplepositioninstrument.cpp
-        ${CMAKE_SOURCE_DIR}/src/simplehistograminstrument.cpp
-        )
+  ${CMAKE_SOURCE_DIR}/src/dashboardsk.cpp
+  ${CMAKE_SOURCE_DIR}/src/dashboard.cpp
+  ${CMAKE_SOURCE_DIR}/src/instrument.cpp
+  ${CMAKE_SOURCE_DIR}/src/simplenumberinstrument.cpp
+  ${CMAKE_SOURCE_DIR}/src/simplegaugeinstrument.cpp
+  ${CMAKE_SOURCE_DIR}/src/simpletextinstrument.cpp
+  ${CMAKE_SOURCE_DIR}/src/simplepositioninstrument.cpp
+  ${CMAKE_SOURCE_DIR}/src/simplehistograminstrument.cpp
+  )
 
 set(SRC
-        ${HDR_DASHBOARD}
-        ${SRC_DASHBOARD}
-        ${CMAKE_SOURCE_DIR}/include/dashboardsk_pi.h
-        ${CMAKE_SOURCE_DIR}/src/dashboardsk_pi.cpp
-        ${CMAKE_SOURCE_DIR}/include/dashboardskgui.h
-        ${CMAKE_SOURCE_DIR}/src/dashboardskgui.cpp
-        ${CMAKE_SOURCE_DIR}/include/dashboardskguiimpl.h
-        ${CMAKE_SOURCE_DIR}/src/dashboardskguiimpl.cpp
+  ${HDR_DASHBOARD}
+  ${SRC_DASHBOARD}
+  ${CMAKE_SOURCE_DIR}/include/dashboardsk_pi.h
+  ${CMAKE_SOURCE_DIR}/src/dashboardsk_pi.cpp
+  ${CMAKE_SOURCE_DIR}/include/dashboardskgui.h
+  ${CMAKE_SOURCE_DIR}/src/dashboardskgui.cpp
+  ${CMAKE_SOURCE_DIR}/include/dashboardskguiimpl.h
+  ${CMAKE_SOURCE_DIR}/src/dashboardskguiimpl.cpp
 )
 
 set(PKG_API_LIB api-18)  #  A dir in opencpn-libs/ e. g., api-17 or api-16
 
 macro(late_init)
-        # Perform initialization after the PACKAGE_NAME library, compilers
-        # and ocpn::api is available.
+  # Perform initialization after the PACKAGE_NAME library, compilers
+  # and ocpn::api is available.
 
-        # Fix OpenGL deprecated warnings in Xcode
-        target_compile_definitions(${PACKAGE_NAME} PRIVATE GL_SILENCE_DEPRECATION)
-        # Prepare doxygen config
-        configure_file(${CMAKE_SOURCE_DIR}/doc/Doxyfile.in ${CMAKE_BINARY_DIR}/Doxyfile)
-        configure_file(${CMAKE_SOURCE_DIR}/doc/header.html.in ${CMAKE_BINARY_DIR}/header.html)
-        # Prepare asciidoxy
-        configure_file(${CMAKE_SOURCE_DIR}/doc/api.adoc.in ${CMAKE_BINARY_DIR}/api.adoc @ONLY)
-        configure_file(${CMAKE_SOURCE_DIR}/doc/packages.toml ${CMAKE_BINARY_DIR}/packages.toml)
-        configure_file(${CMAKE_SOURCE_DIR}/doc/contents.toml ${CMAKE_BINARY_DIR}/contents.toml)
+  # Fix OpenGL deprecated warnings in Xcode
+  target_compile_definitions(${PACKAGE_NAME} PRIVATE GL_SILENCE_DEPRECATION)
+  # Prepare doxygen config
+  configure_file(${CMAKE_SOURCE_DIR}/doc/Doxyfile.in ${CMAKE_BINARY_DIR}/Doxyfile)
+  configure_file(${CMAKE_SOURCE_DIR}/doc/header.html.in ${CMAKE_BINARY_DIR}/header.html)
+  # Prepare asciidoxy
+  configure_file(${CMAKE_SOURCE_DIR}/doc/api.adoc.in ${CMAKE_BINARY_DIR}/api.adoc @ONLY)
+  configure_file(${CMAKE_SOURCE_DIR}/doc/packages.toml ${CMAKE_BINARY_DIR}/packages.toml)
+  configure_file(${CMAKE_SOURCE_DIR}/doc/contents.toml ${CMAKE_BINARY_DIR}/contents.toml)
 endmacro()
 
 macro(add_plugin_libraries)
-        # Add libraries required by this plugin
-        add_subdirectory("${CMAKE_SOURCE_DIR}/opencpn-libs/plugingl")
-        target_link_libraries(${PACKAGE_NAME} ocpn::plugingl)
+  # Add libraries required by this plugin
+  if(WIN32)
+    add_subdirectory("${CMAKE_SOURCE_DIR}/opencpn-libs/WindowsHeaders")
+    target_link_libraries(${PACKAGE_NAME} windows::headers)
+  endif()
 
-        add_subdirectory("opencpn-libs/wxJSON")
-        target_link_libraries(${PACKAGE_NAME} ocpn::wxjson)
+  add_subdirectory("${CMAKE_SOURCE_DIR}/opencpn-libs/plugingl")
+  target_link_libraries(${PACKAGE_NAME} ocpn::plugingl)
+
+  add_subdirectory("opencpn-libs/wxJSON")
+  target_link_libraries(${PACKAGE_NAME} ocpn::wxjson)
 endmacro()
 
 if(${WITH_TESTS})
