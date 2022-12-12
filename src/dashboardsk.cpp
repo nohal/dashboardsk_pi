@@ -135,6 +135,7 @@ void DashboardSK::SendSKDelta(wxJSONValue& message)
             "Message contains self indentifier " + message["self"].AsString());
         SetSelf(message["self"].AsString());
     }
+    wxString fullKey;
     if (!message.HasMember("context")) {
         LOG_RECEIVE(
             "Message does not contain context " + message.GetMemberNames()[0]);
@@ -142,10 +143,11 @@ void DashboardSK::SendSKDelta(wxJSONValue& message)
             LOG_RECEIVE("Message does not look OK");
             return; // Invalid SK delta
         }
-        return; // TODO: If no context in message, can we asume self?
+        fullKey = "vessels.self";
+    } else {
+        fullKey = message["context"].AsString();
     }
     LOG_RECEIVE_DEBUG("Message seems OK");
-    wxString fullKey = message["context"].AsString();
 
     int skip_tokens = 0;
     wxJSONValue* ptr;
@@ -206,7 +208,31 @@ void DashboardSK::SendSKDelta(wxJSONValue& message)
         // TODO: Some deltas may contain timestamp also as a value (ex.
         // position.timestamp), we could sometimes use or maybe even prefer them
         wxString fullKeyWithPath;
-        wxString source = message["updates"][i]["$source"].AsString();
+        wxString source = wxEmptyString;
+        if (message["updates"][i].HasMember("$source")) {
+            source = message["updates"][i]["$source"].AsString();
+        } else if (message["updates"][i].HasMember("source")) {
+            if (message["updates"][i]["source"]["type"].AsString()
+                == "NMEA0183") {
+                source
+                    .Append(message["updates"][i]["source"]["label"].AsString())
+                    .Append("-")
+                    .Append(
+                        message["updates"][i]["source"]["talker"].AsString())
+                    .Append("-")
+                    .Append(
+                        message["updates"][i]["source"]["sentence"].AsString());
+            } else if (message["updates"][i]["source"]["type"].AsString()
+                == "NMEA2000") {
+                source
+                    .Append(message["updates"][i]["source"]["label"].AsString())
+                    .Append("-")
+                    .Append(message["updates"][i]["source"]["pgn"].AsString());
+            } else {
+                source.Append(
+                    message["updates"][i]["source"]["label"].AsString());
+            }
+        }
         wxString utoken;
         if (message["updates"][i].HasMember("values")) {
             for (int j = 0; j < message["updates"][i]["values"].Size(); j++) {
