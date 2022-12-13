@@ -45,7 +45,7 @@ elseif(MSVC)
     set(plugin_target_version 10)
   endif()
 elseif(APPLE)
-  set(plugin_target "darwin-wx321")
+  set(plugin_target "darwin-wx32")
   set(plugin_target_version "12.6.1")
 elseif(UNIX)
   # Some linux dist:
