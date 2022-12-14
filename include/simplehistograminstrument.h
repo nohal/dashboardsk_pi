@@ -241,7 +241,7 @@ protected:
             std::chrono::system_clock::now() - val);
         wxString s;
         if (dur.count() < 120) {
-            s = wxString::Format("-%ds", dur.count());
+            s = wxString::Format("-%ds", (int)dur.count());
         } else if (dur.count() < 600) {
             s = wxString::Format("-%.1fm", (double)dur.count() / 60);
         } else if (dur.count() < 2 * 3600) {
