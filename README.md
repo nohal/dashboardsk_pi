@@ -81,3 +81,8 @@ To execute the tests, simply run `ctest` in the build directory.
 ### Sanitizers support
 
 To configure the build to enable sanitizer support, run cmake with `-DSANITIZE=<comma separated list of sanitizers>, eg. `cmake -DSANITIZE=address ..` to enable the adderess sanitizer reporting memory leaks.
+
+## Credits
+
+- Thanks to Alec Leamas, Mike Rossiter, Kees Verruijt, Jon Gough and others from whose plugin related work this plugin reuses bits and pieces.
+- Thanks to Dave for OpenCPN
