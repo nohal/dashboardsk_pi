@@ -123,13 +123,12 @@ macro(add_plugin_libraries)
 
   add_subdirectory("opencpn-libs/wxJSON")
   target_link_libraries(${PACKAGE_NAME} ocpn::wxjson)
+  if(${WITH_TESTS})
+    include(CTest)
+    add_subdirectory("${CMAKE_SOURCE_DIR}/tests")
+    add_dependencies(${CMAKE_PROJECT_NAME} tests)
+  endif()
 endmacro()
-
-if(${WITH_TESTS})
-  include(CTest)
-  add_subdirectory("${CMAKE_SOURCE_DIR}/tests")
-  add_dependencies(${CMAKE_PROJECT_NAME} tests)
-endif()
 
 add_custom_target(doxygen-docs
   COMMAND doxygen
