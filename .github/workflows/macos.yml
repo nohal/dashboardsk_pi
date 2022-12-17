@@ -33,11 +33,12 @@ jobs:
             cmake_generator: Xcode
             cmake_defines: -DCMAKE_CXX_STANDARD=17
             use_homebrew: 1
-            push_cloudsmith: 1
+            push_cloudsmith: 0
           - name: macOS 11 wxOSX
             runner: macos-11
             cmake_generator: Xcode
             cmake_defines: -DCMAKE_CXX_STANDARD=11 -DwxWidgets_CONFIG_EXECUTABLE=/tmp/wx321_opencpn50_macos1010/bin/wx-config -DwxWidgets_CONFIG_OPTIONS="--prefix=/tmp/wx321_opencpn50_macos1010"
+            push_cloudsmith: 1
           - name: macOS 10.15 wxOSX
             runner: macos-10.15
             cmake_generator: Xcode
