@@ -35,7 +35,6 @@ jobs:
             no_sudo: 1
             # TODO: Tests don't link on Windows, investigate and fix later
             cmake_defines: -T v143 -DCMAKE_GENERATOR_PLATFORM=win32 -DWITH_TESTS=OFF -DCMAKE_CXX_STANDARD=17
-            cmake_generator: Ninja
 
     env:
       wxGTK_VERSION: ${{ matrix.gtk_version && matrix.gtk_version || 3 }}
@@ -63,7 +62,7 @@ jobs:
         run: |
           call buildwin/win_deps.bat
           cmake -A win32 -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} ${{ matrix.cmake_defines }}
-          cmake --build build
+          cmake --build build --config ${{env.BUILD_TYPE}}
         shell: cmd
       - name: "[Windows] Publish to Cloudsmith"
         if: runner.os == 'Windows'
