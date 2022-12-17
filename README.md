@@ -86,3 +86,13 @@ To configure the build to enable sanitizer support, run cmake with `-DSANITIZE=<
 
 - Thanks to Alec Leamas, Mike Rossiter, Kees Verruijt, Jon Gough and others from whose plugin related work this plugin reuses bits and pieces.
 - Thanks to Dave for OpenCPN
+
+## License
+
+The Catch2 framework is licensed under terms of the Boost Software License 1.0, for details see [LICENSE.txt](https://github.com/catchorg/Catch2/blob/devel/LICENSE.txt)
+
+wxWidgets is licensed under the terms of the wxWindows Library Licence, Version 3.1. For details see [licence.txt](https://github.com/wxWidgets/wxWidgets/blob/master/docs/licence.txt)
+
+OpenCPN is licensed under the terms of the GPLv2+ license, for details see [LICENSING](https://github.com/OpenCPN/OpenCPN/blob/master/LICENSING)
+
+The `dashboardsk_pi` code is licensed under the terms of the GPL v3, or, at your convenience, newer version of the GPL license. See [LICENSING](https://github.com/nohal/dashboardsk_pi/blob/main/LICENSING) for more details.
