@@ -651,8 +651,8 @@ void MainConfigFrameImpl::m_btnCfgEditOnButtonClick(wxCommandEvent& event)
                 // old one, which is not broken, so we are not a complete
                 // disaster)
             } else {
-                wxMessageBox(_("The configration data were not a valid JSON "
-                               "document and could ot be used!"),
+                wxMessageBox(_("The configuration data were not a valid JSON "
+                               "document and could not be used!"),
                     _("JSON not valid"), wxOK | wxCENTRE | wxICON_ERROR);
             }
         }
