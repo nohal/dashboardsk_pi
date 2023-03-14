@@ -49,9 +49,9 @@ case $(uname -s) in
 
         if [ ${USE_HOMEBREW:-0} -ne 1 ]; then
             # Install the pre-built wxWidgets package
-            wget -q https://download.opencpn.org/s/Djqm4SXzYjF8nBw/download \
-                -O /tmp/wx321_opencpn50_macos1010.tar.xz
-            tar -C /tmp -xJf /tmp/wx321_opencpn50_macos1010.tar.xz
+            wget -q https://download.opencpn.org/s/8xYPFAqTR8ZGXXb/download \
+                -O /tmp/wx322-2_opencpn50_macos1010.tar.bz2
+            tar -C /tmp -xJf /tmp/wx322-2_opencpn50_macos1010.tar.bz2
         else
             brew update
             brew install wxwidgets
