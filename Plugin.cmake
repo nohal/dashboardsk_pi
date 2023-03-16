@@ -36,7 +36,7 @@ set(PKG_VERSION "0.1.0")
 set(PKG_PRERELEASE "beta")  # Empty, or a tag like 'beta'
 
 set(DISPLAY_NAME DashboardSK)    # Dialogs, installer artifacts, ...
-set(PLUGIN_API_NAME dashboardsk_pi) # As of GetCommonName() in plugin API
+set(PLUGIN_API_NAME DashboardSK) # As of GetCommonName() in plugin API
 set(PKG_SUMMARY "DashboardSK plugin for OpenCPN")
 set(PKG_DESCRIPTION [=[
 DashboardSK plugin for OpenCPN
