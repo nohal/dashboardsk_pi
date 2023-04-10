@@ -43,19 +43,19 @@ function remove_wx30() {
 function install_wx32() {
   test -d /usr/local/pkg || mkdir /usr/local/pkg
   sudo chmod a+w /usr/local/pkg
-  repo="https://dl.cloudsmith.io/public/alec-leamas/wxwidgets"
+  repo="https://dl.cloudsmith.io/public/alec-leamas/wxwidgets3-2"
   head="deb/debian/pool/bullseye/main"
-  vers="3.2.1+dfsg-1~bpo11+1"
+  vers="3.2.2+dfsg-1~bpo11+1"
   pushd /usr/local/pkg
   wget $repo/$head/w/wx/wx-common_${vers}/wx-common_${vers}_amd64.deb
   wget $repo/$head/w/wx/wx3.2-i18n_${vers}/wx3.2-i18n_${vers}_all.deb
   wget $repo/$head/w/wx/wx3.2-headers_${vers}/wx3.2-headers_${vers}_all.deb
   wget $repo/$head/l/li/libwxgtk-webview3.2-dev_${vers}/libwxgtk-webview3.2-dev_${vers}_amd64.deb
-  wget $repo/$head/l/li/libwxgtk-webview3.2-0_${vers}/libwxgtk-webview3.2-0_${vers}_amd64.deb
+  wget $repo/$head/l/li/libwxgtk-webview3.2-1_${vers}/libwxgtk-webview3.2-1_${vers}_amd64.deb
   wget $repo/$head/l/li/libwxgtk-media3.2-dev_${vers}/libwxgtk-media3.2-dev_${vers}_amd64.deb
   wget $repo/$head/l/li/libwxgtk3.2-dev_${vers}/libwxgtk3.2-dev_${vers}_amd64.deb
-  wget $repo/$head/l/li/libwxgtk3.2-0_${vers}/libwxgtk3.2-0_${vers}_amd64.deb
-  wget $repo/$head/l/li/libwxbase3.2-0_${vers}/libwxbase3.2-0_${vers}_amd64.deb
+  wget $repo/$head/l/li/libwxgtk3.2-1_${vers}/libwxgtk3.2-1_${vers}_amd64.deb
+  wget $repo/$head/l/li/libwxbase3.2-1_${vers}/libwxbase3.2-1_${vers}_amd64.deb
   sudo apt install -y $(ls /usr/local/pkg/*deb)
   popd
 }
