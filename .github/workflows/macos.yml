@@ -34,15 +34,15 @@ jobs:
             cmake_defines: -DCMAKE_CXX_STANDARD=17
             use_homebrew: 1
             push_cloudsmith: 0
-          - name: macOS 11 wxOSX
-            runner: macos-11
-            cmake_generator: Xcode
-            cmake_defines: -DCMAKE_CXX_STANDARD=11 -DwxWidgets_CONFIG_EXECUTABLE=/tmp/wx322-2_opencpn50_macos1010/bin/wx-config -DwxWidgets_CONFIG_OPTIONS="--prefix=/tmp/wx322-2_opencpn50_macos1010"
-            push_cloudsmith: 1
-          - name: macOS 10.15 wxOSX
-            runner: macos-10.15
-            cmake_generator: Xcode
-            cmake_defines: -DCMAKE_CXX_STANDARD=11 -DwxWidgets_CONFIG_EXECUTABLE=/tmp/wx322-2_opencpn50_macos1010/bin/wx-config -DwxWidgets_CONFIG_OPTIONS="--prefix=/tmp/wx322-2_opencpn50_macos1010"
+          #- name: macOS 11 wxOSX
+          #  runner: macos-11
+          #  cmake_generator: Xcode
+          #  cmake_defines: -DCMAKE_CXX_STANDARD=11 -DwxWidgets_CONFIG_EXECUTABLE=/tmp/wx322-2_opencpn50_macos1010/bin/wx-config -DwxWidgets_CONFIG_OPTIONS="--prefix=/tmp/wx322-2_opencpn50_macos1010"
+          #  push_cloudsmith: 1
+          #- name: macOS 10.15 wxOSX
+          #  runner: macos-10.15
+          #  cmake_generator: Xcode
+          #  cmake_defines: -DCMAKE_CXX_STANDARD=11 -DwxWidgets_CONFIG_EXECUTABLE=/tmp/wx322-2_opencpn50_macos1010/bin/wx-config -DwxWidgets_CONFIG_OPTIONS="--prefix=/tmp/wx322-2_opencpn50_macos1010"
 
     env:
       wxGTK_VERSION: ${{ matrix.gtk_version && matrix.gtk_version || 3 }}
