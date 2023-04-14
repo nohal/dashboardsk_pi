@@ -24,8 +24,8 @@ modules:
       - -DBUILD_TYPE:STRING=tarball
       - -Uplugin_target
     build-options:
-        cflags: -fPIC
-        cxxflags: -fPIC
+        cflags: -fPIC -I/run/build/dashboardsk/opencpn-libs/opencpn-glu/include-flatpak
+        cxxflags: -fPIC -I/run/build/dashboardsk/opencpn-libs/opencpn-glu/include-flatpak
         strip: true
     sources:
       - type: git
