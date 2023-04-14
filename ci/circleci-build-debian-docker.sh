@@ -44,30 +44,28 @@ function remove_wx30() {
 function install_wx32() {
   test -d /usr/local/pkg || mkdir /usr/local/pkg
   chmod a+w /usr/local/pkg
-  repo="https://dl.cloudsmith.io/public/alec-leamas/wxwidgets3-2"
+  repo="https://dl.cloudsmith.io/public/alec-leamas/wxwidgets-32"
   head="deb/debian/pool/bullseye/main"
   vers="3.2.2+dfsg-1~bpo11+1"
   pushd /usr/local/pkg
-  wget  $repo/$head/w/wx/wx3.2-i18n_${vers}/wx3.2-i18n_${vers}_all.deb
-  wget  $repo/$head/w/wx/wx3.2-headers_${vers}/wx3.2-headers_${vers}_all.deb
-  wget  $repo/$head/w/wx/wx-common_${vers}/wx-common_${vers}_arm64.deb
-  wget  $repo/$head/l/li/libwxgtk-webview3.2-dev_${vers}/libwxgtk-webview3.2-dev_${vers}_arm64.deb
-  wget  $repo/$head/l/li/libwxgtk-webview3.2-1_${vers}/libwxgtk-webview3.2-1_${vers}_arm64.deb
-  wget  $repo/$head/l/li/libwxgtk-media3.2-dev_${vers}/libwxgtk-media3.2-dev_${vers}_arm64.deb
-  wget  $repo/$head/l/li/libwxgtk3.2-dev_${vers}/libwxgtk3.2-dev_${vers}_arm64.deb
-  wget  $repo/$head/l/li/libwxgtk3.2-1_${vers}/libwxgtk3.2-1_${vers}_arm64.deb
-  wget  $repo/$head/l/li/libwxbase3.2-1_${vers}/libwxbase3.2-1_${vers}_arm64.deb
-  wget  $repo/$head/l/li/libwxgtk-media3.2-dev_${vers}/libwxgtk-media3.2-dev_${vers}_arm64.deb
-  wget  $repo/$head/l/li/libwxgtk-gl3.2-1_${vers}/libwxgtk-gl3.2-1_${vers}_arm64.deb
-  #wget  $repo/$head/l/li/libwxsvg-dev_2:1.5.23+dfsg-1~bpo11+1/libwxsvg-dev_1.5.23+dfsg-1~bpo11+1_arm64.deb
-  #wget  $repo/$head/l/li/libwxsvg3_2:1.5.23+dfsg-1~bpo11+1/libwxsvg3_1.5.23+dfsg-1~bpo11+1_arm64.deb
+  wget -q $repo/$head/w/wx/wx-common_${vers}/wx-common_${vers}_arm64.deb
+  wget -q $repo/$head/w/wx/wx3.2-i18n_${vers}/wx3.2-i18n_${vers}_all.deb
+  wget -q $repo/$head/w/wx/wx3.2-headers_${vers}/wx3.2-headers_${vers}_all.deb
+  wget -q $repo/$head/l/li/libwxgtk-webview3.2-dev_${vers}/libwxgtk-webview3.2-dev_${vers}_arm64.deb
+  wget -q $repo/$head/l/li/libwxgtk-webview3.2-1_${vers}/libwxgtk-webview3.2-1_${vers}_arm64.deb
+  wget -q $repo/$head/l/li/libwxgtk-media3.2-dev_${vers}/libwxgtk-media3.2-dev_${vers}_arm64.deb
+  wget -q $repo/$head/l/li/libwxgtk3.2-dev_${vers}/libwxgtk3.2-dev_${vers}_arm64.deb
+  wget -q $repo/$head/l/li/libwxgtk3.2-1_${vers}/libwxgtk3.2-1_${vers}_arm64.deb
+  wget -q $repo/$head/l/li/libwxgtk-gl3.2-1_${vers}/libwxgtk-gl3.2-1_${vers}_arm64.deb
+  wget -q $repo/$head/l/li/libwxbase3.2-1_${vers}/libwxbase3.2-1_${vers}_arm64.deb
+  wget -q $repo/$head/l/li/libwxgtk-media3.2-1_${vers}/libwxgtk-media3.2-1_${vers}_arm64.deb
+
   dpkg -i --force-depends $(ls /usr/local/pkg/*deb)
   sed -i '/^user_mask_fits/s|{.*}|{ /bin/true; }|' \
       /usr/lib/*-linux-gnu/wx/config/gtk3-unicode-3.2
 
-  # See wxWidgets#22790. FIXME (leamas) To be removed after wxw 3.2.3
-  cd /usr/include/wx-3.2/wx/
-  #patch -p1 < /ci-source/build-deps/0001-matrix.h-Patch-attributes-handling-wxwidgets-22790.patch
+  # wxWidgets#22790 patch no longer needed in wx3.2.2.1
+
   popd
 }
 
@@ -95,16 +93,18 @@ if [ -n "@BUILD_WX32@" ]; then
   install_wx32
 fi
 
-
 cd /ci-source
 getfacl -R /ci-source > /ci-source.permissions
+
 chown root:root /ci-source
 git config --global --add safe.directory /ci-source
 
 rm -rf build-debian; mkdir build-debian; cd build-debian
-cmake -DCMAKE_BUILD_TYPE=Release\
+cmake "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:-Release}" \
    -DOCPN_TARGET_TUPLE="@TARGET_TUPLE@" \
     ..
+
+git config --global --add safe.directory /ci-source
 
 make -j $(nproc) VERBOSE=1 tarball
 ldd  app/*/lib/opencpn/*.so
@@ -113,21 +113,18 @@ cd /
 setfacl --restore=/ci-source.permissions
 EOF
 
-if [ -n "$BUILD_WX32" ]; then OCPN_WX_ABI_OPT="-DOCPN_WX_ABI=wx32"; fi
-
 sed -i "s/@TARGET_TUPLE@/$TARGET_TUPLE/" $ci_source/build.sh
 sed -i "s/@BUILD_WX32@/$BUILD_WX32/" $ci_source/build.sh
-#sed -i "s/@OCPN_WX_ABI_OPT@/$OCPN_WX_ABI_OPT/" $ci_source/build.sh
 
 
 # Run script in docker image
 #
 docker run \
-    -e "CLOUDSMITH_STABLE_REPO=$CLOUDSMITH_STABLE_REPO" \
-    -e "CLOUDSMITH_BETA_REPO=$OCPN_BETA_REPO" \
-    -e "CLOUDSMITH_UNSTABLE_REPO=$CLOUDSMITH_UNSTABLE_REPO" \
-    -e "CIRCLE_BUILD_NUM=$CIRCLE_BUILD_NUM" \
-    -e "TRAVIS_BUILD_NUMBER=$TRAVIS_BUILD_NUMBER" \
+    -e "CLOUDSMITH_STABLE_REPO" \
+    -e "CLOUDSMITH_BETA_REPO" \
+    -e "CLOUDSMITH_UNSTABLE_REPO" \
+    -e "CIRCLE_BUILD_NUM" \
+    -e "TRAVIS_BUILD_NUMBER" \
     -v "$ci_source:/ci-source:rw" \
     debian:$OCPN_TARGET /bin/bash -xe /ci-source/build.sh
 rm -f $ci_source/build.sh

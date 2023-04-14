@@ -14,13 +14,17 @@ repos:
       - id: clang-format
         exclude: |
             (?x)^(
-                src/DashboardSKGUI.cpp|
-                include/DashboardSKGUI.h
+                sqlite.*|
+                wxsqlite.*
             )$
-  - repo: https://github.com/cmake-lint/cmake-lint
-    rev: 1.4.2
+  #- repo: https://github.com/cmake-lint/cmake-lint
+  #  rev: 1.4.2
+  #  hooks:
+  #  - id: cmakelint
+  - repo: https://github.com/cheshirekow/cmake-format-precommit
+    rev: v0.6.13
     hooks:
-      - id: cmakelint
+    - id: cmake-format
 
   - repo: https://github.com/redwarp/optimize-png-hooks
     rev: v1.1.0

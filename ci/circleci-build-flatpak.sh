@@ -12,7 +12,7 @@
 # (at your option) any later version.
 
 set -e
-MANIFEST=$(cd flatpak; ls org.opencpn.OpenCPN.Plugin*yaml*)
+MANIFEST=$(cd flatpak; ls org.opencpn.OpenCPN.Plugin*yaml)
 echo "Using manifest file: $MANIFEST"
 set -x
 
@@ -38,6 +38,11 @@ if [ -n "$CI" ]; then
 
     # Avoid using outdated TLS certificates, see #210.
     sudo apt install --reinstall  ca-certificates
+
+    # Handle possible outdated key for google packages, see #486
+    curl https://cli-assets.heroku.com/apt/release.key | sudo apt-key add -
+    wget -q -O - https://dl.google.com/linux/linux_signing_key.pub \
+        | sudo apt-key add -
 
     # Use updated flatpak (#457)
     sudo add-apt-repository -y ppa:alexlarsson/flatpak
@@ -66,8 +71,7 @@ set -x
 cd $builddir
 
 # Patch the manifest to use correct branch and runtime unconditionally
-manifest=$(ls ../flatpak/org.opencpn.OpenCPN.Plugin*yaml.tpl)
-sed -i  '/-DBUILD_TYPE/s/$/ -DOCPN_WX_ABI=wx32/' $manifest
+manifest=$(ls ../flatpak/org.opencpn.OpenCPN.Plugin*yaml)
     # FIXME (leamas) restore beta -> stable when O58 is published
 sed -i  '/^runtime-version/s/:.*/: beta/'  $manifest
 
@@ -77,8 +81,9 @@ flatpak remote-add --user --if-not-exists \
     flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
 # Configure and build the plugin tarball and metadata.
-cmake -DCMAKE_BUILD_TYPE=Release ..
-make -j $(nproc) VERBOSE=1 flatpak
+cmake -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:-Release} ..
+# Do not build flatpak in parallel; make becomes unreliable
+make -j 1 VERBOSE=1 flatpak
 
 # Restore permissions and owner in build tree.
 if [ -d /ci-source ]; then sudo chown --reference=/ci-source -R . ../cache; fi

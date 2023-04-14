@@ -18,5 +18,5 @@
   <target-version>@plugin_target_version@</target-version>
   <target-arch>@ARCH@</target-arch>
   <tarball-url> @pkg_tarball_url@ </tarball-url>
-  <tarball-checksum> @checksum@ </tarball-checksum>
+  <tarball-checksum> @FILE_CHECKSUM@ </tarball-checksum>
 </plugin>
