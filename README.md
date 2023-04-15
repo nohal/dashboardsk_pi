@@ -3,6 +3,9 @@ DashboardSK plugin for OpenCPN
 
 This project provides an universal instrument dashboard display for [OpenCPN](https://opencpn.org) based on the [SignalK](https://signalk.org) data model.
 
+[![Hosted By: Cloudsmith](https://img.shields.io/badge/OSS%20hosting%20by-cloudsmith-blue?logo=cloudsmith&style=flat-square)](https://cloudsmith.com)
+[![Coverity Scan Build Status](https://scan.coverity.com/projects/27049/badge.svg)](https://scan.coverity.com/projects/nohal-dashboardsk_pi)
+
 ## Dependencies
 
 The plugin uses wxWidgets 3.2 or newer (although building against wxWidgets 3.0 may still be possible until we start to hard-enforce use of wxBitmapBundle) and targets OpenCPN 5.7 or newer with plugin API 1.18.
