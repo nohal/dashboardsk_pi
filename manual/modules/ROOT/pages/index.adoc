@@ -5,9 +5,10 @@ image::dashboardsk_pi_icon.png[DashboardSK logo]
 
 === Features
 
-The plugin provides universal data display based on the https://signalk.org[SignalK] data model.
+The plugin provides universal data display based on the https://signalk.org[Signal K] data model.
 The data is displayed using configurable overlay instruments anchored to any edge of chart canvas.
 The instruments may also be configured to trigger alarms based on the values they process.
+For boats with only basic legacy NMEA 0183 data available, the https://opencpn-manuals.github.io/main/nsk/[NSK_pi plugin] provides conversion to the Signal K delta format allowing the user to use the DashboardSK plugin without the need to setup complex systems.
 
 image::screenshot.png[DashboardSK in action screenshot]
 
@@ -15,7 +16,7 @@ image::screenshot.png[DashboardSK in action screenshot]
 
 ==== Simple number
 
-Simple instrument displaying a numerical value of one SignalK path with configurable formatting and transformations.
+Simple instrument displaying a numerical value of one Signal K path with configurable formatting and transformations.
 
 Example uses: speed, wind speed, temperature, voltage, heading etc.
 
@@ -23,7 +24,7 @@ Example uses: speed, wind speed, temperature, voltage, heading etc.
 
 ==== Simple gauge
 
-Simple gauge instrument displaying a numerical value of one SignalK path with configurable formatting and transformations.
+Simple gauge instrument displaying a numerical value of one Signal K path with configurable formatting and transformations.
 Especially suitable for angles, directions and ratios, but also supports arbitrary numerical values.
 
 Example uses: wind angle, COG, tank level, like `environment.wind.angleApparent` or `tank.*.currentLevel`
@@ -32,9 +33,9 @@ Example uses: wind angle, COG, tank level, like `environment.wind.angleApparent`
 
 ==== Simple text
 
-Simple instrument displaying a textual SignalK value. The instrument is not suitable to display compound balues like position, use the respective specialozed instruments for these.
+Simple instrument displaying a textual Signal K value. The instrument is not suitable to display compound balues like position, use the respective specialozed instruments for these.
 
-Example uses: all SignalK `enum` paths, like `navigation.state`
+Example uses: all Signal K `enum` paths, like `navigation.state`
 
 * xref:simpletextinstrument.adoc[Detailed documentation]
 
@@ -42,13 +43,13 @@ Example uses: all SignalK `enum` paths, like `navigation.state`
 
 Simple instrument displaying a geographic position in configurable text format.
 
-Example uses: all SignalK position paths, like `navigation.position`
+Example uses: all Signal K position paths, like `navigation.position`
 
 * xref:simplepositioninstrument.adoc[Detailed documentation]
 
 ==== Simple histogram
 
-Simple instrument showing history of a single SignalK path numerical value.
+Simple instrument showing history of a single Signal K path numerical value.
 
 * xref:simplehistograminstrument.adoc[Detailed documentation]
 

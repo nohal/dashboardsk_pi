@@ -3,7 +3,7 @@
 
 image::simplegaugeinstrument_screenshot.png[Simple gauge instrument]
 
-A circular instrument displaying a single numerical value. Allows to select formatting and unit conversion from the SI units used by SignalK to usual units used in navigation. Multiple visual styles are available to cover absolute and relative directions, scalar values and proportions/percentages.
+A circular instrument displaying a single numerical value. Allows to select formatting and unit conversion from the SI units used by Signal K to usual units used in navigation. Multiple visual styles are available to cover absolute and relative directions, scalar values and proportions/percentages.
 
 .Configuration parameters
 [cols="1h,5,1"]
@@ -19,11 +19,11 @@ A circular instrument displaying a single numerical value. Allows to select form
 |GPS Time
 
 |Timeout
-|Timeout in seconds. If the set numeber of seconds passes since the last update for the SignalK key displayed by the instrument pass without receiving an update, the value is considerd timed out and is replaced by dashes.
+|Timeout in seconds. If the set numeber of seconds passes since the last update for the Signal K key displayed by the instrument pass without receiving an update, the value is considerd timed out and is replaced by dashes.
 |3
 
 |SK key
-|Fully qualified SignalK path to the value displayed by the instrument
+|Fully qualified Signal K path to the value displayed by the instrument
 |vessels.urn:mrn:signalk:uuid:76bb2350-c92e-4e47-b3c3-e12273f21155.environment.depth.belowTransducer
 
 |Gauge type
@@ -33,13 +33,13 @@ a|Type of the gauge
 [cols="1h,5"]
 !===
 !Relative angle
-!Displays angles relative to the boat (-180-180 degrees), eg. apparent or true wind. The `RAD -> DEG` transformation has to be used to convert the SignalK data from Radians to degrees.
+!Displays angles relative to the boat (-180-180 degrees), eg. apparent or true wind. The `RAD -> DEG` transformation has to be used to convert the Signal K data from Radians to degrees.
 
 !Direction
-!Displays angle (0-360 degrees), eg. COG, heading or true wind direction. The `RAD -> DEG` transformation has to be used to convert the SignalK data from Radians to degrees.
+!Displays angle (0-360 degrees), eg. COG, heading or true wind direction. The `RAD -> DEG` transformation has to be used to convert the Signal K data from Radians to degrees.
 
 !Percentile
-!Percent value (0-100%). The `ratio -> %` transformation has to be used to convert the SignalK data to percent.
+!Percent value (0-100%). The `ratio -> %` transformation has to be used to convert the Signal K data to percent.
 
 !Adaptive range indicator
 !Arbitrary numerical value with adaptive range. The instrument scale is dynamically updated based on the received data.
@@ -68,7 +68,7 @@ If displaying a sign in front of the number for negative values is undesirable, 
 |
 
 |Transformation
-a|Function to be used to convert the value from the SI unit used by SignalK to human readable form
+a|Function to be used to convert the value from the SI unit used by Signal K to human readable form
 
 .Supported transformation functions
 * None

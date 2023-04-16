@@ -1,7 +1,7 @@
 :imagesdir: ../images/
 == Zones
 
-The zones build on the concept of https://signalk.org/specification/1.7.0/doc/notifications.html[SignalK notifications and alarms].
+The zones build on the concept of https://signalk.org/specification/1.7.0/doc/notifications.html[Signal K notifications and alarms].
 
 To define zones, click on the button in the right part of the control and open the zone definition dialog.
 

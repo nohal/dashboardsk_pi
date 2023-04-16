@@ -3,7 +3,7 @@
 
 image::simpletextinstrument_screenshot.png[Simple text instrument]
 
-Simple instrument displaying a value of a single SignalK key as text. Suitable for example for times.
+Simple instrument displaying a value of a single Signal K key as text. Suitable for example for times.
 
 .Configuration parameters
 [cols="1h,5,1"]
@@ -19,11 +19,11 @@ Simple instrument displaying a value of a single SignalK key as text. Suitable f
 |GPS Time
 
 |Timeout
-|Timeout in seconds. If the set numeber of seconds passes since the last update for the SignalK key displayed by the instrument pass without receiving an update, the value is considerd timed out and is replaced by dashes.
+|Timeout in seconds. If the set numeber of seconds passes since the last update for the Signal K key displayed by the instrument pass without receiving an update, the value is considerd timed out and is replaced by dashes.
 |3
 
 |SK key
-|Fully qualified SignalK path to the value displayed by the instrument
+|Fully qualified Signal K path to the value displayed by the instrument
 |vessels.urn:mrn:signalk:uuid:76bb2350-c92e-4e47-b3c3-e12273f21155.navigation.datetime
 
 |Title size

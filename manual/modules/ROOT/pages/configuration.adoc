@@ -11,7 +11,7 @@ image::preferences.png[DashboardSK preferences dialog]
 [[own-vessel]]
 === Own vessel identifier (1)
 
-SignalK context of the own vessel. The initial *vessels.* must be ommited. The value is normally filled automatically as soon as it is received from the OpenCPN core application and there is no need to edit it manually.
+Signal K context of the own vessel. The initial *vessels.* must be ommited. The value is normally filled automatically as soon as it is received from the OpenCPN core application and there is no need to edit it manually.
 
 === Configuration data editor (2)
 
@@ -19,11 +19,11 @@ The JSON configuration data of the plugin can be edited directly using a visual 
 
 image::config_json_editor.png[Configuration data editor]
 
-=== SignalK data tree viewer (3)
+=== Signal K data tree viewer (3)
 
-The data tree constructed from the received SignalK delta messages can be displayed as a collapsible tree structure by clicking on the *SignalK* button.
+The data tree constructed from the received Signal K delta messages can be displayed as a collapsible tree structure by clicking on the *Signal K* button.
 
-image::data_tree.png[SignalK data tree viewer]
+image::data_tree.png[Signal K data tree viewer]
 
 === Dashboard list (4)
 
@@ -101,5 +101,5 @@ The buttons in the lower left corner allow exporting the complete definition of 
 
 === Preferences persistency (11)
 The changes in configuration are reflected in the displayed instruments as soon as feasible - dashboard appearance settings immediately, instrument settings as soon as an action is performed out of the <<instrument-settings, instrument settings>> part of the dialog.
-This allows an immediate inspection of the effect of the configuration changes performed, but the configurstion is persisted and permanently applied only after the *OK* button in the lower right corner of the preferences is pressed.
+This allows an immediate inspection of the effect of the configuration changes performed, but the configuration is persisted and permanently applied only after the *OK* button in the lower right corner of the preferences is pressed.
 In case the *Cancel* button is pressed or the dialog is closed, the plugin remembers the original state of the configuration from the moment the preferences dialog was opened and reverts back to it.
