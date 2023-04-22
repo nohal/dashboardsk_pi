@@ -34,12 +34,16 @@ DashboardSK::DashboardSK()
     : m_self(wxEmptyString)
     , m_self_ptr(nullptr)
     , m_color_scheme(0)
+    , m_frozen(false)
 {
     m_sk_data["vessels"].AddComment("Root of the vessel tree");
 }
 
 void DashboardSK::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
 {
+    if (m_frozen) {
+        return;
+    }
     Dashboard::ClearOffsets();
     for (auto dashboard : m_dashboards) {
         dashboard->Draw(dc, vp, canvasIndex);

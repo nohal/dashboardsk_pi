@@ -70,6 +70,8 @@ private:
     /// Pointer to the point of the JSON document tree in #m_sk_data where the
     /// self context is
     wxJSONValue* m_self_ptr;
+    /// Updates to the dashboard are not performed if true
+    bool m_frozen;
     /// Map of instrument subscription to the data paths. Only instruments
     /// interested in changed data are notified and poll them on next update
 #if wxCHECK_VERSION(3, 1, 0)
@@ -347,6 +349,10 @@ public:
     /// \param path SignalK path with "self"
     /// \return SignalK path with fully quallified ID
     const wxString SelfPopulate(const wxString& path);
+
+    /// Freeze/unfreeze the drawing of the dashboards
+    /// \param state Desired state
+    void Freeze(bool state) { m_frozen = state; };
 };
 
 PLUGIN_END_NAMESPACE

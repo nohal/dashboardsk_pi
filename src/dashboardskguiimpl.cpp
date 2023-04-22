@@ -632,6 +632,7 @@ void MainConfigFrameImpl::m_sdbSizerOnCancelButtonClick(wxCommandEvent& event)
 
 void MainConfigFrameImpl::m_btnCfgEditOnButtonClick(wxCommandEvent& event)
 {
+    m_dsk_pi->GetDSK()->Freeze(true);
     wxWindowPtr<SKDataTreeImpl> dlg(new SKDataTreeImpl(this));
     dlg->SetTitle(_("Configuration data (Edit carefully!)"));
     wxString s;
@@ -645,6 +646,17 @@ void MainConfigFrameImpl::m_btnCfgEditOnButtonClick(wxCommandEvent& event)
             int ret = r.Parse(dlg->GetValue(), &v);
             if (0 == ret && v.HasMember("signalk")) {
                 m_dsk_pi->GetDSK()->ReadConfig(v);
+                m_comboDashboard->Clear();
+                m_comboDashboard->Append(
+                    m_dsk_pi->GetDSK()->GetDashboardNames());
+                if (m_comboDashboard->GetCount() > 0) {
+                    m_comboDashboard->SetSelection(0);
+                    m_edited_dashboard = m_dsk_pi->GetDSK()->GetDashboard(
+                        m_comboDashboard->GetSelection());
+                }
+                FillInstrumentList();
+                EnableItemsForSelectedDashboard();
+                EnableInstrumentListButtons();
                 // TODO: The above is VERY fragile, we should add as many checks
                 // as possible both here and to the editing form before screwing
                 // up the configuration (Although on Cancel click we load the
@@ -657,6 +669,7 @@ void MainConfigFrameImpl::m_btnCfgEditOnButtonClick(wxCommandEvent& event)
             }
         }
     });
+    m_dsk_pi->GetDSK()->Freeze(false);
     event.Skip();
 }
 
