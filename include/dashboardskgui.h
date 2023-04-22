@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version 3.10.1-254-gc2ef7767)
+// C++ code generated with wxFormBuilder (version 3.10.1-284-gf026a8e1)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -49,8 +49,9 @@ protected:
     wxButton* m_btnSignalK;
     wxStaticText* m_stDashboard;
     wxChoice* m_comboDashboard;
-    wxButton* m_btnRemoveDashboard;
+    wxButton* m_btnRenameDashboard;
     wxButton* m_btnNewDashboard;
+    wxButton* m_btnRemoveDashboard;
     wxPanel* m_panelList;
     wxScrolledWindow* m_scrolledWindowInstrumentList;
     wxStaticText* m_stInstruments;
@@ -104,11 +105,15 @@ protected:
     {
         event.Skip();
     }
-    virtual void m_btnRemoveDashboardOnButtonClick(wxCommandEvent& event)
+    virtual void m_btnRenameDashboardOnButtonClick(wxCommandEvent& event)
     {
         event.Skip();
     }
     virtual void m_btnNewDashboardOnButtonClick(wxCommandEvent& event)
+    {
+        event.Skip();
+    }
+    virtual void m_btnRemoveDashboardOnButtonClick(wxCommandEvent& event)
     {
         event.Skip();
     }
@@ -168,7 +173,7 @@ public:
     MainConfigFrame(wxWindow* parent, wxWindowID id = wxID_ANY,
         const wxString& title = _("DashboardSK Configuration"),
         const wxPoint& pos = wxDefaultPosition,
-        const wxSize& size = wxSize(820, 600),
+        const wxSize& size = wxSize(820, 620),
         long style = wxDEFAULT_DIALOG_STYLE | wxTAB_TRAVERSAL);
 
     ~MainConfigFrame();

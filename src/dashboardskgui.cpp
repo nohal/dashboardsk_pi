@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version 3.10.1-254-gc2ef7767)
+// C++ code generated with wxFormBuilder (version 3.10.1-284-gf026a8e1)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -61,15 +61,25 @@ MainConfigFrame::MainConfigFrame(wxWindow* parent, wxWindowID id,
     fgSizerDashboards->Add(
         m_comboDashboard, 0, wxALIGN_CENTER_VERTICAL | wxALL | wxEXPAND, 5);
 
-    m_btnRemoveDashboard = new wxButton(
-        this, wxID_ANY, _("Remove"), wxDefaultPosition, wxDefaultSize, 0);
-    fgSizerDashboards->Add(
-        m_btnRemoveDashboard, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+    m_btnRenameDashboard = new wxButton(
+        this, wxID_ANY, _("Rename"), wxDefaultPosition, wxDefaultSize, 0);
+    fgSizerDashboards->Add(m_btnRenameDashboard, 0, wxALL, 5);
 
     m_btnNewDashboard = new wxButton(
         this, wxID_ANY, _("New"), wxDefaultPosition, wxDefaultSize, 0);
     fgSizerDashboards->Add(
         m_btnNewDashboard, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+    fgSizerDashboards->Add(0, 0, 1, wxEXPAND, 5);
+
+    fgSizerDashboards->Add(0, 0, 1, wxEXPAND, 5);
+
+    fgSizerDashboards->Add(0, 0, 1, wxEXPAND, 5);
+
+    m_btnRemoveDashboard = new wxButton(
+        this, wxID_ANY, _("Remove"), wxDefaultPosition, wxDefaultSize, 0);
+    fgSizerDashboards->Add(
+        m_btnRemoveDashboard, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
     ConfigSizer->Add(fgSizerDashboards, 0, wxEXPAND, 5);
 
@@ -347,12 +357,16 @@ MainConfigFrame::MainConfigFrame(wxWindow* parent, wxWindowID id,
     m_comboDashboard->Connect(wxEVT_COMMAND_CHOICE_SELECTED,
         wxCommandEventHandler(MainConfigFrame::m_comboDashboardOnChoice), NULL,
         this);
-    m_btnRemoveDashboard->Connect(wxEVT_COMMAND_BUTTON_CLICKED,
+    m_btnRenameDashboard->Connect(wxEVT_COMMAND_BUTTON_CLICKED,
         wxCommandEventHandler(
-            MainConfigFrame::m_btnRemoveDashboardOnButtonClick),
+            MainConfigFrame::m_btnRenameDashboardOnButtonClick),
         NULL, this);
     m_btnNewDashboard->Connect(wxEVT_COMMAND_BUTTON_CLICKED,
         wxCommandEventHandler(MainConfigFrame::m_btnNewDashboardOnButtonClick),
+        NULL, this);
+    m_btnRemoveDashboard->Connect(wxEVT_COMMAND_BUTTON_CLICKED,
+        wxCommandEventHandler(
+            MainConfigFrame::m_btnRemoveDashboardOnButtonClick),
         NULL, this);
     m_lbInstruments->Connect(wxEVT_COMMAND_LISTBOX_SELECTED,
         wxCommandEventHandler(MainConfigFrame::m_lbInstrumentsOnListBox), NULL,
@@ -422,12 +436,16 @@ MainConfigFrame::~MainConfigFrame()
     m_comboDashboard->Disconnect(wxEVT_COMMAND_CHOICE_SELECTED,
         wxCommandEventHandler(MainConfigFrame::m_comboDashboardOnChoice), NULL,
         this);
-    m_btnRemoveDashboard->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED,
+    m_btnRenameDashboard->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED,
         wxCommandEventHandler(
-            MainConfigFrame::m_btnRemoveDashboardOnButtonClick),
+            MainConfigFrame::m_btnRenameDashboardOnButtonClick),
         NULL, this);
     m_btnNewDashboard->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED,
         wxCommandEventHandler(MainConfigFrame::m_btnNewDashboardOnButtonClick),
+        NULL, this);
+    m_btnRemoveDashboard->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED,
+        wxCommandEventHandler(
+            MainConfigFrame::m_btnRemoveDashboardOnButtonClick),
         NULL, this);
     m_lbInstruments->Disconnect(wxEVT_COMMAND_LISTBOX_SELECTED,
         wxCommandEventHandler(MainConfigFrame::m_lbInstrumentsOnListBox), NULL,

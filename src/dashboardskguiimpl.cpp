@@ -32,6 +32,7 @@
 #include <wx/choicdlg.h>
 #include <wx/dialog.h>
 #include <wx/msgdlg.h>
+#include <wx/textdlg.h>
 #include <wx/tokenzr.h>
 #include <wx/txtstrm.h>
 #include <wx/wfstream.h>
@@ -122,9 +123,12 @@ void MainConfigFrameImpl::EnableItems(bool dashboard_selection, bool instr_list,
         m_comboDashboard->Enable();
         m_btnRemoveDashboard->Enable(
             m_comboDashboard->GetSelection() != wxNOT_FOUND);
+        m_btnRenameDashboard->Enable(
+            m_comboDashboard->GetSelection() != wxNOT_FOUND);
     } else {
         m_comboDashboard->Disable();
         m_btnRemoveDashboard->Disable();
+        m_btnRenameDashboard->Disable();
     }
     if (instr_list) {
         // Instrument list
@@ -270,6 +274,23 @@ void MainConfigFrameImpl::m_btnRemoveDashboardOnButtonClick(
                 }
             }
             EnableItemsForSelectedDashboard();
+        }
+    });
+
+    event.Skip();
+}
+
+void MainConfigFrameImpl::m_btnRenameDashboardOnButtonClick(
+    wxCommandEvent& event)
+{
+    wxWindowPtr<wxTextEntryDialog> dlg(
+        new wxTextEntryDialog(this, _("Enter new name for the dashboard"),
+            _("Rename dashboard"), m_edited_dashboard->GetName()));
+    dlg->ShowWindowModalThenDo([this, dlg](int retcode) {
+        if (retcode == wxID_OK) {
+            m_edited_dashboard->SetName(dlg->GetValue());
+            m_comboDashboard->SetString(m_comboDashboard->GetSelection(),
+                m_edited_dashboard->GetName());
         }
     });
 

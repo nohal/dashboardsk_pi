@@ -113,7 +113,7 @@ public:
     MainConfigFrameImpl(dashboardsk_pi* dsk_pi, wxWindow* parent,
         wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString,
         const wxPoint& pos = wxDefaultPosition,
-        const wxSize& size = wxSize(820, 600),
+        const wxSize& size = wxSize(820, 620),
         long style = wxDEFAULT_FRAME_STYLE | wxTAB_TRAVERSAL);
     ~MainConfigFrameImpl() = default;
 
@@ -132,6 +132,11 @@ protected:
     ///
     /// \param event The event object reference
     virtual void m_btnRemoveDashboardOnButtonClick(wxCommandEvent& event);
+
+    /// Event handler for dashboard rename
+    ///
+    /// \param event The event object reference
+    virtual void m_btnRenameDashboardOnButtonClick(wxCommandEvent& event);
 
     /// Event handler for creation of new dashboard
     ///
