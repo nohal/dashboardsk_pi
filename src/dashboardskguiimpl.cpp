@@ -61,7 +61,6 @@ MainConfigFrameImpl::MainConfigFrameImpl(dashboardsk_pi* dsk_pi,
 #endif
     m_orig_config = m_dsk_pi->GetDSK()->GenerateJSONConfig();
     m_tSelf->SetValue(m_dsk_pi->GetDSK()->Self());
-    m_comboDashboard->Append(m_dsk_pi->GetDSK()->GetDashboardNames());
 
 #if (wxCHECK_VERSION(3, 1, 6))
     m_bpAddButton->SetBitmap(wxBitmapBundle::FromSVGFile(
@@ -92,15 +91,27 @@ MainConfigFrameImpl::MainConfigFrameImpl(dashboardsk_pi* dsk_pi,
     m_bpMoveDownButton->SetBitmap(GetBitmapFromSVGFile(
         m_dsk_pi->GetDataDir() + "down.svg", BMP_SZ, BMP_SZ));
 #endif
+    FillForm();
+    DimeWindow(this);
+}
+
+void MainConfigFrameImpl::FillForm(bool select_last)
+{
+    m_comboDashboard->Clear();
+    m_comboDashboard->Append(m_dsk_pi->GetDSK()->GetDashboardNames());
     if (m_comboDashboard->GetCount() > 0) {
-        m_comboDashboard->SetSelection(0);
+        if (select_last) {
+            m_comboDashboard->SetSelection(m_comboDashboard->GetCount() - 1);
+        } else {
+            m_comboDashboard->SetSelection(0);
+        }
         m_edited_dashboard = m_dsk_pi->GetDSK()->GetDashboard(
             m_comboDashboard->GetSelection());
     }
     FillInstrumentList();
+    FillInstrumentDetails();
     EnableItemsForSelectedDashboard();
     EnableInstrumentListButtons();
-    DimeWindow(this);
 }
 
 void MainConfigFrameImpl::EnableItems(bool dashboard_selection, bool instr_list,
@@ -224,11 +235,7 @@ void MainConfigFrameImpl::m_btnNewDashboardOnButtonClick(wxCommandEvent& event)
             m_edited_dashboard = m_dsk_pi->GetDSK()->AddDashboard();
             m_edited_instrument = nullptr;
             m_edited_dashboard->SetName(dlg->GetValue());
-            m_comboDashboard->Append(m_edited_dashboard->GetName());
-            m_comboDashboard->SetSelection(m_comboDashboard->GetCount() - 1);
-            FillInstrumentList();
-            FillInstrumentDetails();
-            EnableItemsForSelectedDashboard();
+            FillForm(true);
         }
     });
     event.Skip();
@@ -645,18 +652,10 @@ void MainConfigFrameImpl::m_btnCfgEditOnButtonClick(wxCommandEvent& event)
             wxJSONValue v;
             int ret = r.Parse(dlg->GetValue(), &v);
             if (0 == ret && v.HasMember("signalk")) {
+                m_edited_instrument = nullptr;
+                m_edited_dashboard = nullptr;
                 m_dsk_pi->GetDSK()->ReadConfig(v);
-                m_comboDashboard->Clear();
-                m_comboDashboard->Append(
-                    m_dsk_pi->GetDSK()->GetDashboardNames());
-                if (m_comboDashboard->GetCount() > 0) {
-                    m_comboDashboard->SetSelection(0);
-                    m_edited_dashboard = m_dsk_pi->GetDSK()->GetDashboard(
-                        m_comboDashboard->GetSelection());
-                }
-                FillInstrumentList();
-                EnableItemsForSelectedDashboard();
-                EnableInstrumentListButtons();
+                FillForm();
                 // TODO: The above is VERY fragile, we should add as many checks
                 // as possible both here and to the editing form before screwing
                 // up the configuration (Although on Cancel click we load the
@@ -912,13 +911,7 @@ void MainConfigFrameImpl::m_btnImportDashboardOnButtonClick(
                         m_edited_dashboard = m_dsk_pi->GetDSK()->AddDashboard();
                         m_edited_dashboard->ReadConfig(v);
                         m_edited_instrument = nullptr;
-                        m_comboDashboard->Append(m_edited_dashboard->GetName());
-                        m_comboDashboard->SetSelection(
-                            m_comboDashboard->GetCount() - 1);
-                        FillInstrumentList();
-                        FillInstrumentDetails();
-                        EnableItemsForSelectedDashboard();
-                        EnableInstrumentListButtons();
+                        FillForm(true);
                     } else {
                         wxMessageBox(
                             wxString::Format(

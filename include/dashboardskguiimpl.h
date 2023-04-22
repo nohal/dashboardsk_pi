@@ -75,6 +75,9 @@ private:
     /// Fill the widgets with data for currently selected instrument
     void FillInstrumentDetails();
 
+    /// Fill the form with data
+    void FillForm(bool select_last = false);
+
     /// Extract value from a dynamically generated widget in instrument
     /// configuration
     ///
