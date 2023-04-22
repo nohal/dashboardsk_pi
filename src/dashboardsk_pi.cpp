@@ -156,6 +156,12 @@ void dashboardsk_pi::SetColorScheme(PI_ColorScheme cs)
 void dashboardsk_pi::LoadConfig()
 {
     LOG_VERBOSE("DashboardSK_pi: LoadConfig from %s ", m_config_file.c_str());
+    if (!wxFileExists(m_config_file)) {
+        wxString sample_config = GetDataDir() + "sample_config.json";
+        if (wxFileExists(sample_config)) {
+            wxCopyFile(sample_config, m_config_file, false);
+        }
+    }
     if (wxFileExists(m_config_file)) {
         wxFileInputStream str(m_config_file);
         if (!str.IsOk()) {
