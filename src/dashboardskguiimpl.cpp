@@ -95,8 +95,8 @@ MainConfigFrameImpl::MainConfigFrameImpl(dashboardsk_pi* dsk_pi,
     m_bpMoveDownButton->SetBitmap(GetBitmapFromSVGFile(
         m_dsk_pi->GetDataDir() + "down.svg", BMP_SZ, BMP_SZ));
 #endif
-    FillForm();
     DimeWindow(this);
+    FillForm();
 }
 
 void MainConfigFrameImpl::FillForm(bool select_last)
