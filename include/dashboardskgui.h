@@ -173,7 +173,7 @@ public:
     MainConfigFrame(wxWindow* parent, wxWindowID id = wxID_ANY,
         const wxString& title = _("DashboardSK Configuration"),
         const wxPoint& pos = wxDefaultPosition,
-        const wxSize& size = wxSize(820, 620),
+        const wxSize& size = wxSize(840, 620),
         long style = wxDEFAULT_DIALOG_STYLE | wxTAB_TRAVERSAL);
 
     ~MainConfigFrame();

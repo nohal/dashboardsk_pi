@@ -32,7 +32,11 @@
 #include "instrument.h"
 #include "pi_common.h"
 
-#define BMP_SZ 16 // Size of the bitmap for wxBitmapButton
+#if (wxCHECK_VERSION(3, 1, 0))
+#define BMP_SZ FromDIP(16) // Size of the bitmap for wxBitmapButton
+#else
+#define BMP_SZ 16
+#endif
 
 PLUGIN_BEGIN_NAMESPACE
 
@@ -113,7 +117,7 @@ public:
     MainConfigFrameImpl(dashboardsk_pi* dsk_pi, wxWindow* parent,
         wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString,
         const wxPoint& pos = wxDefaultPosition,
-        const wxSize& size = wxSize(820, 620),
+        const wxSize& size = wxSize(840, 620),
         long style = wxDEFAULT_FRAME_STYLE | wxTAB_TRAVERSAL);
     ~MainConfigFrameImpl() = default;
 

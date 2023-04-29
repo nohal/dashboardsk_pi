@@ -9,6 +9,12 @@
 
 #include "dashboardskgui.h"
 
+#if (wxCHECK_VERSION(3, 1, 0))
+#define BTN_SIZE wxSize(FromDIP(32), FromDIP(32))
+#else
+#define BTN_SIZE wxSize(32, 32)
+#endif
+
 ///////////////////////////////////////////////////////////////////////////
 using namespace DashboardSKPlugin;
 
@@ -16,7 +22,11 @@ MainConfigFrame::MainConfigFrame(wxWindow* parent, wxWindowID id,
     const wxString& title, const wxPoint& pos, const wxSize& size, long style)
     : wxDialog(parent, id, title, pos, size, style)
 {
+#if (wxCHECK_VERSION(3, 1, 0))
+    this->SetSizeHints(wxSize(FromDIP(500), FromDIP(300)), wxDefaultSize);
+#else
     this->SetSizeHints(wxSize(500, 300), wxDefaultSize);
+#endif
 
     wxBoxSizer* MainSizer;
     MainSizer = new wxBoxSizer(wxVERTICAL);
@@ -113,32 +123,27 @@ MainConfigFrame::MainConfigFrame(wxWindow* parent, wxWindowID id,
     InstrumentListButtonsSizer = new wxBoxSizer(wxVERTICAL);
 
     m_bpAddButton = new wxBitmapButton(m_scrolledWindowInstrumentList, wxID_ANY,
-        wxNullBitmap, wxDefaultPosition, wxSize(32, 32), wxBU_AUTODRAW | 0);
+        wxNullBitmap, wxDefaultPosition, BTN_SIZE, wxBU_AUTODRAW | 0);
     InstrumentListButtonsSizer->Add(m_bpAddButton, 0, wxALL, 5);
 
-    m_bpRemoveButton
-        = new wxBitmapButton(m_scrolledWindowInstrumentList, wxID_ANY,
-            wxNullBitmap, wxDefaultPosition, wxSize(32, 32), wxBU_AUTODRAW | 0);
+    m_bpRemoveButton = new wxBitmapButton(m_scrolledWindowInstrumentList,
+        wxID_ANY, wxNullBitmap, wxDefaultPosition, BTN_SIZE, wxBU_AUTODRAW | 0);
     InstrumentListButtonsSizer->Add(m_bpRemoveButton, 0, wxALL, 5);
 
-    m_bpMoveUpButton
-        = new wxBitmapButton(m_scrolledWindowInstrumentList, wxID_ANY,
-            wxNullBitmap, wxDefaultPosition, wxSize(32, 32), wxBU_AUTODRAW | 0);
+    m_bpMoveUpButton = new wxBitmapButton(m_scrolledWindowInstrumentList,
+        wxID_ANY, wxNullBitmap, wxDefaultPosition, BTN_SIZE, wxBU_AUTODRAW | 0);
     InstrumentListButtonsSizer->Add(m_bpMoveUpButton, 0, wxALL, 5);
 
-    m_bpMoveDownButton
-        = new wxBitmapButton(m_scrolledWindowInstrumentList, wxID_ANY,
-            wxNullBitmap, wxDefaultPosition, wxSize(32, 32), wxBU_AUTODRAW | 0);
+    m_bpMoveDownButton = new wxBitmapButton(m_scrolledWindowInstrumentList,
+        wxID_ANY, wxNullBitmap, wxDefaultPosition, BTN_SIZE, wxBU_AUTODRAW | 0);
     InstrumentListButtonsSizer->Add(m_bpMoveDownButton, 0, wxALL, 5);
 
-    m_bpSaveInstrButton
-        = new wxBitmapButton(m_scrolledWindowInstrumentList, wxID_ANY,
-            wxNullBitmap, wxDefaultPosition, wxSize(32, 32), wxBU_AUTODRAW | 0);
+    m_bpSaveInstrButton = new wxBitmapButton(m_scrolledWindowInstrumentList,
+        wxID_ANY, wxNullBitmap, wxDefaultPosition, BTN_SIZE, wxBU_AUTODRAW | 0);
     InstrumentListButtonsSizer->Add(m_bpSaveInstrButton, 0, wxALL, 5);
 
-    m_bpImportInstrButton
-        = new wxBitmapButton(m_scrolledWindowInstrumentList, wxID_ANY,
-            wxNullBitmap, wxDefaultPosition, wxSize(32, 32), wxBU_AUTODRAW | 0);
+    m_bpImportInstrButton = new wxBitmapButton(m_scrolledWindowInstrumentList,
+        wxID_ANY, wxNullBitmap, wxDefaultPosition, BTN_SIZE, wxBU_AUTODRAW | 0);
     InstrumentListButtonsSizer->Add(m_bpImportInstrButton, 0, wxALL, 5);
 
     InstrumentListControlsSizer->Add(
@@ -507,7 +512,11 @@ SKDataTree::SKDataTree(wxWindow* parent, wxWindowID id, const wxString& title,
     const wxPoint& pos, const wxSize& size, long style)
     : wxDialog(parent, id, title, pos, size, style)
 {
+#if (wxCHECK_VERSION(3, 1, 0))
+    this->SetSizeHints(wxSize(FromDIP(200), FromDIP(200)), wxDefaultSize);
+#else
     this->SetSizeHints(wxSize(200, 200), wxDefaultSize);
+#endif
 
     wxBoxSizer* bSizerMain;
     bSizerMain = new wxBoxSizer(wxVERTICAL);
@@ -663,7 +672,11 @@ SKPathBrowser::SKPathBrowser(wxWindow* parent, wxWindowID id,
     const wxString& title, const wxPoint& pos, const wxSize& size, long style)
     : wxDialog(parent, id, title, pos, size, style)
 {
+#if (wxCHECK_VERSION(3, 1, 0))
+    this->SetSizeHints(wxSize(FromDIP(200), FromDIP(200)), wxDefaultSize);
+#else
     this->SetSizeHints(wxSize(200, 200), wxDefaultSize);
+#endif
 
     wxBoxSizer* bSizerMain;
     bSizerMain = new wxBoxSizer(wxVERTICAL);
@@ -745,7 +758,11 @@ ZonesConfigDialog::ZonesConfigDialog(wxWindow* parent, wxWindowID id,
     const wxString& title, const wxPoint& pos, const wxSize& size, long style)
     : wxDialog(parent, id, title, pos, size, style)
 {
+#if (wxCHECK_VERSION(3, 1, 0))
+    this->SetSizeHints(wxSize(FromDIP(200), FromDIP(200)), wxDefaultSize);
+#else
     this->SetSizeHints(wxSize(200, 200), wxDefaultSize);
+#endif
 
     wxBoxSizer* bSizerMain;
     bSizerMain = new wxBoxSizer(wxVERTICAL);
@@ -766,11 +783,11 @@ ZonesConfigDialog::ZonesConfigDialog(wxWindow* parent, wxWindowID id,
     bSizerButtons = new wxBoxSizer(wxVERTICAL);
 
     m_bpAdd = new wxBitmapButton(this, wxID_ANY, wxNullBitmap,
-        wxDefaultPosition, wxSize(32, 32), wxBU_AUTODRAW | 0);
+        wxDefaultPosition, BTN_SIZE, wxBU_AUTODRAW | 0);
     bSizerButtons->Add(m_bpAdd, 0, wxALL, 5);
 
     m_bpRemove = new wxBitmapButton(this, wxID_ANY, wxNullBitmap,
-        wxDefaultPosition, wxSize(32, 32), wxBU_AUTODRAW | 0);
+        wxDefaultPosition, BTN_SIZE, wxBU_AUTODRAW | 0);
     bSizerButtons->Add(m_bpRemove, 0, wxALL, 5);
 
     bSizerData->Add(bSizerButtons, 0, wxEXPAND, 5);

@@ -51,6 +51,9 @@ MainConfigFrameImpl::MainConfigFrameImpl(dashboardsk_pi* dsk_pi,
     , m_edited_dashboard(nullptr)
     , m_edited_instrument(nullptr)
 {
+#if (wxCHECK_VERSION(3, 1, 0))
+    SetSize(FromDIP(GetSize()));
+#endif
     m_dsk_pi = dsk_pi;
     m_chAnchor->Clear();
 #if wxCHECK_VERSION(3, 1, 0)
@@ -955,6 +958,9 @@ void MainConfigFrameImpl::m_btnImportDashboardOnButtonClick(
 SKDataTreeImpl::SKDataTreeImpl(wxWindow* parent)
     : SKDataTree(parent)
 {
+#if (wxCHECK_VERSION(3, 1, 0))
+    SetSize(FromDIP(GetSize()));
+#endif
     m_scintillaCode->StyleClearAll();
     m_scintillaCode->StyleSetForeground(
         wxSTC_STYLE_DEFAULT, GetForegroundColour());
@@ -1036,6 +1042,9 @@ SKPathBrowserImpl::SKPathBrowserImpl(wxWindow* parent, wxWindowID id,
     const wxString& title, const wxPoint& pos, const wxSize& size, long style)
     : SKPathBrowser(parent, id, title, pos, size, style)
 {
+#if (wxCHECK_VERSION(3, 1, 0))
+    SetSize(FromDIP(GetSize()));
+#endif
     DimeWindow(this);
     m_self = wxEmptyString;
     m_self_item_id = m_treePaths->GetRootItem();
@@ -1209,6 +1218,9 @@ ZonesConfigDialogImpl::ZonesConfigDialogImpl(wxWindow* parent,
     : ZonesConfigDialog(parent, id, title, pos, size, style)
     , m_edited_zone(nullptr)
 {
+#if (wxCHECK_VERSION(3, 1, 0))
+    SetSize(FromDIP(GetSize()));
+#endif
     m_dsk_pi = dsk_pi;
     if (m_dsk_pi) {
 #if (wxCHECK_VERSION(3, 1, 6))

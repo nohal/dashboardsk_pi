@@ -48,7 +48,7 @@
             <property name="minimum_size">500,300</property>
             <property name="name">MainConfigFrame</property>
             <property name="pos"></property>
-            <property name="size">820,620</property>
+            <property name="size">840,620</property>
             <property name="style">wxDEFAULT_DIALOG_STYLE</property>
             <property name="subclass"></property>
             <property name="title">DashboardSK Configuration</property>
