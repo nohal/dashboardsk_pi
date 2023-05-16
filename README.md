@@ -14,6 +14,8 @@ The plugin uses wxWidgets 3.2 or newer (although building against wxWidgets 3.0 
 
 To compile this plugin you have to be able to compile OpenCPN itself, refer to the [OpenCPN Developer Manual](https://opencpn-manuals.github.io/main/ocpn-dev-manual/intro-AboutThisManual.html) for instructions on preparing the environment
 
+### Linux/macOS
+
 ```bash
 git clone --recurse-submodules git://github.com/nohal/dashboardsk_pi.git
 cd dashboardsk_pi
@@ -22,6 +24,23 @@ cd build
 cmake ..
 make
 ```
+
+### Windows
+
+Run `x86 Native Tools Command Prompt for VS 2022` from the Start menu as Administrator
+
+```
+git clone https://github.com/nohal/nsk_pi.git
+cd nsk_pi.git
+ci\appveyor.bat
+cd build
+cmake -A Win32 ..
+cmake --build .
+```
+
+Subsequent runs should not need running the command prompt as Administrator
+
+### Obtaining the Git submodules
 
 In case you already cloned the repository without the `--recurse-submodules` parameter, execute `git submodule update --init` in the root directory of the source tree.
 
@@ -38,6 +57,10 @@ pip3 install pre-commit
 cd <dashboard_sk source directory>
 pre-commit install
 ```
+
+#### pre-commit on Windows
+
+Use [WSL](https://learn.microsoft.com/en-us/windows/wsl/) for pre-commit and save yourself the headache.
 
 ### Documentation
 
