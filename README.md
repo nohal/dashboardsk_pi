@@ -17,7 +17,7 @@ To compile this plugin you have to be able to compile OpenCPN itself, refer to t
 ### Linux/macOS
 
 ```bash
-git clone --recurse-submodules git://github.com/nohal/dashboardsk_pi.git
+git clone --recurse-submodules https://github.com/nohal/dashboardsk_pi.git
 cd dashboardsk_pi
 mkdir build
 cd build
