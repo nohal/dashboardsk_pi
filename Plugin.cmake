@@ -39,7 +39,7 @@ DashboardSK plugin for OpenCPN
 set(PKG_AUTHOR "Pavel Kalian")
 set(PKG_IS_OPEN_SOURCE "yes")
 set(PKG_HOMEPAGE https://github.com/nohal/dashboardsk_pi)
-set(PKG_INFO_URL https://opencpn.org/OpenCPN/plugins/dashboardsk.html)
+set(PKG_INFO_URL https://opencpn.org/OpenCPN/plugins/dashboardSK.html)
 
 option(WITH_TESTS "Whether or not to build the tests" OFF)
 option(SANITIZE "What sanitizers to use" "")
