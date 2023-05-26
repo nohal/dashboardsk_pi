@@ -107,7 +107,8 @@ PLUGIN_BEGIN_NAMESPACE
     X(Instrument::transformation::pa2atm, _("Pa -> atm"))                      \
     X(Instrument::transformation::pa2atm, _("Pa -> mmHg"))                     \
     X(Instrument::transformation::pa2psi, _("Pa -> psi"))                      \
-    X(Instrument::transformation::hz2rpm, _("Hz -> RPM"))
+    X(Instrument::transformation::hz2rpm, _("Hz -> RPM"))                      \
+    X(Instrument::transformation::rads2degm, _("RAD/s -> DEG/m"))
 
 // Table of supported numerical formats and the respective formatting strings
 #define DSK_VALUE_FORMATS                                                      \
@@ -244,7 +245,9 @@ public:
         /// Pascal to psi
         pa2psi,
         /// Hertz to revolutions per minute
-        hz2rpm
+        hz2rpm,
+        /// Radians per second to degrees per minute
+        rads2degm
     };
 
     /// Supported formats for position

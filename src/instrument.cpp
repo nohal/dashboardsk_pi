@@ -298,6 +298,8 @@ double Instrument::Transform(const double& val, const transformation& formula)
         return val / 6894.757;
     case transformation::hz2rpm:
         return val * 60;
+    case transformation::rads2degm:
+        return val * 3437.7467747131;
     default:
         return val;
     }
