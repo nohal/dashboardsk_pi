@@ -4,11 +4,10 @@
 # Copyright (c) 2021 Alec Leamas
 # ~~~
 
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 3 of the License, or
-# (at your option) any later version.
-
+# This program is free software; you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
+# Foundation; either version 3 of the License, or (at your option) any later
+# version.
 
 if(COMMAND GetArch)
   return()
@@ -49,7 +48,9 @@ function(GetArch)
     # see #2027
     set(ARCH "x86_64")
   endif()
-  set(ARCH ${ARCH} PARENT_SCOPE)
+  set(ARCH
+      ${ARCH}
+      PARENT_SCOPE)
 endfunction()
 
 getarch()

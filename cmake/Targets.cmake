@@ -7,13 +7,10 @@
 # with helper targets. Also sets up the default target.
 # ~~~
 
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 3 of the License, or
-# (at your option) any later version.
-
-
-
+# This program is free software; you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
+# Foundation; either version 3 of the License, or (at your option) any later
+# version.
 
 if(TARGET tarball-build)
   return()
@@ -21,7 +18,9 @@ endif()
 
 include(Metadata)
 
-if(UNIX AND NOT APPLE AND NOT QT_ANDROID)
+if(UNIX
+   AND NOT APPLE
+   AND NOT QT_ANDROID)
   set(_LINUX ON)
 else()
   set(_LINUX OFF)
@@ -35,8 +34,13 @@ endif()
 
 # Set up _build_cmd
 set(_build_cmd
-  cmake --build ${CMAKE_BINARY_DIR} --parallel ${OCPN_NPROC} --config $<CONFIG>
-)
+    cmake
+    --build
+    ${CMAKE_BINARY_DIR}
+    --parallel
+    ${OCPN_NPROC}
+    --config
+    $<CONFIG>)
 
 # Set up _build_target_cmd and _install_cmd
 if(CMAKE_VERSION VERSION_LESS 3.16)
@@ -44,9 +48,14 @@ if(CMAKE_VERSION VERSION_LESS 3.16)
   set(_install_cmd make install)
 else()
   set(_build_target_cmd
-      cmake --build ${CMAKE_BINARY_DIR} --parallel ${OCPN_NPROC}
-      --config $<CONFIG> --target
-  )
+      cmake
+      --build
+      ${CMAKE_BINARY_DIR}
+      --parallel
+      ${OCPN_NPROC}
+      --config
+      $<CONFIG>
+      --target)
   set(_install_cmd cmake --install ${CMAKE_BINARY_DIR} --config $<CONFIG>)
 endif()
 
@@ -57,10 +66,10 @@ else()
   set(_rmdir_cmd "rm -rf")
 endif()
 
-
 # Cmake batch file to compute and patch metadata checksum
 #
-set(_cs_script "
+set(_cs_script
+    "
   execute_process(
     COMMAND  cmake -E sha256sum ${CMAKE_BINARY_DIR}/${pkg_tarname}.tar.gz
     OUTPUT_FILE ${CMAKE_BINARY_DIR}/${pkg_tarname}.sha256
@@ -76,7 +85,8 @@ set(_cs_script "
 file(WRITE "${CMAKE_BINARY_DIR}/checksum.cmake" ${_cs_script})
 
 function(create_finish_script)
-  set(_finish_script "
+  set(_finish_script
+      "
     execute_process(
       COMMAND cmake -E ${_rmdir_cmd} app/${pkg_displayname}
     )
@@ -106,17 +116,14 @@ function(android_target)
   add_custom_command(
     OUTPUT android-conf-stamp
     COMMAND cmake -E touch android-conf-stamp
-    COMMAND cmake
-      -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/app/files
+    COMMAND
+      cmake -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/app/files
       -DBUILD_TYPE:STRING=tarball
-      -DOCPN_TARGET_TUPLE:STRING=${OCPN_TARGET_TUPLE}
-      $ENV{CMAKE_BUILD_OPTS}
-      ${CMAKE_BINARY_DIR}
-  )
+      -DOCPN_TARGET_TUPLE:STRING=${OCPN_TARGET_TUPLE} $ENV{CMAKE_BUILD_OPTS}
+      ${CMAKE_BINARY_DIR})
   add_custom_target(android-build DEPENDS android-conf-stamp)
-  add_custom_command(
-    TARGET android-build COMMAND ${_build_target_cmd} ${PKG_NAME}
-  )
+  add_custom_command(TARGET android-build COMMAND ${_build_target_cmd}
+                                                  ${PKG_NAME})
   add_custom_target(android-install)
   add_custom_command(TARGET android-install COMMAND ${_install_cmd})
 
@@ -125,8 +132,7 @@ function(android_target)
   add_custom_command(
     TARGET android-finish
     COMMAND cmake -P ${CMAKE_BINARY_DIR}/finish_tarball.cmake
-    VERBATIM
-  )
+    VERBATIM)
   add_custom_target(android)
   add_dependencies(android android-finish)
   add_dependencies(android-finish android-install)
@@ -140,17 +146,13 @@ function(tarball_target)
   add_custom_command(
     OUTPUT tarball-conf-stamp
     COMMAND cmake -E touch tarball-conf-stamp
-    COMMAND cmake
-      -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/app/files
-      -DBUILD_TYPE:STRING=tarball
-      $ENV{CMAKE_BUILD_OPTS}
-      ${CMAKE_BINARY_DIR}
-  )
+    COMMAND
+      cmake -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/app/files
+      -DBUILD_TYPE:STRING=tarball $ENV{CMAKE_BUILD_OPTS} ${CMAKE_BINARY_DIR})
 
   add_custom_target(tarball-build DEPENDS tarball-conf-stamp)
-  add_custom_command(
-    TARGET tarball-build COMMAND ${_build_target_cmd} ${PKG_NAME}
-  )
+  add_custom_command(TARGET tarball-build COMMAND ${_build_target_cmd}
+                                                  ${PKG_NAME})
 
   add_custom_target(tarball-install)
   add_custom_command(TARGET tarball-install COMMAND ${_install_cmd})
@@ -158,10 +160,9 @@ function(tarball_target)
   create_finish_script()
   add_custom_target(tarball-finish)
   add_custom_command(
-    TARGET tarball-finish      # Compute checksum
+    TARGET tarball-finish # Compute checksum
     COMMAND cmake -P ${CMAKE_BINARY_DIR}/finish_tarball.cmake
-    VERBATIM
-  )
+    VERBATIM)
   add_dependencies(tarball-install tarball-build)
   add_dependencies(tarball-finish tarball-install)
 
@@ -174,15 +175,13 @@ function(flatpak_target manifest)
   add_custom_target(flatpak-conf)
   add_custom_command(
     TARGET flatpak-conf
-    COMMAND cmake
-      -DBUILD_TYPE:STRING=flatpak
-      -Uplugin_target
-      $ENV{CMAKE_BUILD_OPTS}
-      ${CMAKE_BINARY_DIR}
-  )
+    COMMAND cmake -DBUILD_TYPE:STRING=flatpak -Uplugin_target
+            $ENV{CMAKE_BUILD_OPTS} ${CMAKE_BINARY_DIR})
 
   # Script used to copy out files from the flatpak sandbox
-  file(WRITE ${CMAKE_BINARY_DIR}/copy_out [=[
+  file(
+    WRITE ${CMAKE_BINARY_DIR}/copy_out
+    [=[
     appdir=$(find /run/build -maxdepth 3 -iname $1)
     appdir=$(ls -t $appdir)       # Sort entries if there is more than one
     appdir=${appdir%% *}          # Pick first entry
@@ -190,7 +189,8 @@ function(flatpak_target manifest)
     cp -ar $appdir/app $2
   ]=])
 
-  set(_fp_script "
+  set(_fp_script
+      "
     execute_process(
       COMMAND
         flatpak-builder --force-clean --keep-build-dirs
@@ -237,15 +237,13 @@ function(flatpak_target manifest)
   add_custom_command(
     TARGET flatpak
     COMMAND cmake -P ${CMAKE_BINARY_DIR}/build_flatpak.cmake
-    VERBATIM
-  )
+    VERBATIM)
   add_dependencies(flatpak flatpak-conf)
 endfunction()
 
 function(create_targets manifest)
-  # Add the primary build targets android, flatpak and tarball together
-  # with support targets. Parameters:
-  # - manifest: Flatpak build manifest
+  # Add the primary build targets android, flatpak and tarball together with
+  # support targets. Parameters: - manifest: Flatpak build manifest
 
   if(BUILD_TYPE STREQUAL "pkg")
     message(FATAL_ERROR "Legacy package generation is not supported.")

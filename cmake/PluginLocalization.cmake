@@ -5,11 +5,10 @@
 # License:      GPLv3+
 # ~~~
 
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 3 of the License, or
-# (at your option) any later version.
-
+# This program is free software; you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
+# Foundation; either version 3 of the License, or (at your option) any later
+# version.
 
 find_program(GETTEXT_XGETTEXT_EXECUTABLE xgettext)
 
@@ -25,13 +24,11 @@ if(GETTEXT_XGETTEXT_EXECUTABLE)
       --files-from=${CMAKE_CURRENT_SOURCE_DIR}/po/POTFILES.in
     DEPENDS po/POTFILES.in po/${PACKAGE_NAME}.pot
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-    COMMENT "${I18N_NAME}-pot-update [${PACKAGE_NAME}]: Generated pot file."
-  )
+    COMMENT "${I18N_NAME}-pot-update [${PACKAGE_NAME}]: Generated pot file.")
   add_custom_target(
     ${I18N_NAME}-pot-update
     COMMENT "[${PACKAGE_NAME}]-pot-update: Done."
-    DEPENDS po/${PACKAGE_NAME}.pot.dummy
-  )
+    DEPENDS po/${PACKAGE_NAME}.pot.dummy)
 endif()
 
 macro(GETTEXT_UPDATE_PO _potFile)
@@ -47,16 +44,14 @@ macro(GETTEXT_UPDATE_PO _potFile)
       COMMAND ${GETTEXT_MSGMERGE_EXECUTABLE} --width=80 --strict --quiet
               --update --backup=none --no-location -s ${_absFile} ${_absPotFile}
       DEPENDS ${_absPotFile} ${_absFile}
-      COMMENT "${I18N_NAME}-po-update [${_poBasename}]: Updated po file."
-    )
+      COMMENT "${I18N_NAME}-po-update [${_poBasename}]: Updated po file.")
     set(_poFiles ${_poFiles} ${_absFile}.dummy)
   endforeach()
 
   add_custom_target(
     ${I18N_NAME}-po-update
     COMMENT "[${PACKAGE_NAME}]-po-update: Done."
-    DEPENDS ${_poFiles}
-  )
+    DEPENDS ${_poFiles})
 endmacro()
 
 if(GETTEXT_MSGMERGE_EXECUTABLE)
@@ -77,20 +72,17 @@ macro(GETTEXT_BUILD_MO)
       COMMAND ${CMAKE_COMMAND} -E copy ${_gmoFile}
               "Resources/${_poBasename}.lproj/opencpn-${PACKAGE_NAME}.mo"
       DEPENDS ${_absFile}
-      COMMENT "${I18N_NAME}-i18n [${_poBasename}]: Created mo file."
-    )
+      COMMENT "${I18N_NAME}-i18n [${_poBasename}]: Created mo file.")
     if(APPLE)
       install(
         FILES ${_gmoFile}
         DESTINATION OpenCPN.app/Contents/Resources/${_poBasename}.lproj
-        RENAME opencpn-${PACKAGE_NAME}.mo
-      )
+        RENAME opencpn-${PACKAGE_NAME}.mo)
     else()
       install(
         FILES ${_gmoFile}
         DESTINATION share/locale/${_poBasename}/LC_MESSAGES
-        RENAME opencpn-${PACKAGE_NAME}.mo
-      )
+        RENAME opencpn-${PACKAGE_NAME}.mo)
     endif()
 
     set(_gmoFiles ${_gmoFiles} ${_gmoFile})
@@ -103,8 +95,7 @@ if(GETTEXT_MSGFMT_EXECUTABLE)
   add_custom_target(
     ${I18N_NAME}-i18n
     COMMENT "${PACKAGE_NAME}-i18n: Done."
-    DEPENDS ${_gmoFiles}
-  )
+    DEPENDS ${_gmoFiles})
   add_dependencies(${PACKAGE_NAME} ${I18N_NAME}-i18n)
   add_dependencies(tarball ${I18N_NAME}-i18n)
 endif()

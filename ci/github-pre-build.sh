@@ -49,9 +49,9 @@ case $(uname -s) in
 
         if [ ${USE_HOMEBREW:-0} -ne 1 ]; then
             # Install the pre-built wxWidgets package
-            wget -q https://download.opencpn.org/s/8xYPFAqTR8ZGXXb/download \
-                -O /tmp/wx322-2_opencpn50_macos1010.tar.bz2
-            tar -C /tmp -xjf /tmp/wx322-2_opencpn50_macos1010.tar.bz2
+            wget -q https://dl.cloudsmith.io/public/nohal/opencpn-plugins/raw/files/macos_deps_universal.tar.xz \
+                -O /tmp/macos_deps_universal.tar.xz
+            sudo tar -C /usr/local -xJf /tmp/macos_deps_universal.tar.xz
         else
             brew update
             brew install wxwidgets

@@ -12,7 +12,7 @@
 cmake_minimum_required(VERSION 3.20.0)
 
 set(wx_repo https://github.com/wxWidgets/wxWidgets.git)
-set(wx_tag v3.2.1)
+set(wx_tag v3.2.2.1)
 
 option(IGNORE_SYSTEM_WX "Never use system wxWidgets installation" FALSE)
 
@@ -75,6 +75,7 @@ execute_process(
   COMMAND
     ./configure --with-cxx=11 --with-macosx-version-min=10.10 --enable-unicode
     --with-osx-cocoa --enable-aui --disable-debug --with-opengl
+    --enable-macosx_arch=arm64,x86_64 --enable-universal_binary=arm64,x86_64
     --without-subdirs --prefix=${cache_dir}
   WORKING_DIRECTORY ${wxwidgets_src_dir})
 math(_nproc ${OCPN_NPROC} * 2) # Assuming two threads/cpu
