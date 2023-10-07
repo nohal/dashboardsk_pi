@@ -66,12 +66,12 @@ wxBitmap Pager::Render(double scale)
     if (m_pages.find(m_current_page) == m_pages.end()) {
         m_current_page = *m_pages.begin();
     }
-    auto bmp = wxBitmapBundle::FromSVGFile(m_parent->GetDataDir()
+
+    auto bmp = GetBitmapFromSVGFile(m_parent->GetDataDir()
             + wxFileName::GetPathSeparator() + "p"
             + std::to_string(m_current_page) + ".svg",
-        wxSize(PAGER_ICON_SIZE, PAGER_ICON_SIZE));
-    wxBitmap retbmp = bmp.GetBitmap(wxSize(PAGER_ICON_SIZE, PAGER_ICON_SIZE));
-    return m_parent->ApplyBitmapBrightness(retbmp);
+        PAGER_ICON_SIZE, PAGER_ICON_SIZE);
+    return m_parent->ApplyBitmapBrightness(bmp);
 }
 
 bool Pager::IsClicked(int& x, int& y)
