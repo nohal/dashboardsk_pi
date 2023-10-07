@@ -10,11 +10,11 @@ content:
       branches: HEAD
       edit_url: https://github.com/opencpn-manuals/DashboardSK/edit/master/{path}
 
-ui:   
+ui:
   bundle:
     url: https://gitlab.com/leamas/antora-ui-default/-/raw/master/latest/ui-bundle.zip
     snapshot: true
 
 output:
   dir: ./docs
-  clean: true              
+  clean: true
