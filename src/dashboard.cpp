@@ -37,6 +37,7 @@ map<Dashboard::canvas_edge_anchor, wxCoord> Dashboard::m_offsets;
 Dashboard::Dashboard()
     : m_name(wxEmptyString)
     , m_canvas_nr(0)
+    , m_page_nr(1)
     , m_anchor(anchor_edge::bottom)
     , m_offset_x(DEFAULT_OFFSET_X)
     , m_offset_y(DEFAULT_OFFSET_Y)
@@ -162,6 +163,10 @@ void Dashboard::ReadConfig(wxJSONValue& config)
         m_name = config["name"].AsString();
     if (config.HasMember("canvas"))
         m_canvas_nr = config["canvas"].AsInt();
+    if (config.HasMember("page")) {
+        m_page_nr = config["page"].AsInt();
+        m_parent->AddPageToCanvas(m_canvas_nr, m_page_nr);
+    }
     if (config.HasMember("anchor"))
         m_anchor = (anchor_edge)config["anchor"].AsInt();
     if (config.HasMember("offset_h"))
@@ -205,6 +210,7 @@ wxJSONValue Dashboard::GenerateJSONConfig()
     wxJSONValue v;
     v["name"] = m_name;
     v["canvas"] = m_canvas_nr;
+    v["page"] = m_page_nr;
     v["anchor"] = (int)m_anchor;
     v["offset_h"] = m_offset_x;
     v["offset_v"] = m_offset_y;

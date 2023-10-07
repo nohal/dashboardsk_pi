@@ -25,7 +25,7 @@ set(OCPN_RELEASE_REPO
 # -------  Plugin setup --------
 #
 set(PKG_NAME DashboardSK_pi)
-set(PKG_VERSION "0.1.3")
+set(PKG_VERSION "0.1.4")
 set(PKG_PRERELEASE "") # Empty, or a tag like 'beta'
 
 set(DISPLAY_NAME DashboardSK) # Dialogs, installer artifacts, ...
@@ -64,7 +64,8 @@ set(HDR_DASHBOARD
     ${CMAKE_SOURCE_DIR}/include/simplepositioninstrument.h
     ${CMAKE_SOURCE_DIR}/include/simplehistograminstrument.h
     ${CMAKE_SOURCE_DIR}/include/zone.h
-    ${CMAKE_SOURCE_DIR}/include/displayscale.h)
+    ${CMAKE_SOURCE_DIR}/include/displayscale.h
+    ${CMAKE_SOURCE_DIR}/include/pager.h)
 set(SRC_DASHBOARD
     ${CMAKE_SOURCE_DIR}/src/dashboardsk.cpp
     ${CMAKE_SOURCE_DIR}/src/dashboard.cpp
@@ -73,16 +74,12 @@ set(SRC_DASHBOARD
     ${CMAKE_SOURCE_DIR}/src/simplegaugeinstrument.cpp
     ${CMAKE_SOURCE_DIR}/src/simpletextinstrument.cpp
     ${CMAKE_SOURCE_DIR}/src/simplepositioninstrument.cpp
-    ${CMAKE_SOURCE_DIR}/src/simplehistograminstrument.cpp)
+    ${CMAKE_SOURCE_DIR}/src/simplehistograminstrument.cpp
+    ${CMAKE_SOURCE_DIR}/src/pager.cpp)
 
 set(SRC
-    ${HDR_DASHBOARD}
-    ${SRC_DASHBOARD}
-    ${CMAKE_SOURCE_DIR}/include/dashboardsk_pi.h
-    ${CMAKE_SOURCE_DIR}/src/dashboardsk_pi.cpp
-    ${CMAKE_SOURCE_DIR}/include/dashboardskgui.h
+    ${SRC_DASHBOARD} ${CMAKE_SOURCE_DIR}/src/dashboardsk_pi.cpp
     ${CMAKE_SOURCE_DIR}/src/dashboardskgui.cpp
-    ${CMAKE_SOURCE_DIR}/include/dashboardskguiimpl.h
     ${CMAKE_SOURCE_DIR}/src/dashboardskguiimpl.cpp)
 
 set(PKG_API_LIB api-18) # A dir in opencpn-libs/ e. g., api-17 or api-16

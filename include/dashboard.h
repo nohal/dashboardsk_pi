@@ -63,6 +63,8 @@ private:
     wxString m_name;
     /// Id of the canvas on which the dashboard is drawn
     int m_canvas_nr;
+    /// Number of "page" on which the dashboard is drawn
+    int m_page_nr;
     /// Edge of the canvas to which the dashboard is anchored
     anchor_edge m_anchor;
     /// Horizontal offset of the dashboard from the edge of the canvas
@@ -142,6 +144,16 @@ public:
     ///
     /// \return The index of the canvas
     size_t GetCanvasNr() const { return m_canvas_nr; };
+
+    /// Set the number of the page on which the dashboard is displayed
+    ///
+    /// \param nr The number of the page (1-9)
+    void SetPageNr(size_t nr) { m_page_nr = nr; };
+
+    /// Get the number of the page on which the dashboard is displayed
+    ///
+    /// \return The number of the page
+    size_t GetPageNr() const { return m_page_nr; };
 
     /// Set the edge of the canvas to which the dashboard is attached
     ///

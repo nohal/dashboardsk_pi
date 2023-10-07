@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version 3.10.1-284-gf026a8e1)
+// C++ code generated with wxFormBuilder (version 3.10.1-376-g11d0e737)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -76,6 +76,8 @@ protected:
     wxCheckBox* m_cbEnabled;
     wxStaticText* m_stCanvas;
     wxSpinCtrl* m_spCanvas;
+    wxStaticText* m_stPage;
+    wxSpinCtrl* m_spPage;
     wxStaticText* m_stAnchor;
     wxChoice* m_chAnchor;
     wxStaticText* m_stOffsetX;
@@ -147,6 +149,7 @@ protected:
     }
     virtual void m_cbEnabledOnCheckBox(wxCommandEvent& event) { event.Skip(); }
     virtual void m_spCanvasOnSpinCtrl(wxSpinEvent& event) { event.Skip(); }
+    virtual void m_spPageOnSpinCtrl(wxSpinEvent& event) { event.Skip(); }
     virtual void m_chAnchorOnChoice(wxCommandEvent& event) { event.Skip(); }
     virtual void m_spOffsetXOnSpinCtrl(wxSpinEvent& event) { event.Skip(); }
     virtual void m_spOffsetYOnSpinCtrl(wxSpinEvent& event) { event.Skip(); }
@@ -173,7 +176,7 @@ public:
     MainConfigFrame(wxWindow* parent, wxWindowID id = wxID_ANY,
         const wxString& title = _("DashboardSK Configuration"),
         const wxPoint& pos = wxDefaultPosition,
-        const wxSize& size = wxSize(840, 620),
+        const wxSize& size = wxSize(880, 620),
         long style = wxDEFAULT_DIALOG_STYLE | wxTAB_TRAVERSAL);
 
     ~MainConfigFrame();

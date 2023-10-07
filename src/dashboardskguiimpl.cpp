@@ -158,12 +158,14 @@ void MainConfigFrameImpl::EnableItems(bool dashboard_selection, bool instr_list,
         m_cbEnabled->Enable();
         m_chAnchor->Enable();
         m_spCanvas->Enable();
+        m_spPage->Enable();
         m_spOffsetX->Enable();
         m_spOffsetY->Enable();
         m_spSpacingH->Enable();
         m_spSpacingV->Enable();
         m_stAnchor->Enable();
         m_stCanvas->Enable();
+        m_stPage->Enable();
         m_stOffsetX->Enable();
         m_stOffsetY->Enable();
         m_stSpacingH->Enable();
@@ -172,12 +174,14 @@ void MainConfigFrameImpl::EnableItems(bool dashboard_selection, bool instr_list,
         m_cbEnabled->Disable();
         m_chAnchor->Disable();
         m_spCanvas->Disable();
+        m_spPage->Disable();
         m_spOffsetX->Disable();
         m_spOffsetY->Disable();
         m_spSpacingH->Disable();
         m_spSpacingV->Disable();
         m_stAnchor->Disable();
         m_stCanvas->Disable();
+        m_stPage->Disable();
         m_stOffsetX->Disable();
         m_stOffsetY->Disable();
         m_stSpacingH->Disable();
@@ -649,6 +653,7 @@ void MainConfigFrameImpl::m_sdbSizerOnOKButtonClick(wxCommandEvent& event)
 {
     UpdateEditedDashboard();
     UpdateEditedInstrument();
+    m_dsk_pi->GetDSK()->ResetPagers();
     m_dsk_pi->GetDSK()->SetSelf(m_tSelf->GetValue());
     m_dsk_pi->GetDSK()->ForceRedraw();
     m_dsk_pi->SaveConfig();
@@ -726,6 +731,7 @@ void MainConfigFrameImpl::FillDashboardDetails()
         return;
     }
     m_spCanvas->SetValue(m_edited_dashboard->GetCanvasNr());
+    m_spPage->SetValue(m_edited_dashboard->GetPageNr());
     m_chAnchor->SetSelection((int)m_edited_dashboard->GetAnchorEdge());
     m_spSpacingH->SetValue(m_edited_dashboard->GetHSpacing());
     m_spSpacingV->SetValue(m_edited_dashboard->GetVSpacing());
@@ -740,6 +746,7 @@ void MainConfigFrameImpl::UpdateEditedDashboard()
         return;
     }
     m_edited_dashboard->SetCanvasNr((size_t)m_spCanvas->GetValue());
+    m_edited_dashboard->SetPageNr((size_t)m_spPage->GetValue());
     m_edited_dashboard->SetAnchorEdge(
         (Dashboard::anchor_edge)(m_chAnchor->GetSelection()));
     m_edited_dashboard->SetHSpacing(m_spSpacingH->GetValue());
@@ -767,6 +774,11 @@ void MainConfigFrameImpl::m_cbEnabledOnCheckBox(wxCommandEvent& event)
 }
 
 void MainConfigFrameImpl::m_spCanvasOnSpinCtrl(wxSpinEvent& event)
+{
+    UpdateEditedDashboard();
+}
+
+void MainConfigFrameImpl::m_spPageOnSpinCtrl(wxSpinEvent& event)
 {
     UpdateEditedDashboard();
 }

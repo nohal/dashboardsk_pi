@@ -30,6 +30,7 @@
 #include "dashboard.h"
 #include "dskdc.h"
 #include "ocpn_plugin.h"
+#include "pager.h"
 #include "pi_common.h"
 #include "wx/jsonval.h"
 #include <unordered_map>
@@ -72,6 +73,8 @@ private:
     wxJSONValue* m_self_ptr;
     /// Updates to the dashboard are not performed if true
     bool m_frozen;
+    /// Map of dashboard pages displayed on canvases
+    std::unordered_map<int, Pager*> m_displayed_pages;
     /// Map of instrument subscription to the data paths. Only instruments
     /// interested in changed data are notified and poll them on next update
 #if wxCHECK_VERSION(3, 1, 0)
@@ -81,6 +84,9 @@ private:
 #endif
     /// Color scheme to be used when rendering the dashboards on screen
     int m_color_scheme;
+
+    /// Path to the directory with data
+    wxString m_data_dir;
 
     /// Process the SK value and if it is an object, extend the data structure
     /// to make the actual values leaves
@@ -99,7 +105,7 @@ public:
     static uint8_t LogLevel() { return 0; }; // TODO: Set from config
 
     /// Constructor
-    DashboardSK();
+    explicit DashboardSK(const wxString& data_path);
 
     /// Constructor
     ~DashboardSK()
@@ -353,6 +359,25 @@ public:
     /// Freeze/unfreeze the drawing of the dashboards
     /// \param state Desired state
     void Freeze(bool state) { m_frozen = state; };
+
+    /// Get data directory path
+    /// @return Path to the data directory
+    const wxString& GetDataDir() { return m_data_dir; }
+
+    /// Adds a numbered page to the canvas
+    /// @param canvas Index of the canvas
+    /// @param page Page number (1-9)
+    void AddPageToCanvas(const int& canvas, const size_t& page);
+
+    /// Process the mouse event
+    /// @param event
+    /// @return true if we did process the event, false if it was not
+    /// interesting
+    bool ProcessMouseEvent(wxMouseEvent& event);
+
+    wxBitmap ApplyBitmapBrightness(wxBitmap& bitmap);
+    wxBitmap SetBitmapBrightnessAbs(wxBitmap& bitmap, double level);
+    void ResetPagers();
 };
 
 PLUGIN_END_NAMESPACE

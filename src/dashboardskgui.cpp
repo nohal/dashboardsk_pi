@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version 3.10.1-284-gf026a8e1)
+// C++ code generated with wxFormBuilder (version 3.10.1-376-g11d0e737)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -9,12 +9,6 @@
 
 #include "dashboardskgui.h"
 
-#if (wxCHECK_VERSION(3, 1, 0))
-#define BTN_SIZE wxSize(FromDIP(32), FromDIP(32))
-#else
-#define BTN_SIZE wxSize(32, 32)
-#endif
-
 ///////////////////////////////////////////////////////////////////////////
 using namespace DashboardSKPlugin;
 
@@ -22,11 +16,7 @@ MainConfigFrame::MainConfigFrame(wxWindow* parent, wxWindowID id,
     const wxString& title, const wxPoint& pos, const wxSize& size, long style)
     : wxDialog(parent, id, title, pos, size, style)
 {
-#if (wxCHECK_VERSION(3, 1, 0))
-    this->SetSizeHints(wxSize(FromDIP(500), FromDIP(300)), wxDefaultSize);
-#else
     this->SetSizeHints(wxSize(500, 300), wxDefaultSize);
-#endif
 
     wxBoxSizer* MainSizer;
     MainSizer = new wxBoxSizer(wxVERTICAL);
@@ -123,27 +113,32 @@ MainConfigFrame::MainConfigFrame(wxWindow* parent, wxWindowID id,
     InstrumentListButtonsSizer = new wxBoxSizer(wxVERTICAL);
 
     m_bpAddButton = new wxBitmapButton(m_scrolledWindowInstrumentList, wxID_ANY,
-        wxNullBitmap, wxDefaultPosition, BTN_SIZE, wxBU_AUTODRAW | 0);
+        wxNullBitmap, wxDefaultPosition, wxSize(32, 32), wxBU_AUTODRAW | 0);
     InstrumentListButtonsSizer->Add(m_bpAddButton, 0, wxALL, 5);
 
-    m_bpRemoveButton = new wxBitmapButton(m_scrolledWindowInstrumentList,
-        wxID_ANY, wxNullBitmap, wxDefaultPosition, BTN_SIZE, wxBU_AUTODRAW | 0);
+    m_bpRemoveButton
+        = new wxBitmapButton(m_scrolledWindowInstrumentList, wxID_ANY,
+            wxNullBitmap, wxDefaultPosition, wxSize(32, 32), wxBU_AUTODRAW | 0);
     InstrumentListButtonsSizer->Add(m_bpRemoveButton, 0, wxALL, 5);
 
-    m_bpMoveUpButton = new wxBitmapButton(m_scrolledWindowInstrumentList,
-        wxID_ANY, wxNullBitmap, wxDefaultPosition, BTN_SIZE, wxBU_AUTODRAW | 0);
+    m_bpMoveUpButton
+        = new wxBitmapButton(m_scrolledWindowInstrumentList, wxID_ANY,
+            wxNullBitmap, wxDefaultPosition, wxSize(32, 32), wxBU_AUTODRAW | 0);
     InstrumentListButtonsSizer->Add(m_bpMoveUpButton, 0, wxALL, 5);
 
-    m_bpMoveDownButton = new wxBitmapButton(m_scrolledWindowInstrumentList,
-        wxID_ANY, wxNullBitmap, wxDefaultPosition, BTN_SIZE, wxBU_AUTODRAW | 0);
+    m_bpMoveDownButton
+        = new wxBitmapButton(m_scrolledWindowInstrumentList, wxID_ANY,
+            wxNullBitmap, wxDefaultPosition, wxSize(32, 32), wxBU_AUTODRAW | 0);
     InstrumentListButtonsSizer->Add(m_bpMoveDownButton, 0, wxALL, 5);
 
-    m_bpSaveInstrButton = new wxBitmapButton(m_scrolledWindowInstrumentList,
-        wxID_ANY, wxNullBitmap, wxDefaultPosition, BTN_SIZE, wxBU_AUTODRAW | 0);
+    m_bpSaveInstrButton
+        = new wxBitmapButton(m_scrolledWindowInstrumentList, wxID_ANY,
+            wxNullBitmap, wxDefaultPosition, wxSize(32, 32), wxBU_AUTODRAW | 0);
     InstrumentListButtonsSizer->Add(m_bpSaveInstrButton, 0, wxALL, 5);
 
-    m_bpImportInstrButton = new wxBitmapButton(m_scrolledWindowInstrumentList,
-        wxID_ANY, wxNullBitmap, wxDefaultPosition, BTN_SIZE, wxBU_AUTODRAW | 0);
+    m_bpImportInstrButton
+        = new wxBitmapButton(m_scrolledWindowInstrumentList, wxID_ANY,
+            wxNullBitmap, wxDefaultPosition, wxSize(32, 32), wxBU_AUTODRAW | 0);
     InstrumentListButtonsSizer->Add(m_bpImportInstrButton, 0, wxALL, 5);
 
     InstrumentListControlsSizer->Add(
@@ -271,6 +266,15 @@ MainConfigFrame::MainConfigFrame(wxWindow* parent, wxWindowID id,
     m_spCanvas = new wxSpinCtrl(this, wxID_ANY, wxEmptyString,
         wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 1, 0);
     fgSizerLayout->Add(m_spCanvas, 0, wxALL, 5);
+
+    m_stPage = new wxStaticText(
+        this, wxID_ANY, _("Page"), wxDefaultPosition, wxDefaultSize, 0);
+    m_stPage->Wrap(-1);
+    fgSizerLayout->Add(m_stPage, 0, wxALL, 5);
+
+    m_spPage = new wxSpinCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition,
+        wxDefaultSize, wxSP_ARROW_KEYS, 1, 9, 1);
+    fgSizerLayout->Add(m_spPage, 0, wxALL, 5);
 
     m_stAnchor = new wxStaticText(
         this, wxID_ANY, _("Anchor"), wxDefaultPosition, wxDefaultSize, 0);
@@ -401,6 +405,8 @@ MainConfigFrame::MainConfigFrame(wxWindow* parent, wxWindowID id,
         this);
     m_spCanvas->Connect(wxEVT_COMMAND_SPINCTRL_UPDATED,
         wxSpinEventHandler(MainConfigFrame::m_spCanvasOnSpinCtrl), NULL, this);
+    m_spPage->Connect(wxEVT_COMMAND_SPINCTRL_UPDATED,
+        wxSpinEventHandler(MainConfigFrame::m_spPageOnSpinCtrl), NULL, this);
     m_chAnchor->Connect(wxEVT_COMMAND_CHOICE_SELECTED,
         wxCommandEventHandler(MainConfigFrame::m_chAnchorOnChoice), NULL, this);
     m_spOffsetX->Connect(wxEVT_COMMAND_SPINCTRL_UPDATED,
@@ -480,6 +486,8 @@ MainConfigFrame::~MainConfigFrame()
         this);
     m_spCanvas->Disconnect(wxEVT_COMMAND_SPINCTRL_UPDATED,
         wxSpinEventHandler(MainConfigFrame::m_spCanvasOnSpinCtrl), NULL, this);
+    m_spPage->Disconnect(wxEVT_COMMAND_SPINCTRL_UPDATED,
+        wxSpinEventHandler(MainConfigFrame::m_spPageOnSpinCtrl), NULL, this);
     m_chAnchor->Disconnect(wxEVT_COMMAND_CHOICE_SELECTED,
         wxCommandEventHandler(MainConfigFrame::m_chAnchorOnChoice), NULL, this);
     m_spOffsetX->Disconnect(wxEVT_COMMAND_SPINCTRL_UPDATED,
@@ -512,11 +520,7 @@ SKDataTree::SKDataTree(wxWindow* parent, wxWindowID id, const wxString& title,
     const wxPoint& pos, const wxSize& size, long style)
     : wxDialog(parent, id, title, pos, size, style)
 {
-#if (wxCHECK_VERSION(3, 1, 0))
-    this->SetSizeHints(wxSize(FromDIP(200), FromDIP(200)), wxDefaultSize);
-#else
     this->SetSizeHints(wxSize(200, 200), wxDefaultSize);
-#endif
 
     wxBoxSizer* bSizerMain;
     bSizerMain = new wxBoxSizer(wxVERTICAL);
@@ -672,11 +676,7 @@ SKPathBrowser::SKPathBrowser(wxWindow* parent, wxWindowID id,
     const wxString& title, const wxPoint& pos, const wxSize& size, long style)
     : wxDialog(parent, id, title, pos, size, style)
 {
-#if (wxCHECK_VERSION(3, 1, 0))
-    this->SetSizeHints(wxSize(FromDIP(200), FromDIP(200)), wxDefaultSize);
-#else
     this->SetSizeHints(wxSize(200, 200), wxDefaultSize);
-#endif
 
     wxBoxSizer* bSizerMain;
     bSizerMain = new wxBoxSizer(wxVERTICAL);
@@ -758,11 +758,7 @@ ZonesConfigDialog::ZonesConfigDialog(wxWindow* parent, wxWindowID id,
     const wxString& title, const wxPoint& pos, const wxSize& size, long style)
     : wxDialog(parent, id, title, pos, size, style)
 {
-#if (wxCHECK_VERSION(3, 1, 0))
-    this->SetSizeHints(wxSize(FromDIP(200), FromDIP(200)), wxDefaultSize);
-#else
     this->SetSizeHints(wxSize(200, 200), wxDefaultSize);
-#endif
 
     wxBoxSizer* bSizerMain;
     bSizerMain = new wxBoxSizer(wxVERTICAL);
@@ -783,11 +779,11 @@ ZonesConfigDialog::ZonesConfigDialog(wxWindow* parent, wxWindowID id,
     bSizerButtons = new wxBoxSizer(wxVERTICAL);
 
     m_bpAdd = new wxBitmapButton(this, wxID_ANY, wxNullBitmap,
-        wxDefaultPosition, BTN_SIZE, wxBU_AUTODRAW | 0);
+        wxDefaultPosition, wxSize(32, 32), wxBU_AUTODRAW | 0);
     bSizerButtons->Add(m_bpAdd, 0, wxALL, 5);
 
     m_bpRemove = new wxBitmapButton(this, wxID_ANY, wxNullBitmap,
-        wxDefaultPosition, BTN_SIZE, wxBU_AUTODRAW | 0);
+        wxDefaultPosition, wxSize(32, 32), wxBU_AUTODRAW | 0);
     bSizerButtons->Add(m_bpRemove, 0, wxALL, 5);
 
     bSizerData->Add(bSizerButtons, 0, wxEXPAND, 5);

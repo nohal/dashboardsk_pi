@@ -117,7 +117,7 @@ public:
     MainConfigFrameImpl(dashboardsk_pi* dsk_pi, wxWindow* parent,
         wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString,
         const wxPoint& pos = wxDefaultPosition,
-        const wxSize& size = wxSize(840, 620),
+        const wxSize& size = wxSize(880, 620),
         long style = wxDEFAULT_FRAME_STYLE | wxTAB_TRAVERSAL);
     ~MainConfigFrameImpl() = default;
 
@@ -203,6 +203,11 @@ protected:
     ///
     /// \param event The event object reference
     virtual void m_spCanvasOnSpinCtrl(wxSpinEvent& event);
+
+    /// Event handler for change of parameter of edited dashboard
+    ///
+    /// \param event The event object reference
+    virtual void m_spPageOnSpinCtrl(wxSpinEvent& event);
 
     /// Event handler for change of parameter of edited dashboard
     ///

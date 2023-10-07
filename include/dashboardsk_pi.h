@@ -207,6 +207,11 @@ public:
     /// \return Generated bitmap
     wxBitmap GetBitmapFromSVG(
         const wxString& filename, const wxCoord w, const wxCoord h);
+
+    /// Hook for the mouse events relayed from the core application
+    /// @param event
+    /// @return
+    bool MouseEventHook(wxMouseEvent& event);
 };
 
 PLUGIN_END_NAMESPACE

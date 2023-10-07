@@ -1,0 +1,99 @@
+/******************************************************************************
+ *
+ * Project:  OpenCPN
+ * Purpose:  DashboardSK Plugin
+ * Author:   Pavel Kalian
+ *
+ ******************************************************************************
+ * This file is part of the DashboardSK plugin
+ * (https://github.com/nohal/dashboardsk_pi).
+ *   Copyright (C) 2022 by Pavel Kalian
+ *   https://github.com/nohal
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 3, or (at your option) any later
+ * version of the license.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ ******************************************************************************/
+
+#include "pager.h"
+#include "dashboardsk.h"
+#include <wx/filename.h>
+
+PLUGIN_BEGIN_NAMESPACE
+
+Pager::Pager(DashboardSK* parent)
+    : m_parent(parent)
+    , m_current_page(1)
+    , m_x_pos(0)
+    , m_y_pos(0)
+{
+}
+
+void Pager::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
+{
+    if (m_pages.size() < 2) {
+        return;
+    }
+    auto bmp = Render(1.0);
+    m_x_pos = PAGER_LEFT_OFFSET;
+    m_y_pos = vp->pix_height - PAGER_BOTTOM_OFFSET;
+    dc->DrawBitmap(bmp, m_x_pos, m_y_pos,
+        bmp.HasAlpha()); // TODO: make the position configurable
+}
+
+const size_t Pager::GetNextPage()
+{
+    auto it = m_pages.find(m_current_page);
+    it++;
+    if (it == m_pages.end()) {
+        it = m_pages.begin();
+    }
+    return *it;
+}
+
+wxBitmap Pager::Render(double scale)
+{
+    // TODO: Cache the bitmaps
+    if (m_pages.find(m_current_page) == m_pages.end()) {
+        m_current_page = *m_pages.begin();
+    }
+    auto bmp = wxBitmapBundle::FromSVGFile(m_parent->GetDataDir()
+            + wxFileName::GetPathSeparator() + "p"
+            + std::to_string(m_current_page) + ".svg",
+        wxSize(PAGER_ICON_SIZE, PAGER_ICON_SIZE));
+    wxBitmap retbmp = bmp.GetBitmap(wxSize(PAGER_ICON_SIZE, PAGER_ICON_SIZE));
+    return m_parent->ApplyBitmapBrightness(retbmp);
+}
+
+bool Pager::IsClicked(int& x, int& y)
+{
+    if (m_pages.size() >= 2 && x >= m_x_pos && x <= m_x_pos + PAGER_ICON_SIZE
+        && y >= m_y_pos && y <= m_y_pos + PAGER_ICON_SIZE) {
+        return true;
+    }
+    return false;
+}
+
+bool Pager::ProcessMouseEvent(wxMouseEvent& event)
+{
+    if (event.LeftIsDown()) {
+        int x = event.GetX(); // Convert to per-canvas coordinates
+        int y = event.GetY(); // Convert to per-canvas coordinates
+        if (IsClicked(x, y)) {
+            SetCurrentPage(GetNextPage());
+            return true;
+        }
+    }
+    return false;
+}
+
+PLUGIN_END_NAMESPACE

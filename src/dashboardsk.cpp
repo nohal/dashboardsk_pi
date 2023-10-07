@@ -30,12 +30,16 @@
 
 PLUGIN_BEGIN_NAMESPACE
 
-DashboardSK::DashboardSK()
+DashboardSK::DashboardSK(const wxString& data_path)
     : m_self(wxEmptyString)
     , m_self_ptr(nullptr)
-    , m_color_scheme(0)
     , m_frozen(false)
+    , m_color_scheme(0)
+    , m_data_dir(data_path)
 {
+    for (int i = 0; i < GetCanvasCount(); i++) {
+        m_displayed_pages.insert({ i, new Pager(this) });
+    }
     m_sk_data["vessels"].AddComment("Root of the vessel tree");
 }
 
@@ -44,9 +48,16 @@ void DashboardSK::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
     if (m_frozen) {
         return;
     }
+    if (m_displayed_pages.find(canvasIndex) == m_displayed_pages.end()) {
+        m_displayed_pages[canvasIndex] = new Pager(this);
+    }
+    m_displayed_pages[canvasIndex]->Draw(dc, vp, canvasIndex);
     Dashboard::ClearOffsets();
     for (auto dashboard : m_dashboards) {
-        dashboard->Draw(dc, vp, canvasIndex);
+        if (m_displayed_pages[canvasIndex]->GetCurrentPage()
+            == dashboard->GetPageNr()) {
+            dashboard->Draw(dc, vp, canvasIndex);
+        }
     }
 }
 
@@ -73,6 +84,20 @@ void DashboardSK::ReadConfig(wxJSONValue& config)
     } else {
         LOG_VERBOSE("DashboardSK_pi: No dashboards array");
     }
+    if (config["canvas"].IsArray()) {
+        m_displayed_pages.clear();
+        for (int i = 0; i < config["canvas"].Size(); i++) {
+            if (config["canvas"].HasMember("page")) {
+                m_displayed_pages[i]->SetCurrentPage(
+                    config["canvas"]["page"].AsInt());
+            }
+        }
+        for (int i = 0; i < GetCanvasCount(); i++) {
+            if (m_displayed_pages.find(i) == m_displayed_pages.end()) {
+                m_displayed_pages[i]->SetCurrentPage(1);
+            }
+        }
+    }
 }
 
 wxJSONValue DashboardSK::GenerateJSONConfig()
@@ -81,6 +106,9 @@ wxJSONValue DashboardSK::GenerateJSONConfig()
     v["signalk"]["self"] = m_self;
     for (auto dashboard : m_dashboards) {
         v["dashboards"].Append(dashboard->GenerateJSONConfig());
+    }
+    for (auto page : m_displayed_pages) {
+        v["canvas"]["page"].Append(page.second->GetCurrentPage());
     }
     return v;
 }
@@ -350,6 +378,80 @@ const wxString DashboardSK::SelfPopulate(const wxString& path)
     wxString new_path = path;
     new_path.Replace(".self", "." + Self());
     return new_path;
+}
+
+void DashboardSK::AddPageToCanvas(const int& canvas, const size_t& page)
+{
+    if (canvas < GetCanvasCount()) {
+        m_displayed_pages[canvas]->AddPage(page);
+    }
+}
+
+bool DashboardSK::ProcessMouseEvent(wxMouseEvent& event)
+{
+    // Pagers
+    for (auto page : m_displayed_pages) {
+        if (GetCanvasIndexUnderMouse() == page.first
+            && page.second->ProcessMouseEvent(event)) {
+            return true;
+        }
+    }
+    // TODO: Pass to the dashboards for interactive instruments
+    return false;
+}
+
+wxBitmap DashboardSK::ApplyBitmapBrightness(wxBitmap& bitmap)
+{
+    double dimLevel;
+    switch (m_color_scheme) {
+    case PI_GLOBAL_COLOR_SCHEME_DUSK: {
+        dimLevel = 0.8;
+        break;
+    }
+    case PI_GLOBAL_COLOR_SCHEME_NIGHT: {
+        dimLevel = 0.5;
+        break;
+    }
+    default: {
+        return bitmap;
+    }
+    }
+
+    return SetBitmapBrightnessAbs(bitmap, dimLevel);
+}
+
+wxBitmap DashboardSK::SetBitmapBrightnessAbs(wxBitmap& bitmap, double level)
+{
+    wxImage image = bitmap.ConvertToImage();
+
+    int gimg_width = image.GetWidth();
+    int gimg_height = image.GetHeight();
+
+    for (int iy = 0; iy < gimg_height; iy++) {
+        for (int ix = 0; ix < gimg_width; ix++) {
+            if (!image.IsTransparent(ix, iy, 30)) {
+                wxImage::RGBValue rgb(image.GetRed(ix, iy),
+                    image.GetGreen(ix, iy), image.GetBlue(ix, iy));
+                wxImage::HSVValue hsv = wxImage::RGBtoHSV(rgb);
+                hsv.value = hsv.value * level;
+                wxImage::RGBValue nrgb = wxImage::HSVtoRGB(hsv);
+                image.SetRGB(ix, iy, nrgb.red, nrgb.green, nrgb.blue);
+            }
+        }
+    }
+    return wxBitmap(image);
+}
+
+void DashboardSK::ResetPagers()
+{
+    for (auto& page : m_displayed_pages) {
+        page.second->Reset();
+        for (auto& dashboard : m_dashboards) {
+            if (page.first == dashboard->GetCanvasNr()) {
+                page.second->AddPage(dashboard->GetPageNr());
+            }
+        }
+    }
 }
 
 PLUGIN_END_NAMESPACE

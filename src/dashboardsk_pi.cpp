@@ -79,7 +79,7 @@ dashboardsk_pi::~dashboardsk_pi() { delete m_json_reader; }
 
 int dashboardsk_pi::Init()
 {
-    m_dsk = new DashboardSK();
+    m_dsk = new DashboardSK(GetDataDir());
     LoadConfig();
 
     wxString _svg_dashboardsk = GetDataDir() + "dashboardsk_pi.svg";
@@ -103,7 +103,8 @@ int dashboardsk_pi::Init()
 
     return (WANTS_OVERLAY_CALLBACK | WANTS_OPENGL_OVERLAY_CALLBACK
         | WANTS_DYNAMIC_OPENGL_OVERLAY_CALLBACK | WANTS_TOOLBAR_CALLBACK
-        | INSTALLS_TOOLBAR_TOOL | WANTS_PREFERENCES | WANTS_PLUGIN_MESSAGING);
+        | INSTALLS_TOOLBAR_TOOL | WANTS_PREFERENCES | WANTS_PLUGIN_MESSAGING
+        | WANTS_MOUSE_EVENTS);
 }
 
 bool dashboardsk_pi::DeInit()
@@ -282,6 +283,11 @@ wxBitmap dashboardsk_pi::GetBitmapFromSVG(
     const wxString& filename, const wxCoord w, const wxCoord h)
 {
     return GetBitmapFromSVGFile(GetDataDir() + filename, w, h);
+}
+
+bool dashboardsk_pi::MouseEventHook(wxMouseEvent& event)
+{
+    return m_dsk->ProcessMouseEvent(event);
 }
 
 PLUGIN_END_NAMESPACE
