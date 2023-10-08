@@ -109,13 +109,13 @@ macro(add_plugin_libraries)
   if(WIN32)
     add_subdirectory("${CMAKE_SOURCE_DIR}/opencpn-libs/WindowsHeaders")
     target_link_libraries(${PACKAGE_NAME} windows::headers)
+
+    add_subdirectory("${CMAKE_SOURCE_DIR}/opencpn-libs/glu")
+    target_link_libraries(${PACKAGE_NAME} ocpn::glu_static)
   endif()
 
   add_subdirectory("${CMAKE_SOURCE_DIR}/opencpn-libs/plugingl")
   target_link_libraries(${PACKAGE_NAME} ocpn::plugingl)
-
-  add_subdirectory("${CMAKE_SOURCE_DIR}/opencpn-libs/opencpn-glu")
-  target_link_libraries(${PACKAGE_NAME} opencpn::glu)
 
   add_subdirectory("opencpn-libs/wxJSON")
   target_link_libraries(${PACKAGE_NAME} ocpn::wxjson)
