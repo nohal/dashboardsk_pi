@@ -80,22 +80,21 @@ void DashboardSK::ReadConfig(wxJSONValue& config)
             d->ReadConfig(config["dashboards"][i]);
             d->SetColorScheme(m_color_scheme);
             m_dashboards.emplace_back(d);
+            m_displayed_pages[d->GetCanvasNr()]->AddPage(d->GetPageNr());
         }
     } else {
         LOG_VERBOSE("DashboardSK_pi: No dashboards array");
     }
     if (config["canvas"].IsArray()) {
-        m_displayed_pages.clear();
         for (int i = 0; i < config["canvas"].Size(); i++) {
-            if (config["canvas"].HasMember("page")) {
-                m_displayed_pages[i]->SetCurrentPage(
-                    config["canvas"]["page"].AsInt());
-            }
+            m_displayed_pages[config["canvas"][i]["id"].AsInt()]
+                ->SetCurrentPage(config["canvas"][i]["page"].AsInt());
         }
-        for (int i = 0; i < GetCanvasCount(); i++) {
-            if (m_displayed_pages.find(i) == m_displayed_pages.end()) {
-                m_displayed_pages[i]->SetCurrentPage(1);
-            }
+    }
+    for (int i = 0; i < GetCanvasCount(); i++) {
+        if (m_displayed_pages.find(i) == m_displayed_pages.end()) {
+            m_displayed_pages[i] = new Pager(this);
+            m_displayed_pages[i]->SetCurrentPage(1);
         }
     }
 }
@@ -108,7 +107,10 @@ wxJSONValue DashboardSK::GenerateJSONConfig()
         v["dashboards"].Append(dashboard->GenerateJSONConfig());
     }
     for (auto page : m_displayed_pages) {
-        v["canvas"]["page"].Append(page.second->GetCurrentPage());
+        wxJSONValue vc;
+        vc["id"] = page.first;
+        vc["page"] = page.second->GetCurrentPage();
+        v["canvas"].Append(vc);
     }
     return v;
 }

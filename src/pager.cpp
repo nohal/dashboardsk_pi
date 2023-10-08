@@ -96,4 +96,17 @@ bool Pager::ProcessMouseEvent(wxMouseEvent& event)
     return false;
 }
 
+void Pager::SetCurrentPage(size_t new_page)
+{
+    if (m_pages.find(new_page) != m_pages.end()) {
+        m_current_page = new_page;
+    } else {
+        if (!m_pages.empty()) {
+            m_current_page = *m_pages.begin();
+        } else {
+            m_current_page = 1;
+        }
+    }
+}
+
 PLUGIN_END_NAMESPACE

@@ -77,11 +77,7 @@ public:
 
     /// Set currently displayed page
     /// @param new_page number of currently displayed
-    void SetCurrentPage(size_t new_page)
-    {
-        m_current_page = new_page;
-    } // TODO: What if the number is a nonsense and points to a non-existing
-      // one?
+    void SetCurrentPage(size_t new_page);
 
     /// Get currently displayed page number
     /// @return page number
