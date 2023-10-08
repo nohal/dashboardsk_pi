@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: DashboardSK_pi 0.0.1\n"
+"Project-Id-Version: DashboardSK_pi 0.1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-09 23:05-0300\n"
+"POT-Creation-Date: 2023-10-08 17:17-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,23 +17,23 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: include/dashboardskgui.h:169
+#: include/dashboardskgui.h:177
 msgid "DashboardSK Configuration"
 msgstr ""
 
-#: include/dashboardskgui.h:200
+#: include/dashboardskgui.h:208
 msgid "SignalK data tree"
 msgstr ""
 
-#: include/dashboardskgui.h:290 include/dashboardskguiimpl.h:358
+#: include/dashboardskgui.h:298 include/dashboardskguiimpl.h:375
 msgid "SignalK Browser"
 msgstr ""
 
-#: include/dashboardskgui.h:346
+#: include/dashboardskgui.h:354
 msgid "Zones configuration"
 msgstr ""
 
-#: include/dashboardskguiimpl.h:486
+#: include/dashboardskguiimpl.h:503
 msgid "SignalK Zones Configuration"
 msgstr ""
 
@@ -109,39 +109,43 @@ msgstr ""
 msgid "Hz -> RPM"
 msgstr ""
 
-#: include/instrument.h:144
-msgid "Lowest to highest"
+#: include/instrument.h:111
+msgid "RAD/s -> DEG/m"
 msgstr ""
 
 #: include/instrument.h:145
+msgid "Lowest to highest"
+msgstr ""
+
+#: include/instrument.h:146
 msgid "Highest to lowest"
 msgstr ""
 
-#: include/instrument.h:148
+#: include/instrument.h:149
 msgid "1 minute"
 msgstr ""
 
-#: include/instrument.h:149
+#: include/instrument.h:150
 msgid "5 minutes"
 msgstr ""
 
-#: include/instrument.h:150
+#: include/instrument.h:151
 msgid "15 minutes"
 msgstr ""
 
-#: include/instrument.h:151
+#: include/instrument.h:152
 msgid "30 minutes"
 msgstr ""
 
-#: include/instrument.h:152
+#: include/instrument.h:153
 msgid "1 hour"
 msgstr ""
 
-#: include/instrument.h:153
+#: include/instrument.h:154
 msgid "1 day"
 msgstr ""
 
-#: include/instrument.h:154
+#: include/instrument.h:155
 msgid "3 days"
 msgstr ""
 
@@ -186,7 +190,7 @@ msgid "Transformation"
 msgstr ""
 
 #: include/simplegaugeinstrument.h:93 include/simplenumberinstrument.h:66
-#: src/dashboardskgui.cpp:736
+#: src/dashboardskgui.cpp:767
 msgid "Zones"
 msgstr ""
 
@@ -430,212 +434,228 @@ msgid "Dashboard"
 msgstr ""
 
 #: src/dashboardskgui.cpp:65
-msgid "Remove"
+msgid "Rename"
 msgstr ""
 
-#: src/dashboardskgui.cpp:70
+#: src/dashboardskgui.cpp:69
 msgid "New"
 msgstr ""
 
-#: src/dashboardskgui.cpp:91
+#: src/dashboardskgui.cpp:80
+msgid "Remove"
+msgstr ""
+
+#: src/dashboardskgui.cpp:101
 msgid "Instruments"
 msgstr ""
 
-#: src/dashboardskgui.cpp:167
+#: src/dashboardskgui.cpp:177
 msgid "Name"
 msgstr ""
 
-#: src/dashboardskgui.cpp:176
+#: src/dashboardskgui.cpp:186
 msgid "Title"
 msgstr ""
 
-#: src/dashboardskgui.cpp:189
+#: src/dashboardskgui.cpp:199
 msgid "Instrument"
 msgstr ""
 
-#: src/dashboardskgui.cpp:196
+#: src/dashboardskgui.cpp:206
 msgid "Timeout"
 msgstr ""
 
-#: src/dashboardskgui.cpp:206
+#: src/dashboardskgui.cpp:216
 msgid "sec"
 msgstr ""
 
-#: src/dashboardskgui.cpp:246
+#: src/dashboardskgui.cpp:256
 msgid "Enabled"
 msgstr ""
 
-#: src/dashboardskgui.cpp:252
+#: src/dashboardskgui.cpp:262
 msgid "Canvas"
 msgstr ""
 
-#: src/dashboardskgui.cpp:261
+#: src/dashboardskgui.cpp:271
+msgid "Page"
+msgstr ""
+
+#: src/dashboardskgui.cpp:280
 msgid "Anchor"
 msgstr ""
 
-#: src/dashboardskgui.cpp:272
+#: src/dashboardskgui.cpp:291
 msgid "Offset h"
 msgstr ""
 
-#: src/dashboardskgui.cpp:281
+#: src/dashboardskgui.cpp:300
 msgid "Offset v"
 msgstr ""
 
-#: src/dashboardskgui.cpp:290
+#: src/dashboardskgui.cpp:309
 msgid "Spacing h"
 msgstr ""
 
-#: src/dashboardskgui.cpp:299
+#: src/dashboardskgui.cpp:318
 msgid "Spacing v"
 msgstr ""
 
-#: src/dashboardskgui.cpp:315
+#: src/dashboardskgui.cpp:334
 msgid "Export"
 msgstr ""
 
-#: src/dashboardskgui.cpp:319
+#: src/dashboardskgui.cpp:338
 msgid "Import"
 msgstr ""
 
-#: src/dashboardskgui.cpp:593 src/dashboardskgui.cpp:623
+#: src/dashboardskgui.cpp:624 src/dashboardskgui.cpp:654
 msgid "..."
 msgstr ""
 
-#: src/dashboardskgui.cpp:661 src/dashboardskguiimpl.cpp:1044
-#: src/dashboardskguiimpl.cpp:1072
+#: src/dashboardskgui.cpp:692 src/dashboardskguiimpl.cpp:1107
+#: src/dashboardskguiimpl.cpp:1135
 msgid "Collapse"
 msgstr ""
 
-#: src/dashboardskgui.cpp:665
+#: src/dashboardskgui.cpp:696
 msgid "Own vessel"
 msgstr ""
 
-#: src/dashboardskgui.cpp:766
+#: src/dashboardskgui.cpp:797
 msgid "Lower bound"
 msgstr ""
 
-#: src/dashboardskgui.cpp:776
+#: src/dashboardskgui.cpp:807
 msgid "Upper bound"
 msgstr ""
 
-#: src/dashboardskgui.cpp:786
+#: src/dashboardskgui.cpp:817
 msgid "State"
 msgstr ""
 
-#: src/dashboardskgui.cpp:790
+#: src/dashboardskgui.cpp:821
 msgid "Nominal"
 msgstr ""
 
-#: src/dashboardskgui.cpp:790
+#: src/dashboardskgui.cpp:821
 msgid "Normal"
 msgstr ""
 
-#: src/dashboardskgui.cpp:790
+#: src/dashboardskgui.cpp:821
 msgid "Alert"
 msgstr ""
 
-#: src/dashboardskgui.cpp:791
+#: src/dashboardskgui.cpp:822
 msgid "Warning"
 msgstr ""
 
-#: src/dashboardskgui.cpp:791
+#: src/dashboardskgui.cpp:822
 msgid "Alarm"
 msgstr ""
 
-#: src/dashboardskgui.cpp:791
+#: src/dashboardskgui.cpp:822
 msgid "Emergency"
 msgstr ""
 
-#: src/dashboardskgui.cpp:803
+#: src/dashboardskgui.cpp:834
 msgid "All values not covered by the zones are considered normal."
 msgstr ""
 
-#: src/dashboardskguiimpl.cpp:220
+#: src/dashboardskguiimpl.cpp:242
 msgid "Enter name for the newly created dashboard"
 msgstr ""
 
-#: src/dashboardskguiimpl.cpp:221
+#: src/dashboardskguiimpl.cpp:243
 msgid "Create new dashboard"
 msgstr ""
 
-#: src/dashboardskguiimpl.cpp:221
+#: src/dashboardskguiimpl.cpp:243
 msgid "New dashboard"
 msgstr ""
 
-#: src/dashboardskguiimpl.cpp:241
+#: src/dashboardskguiimpl.cpp:259
 msgid "Do you really want to delete dashboard"
 msgstr ""
 
-#: src/dashboardskguiimpl.cpp:244
+#: src/dashboardskguiimpl.cpp:262
 msgid "Delete dashboard"
 msgstr ""
 
-#: src/dashboardskguiimpl.cpp:533
+#: src/dashboardskguiimpl.cpp:294
+msgid "Enter new name for the dashboard"
+msgstr ""
+
+#: src/dashboardskguiimpl.cpp:295
+msgid "Rename dashboard"
+msgstr ""
+
+#: src/dashboardskguiimpl.cpp:568
 msgid "Select type of the new instrument"
 msgstr ""
 
-#: src/dashboardskguiimpl.cpp:534
+#: src/dashboardskguiimpl.cpp:569
 msgid "Add new instrument"
 msgstr ""
 
-#: src/dashboardskguiimpl.cpp:636
+#: src/dashboardskguiimpl.cpp:673
 msgid "Configuration data (Edit carefully!)"
 msgstr ""
 
-#: src/dashboardskguiimpl.cpp:654
+#: src/dashboardskguiimpl.cpp:694
 msgid ""
-"The configration data were not a valid JSON document and could ot be used!"
+"The configuration data were not a valid JSON document and could not be used!"
 msgstr ""
 
-#: src/dashboardskguiimpl.cpp:656
+#: src/dashboardskguiimpl.cpp:696
 msgid "JSON not valid"
 msgstr ""
 
-#: src/dashboardskguiimpl.cpp:781
+#: src/dashboardskguiimpl.cpp:829
 msgid "Save instrument to file"
 msgstr ""
 
-#: src/dashboardskguiimpl.cpp:806
+#: src/dashboardskguiimpl.cpp:854
 msgid "Load instrument(s) from file(s)"
 msgstr ""
 
-#: src/dashboardskguiimpl.cpp:830
+#: src/dashboardskguiimpl.cpp:878
 #, c-format
 msgid ""
 "The file %s does not seem to be a DashboardSK instrument JSON definition."
 msgstr ""
 
-#: src/dashboardskguiimpl.cpp:833 src/dashboardskguiimpl.cpp:915
+#: src/dashboardskguiimpl.cpp:881 src/dashboardskguiimpl.cpp:957
 msgid "Error during import"
 msgstr ""
 
-#: src/dashboardskguiimpl.cpp:858
+#: src/dashboardskguiimpl.cpp:906
 msgid "Save dashboard to file"
 msgstr ""
 
-#: src/dashboardskguiimpl.cpp:883
+#: src/dashboardskguiimpl.cpp:931
 msgid "Load dashboard(s) from file(s)"
 msgstr ""
 
-#: src/dashboardskguiimpl.cpp:912
+#: src/dashboardskguiimpl.cpp:954
 #, c-format
 msgid "The file %s does not seem to be a DashboardSK dashboard JSON definition."
 msgstr ""
 
-#: src/dashboardskguiimpl.cpp:1069
+#: src/dashboardskguiimpl.cpp:1132
 msgid "Expand"
 msgstr ""
 
-#: src/dashboardsk_pi.cpp:95 src/dashboardsk_pi.cpp:100
-#: src/dashboardsk_pi.cpp:125
+#: src/dashboardsk_pi.cpp:97 src/dashboardsk_pi.cpp:102
+#: src/dashboardsk_pi.cpp:128
 msgid "DashboardSK"
 msgstr ""
 
-#: src/dashboardsk_pi.cpp:129
+#: src/dashboardsk_pi.cpp:132
 msgid "SignalK dashboard PlugIn for OpenCPN"
 msgstr ""
 
-#: src/dashboardsk_pi.cpp:134
+#: src/dashboardsk_pi.cpp:137
 msgid ""
 "Universal dashboard plugin for OpenCPN based on the SignalK data model.\n"
 msgstr ""
@@ -648,7 +668,7 @@ msgstr ""
 msgid "New Simple Histogram"
 msgstr ""
 
-#: src/simplehistograminstrument.cpp:381
+#: src/simplehistograminstrument.cpp:385
 msgid "NO DATA"
 msgstr ""
 
