@@ -80,6 +80,10 @@ void DashboardSK::ReadConfig(wxJSONValue& config)
             d->ReadConfig(config["dashboards"][i]);
             d->SetColorScheme(m_color_scheme);
             m_dashboards.emplace_back(d);
+            if (m_displayed_pages.find(d->GetCanvasNr())
+                == m_displayed_pages.end()) {
+                m_displayed_pages[d->GetCanvasNr()] = new Pager(this);
+            }
             m_displayed_pages[d->GetCanvasNr()]->AddPage(d->GetPageNr());
         }
     } else {
