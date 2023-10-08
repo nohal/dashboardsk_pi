@@ -1066,12 +1066,27 @@ wxString SKPathBrowserImpl::GetSKPath()
 {
     wxTreeItemId selected = m_treePaths->GetSelection();
     wxString path = wxEmptyString;
+    auto orig_selected = selected;
     while (selected.IsOk() && selected != m_treePaths->GetRootItem()) {
         if (!path.IsEmpty()) {
             path.Prepend(".");
         }
         path.Prepend(m_treePaths->GetItemText(selected));
         selected = m_treePaths->GetItemParent(selected);
+    }
+    if (!path.Contains(SRC_MAGIC_STRING)) {
+        while (
+            orig_selected.IsOk() && m_treePaths->HasChildren(orig_selected)) {
+            wxTreeItemIdValue cookie;
+            orig_selected = m_treePaths->GetFirstChild(orig_selected, cookie);
+            if (orig_selected.IsOk()) {
+                wxString component = m_treePaths->GetItemText(orig_selected);
+                path.Append(".").Append(component);
+                if (component.StartsWith(SRC_MAGIC_STRING)) {
+                    break;
+                }
+            }
+        }
     }
     return path;
 }
