@@ -91,6 +91,11 @@ void DashboardSK::ReadConfig(wxJSONValue& config)
     }
     if (config["canvas"].IsArray()) {
         for (int i = 0; i < config["canvas"].Size(); i++) {
+            if (m_displayed_pages.find(config["canvas"][i]["id"].AsInt())
+                == m_displayed_pages.end()) {
+                m_displayed_pages[config["canvas"][i]["id"].AsInt()]
+                    = new Pager(this);
+            }
             m_displayed_pages[config["canvas"][i]["id"].AsInt()]
                 ->SetCurrentPage(config["canvas"][i]["page"].AsInt());
         }
