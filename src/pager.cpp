@@ -27,6 +27,7 @@
 #include "pager.h"
 #include "dashboardsk.h"
 #include <wx/filename.h>
+#include <wx/menu.h>
 
 PLUGIN_BEGIN_NAMESPACE
 
@@ -83,6 +84,22 @@ bool Pager::IsClicked(int& x, int& y)
     return false;
 }
 
+#define ID_PREFERENCES 2001
+#define ID_VISIBILITY 2002
+
+void Pager::OnPopupClick(wxCommandEvent& evt)
+{
+    void* data = static_cast<wxMenu*>(evt.GetEventObject())->GetClientData();
+    switch (evt.GetId()) {
+    case ID_PREFERENCES:
+        m_parent->ShowPreferencesDialog();
+        break;
+    case ID_VISIBILITY:
+        m_parent->ToggleVisibility();
+        break;
+    }
+}
+
 bool Pager::ProcessMouseEvent(wxMouseEvent& event)
 {
     if (event.LeftIsDown()) {
@@ -92,6 +109,14 @@ bool Pager::ProcessMouseEvent(wxMouseEvent& event)
             SetCurrentPage(GetNextPage());
             return true;
         }
+    } else if (event.RightIsDown()) {
+        wxMenu mnu;
+        mnu.Append(ID_PREFERENCES, _("Preferences..."));
+        mnu.Append(ID_VISIBILITY, _("Toggle visibility"));
+        mnu.Connect(wxEVT_COMMAND_MENU_SELECTED,
+            wxCommandEventHandler(Pager::OnPopupClick), NULL, this);
+        m_parent->GetParentWindow()->PopupMenu(&mnu);
+        return true;
     }
     return false;
 }

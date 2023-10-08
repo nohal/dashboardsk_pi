@@ -80,6 +80,8 @@ dashboardsk_pi::~dashboardsk_pi() { delete m_json_reader; }
 int dashboardsk_pi::Init()
 {
     m_dsk = new DashboardSK(GetDataDir());
+    m_dsk->SetParentWindow(m_parent_window);
+    m_dsk->SetParentPlugin(this);
     LoadConfig();
 
     wxString _svg_dashboardsk = GetDataDir() + "dashboardsk_pi.svg";
@@ -144,7 +146,12 @@ void dashboardsk_pi::ShowPreferencesDialog(wxWindow* parent)
     mf.ShowModal();
 }
 
-void dashboardsk_pi::OnToolbarToolCallback(int id) { m_shown = !m_shown; }
+void dashboardsk_pi::OnToolbarToolCallback(int id)
+{
+    m_shown = !m_shown;
+    if (id == 0)
+        SetToolbarItemState(m_leftclick_tool_id, m_shown);
+}
 
 void dashboardsk_pi::SetColorScheme(PI_ColorScheme cs)
 {

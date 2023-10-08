@@ -56,11 +56,16 @@
 PLUGIN_BEGIN_NAMESPACE
 
 class dskDC;
+class dashboardsk_pi;
 
 /// Toplevel class implementing the functionality of the plugin and hosting the
 /// SignalK data tree
 class DashboardSK {
 private:
+    /// Parent window pointer
+    wxWindow* m_parent_window;
+    /// Plugin
+    dashboardsk_pi* m_parent_plugin;
     /// Vector of dashboards
     vector<Dashboard*> m_dashboards;
     /// Storage object for SignalK full data dynamically updated from the
@@ -357,27 +362,64 @@ public:
     const wxString SelfPopulate(const wxString& path);
 
     /// Freeze/unfreeze the drawing of the dashboards
+    ///
     /// \param state Desired state
     void Freeze(bool state) { m_frozen = state; };
 
     /// Get data directory path
+    ///
     /// @return Path to the data directory
     const wxString& GetDataDir() { return m_data_dir; }
 
     /// Adds a numbered page to the canvas
+    ///
     /// @param canvas Index of the canvas
     /// @param page Page number (1-9)
     void AddPageToCanvas(const int& canvas, const size_t& page);
 
     /// Process the mouse event
+    ///
     /// @param event
     /// @return true if we did process the event, false if it was not
     /// interesting
     bool ProcessMouseEvent(wxMouseEvent& event);
 
+    /// Modify bitmap brightness according to the current color scheme
+    ///
+    /// @param bitmap Bitmap to be modified
+    /// @return Modified bitmap
     wxBitmap ApplyBitmapBrightness(wxBitmap& bitmap);
+
+    /// Modify bitmap brightness
+    ///
+    /// @param bitmap Bitmap to be modified
+    /// @param level Light level, the lower the darker
+    /// @return Modified bitmap
     wxBitmap SetBitmapBrightnessAbs(wxBitmap& bitmap, double level);
+
+    /// Reset the pagers to pristine state
     void ResetPagers();
+
+    /// Set pointer to the parent window
+    ///
+    /// @param parent Parent window pointer
+    void SetParentWindow(wxWindow* parent) { m_parent_window = parent; }
+
+    /// Get pointer tot the parent window
+    ///
+    /// @return Parent window pointer
+    wxWindow* GetParentWindow() { return m_parent_window; }
+
+    /// Set pointer to the plugin instance
+    ///
+    /// @param parent Pointer to the plugin instance
+    void SetParentPlugin(dashboardsk_pi* parent);
+
+    /// Show the preferences dialog
+    void ShowPreferencesDialog();
+
+    /// Toggle the visibility of the dashboards
+    void ToggleVisibility();
 };
 
 PLUGIN_END_NAMESPACE

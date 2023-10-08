@@ -209,8 +209,10 @@ public:
         const wxString& filename, const wxCoord w, const wxCoord h);
 
     /// Hook for the mouse events relayed from the core application
+    ///
     /// @param event
-    /// @return
+    /// @return True if we processed the event ourselves, false if we do not
+    /// care about it.
     bool MouseEventHook(wxMouseEvent& event);
 };
 

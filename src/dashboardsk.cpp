@@ -25,6 +25,7 @@
  ******************************************************************************/
 
 #include "dashboardsk.h"
+#include "dashboardsk_pi.h"
 #include "wx/jsonwriter.h"
 #include <wx/tokenzr.h>
 
@@ -463,6 +464,21 @@ void DashboardSK::ResetPagers()
             }
         }
     }
+}
+
+void DashboardSK::SetParentPlugin(dashboardsk_pi* parent)
+{
+    m_parent_plugin = parent;
+}
+
+void DashboardSK::ShowPreferencesDialog()
+{
+    m_parent_plugin->ShowPreferencesDialog(m_parent_window);
+}
+
+void DashboardSK::ToggleVisibility()
+{
+    m_parent_plugin->OnToolbarToolCallback(0);
 }
 
 PLUGIN_END_NAMESPACE

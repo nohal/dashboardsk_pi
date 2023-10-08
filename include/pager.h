@@ -35,6 +35,7 @@
 #include "ocpn_plugin.h"
 #include "pi_common.h"
 #include <set>
+#include <wx/event.h>
 
 PLUGIN_BEGIN_NAMESPACE
 
@@ -43,7 +44,7 @@ PLUGIN_BEGIN_NAMESPACE
 class DashboardSK;
 
 /// Class representing the dashboard page control
-class Pager {
+class Pager : public wxEvtHandler {
 public:
     /// Constructor
     Pager();
@@ -103,11 +104,12 @@ public:
     /// interesting
     bool ProcessMouseEvent(wxMouseEvent& event);
 
-    void Reset()
-    {
-        // m_current_page = 1;
-        m_pages.clear();
-    }
+    /// Event handler for the popup menu click
+    /// @param evt
+    void OnPopupClick(wxCommandEvent& evt);
+
+    /// Reset the pager
+    void Reset() { m_pages.clear(); }
 
 private:
     DashboardSK* m_parent;
