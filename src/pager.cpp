@@ -110,6 +110,11 @@ bool Pager::ProcessMouseEvent(wxMouseEvent& event)
             return true;
         }
     } else if (event.RightIsDown()) {
+        int x = event.GetX(); // Convert to per-canvas coordinates
+        int y = event.GetY(); // Convert to per-canvas coordinates
+        if (!IsClicked(x, y)) {
+            return false;
+        }
         wxMenu mnu;
         mnu.Append(ID_PREFERENCES, _("Preferences..."));
         mnu.Append(ID_VISIBILITY, _("Toggle visibility"));
