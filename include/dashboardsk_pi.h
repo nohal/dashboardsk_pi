@@ -114,6 +114,19 @@ public:
     /// \return Minor version of the plugin
     int GetPlugInVersionMinor();
 
+    /// Forms a semantic version together with GetPlugInVersionMajor() and
+    /// GetPlugInVersionMinor(), see https://semver.org/
+    int GetPlugInVersionPatch();
+
+    /// Post-release version part, extends the semver spec.
+    int GetPlugInVersionPost();
+
+    /// Pre-release tag version part, see GetPlugInVersionPatch()
+    const char* GetPlugInVersionPre();
+
+    /// Build version part  see GetPlugInVersionPatch()
+    const char* GetPlugInVersionBuild();
+
     /// Get bitmap icon of the plugin logo
     ///
     /// \return pointer to the bitmap containing the logo

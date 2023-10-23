@@ -124,6 +124,14 @@ int dashboardsk_pi::GetPlugInVersionMajor() { return PLUGIN_VERSION_MAJOR; }
 
 int dashboardsk_pi::GetPlugInVersionMinor() { return PLUGIN_VERSION_MINOR; }
 
+int dashboardsk_pi::GetPlugInVersionPatch() { return PLUGIN_VERSION_PATCH; }
+
+int dashboardsk_pi::GetPlugInVersionPost() { return PLUGIN_VERSION_TWEAK; }
+
+const char* dashboardsk_pi::GetPlugInVersionPre() { return PKG_PRERELEASE; }
+
+const char* dashboardsk_pi::GetPlugInVersionBuild() { return PKG_BUILD_INFO; }
+
 wxBitmap* dashboardsk_pi::GetPlugInBitmap() { return &m_logo; }
 wxString dashboardsk_pi::GetCommonName() { return _("DashboardSK"); }
 
