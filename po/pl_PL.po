@@ -1,81 +1,81 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the DashboardSK_pi package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: DashboardSK_pi 0.1.4\n"
+"Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-08 17:22-0300\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"POT-Creation-Date: 2023-10-08 17:17-0300\n"
+"PO-Revision-Date: 2023-10-08 20:19\n"
+"Last-Translator: \n"
+"Language-Team: Polish\n"
+"Language: pl_PL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
+"X-Crowdin-Project: opencpn\n"
+"X-Crowdin-Project-ID: 49843\n"
+"X-Crowdin-Language: pl\n"
+"X-Crowdin-File: /plugins/dashboardsk_pi/po/DashboardSK_pi.pot\n"
+"X-Crowdin-File-ID: 405\n"
 
 #: include/dashboardskgui.h:177
 msgid "DashboardSK Configuration"
-msgstr ""
+msgstr "Konfiguracja DashboardSK"
 
 #: include/dashboardskgui.h:208
 msgid "SignalK data tree"
-msgstr ""
+msgstr "Drzewo danych SignalK"
 
 #: include/dashboardskgui.h:298 include/dashboardskguiimpl.h:375
 msgid "SignalK Browser"
-msgstr ""
+msgstr "Przeglądarka SignalK"
 
 #: include/dashboardskgui.h:354
 msgid "Zones configuration"
-msgstr ""
+msgstr "Konfiguracja stref"
 
 #: include/dashboardskguiimpl.h:503
 msgid "SignalK Zones Configuration"
-msgstr ""
+msgstr "Konfiguracja stref SignalK"
 
 #: include/instrument.h:93
 msgid "None"
-msgstr ""
+msgstr "Brak"
 
 #: include/instrument.h:94
 msgid "RAD->DEG"
-msgstr ""
+msgstr "rad -> stopnie"
 
 #: include/instrument.h:95
 msgid "m/s -> kn"
-msgstr ""
+msgstr "m/s -> w."
 
 #: include/instrument.h:96
 msgid "m/s -> km/h"
-msgstr ""
+msgstr "m/s -> km/h"
 
 #: include/instrument.h:97
 msgid "m/s -> mph"
-msgstr ""
+msgstr "m/s -> mph"
 
 #: include/instrument.h:98
 msgid "m -> feet"
-msgstr ""
+msgstr "m -> stopy"
 
 #: include/instrument.h:99
 msgid "m -> fathoms"
-msgstr ""
+msgstr "m -> sążnie"
 
 #: include/instrument.h:100
 msgid "m -> NMi"
-msgstr ""
+msgstr "m -> Mm"
 
 #: include/instrument.h:101
 msgid "°K -> °C"
-msgstr ""
+msgstr "°K -> °C"
 
 #: include/instrument.h:102
 msgid "°K -> °F"
-msgstr ""
+msgstr "°K -> °F"
 
 #: include/instrument.h:103
 msgid "ratio -> %"
@@ -83,31 +83,31 @@ msgstr ""
 
 #: include/instrument.h:104
 msgid "Pa -> hPa"
-msgstr ""
+msgstr "Pa -> hPa"
 
 #: include/instrument.h:105
 msgid "Pa -> kPa"
-msgstr ""
+msgstr "Pa -> hPa"
 
 #: include/instrument.h:106
 msgid "Pa -> MPa"
-msgstr ""
+msgstr "Pa -> MPa"
 
 #: include/instrument.h:107
 msgid "Pa -> atm"
-msgstr ""
+msgstr "Pa -> atm"
 
 #: include/instrument.h:108
 msgid "Pa -> mmHg"
-msgstr ""
+msgstr "Pa -> mmHg"
 
 #: include/instrument.h:109
 msgid "Pa -> psi"
-msgstr ""
+msgstr "Pa -> psi"
 
 #: include/instrument.h:110
 msgid "Hz -> RPM"
-msgstr ""
+msgstr "HZ -> obr/min"
 
 #: include/instrument.h:111
 msgid "RAD/s -> DEG/m"
@@ -123,43 +123,43 @@ msgstr ""
 
 #: include/instrument.h:149
 msgid "1 minute"
-msgstr ""
+msgstr "1 minuta"
 
 #: include/instrument.h:150
 msgid "5 minutes"
-msgstr ""
+msgstr "5 minut"
 
 #: include/instrument.h:151
 msgid "15 minutes"
-msgstr ""
+msgstr "15 minut"
 
 #: include/instrument.h:152
 msgid "30 minutes"
-msgstr ""
+msgstr "30 minut"
 
 #: include/instrument.h:153
 msgid "1 hour"
-msgstr ""
+msgstr "1 godzina"
 
 #: include/instrument.h:154
 msgid "1 day"
-msgstr ""
+msgstr "1 dzień"
 
 #: include/instrument.h:155
 msgid "3 days"
-msgstr ""
+msgstr "3 dni"
 
 #: include/simplegaugeinstrument.h:74
 msgid "Relative angle"
-msgstr ""
+msgstr "Kąt względny"
 
 #: include/simplegaugeinstrument.h:75
 msgid "Direction"
-msgstr ""
+msgstr "Kierunek"
 
 #: include/simplegaugeinstrument.h:76
 msgid "Percentile"
-msgstr ""
+msgstr "Procentowo"
 
 #: include/simplegaugeinstrument.h:78
 msgid "Adaptive range indicator"
@@ -200,27 +200,27 @@ msgstr ""
 
 #: include/simplegaugeinstrument.h:97
 msgid "Instrument size"
-msgstr ""
+msgstr "Rozmiar instrumentu"
 
 #: include/simplegaugeinstrument.h:102
 msgid "Needle color"
-msgstr ""
+msgstr "Kolor igły"
 
 #: include/simplegaugeinstrument.h:104
 msgid "Rim color"
-msgstr ""
+msgstr "Kolor obręczy"
 
 #: include/simplegaugeinstrument.h:106
 msgid "Port color"
-msgstr ""
+msgstr "Kolor lewoburtowy"
 
 #: include/simplegaugeinstrument.h:108
 msgid "Starboard color"
-msgstr ""
+msgstr "Kolor prawoburtowy"
 
 #: include/simplegaugeinstrument.h:110
 msgid "Dead angle color"
-msgstr ""
+msgstr "Kolor martwego kąta"
 
 #: include/simplegaugeinstrument.h:112
 msgid "Dial color"
@@ -230,11 +230,11 @@ msgstr ""
 #: include/simplenumberinstrument.h:76 include/simplepositioninstrument.h:58
 #: include/simpletextinstrument.h:56
 msgid "Title color"
-msgstr ""
+msgstr "Kolor tytułu"
 
 #: include/simplegaugeinstrument.h:116
 msgid "Value color"
-msgstr ""
+msgstr "Kolor wartości"
 
 #: include/simplegaugeinstrument.h:118
 msgid "Tick color"
@@ -603,8 +603,7 @@ msgid "Configuration data (Edit carefully!)"
 msgstr ""
 
 #: src/dashboardskguiimpl.cpp:694
-msgid ""
-"The configuration data were not a valid JSON document and could not be used!"
+msgid "The configuration data were not a valid JSON document and could not be used!"
 msgstr ""
 
 #: src/dashboardskguiimpl.cpp:696
@@ -621,8 +620,7 @@ msgstr ""
 
 #: src/dashboardskguiimpl.cpp:878
 #, c-format
-msgid ""
-"The file %s does not seem to be a DashboardSK instrument JSON definition."
+msgid "The file %s does not seem to be a DashboardSK instrument JSON definition."
 msgstr ""
 
 #: src/dashboardskguiimpl.cpp:881 src/dashboardskguiimpl.cpp:957
@@ -656,16 +654,7 @@ msgid "SignalK dashboard PlugIn for OpenCPN"
 msgstr ""
 
 #: src/dashboardsk_pi.cpp:137
-msgid ""
-"Universal dashboard plugin for OpenCPN based on the SignalK data model.\n"
-msgstr ""
-
-#: src/pager.cpp:114
-msgid "Preferences..."
-msgstr ""
-
-#: src/pager.cpp:115
-msgid "Toggle visibility"
+msgid "Universal dashboard plugin for OpenCPN based on the SignalK data model.\n"
 msgstr ""
 
 #: src/simplegaugeinstrument.cpp:51

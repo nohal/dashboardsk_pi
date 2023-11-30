@@ -227,6 +227,8 @@ public:
     double Transform(const double& val);
 
     wxString GetPrimarySKKey() const override { return m_sk_key; };
+
+    void ProcessData() override;
 };
 
 PLUGIN_END_NAMESPACE

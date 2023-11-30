@@ -795,7 +795,7 @@ wxBitmap SimpleGaugeInstrument::RenderPercent(double scale)
 #undef PERC
 }
 
-wxBitmap SimpleGaugeInstrument::Render(double scale)
+void SimpleGaugeInstrument::ProcessData()
 {
     if (!m_new_data) {
         if (!m_timed_out
@@ -833,6 +833,11 @@ wxBitmap SimpleGaugeInstrument::Render(double scale)
             m_max_val = wxMax(dval, m_max_val);
         }
     }
+}
+
+wxBitmap SimpleGaugeInstrument::Render(double scale)
+{
+    ProcessData();
 
     if (!m_needs_redraw) {
         return m_bmp;

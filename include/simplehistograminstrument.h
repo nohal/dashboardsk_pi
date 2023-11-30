@@ -310,6 +310,9 @@ public:
     double Transform(const double& val);
 
     wxString GetPrimarySKKey() const override { return m_sk_key; };
+
+    /// Only process the SK data without drawing anything
+    void ProcessData() override;
 };
 
 PLUGIN_END_NAMESPACE

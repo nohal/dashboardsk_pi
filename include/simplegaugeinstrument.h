@@ -355,6 +355,8 @@ public:
     void SetSetting(const wxString& key, const int& value) override;
 
     wxString GetPrimarySKKey() const override { return m_sk_key; };
+
+    void ProcessData() override;
 };
 
 PLUGIN_END_NAMESPACE

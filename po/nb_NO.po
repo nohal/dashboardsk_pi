@@ -1,113 +1,113 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the DashboardSK_pi package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: DashboardSK_pi 0.1.4\n"
+"Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-08 17:22-0300\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"POT-Creation-Date: 2023-10-08 17:17-0300\n"
+"PO-Revision-Date: 2023-10-08 20:19\n"
+"Last-Translator: \n"
+"Language-Team: Norwegian Bokmal\n"
+"Language: nb_NO\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: opencpn\n"
+"X-Crowdin-Project-ID: 49843\n"
+"X-Crowdin-Language: nb\n"
+"X-Crowdin-File: /plugins/dashboardsk_pi/po/DashboardSK_pi.pot\n"
+"X-Crowdin-File-ID: 405\n"
 
 #: include/dashboardskgui.h:177
 msgid "DashboardSK Configuration"
-msgstr ""
+msgstr "DashboardSK konfigurasjon"
 
 #: include/dashboardskgui.h:208
 msgid "SignalK data tree"
-msgstr ""
+msgstr "SignalK datatre"
 
 #: include/dashboardskgui.h:298 include/dashboardskguiimpl.h:375
 msgid "SignalK Browser"
-msgstr ""
+msgstr "SignalK Utforsker"
 
 #: include/dashboardskgui.h:354
 msgid "Zones configuration"
-msgstr ""
+msgstr "Konfigurasjon av soner"
 
 #: include/dashboardskguiimpl.h:503
 msgid "SignalK Zones Configuration"
-msgstr ""
+msgstr "Konfigurasjon av SignalK soner"
 
 #: include/instrument.h:93
 msgid "None"
-msgstr ""
+msgstr "Ingen"
 
 #: include/instrument.h:94
 msgid "RAD->DEG"
-msgstr ""
+msgstr "RAD->DEG"
 
 #: include/instrument.h:95
 msgid "m/s -> kn"
-msgstr ""
+msgstr "m/s -> kn"
 
 #: include/instrument.h:96
 msgid "m/s -> km/h"
-msgstr ""
+msgstr "m/s -> km/h"
 
 #: include/instrument.h:97
 msgid "m/s -> mph"
-msgstr ""
+msgstr "m/s -> mph"
 
 #: include/instrument.h:98
 msgid "m -> feet"
-msgstr ""
+msgstr "m -> fot"
 
 #: include/instrument.h:99
 msgid "m -> fathoms"
-msgstr ""
+msgstr "m -> favner"
 
 #: include/instrument.h:100
 msgid "m -> NMi"
-msgstr ""
+msgstr "m -> NMi"
 
 #: include/instrument.h:101
 msgid "°K -> °C"
-msgstr ""
+msgstr "°K -> °C"
 
 #: include/instrument.h:102
 msgid "°K -> °F"
-msgstr ""
+msgstr "°K -> °F"
 
 #: include/instrument.h:103
 msgid "ratio -> %"
-msgstr ""
+msgstr "forhold -> %"
 
 #: include/instrument.h:104
 msgid "Pa -> hPa"
-msgstr ""
+msgstr "Pa -> hPa"
 
 #: include/instrument.h:105
 msgid "Pa -> kPa"
-msgstr ""
+msgstr "Pa -> kPa"
 
 #: include/instrument.h:106
 msgid "Pa -> MPa"
-msgstr ""
+msgstr "Pa -> MPa"
 
 #: include/instrument.h:107
 msgid "Pa -> atm"
-msgstr ""
+msgstr "Pa -> atm"
 
 #: include/instrument.h:108
 msgid "Pa -> mmHg"
-msgstr ""
+msgstr "Pa -> mmHg"
 
 #: include/instrument.h:109
 msgid "Pa -> psi"
-msgstr ""
+msgstr "Pa -> psi"
 
 #: include/instrument.h:110
 msgid "Hz -> RPM"
-msgstr ""
+msgstr "Hz -> RPM"
 
 #: include/instrument.h:111
 msgid "RAD/s -> DEG/m"
@@ -115,323 +115,323 @@ msgstr ""
 
 #: include/instrument.h:145
 msgid "Lowest to highest"
-msgstr ""
+msgstr "Laveste til høyeste"
 
 #: include/instrument.h:146
 msgid "Highest to lowest"
-msgstr ""
+msgstr "Høyeste til laveste"
 
 #: include/instrument.h:149
 msgid "1 minute"
-msgstr ""
+msgstr "1 minutt"
 
 #: include/instrument.h:150
 msgid "5 minutes"
-msgstr ""
+msgstr "5 minutter"
 
 #: include/instrument.h:151
 msgid "15 minutes"
-msgstr ""
+msgstr "15 minutter"
 
 #: include/instrument.h:152
 msgid "30 minutes"
-msgstr ""
+msgstr "30 minutter"
 
 #: include/instrument.h:153
 msgid "1 hour"
-msgstr ""
+msgstr "1 time"
 
 #: include/instrument.h:154
 msgid "1 day"
-msgstr ""
+msgstr "1 dag"
 
 #: include/instrument.h:155
 msgid "3 days"
-msgstr ""
+msgstr "3 dager"
 
 #: include/simplegaugeinstrument.h:74
 msgid "Relative angle"
-msgstr ""
+msgstr "Relativ vinkel"
 
 #: include/simplegaugeinstrument.h:75
 msgid "Direction"
-msgstr ""
+msgstr "Retning"
 
 #: include/simplegaugeinstrument.h:76
 msgid "Percentile"
-msgstr ""
+msgstr "Percentil"
 
 #: include/simplegaugeinstrument.h:78
 msgid "Adaptive range indicator"
-msgstr ""
+msgstr "Adaptiv rekkeviddeindikator"
 
 #: include/simplegaugeinstrument.h:80
 msgid "Fixed range indicator"
-msgstr ""
+msgstr "Fast rekkeviddeindikator"
 
 #: include/simplegaugeinstrument.h:85 include/simplehistograminstrument.h:56
 #: include/simplenumberinstrument.h:60 include/simplepositioninstrument.h:48
 #: include/simpletextinstrument.h:48
 msgid "SK Key"
-msgstr ""
+msgstr "SK Key"
 
 #: include/simplegaugeinstrument.h:87
 msgid "Gauge type"
-msgstr ""
+msgstr "Instrument type"
 
 #: include/simplegaugeinstrument.h:89 include/simplehistograminstrument.h:58
 #: include/simplenumberinstrument.h:62 include/simplepositioninstrument.h:50
 msgid "Format"
-msgstr ""
+msgstr "Format"
 
 #: include/simplegaugeinstrument.h:91 include/simplehistograminstrument.h:60
 #: include/simplenumberinstrument.h:64
 msgid "Transformation"
-msgstr ""
+msgstr "Transformasjon"
 
 #: include/simplegaugeinstrument.h:93 include/simplenumberinstrument.h:66
 #: src/dashboardskgui.cpp:767
 msgid "Zones"
-msgstr ""
+msgstr "Soner"
 
 #: include/simplegaugeinstrument.h:95 include/simplenumberinstrument.h:68
 msgid "Data smoothing"
-msgstr ""
+msgstr "Datautjevning"
 
 #: include/simplegaugeinstrument.h:97
 msgid "Instrument size"
-msgstr ""
+msgstr "Størrelse på instrumentering"
 
 #: include/simplegaugeinstrument.h:102
 msgid "Needle color"
-msgstr ""
+msgstr "Nålens farge"
 
 #: include/simplegaugeinstrument.h:104
 msgid "Rim color"
-msgstr ""
+msgstr "Kantens farge"
 
 #: include/simplegaugeinstrument.h:106
 msgid "Port color"
-msgstr ""
+msgstr "Babord farge"
 
 #: include/simplegaugeinstrument.h:108
 msgid "Starboard color"
-msgstr ""
+msgstr "Styrbord farge"
 
 #: include/simplegaugeinstrument.h:110
 msgid "Dead angle color"
-msgstr ""
+msgstr "Dødvinkel farge"
 
 #: include/simplegaugeinstrument.h:112
 msgid "Dial color"
-msgstr ""
+msgstr "Instrument bakgrunnsfarge"
 
 #: include/simplegaugeinstrument.h:114 include/simplehistograminstrument.h:76
 #: include/simplenumberinstrument.h:76 include/simplepositioninstrument.h:58
 #: include/simpletextinstrument.h:56
 msgid "Title color"
-msgstr ""
+msgstr "Tittel farge"
 
 #: include/simplegaugeinstrument.h:116
 msgid "Value color"
-msgstr ""
+msgstr "Verdi farge"
 
 #: include/simplegaugeinstrument.h:118
 msgid "Tick color"
-msgstr ""
+msgstr "Strekfarge"
 
 #: include/simplegaugeinstrument.h:120
 msgid "Dial values"
-msgstr ""
+msgstr "Instrumentverdier"
 
 #: include/simplegaugeinstrument.h:122
 msgid "Normal color"
-msgstr ""
+msgstr "Normal farge"
 
 #: include/simplegaugeinstrument.h:124 include/simplenumberinstrument.h:84
 msgid "Alert color"
-msgstr ""
+msgstr "Alarmfarge"
 
 #: include/simplegaugeinstrument.h:126
 msgid "Warn color"
-msgstr ""
+msgstr "Advarselfarge"
 
 #: include/simplegaugeinstrument.h:128 include/simplenumberinstrument.h:92
 msgid "Alarm color"
-msgstr ""
+msgstr "Alarmfarge"
 
 #: include/simplegaugeinstrument.h:130 include/simplenumberinstrument.h:97
 msgid "Emergency color"
-msgstr ""
+msgstr "Nødfarge"
 
 #: include/simplegaugeinstrument.h:132 include/simplehistograminstrument.h:86
 #: include/simplenumberinstrument.h:99 include/simplepositioninstrument.h:64
 #: include/simpletextinstrument.h:62
 msgid "Border color"
-msgstr ""
+msgstr "Rammefarge"
 
 #: include/simplegaugeinstrument.h:346
 msgid "Simple gauge"
-msgstr ""
+msgstr "Enkelt instrument"
 
 #: include/simplehistograminstrument.h:62
 msgid "Order"
-msgstr ""
+msgstr "Rekkefølge"
 
 #: include/simplehistograminstrument.h:64
 msgid "History"
-msgstr ""
+msgstr "Historie"
 
 #: include/simplehistograminstrument.h:66
 msgid "Instrument width"
-msgstr ""
+msgstr "Instrument bredde"
 
 #: include/simplehistograminstrument.h:72
 msgid "Instrument height"
-msgstr ""
+msgstr "Instrument høyde"
 
 #: include/simplehistograminstrument.h:78
 msgid "Background"
-msgstr ""
+msgstr "Bakgrunn"
 
 #: include/simplehistograminstrument.h:80
 msgid "Graph color"
-msgstr ""
+msgstr "Graf farge"
 
 #: include/simplehistograminstrument.h:82
 msgid "Mean color"
-msgstr ""
+msgstr "Middelfarge"
 
 #: include/simplehistograminstrument.h:84
 msgid "Time color"
-msgstr ""
+msgstr "Tidsfarge"
 
 #: include/simplehistograminstrument.h:294
 msgid "Simple histogram"
-msgstr ""
+msgstr "Enkelt histogram"
 
 #: include/simplenumberinstrument.h:70 include/simplepositioninstrument.h:52
 #: include/simpletextinstrument.h:50
 msgid "Title size"
-msgstr ""
+msgstr "Tittel størrelse"
 
 #: include/simplenumberinstrument.h:72 include/simplepositioninstrument.h:54
 #: include/simpletextinstrument.h:52
 msgid "Body size"
-msgstr ""
+msgstr "Kroppens størrelse"
 
 #: include/simplenumberinstrument.h:74 include/simplepositioninstrument.h:56
 #: include/simpletextinstrument.h:54
 msgid "Title background"
-msgstr ""
+msgstr "Tittelbakgrunn"
 
 #: include/simplenumberinstrument.h:78 include/simplepositioninstrument.h:60
 #: include/simpletextinstrument.h:58
 msgid "Body background"
-msgstr ""
+msgstr "Kroppens bakgrunn"
 
 #: include/simplenumberinstrument.h:80 include/simplepositioninstrument.h:62
 #: include/simpletextinstrument.h:60
 msgid "Body color"
-msgstr ""
+msgstr "Kroppsfarge"
 
 #: include/simplenumberinstrument.h:82
 msgid "Alert background"
-msgstr ""
+msgstr "Alarm bakgrunn"
 
 #: include/simplenumberinstrument.h:86
 msgid "Warning background"
-msgstr ""
+msgstr "Advarsels bakgrunn"
 
 #: include/simplenumberinstrument.h:88
 msgid "Warning color"
-msgstr ""
+msgstr "Advarselfarge"
 
 #: include/simplenumberinstrument.h:90
 msgid "Alarm background"
-msgstr ""
+msgstr "Alarm bakgrunn"
 
 #: include/simplenumberinstrument.h:95
 msgid "Emergency background"
-msgstr ""
+msgstr "Nødbakgrunn"
 
 #: include/simplenumberinstrument.h:211
 msgid "Simple number"
-msgstr ""
+msgstr "Enkelt tall"
 
 #: include/simplepositioninstrument.h:160
 msgid "Simple position"
-msgstr ""
+msgstr "Enkel posisjon"
 
 #: include/simpletextinstrument.h:154
 msgid "Simple text"
-msgstr ""
+msgstr "Enkel tekst"
 
 #: include/zone.h:122
 #, c-format
 msgid "%.1f to %.1f, %s"
-msgstr ""
+msgstr "%.1f til %.1f, %s"
 
 #: include/zone.h:132
 #, c-format
 msgid "%.1f,%.1f,%s"
-msgstr ""
+msgstr "%.1f,%.1f,%s"
 
 #: include/zone.h:186
 msgid "normal"
-msgstr ""
+msgstr "normal"
 
 #: include/zone.h:188
 msgid "alert"
-msgstr ""
+msgstr "alarm"
 
 #: include/zone.h:190
 msgid "warn"
-msgstr ""
+msgstr "advar"
 
 #: include/zone.h:192
 msgid "alarm"
-msgstr ""
+msgstr "alarm"
 
 #: include/zone.h:194
 msgid "emergency"
-msgstr ""
+msgstr "nødsituasjon"
 
 #: include/zone.h:196
 msgid "nominal"
-msgstr ""
+msgstr "nominell"
 
 #: src/dashboard.cpp:32
 msgid "Bottom"
-msgstr ""
+msgstr "Bunn"
 
 #: src/dashboard.cpp:32
 msgid "Top"
-msgstr ""
+msgstr "Topp"
 
 #: src/dashboard.cpp:32
 msgid "Left"
-msgstr ""
+msgstr "Venstre"
 
 #: src/dashboard.cpp:33
 msgid "Right"
-msgstr ""
+msgstr "Høyre"
 
 #: src/dashboardskgui.cpp:34
 msgid "Own context"
-msgstr ""
+msgstr "Egen kontekst"
 
 #: src/dashboardskgui.cpp:44
 msgid "Cfg Edit"
-msgstr ""
+msgstr "Rediger Cfg"
 
 #: src/dashboardskgui.cpp:48
 msgid "SignalK"
-msgstr ""
+msgstr "SignalK"
 
 #: src/dashboardskgui.cpp:52
 msgid "Dashboard"
-msgstr ""
+msgstr "Instrumentbord"
 
 #: src/dashboardskgui.cpp:65
 msgid "Rename"
@@ -439,43 +439,43 @@ msgstr ""
 
 #: src/dashboardskgui.cpp:69
 msgid "New"
-msgstr ""
+msgstr "Ny"
 
 #: src/dashboardskgui.cpp:80
 msgid "Remove"
-msgstr ""
+msgstr "Fjern"
 
 #: src/dashboardskgui.cpp:101
 msgid "Instruments"
-msgstr ""
+msgstr "Instrumenter"
 
 #: src/dashboardskgui.cpp:177
 msgid "Name"
-msgstr ""
+msgstr "Navn      "
 
 #: src/dashboardskgui.cpp:186
 msgid "Title"
-msgstr ""
+msgstr "Tittel"
 
 #: src/dashboardskgui.cpp:199
 msgid "Instrument"
-msgstr ""
+msgstr "Instrument"
 
 #: src/dashboardskgui.cpp:206
 msgid "Timeout"
-msgstr ""
+msgstr "Tidsavbrudd"
 
 #: src/dashboardskgui.cpp:216
 msgid "sec"
-msgstr ""
+msgstr "sek"
 
 #: src/dashboardskgui.cpp:256
 msgid "Enabled"
-msgstr ""
+msgstr "Aktivert"
 
 #: src/dashboardskgui.cpp:262
 msgid "Canvas"
-msgstr ""
+msgstr "Lerret"
 
 #: src/dashboardskgui.cpp:271
 msgid "Page"
@@ -483,35 +483,35 @@ msgstr ""
 
 #: src/dashboardskgui.cpp:280
 msgid "Anchor"
-msgstr ""
+msgstr "Anker"
 
 #: src/dashboardskgui.cpp:291
 msgid "Offset h"
-msgstr ""
+msgstr "Forskyvning h"
 
 #: src/dashboardskgui.cpp:300
 msgid "Offset v"
-msgstr ""
+msgstr "Forskyvning v"
 
 #: src/dashboardskgui.cpp:309
 msgid "Spacing h"
-msgstr ""
+msgstr "Avstand h"
 
 #: src/dashboardskgui.cpp:318
 msgid "Spacing v"
-msgstr ""
+msgstr "Avstand v"
 
 #: src/dashboardskgui.cpp:334
 msgid "Export"
-msgstr ""
+msgstr "Eksport"
 
 #: src/dashboardskgui.cpp:338
 msgid "Import"
-msgstr ""
+msgstr "Import"
 
 #: src/dashboardskgui.cpp:624 src/dashboardskgui.cpp:654
 msgid "..."
-msgstr ""
+msgstr "..."
 
 #: src/dashboardskgui.cpp:692 src/dashboardskguiimpl.cpp:1107
 #: src/dashboardskguiimpl.cpp:1135
@@ -603,8 +603,7 @@ msgid "Configuration data (Edit carefully!)"
 msgstr ""
 
 #: src/dashboardskguiimpl.cpp:694
-msgid ""
-"The configuration data were not a valid JSON document and could not be used!"
+msgid "The configuration data were not a valid JSON document and could not be used!"
 msgstr ""
 
 #: src/dashboardskguiimpl.cpp:696
@@ -621,8 +620,7 @@ msgstr ""
 
 #: src/dashboardskguiimpl.cpp:878
 #, c-format
-msgid ""
-"The file %s does not seem to be a DashboardSK instrument JSON definition."
+msgid "The file %s does not seem to be a DashboardSK instrument JSON definition."
 msgstr ""
 
 #: src/dashboardskguiimpl.cpp:881 src/dashboardskguiimpl.cpp:957
@@ -656,16 +654,7 @@ msgid "SignalK dashboard PlugIn for OpenCPN"
 msgstr ""
 
 #: src/dashboardsk_pi.cpp:137
-msgid ""
-"Universal dashboard plugin for OpenCPN based on the SignalK data model.\n"
-msgstr ""
-
-#: src/pager.cpp:114
-msgid "Preferences..."
-msgstr ""
-
-#: src/pager.cpp:115
-msgid "Toggle visibility"
+msgid "Universal dashboard plugin for OpenCPN based on the SignalK data model.\n"
 msgstr ""
 
 #: src/simplegaugeinstrument.cpp:51

@@ -89,7 +89,7 @@ bool Pager::IsClicked(int& x, int& y)
 
 void Pager::OnPopupClick(wxCommandEvent& evt)
 {
-    void* data = static_cast<wxMenu*>(evt.GetEventObject())->GetClientData();
+    // void* data = static_cast<wxMenu*>(evt.GetEventObject())->GetClientData();
     switch (evt.GetId()) {
     case ID_PREFERENCES:
         m_parent->ShowPreferencesDialog();

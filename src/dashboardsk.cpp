@@ -46,18 +46,18 @@ DashboardSK::DashboardSK(const wxString& data_path)
 
 void DashboardSK::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
 {
-    if (m_frozen) {
-        return;
-    }
     if (m_displayed_pages.find(canvasIndex) == m_displayed_pages.end()) {
         m_displayed_pages[canvasIndex] = new Pager(this);
     }
     m_displayed_pages[canvasIndex]->Draw(dc, vp, canvasIndex);
     Dashboard::ClearOffsets();
     for (auto dashboard : m_dashboards) {
-        if (m_displayed_pages[canvasIndex]->GetCurrentPage()
-            == dashboard->GetPageNr()) {
+        if (!m_frozen
+            && m_displayed_pages[canvasIndex]->GetCurrentPage()
+                == dashboard->GetPageNr()) {
             dashboard->Draw(dc, vp, canvasIndex);
+        } else {
+            dashboard->ProcessData();
         }
     }
 }

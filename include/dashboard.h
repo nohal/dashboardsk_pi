@@ -143,7 +143,7 @@ public:
     /// Get the index of the canvas on which the dashboard is displayed
     ///
     /// \return The index of the canvas
-    size_t GetCanvasNr() const { return m_canvas_nr; };
+    int GetCanvasNr() const { return m_canvas_nr; };
 
     /// Set the number of the page on which the dashboard is displayed
     ///
@@ -326,6 +326,9 @@ public:
     /// Clear the cumulative offsets from the canvas edges, needs to be called
     /// every time before the dashboard rendering loop
     static void ClearOffsets() { m_offsets.clear(); }
+
+    /// Process SK data without drawing anything.
+    void ProcessData();
 };
 
 PLUGIN_END_NAMESPACE

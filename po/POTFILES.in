@@ -6,6 +6,7 @@ include/dashboardsk_pi.h
 include/displayscale.h
 include/dskdc.h
 include/instrument.h
+include/pager.h
 include/pi_common.h
 include/simplegaugeinstrument.h
 include/simplehistograminstrument.h
@@ -19,6 +20,7 @@ src/dashboardskgui.cpp
 src/dashboardskguiimpl.cpp
 src/dashboardsk_pi.cpp
 src/instrument.cpp
+src/pager.cpp
 src/simplegaugeinstrument.cpp
 src/simplehistograminstrument.cpp
 src/simplenumberinstrument.cpp

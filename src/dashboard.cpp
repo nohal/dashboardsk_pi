@@ -58,6 +58,16 @@ Dashboard::Dashboard(DashboardSK* parent)
     }
 }
 
+void Dashboard::ProcessData()
+{
+    if (!m_enabled) {
+        return;
+    }
+    for (auto& instrument : m_instruments) {
+        instrument->ProcessData();
+    }
+}
+
 void Dashboard::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
 {
     if (!m_enabled || m_canvas_nr != canvasIndex) {
@@ -105,8 +115,8 @@ void Dashboard::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
 
     double pixel_scale = dc->GetContentScaleFactor();
 
-    for (auto& m_instrument : m_instruments) {
-        const wxBitmap bmp(m_instrument->Render(pixel_scale));
+    for (auto& instrument : m_instruments) {
+        const wxBitmap bmp(instrument->Render(pixel_scale));
         wxCoord width = bmp.GetWidth() / pixel_scale;
         wxCoord height = bmp.GetHeight() / pixel_scale;
         if (bmp.IsOk()) {
@@ -121,7 +131,7 @@ void Dashboard::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
                 y = start_pos + dir * row_offset + dir * row_nr * height;
                 current_row_size = wxMax(current_row_size, height);
                 dc->DrawBitmap(bmp, x, y, bmp.HasAlpha());
-                m_instrument->SetPlacement(x, y, width, height);
+                instrument->SetPlacement(x, y, width, height);
                 x += width + m_spacing_h;
             } else if (m_anchor == anchor_edge::left
                 || m_anchor == anchor_edge::right) {
@@ -137,7 +147,7 @@ void Dashboard::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
                 x = start_pos - row_offset - row_nr * width;
                 current_row_size = wxMax(current_row_size, width);
                 dc->DrawBitmap(bmp, x, y, bmp.HasAlpha());
-                m_instrument->SetPlacement(x, y, width, height);
+                instrument->SetPlacement(x, y, width, height);
                 y += height + m_spacing_v;
             }
         }

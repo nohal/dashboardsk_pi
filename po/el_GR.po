@@ -1,113 +1,113 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the DashboardSK_pi package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: DashboardSK_pi 0.1.4\n"
+"Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-08 17:22-0300\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"POT-Creation-Date: 2023-10-08 17:17-0300\n"
+"PO-Revision-Date: 2023-10-08 20:19\n"
+"Last-Translator: \n"
+"Language-Team: Greek\n"
+"Language: el_GR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: opencpn\n"
+"X-Crowdin-Project-ID: 49843\n"
+"X-Crowdin-Language: el\n"
+"X-Crowdin-File: /plugins/dashboardsk_pi/po/DashboardSK_pi.pot\n"
+"X-Crowdin-File-ID: 405\n"
 
 #: include/dashboardskgui.h:177
 msgid "DashboardSK Configuration"
-msgstr ""
+msgstr "Ρύθμιση DashboardSK"
 
 #: include/dashboardskgui.h:208
 msgid "SignalK data tree"
-msgstr ""
+msgstr "Δέντρο δεδομένων SignalK"
 
 #: include/dashboardskgui.h:298 include/dashboardskguiimpl.h:375
 msgid "SignalK Browser"
-msgstr ""
+msgstr "Περιηγητής SignalK"
 
 #: include/dashboardskgui.h:354
 msgid "Zones configuration"
-msgstr ""
+msgstr "Διαμόρφωση ζωνών"
 
 #: include/dashboardskguiimpl.h:503
 msgid "SignalK Zones Configuration"
-msgstr ""
+msgstr "Ρύθμιση Ζωνών SignalK"
 
 #: include/instrument.h:93
 msgid "None"
-msgstr ""
+msgstr "Καμία"
 
 #: include/instrument.h:94
 msgid "RAD->DEG"
-msgstr ""
+msgstr "RAD->DEG"
 
 #: include/instrument.h:95
 msgid "m/s -> kn"
-msgstr ""
+msgstr "m/s -> kn"
 
 #: include/instrument.h:96
 msgid "m/s -> km/h"
-msgstr ""
+msgstr "m/s -> km/h"
 
 #: include/instrument.h:97
 msgid "m/s -> mph"
-msgstr ""
+msgstr "m/s -> mph"
 
 #: include/instrument.h:98
 msgid "m -> feet"
-msgstr ""
+msgstr "m -> πόδια"
 
 #: include/instrument.h:99
 msgid "m -> fathoms"
-msgstr ""
+msgstr "m -> οργιές"
 
 #: include/instrument.h:100
 msgid "m -> NMi"
-msgstr ""
+msgstr "m -> Ν. μίλια"
 
 #: include/instrument.h:101
 msgid "°K -> °C"
-msgstr ""
+msgstr "°K -> °C"
 
 #: include/instrument.h:102
 msgid "°K -> °F"
-msgstr ""
+msgstr "°K -> °F"
 
 #: include/instrument.h:103
 msgid "ratio -> %"
-msgstr ""
+msgstr "λόγος -> %"
 
 #: include/instrument.h:104
 msgid "Pa -> hPa"
-msgstr ""
+msgstr "Pa -> hPa"
 
 #: include/instrument.h:105
 msgid "Pa -> kPa"
-msgstr ""
+msgstr "Pa -> kPa"
 
 #: include/instrument.h:106
 msgid "Pa -> MPa"
-msgstr ""
+msgstr "Pa -> MPa"
 
 #: include/instrument.h:107
 msgid "Pa -> atm"
-msgstr ""
+msgstr "Pa -> atm"
 
 #: include/instrument.h:108
 msgid "Pa -> mmHg"
-msgstr ""
+msgstr "Pa -> mmHg"
 
 #: include/instrument.h:109
 msgid "Pa -> psi"
-msgstr ""
+msgstr "Pa -> psi"
 
 #: include/instrument.h:110
 msgid "Hz -> RPM"
-msgstr ""
+msgstr "Hz -> RPM"
 
 #: include/instrument.h:111
 msgid "RAD/s -> DEG/m"
@@ -115,323 +115,323 @@ msgstr ""
 
 #: include/instrument.h:145
 msgid "Lowest to highest"
-msgstr ""
+msgstr "Χαμηλότερο προς υψηλότερο"
 
 #: include/instrument.h:146
 msgid "Highest to lowest"
-msgstr ""
+msgstr "Υψηλότερο προς χαμηλότερο"
 
 #: include/instrument.h:149
 msgid "1 minute"
-msgstr ""
+msgstr "1 λεπτό"
 
 #: include/instrument.h:150
 msgid "5 minutes"
-msgstr ""
+msgstr "5 λεπτά"
 
 #: include/instrument.h:151
 msgid "15 minutes"
-msgstr ""
+msgstr "15 λεπτά"
 
 #: include/instrument.h:152
 msgid "30 minutes"
-msgstr ""
+msgstr "30 λεπτά"
 
 #: include/instrument.h:153
 msgid "1 hour"
-msgstr ""
+msgstr "1 ώρα"
 
 #: include/instrument.h:154
 msgid "1 day"
-msgstr ""
+msgstr "1 ημέρα"
 
 #: include/instrument.h:155
 msgid "3 days"
-msgstr ""
+msgstr "3 ημέρες"
 
 #: include/simplegaugeinstrument.h:74
 msgid "Relative angle"
-msgstr ""
+msgstr "Σχετική γωνία"
 
 #: include/simplegaugeinstrument.h:75
 msgid "Direction"
-msgstr ""
+msgstr "Κατεύθυνση"
 
 #: include/simplegaugeinstrument.h:76
 msgid "Percentile"
-msgstr ""
+msgstr "Ποσοστό"
 
 #: include/simplegaugeinstrument.h:78
 msgid "Adaptive range indicator"
-msgstr ""
+msgstr "Προσαρμοζόμενος δείκτης εύρους"
 
 #: include/simplegaugeinstrument.h:80
 msgid "Fixed range indicator"
-msgstr ""
+msgstr "Σταθερός δείκτης εύρους"
 
 #: include/simplegaugeinstrument.h:85 include/simplehistograminstrument.h:56
 #: include/simplenumberinstrument.h:60 include/simplepositioninstrument.h:48
 #: include/simpletextinstrument.h:48
 msgid "SK Key"
-msgstr ""
+msgstr "SK Key"
 
 #: include/simplegaugeinstrument.h:87
 msgid "Gauge type"
-msgstr ""
+msgstr "Τύπος μετρητή"
 
 #: include/simplegaugeinstrument.h:89 include/simplehistograminstrument.h:58
 #: include/simplenumberinstrument.h:62 include/simplepositioninstrument.h:50
 msgid "Format"
-msgstr ""
+msgstr "Μορφή"
 
 #: include/simplegaugeinstrument.h:91 include/simplehistograminstrument.h:60
 #: include/simplenumberinstrument.h:64
 msgid "Transformation"
-msgstr ""
+msgstr "Μετασχηματισμός"
 
 #: include/simplegaugeinstrument.h:93 include/simplenumberinstrument.h:66
 #: src/dashboardskgui.cpp:767
 msgid "Zones"
-msgstr ""
+msgstr "Ζώνες"
 
 #: include/simplegaugeinstrument.h:95 include/simplenumberinstrument.h:68
 msgid "Data smoothing"
-msgstr ""
+msgstr "Εξομάλυνση δεδομένων"
 
 #: include/simplegaugeinstrument.h:97
 msgid "Instrument size"
-msgstr ""
+msgstr "Μέγεθος οργάνου"
 
 #: include/simplegaugeinstrument.h:102
 msgid "Needle color"
-msgstr ""
+msgstr "Χρώμα βελόνας"
 
 #: include/simplegaugeinstrument.h:104
 msgid "Rim color"
-msgstr ""
+msgstr "Χρώμα σώτρου"
 
 #: include/simplegaugeinstrument.h:106
 msgid "Port color"
-msgstr ""
+msgstr "Χρώμα αριστερής πλευράς"
 
 #: include/simplegaugeinstrument.h:108
 msgid "Starboard color"
-msgstr ""
+msgstr "Χρώμα δεξιάς πλευράς"
 
 #: include/simplegaugeinstrument.h:110
 msgid "Dead angle color"
-msgstr ""
+msgstr "Χρώμα νεκρής γωνίας"
 
 #: include/simplegaugeinstrument.h:112
 msgid "Dial color"
-msgstr ""
+msgstr "Χρώμα καντράν"
 
 #: include/simplegaugeinstrument.h:114 include/simplehistograminstrument.h:76
 #: include/simplenumberinstrument.h:76 include/simplepositioninstrument.h:58
 #: include/simpletextinstrument.h:56
 msgid "Title color"
-msgstr ""
+msgstr "Χρώμα τίτλου"
 
 #: include/simplegaugeinstrument.h:116
 msgid "Value color"
-msgstr ""
+msgstr "Χρώμα τιμής"
 
 #: include/simplegaugeinstrument.h:118
 msgid "Tick color"
-msgstr ""
+msgstr "Χρώμα πλαισίου"
 
 #: include/simplegaugeinstrument.h:120
 msgid "Dial values"
-msgstr ""
+msgstr "Τιμές του καντράν"
 
 #: include/simplegaugeinstrument.h:122
 msgid "Normal color"
-msgstr ""
+msgstr "Κανονικό χρώμα"
 
 #: include/simplegaugeinstrument.h:124 include/simplenumberinstrument.h:84
 msgid "Alert color"
-msgstr ""
+msgstr "Χρώμα ειδοποίησης"
 
 #: include/simplegaugeinstrument.h:126
 msgid "Warn color"
-msgstr ""
+msgstr "Χρώμα προειδοποίησης"
 
 #: include/simplegaugeinstrument.h:128 include/simplenumberinstrument.h:92
 msgid "Alarm color"
-msgstr ""
+msgstr "Χρώμα συναγερμού"
 
 #: include/simplegaugeinstrument.h:130 include/simplenumberinstrument.h:97
 msgid "Emergency color"
-msgstr ""
+msgstr "Χρώμα έκτακτης ανάγκης"
 
 #: include/simplegaugeinstrument.h:132 include/simplehistograminstrument.h:86
 #: include/simplenumberinstrument.h:99 include/simplepositioninstrument.h:64
 #: include/simpletextinstrument.h:62
 msgid "Border color"
-msgstr ""
+msgstr "Χρώμα περιγράμματος"
 
 #: include/simplegaugeinstrument.h:346
 msgid "Simple gauge"
-msgstr ""
+msgstr "Απλός μετρητής"
 
 #: include/simplehistograminstrument.h:62
 msgid "Order"
-msgstr ""
+msgstr "Σειρά"
 
 #: include/simplehistograminstrument.h:64
 msgid "History"
-msgstr ""
+msgstr "Ιστορικό"
 
 #: include/simplehistograminstrument.h:66
 msgid "Instrument width"
-msgstr ""
+msgstr "Πλάτος οργάνου"
 
 #: include/simplehistograminstrument.h:72
 msgid "Instrument height"
-msgstr ""
+msgstr "Ύψος οργάνου"
 
 #: include/simplehistograminstrument.h:78
 msgid "Background"
-msgstr ""
+msgstr "Φόντο"
 
 #: include/simplehistograminstrument.h:80
 msgid "Graph color"
-msgstr ""
+msgstr "Χρώμα γραφήματος"
 
 #: include/simplehistograminstrument.h:82
 msgid "Mean color"
-msgstr ""
+msgstr "Μέσο χρώμα"
 
 #: include/simplehistograminstrument.h:84
 msgid "Time color"
-msgstr ""
+msgstr "Χρώμα ώρας"
 
 #: include/simplehistograminstrument.h:294
 msgid "Simple histogram"
-msgstr ""
+msgstr "Απλό ιστόγραμμα"
 
 #: include/simplenumberinstrument.h:70 include/simplepositioninstrument.h:52
 #: include/simpletextinstrument.h:50
 msgid "Title size"
-msgstr ""
+msgstr "Μέγεθος Τίτλου"
 
 #: include/simplenumberinstrument.h:72 include/simplepositioninstrument.h:54
 #: include/simpletextinstrument.h:52
 msgid "Body size"
-msgstr ""
+msgstr "Μέγεθος κυρίου μέρους"
 
 #: include/simplenumberinstrument.h:74 include/simplepositioninstrument.h:56
 #: include/simpletextinstrument.h:54
 msgid "Title background"
-msgstr ""
+msgstr "Τίτλος φόντου"
 
 #: include/simplenumberinstrument.h:78 include/simplepositioninstrument.h:60
 #: include/simpletextinstrument.h:58
 msgid "Body background"
-msgstr ""
+msgstr "Φόντο κυρίου μέρους"
 
 #: include/simplenumberinstrument.h:80 include/simplepositioninstrument.h:62
 #: include/simpletextinstrument.h:60
 msgid "Body color"
-msgstr ""
+msgstr "Χρώμα κυρίου μέρους"
 
 #: include/simplenumberinstrument.h:82
 msgid "Alert background"
-msgstr ""
+msgstr "Φόντο ειδοποίησης"
 
 #: include/simplenumberinstrument.h:86
 msgid "Warning background"
-msgstr ""
+msgstr "Φόντο προειδοποίησης"
 
 #: include/simplenumberinstrument.h:88
 msgid "Warning color"
-msgstr ""
+msgstr "Χρώμα προειδοποίησης"
 
 #: include/simplenumberinstrument.h:90
 msgid "Alarm background"
-msgstr ""
+msgstr "Φόντο συναγερμού"
 
 #: include/simplenumberinstrument.h:95
 msgid "Emergency background"
-msgstr ""
+msgstr "Φόντο έκτακτης ανάγκης"
 
 #: include/simplenumberinstrument.h:211
 msgid "Simple number"
-msgstr ""
+msgstr "Απλός αριθμός"
 
 #: include/simplepositioninstrument.h:160
 msgid "Simple position"
-msgstr ""
+msgstr "Απλή θέση"
 
 #: include/simpletextinstrument.h:154
 msgid "Simple text"
-msgstr ""
+msgstr "Απλό κείμενο"
 
 #: include/zone.h:122
 #, c-format
 msgid "%.1f to %.1f, %s"
-msgstr ""
+msgstr "%.1f έως %.1f, %s"
 
 #: include/zone.h:132
 #, c-format
 msgid "%.1f,%.1f,%s"
-msgstr ""
+msgstr "%.1f,%.1f,%s"
 
 #: include/zone.h:186
 msgid "normal"
-msgstr ""
+msgstr "κανονικό"
 
 #: include/zone.h:188
 msgid "alert"
-msgstr ""
+msgstr "ειδοποίηση"
 
 #: include/zone.h:190
 msgid "warn"
-msgstr ""
+msgstr "προειδοποίηση"
 
 #: include/zone.h:192
 msgid "alarm"
-msgstr ""
+msgstr "συναγερμός"
 
 #: include/zone.h:194
 msgid "emergency"
-msgstr ""
+msgstr "έκτακτη ανάγκη"
 
 #: include/zone.h:196
 msgid "nominal"
-msgstr ""
+msgstr "ονομαστική"
 
 #: src/dashboard.cpp:32
 msgid "Bottom"
-msgstr ""
+msgstr "Κάτω"
 
 #: src/dashboard.cpp:32
 msgid "Top"
-msgstr ""
+msgstr "Πάνω"
 
 #: src/dashboard.cpp:32
 msgid "Left"
-msgstr ""
+msgstr "Αριστερά"
 
 #: src/dashboard.cpp:33
 msgid "Right"
-msgstr ""
+msgstr "Δεξιά"
 
 #: src/dashboardskgui.cpp:34
 msgid "Own context"
-msgstr ""
+msgstr "Στο ίδιο πλαίσιο"
 
 #: src/dashboardskgui.cpp:44
 msgid "Cfg Edit"
-msgstr ""
+msgstr "Επεξεργασία CFG"
 
 #: src/dashboardskgui.cpp:48
 msgid "SignalK"
-msgstr ""
+msgstr "SignalK"
 
 #: src/dashboardskgui.cpp:52
 msgid "Dashboard"
-msgstr ""
+msgstr "Ταμπλό"
 
 #: src/dashboardskgui.cpp:65
 msgid "Rename"
@@ -439,43 +439,43 @@ msgstr ""
 
 #: src/dashboardskgui.cpp:69
 msgid "New"
-msgstr ""
+msgstr "Νέο"
 
 #: src/dashboardskgui.cpp:80
 msgid "Remove"
-msgstr ""
+msgstr "Αφαίρεση"
 
 #: src/dashboardskgui.cpp:101
 msgid "Instruments"
-msgstr ""
+msgstr "Όργανα"
 
 #: src/dashboardskgui.cpp:177
 msgid "Name"
-msgstr ""
+msgstr "Όνομα"
 
 #: src/dashboardskgui.cpp:186
 msgid "Title"
-msgstr ""
+msgstr "Τίτλος"
 
 #: src/dashboardskgui.cpp:199
 msgid "Instrument"
-msgstr ""
+msgstr "Όργανο"
 
 #: src/dashboardskgui.cpp:206
 msgid "Timeout"
-msgstr ""
+msgstr "Χρονικό όριο"
 
 #: src/dashboardskgui.cpp:216
 msgid "sec"
-msgstr ""
+msgstr "s"
 
 #: src/dashboardskgui.cpp:256
 msgid "Enabled"
-msgstr ""
+msgstr "Ενεργοποιημένο"
 
 #: src/dashboardskgui.cpp:262
 msgid "Canvas"
-msgstr ""
+msgstr "Καμβάς"
 
 #: src/dashboardskgui.cpp:271
 msgid "Page"
@@ -483,104 +483,104 @@ msgstr ""
 
 #: src/dashboardskgui.cpp:280
 msgid "Anchor"
-msgstr ""
+msgstr "Άγκυρα"
 
 #: src/dashboardskgui.cpp:291
 msgid "Offset h"
-msgstr ""
+msgstr "Οριζ. μετατόπιση"
 
 #: src/dashboardskgui.cpp:300
 msgid "Offset v"
-msgstr ""
+msgstr "Κατ. μετατόπιση"
 
 #: src/dashboardskgui.cpp:309
 msgid "Spacing h"
-msgstr ""
+msgstr "Οριζ. διαστήματα"
 
 #: src/dashboardskgui.cpp:318
 msgid "Spacing v"
-msgstr ""
+msgstr "Διαστήματα"
 
 #: src/dashboardskgui.cpp:334
 msgid "Export"
-msgstr ""
+msgstr "Εξαγωγή"
 
 #: src/dashboardskgui.cpp:338
 msgid "Import"
-msgstr ""
+msgstr "Εισαγωγή"
 
 #: src/dashboardskgui.cpp:624 src/dashboardskgui.cpp:654
 msgid "..."
-msgstr ""
+msgstr "..."
 
 #: src/dashboardskgui.cpp:692 src/dashboardskguiimpl.cpp:1107
 #: src/dashboardskguiimpl.cpp:1135
 msgid "Collapse"
-msgstr ""
+msgstr "Σύμπτυξη"
 
 #: src/dashboardskgui.cpp:696
 msgid "Own vessel"
-msgstr ""
+msgstr "Ίδιον πλοίο"
 
 #: src/dashboardskgui.cpp:797
 msgid "Lower bound"
-msgstr ""
+msgstr "Κάτω Όριο"
 
 #: src/dashboardskgui.cpp:807
 msgid "Upper bound"
-msgstr ""
+msgstr "Άνω Όριο"
 
 #: src/dashboardskgui.cpp:817
 msgid "State"
-msgstr ""
+msgstr "Κατάσταση"
 
 #: src/dashboardskgui.cpp:821
 msgid "Nominal"
-msgstr ""
+msgstr "Ονομαστική"
 
 #: src/dashboardskgui.cpp:821
 msgid "Normal"
-msgstr ""
+msgstr "Κανονικό"
 
 #: src/dashboardskgui.cpp:821
 msgid "Alert"
-msgstr ""
+msgstr "Ειδοποίηση"
 
 #: src/dashboardskgui.cpp:822
 msgid "Warning"
-msgstr ""
+msgstr "Προσοχή"
 
 #: src/dashboardskgui.cpp:822
 msgid "Alarm"
-msgstr ""
+msgstr "Συναγερμός"
 
 #: src/dashboardskgui.cpp:822
 msgid "Emergency"
-msgstr ""
+msgstr "Έκτακτη ανάγκη"
 
 #: src/dashboardskgui.cpp:834
 msgid "All values not covered by the zones are considered normal."
-msgstr ""
+msgstr "Όλες οι τιμές που δεν καλύπτονται από τις ζώνες θεωρούνται κανονικές."
 
 #: src/dashboardskguiimpl.cpp:242
 msgid "Enter name for the newly created dashboard"
-msgstr ""
+msgstr "´Ονομα του καινούργιου ταμπλό"
 
 #: src/dashboardskguiimpl.cpp:243
 msgid "Create new dashboard"
-msgstr ""
+msgstr "Δημιουργία νέου ταμπλό"
 
 #: src/dashboardskguiimpl.cpp:243
 msgid "New dashboard"
-msgstr ""
+msgstr "Νέο ταμπλό"
 
 #: src/dashboardskguiimpl.cpp:259
 msgid "Do you really want to delete dashboard"
-msgstr ""
+msgstr "Θέλετε πραγματικά να διαγράψετε το ταμπλό"
 
 #: src/dashboardskguiimpl.cpp:262
 msgid "Delete dashboard"
-msgstr ""
+msgstr "Διαγραφή ταμπλό"
 
 #: src/dashboardskguiimpl.cpp:294
 msgid "Enter new name for the dashboard"
@@ -592,106 +592,95 @@ msgstr ""
 
 #: src/dashboardskguiimpl.cpp:568
 msgid "Select type of the new instrument"
-msgstr ""
+msgstr "Επιλέξτε τον τύπο του νέου οργάνου"
 
 #: src/dashboardskguiimpl.cpp:569
 msgid "Add new instrument"
-msgstr ""
+msgstr "Προσθήκη νέου οργάνου"
 
 #: src/dashboardskguiimpl.cpp:673
 msgid "Configuration data (Edit carefully!)"
-msgstr ""
+msgstr "Δεδομένα διαμόρφωσης (Edit προσεκτικά!)"
 
 #: src/dashboardskguiimpl.cpp:694
-msgid ""
-"The configuration data were not a valid JSON document and could not be used!"
+msgid "The configuration data were not a valid JSON document and could not be used!"
 msgstr ""
 
 #: src/dashboardskguiimpl.cpp:696
 msgid "JSON not valid"
-msgstr ""
+msgstr "Μη έγκυρο JSON"
 
 #: src/dashboardskguiimpl.cpp:829
 msgid "Save instrument to file"
-msgstr ""
+msgstr "Αποθήκευση οργάνου σε αρχείο"
 
 #: src/dashboardskguiimpl.cpp:854
 msgid "Load instrument(s) from file(s)"
-msgstr ""
+msgstr "Φόρτωση οργάνων(ων) από αρχείο(α)"
 
 #: src/dashboardskguiimpl.cpp:878
 #, c-format
-msgid ""
-"The file %s does not seem to be a DashboardSK instrument JSON definition."
-msgstr ""
+msgid "The file %s does not seem to be a DashboardSK instrument JSON definition."
+msgstr "Το αρχείο %s δεν είναι όργανό DashboardSK κατά JSON."
 
 #: src/dashboardskguiimpl.cpp:881 src/dashboardskguiimpl.cpp:957
 msgid "Error during import"
-msgstr ""
+msgstr "Σφάλμα κατά την εισαγωγή"
 
 #: src/dashboardskguiimpl.cpp:906
 msgid "Save dashboard to file"
-msgstr ""
+msgstr "Αποθήκευση του ταμπλό σε αρχείο"
 
 #: src/dashboardskguiimpl.cpp:931
 msgid "Load dashboard(s) from file(s)"
-msgstr ""
+msgstr "Φόρτωση οργάνων(ων) από αρχείο(α)"
 
 #: src/dashboardskguiimpl.cpp:954
 #, c-format
 msgid "The file %s does not seem to be a DashboardSK dashboard JSON definition."
-msgstr ""
+msgstr "Το αρχείο %s δεν είναι ταμπλό DashboardSK κατά JSON."
 
 #: src/dashboardskguiimpl.cpp:1132
 msgid "Expand"
-msgstr ""
+msgstr "Επέκταση"
 
 #: src/dashboardsk_pi.cpp:97 src/dashboardsk_pi.cpp:102
 #: src/dashboardsk_pi.cpp:128
 msgid "DashboardSK"
-msgstr ""
+msgstr "DashboardSK"
 
 #: src/dashboardsk_pi.cpp:132
 msgid "SignalK dashboard PlugIn for OpenCPN"
-msgstr ""
+msgstr "Πρόσθετο ταμπλό SignalK για το OpenCPN"
 
 #: src/dashboardsk_pi.cpp:137
-msgid ""
-"Universal dashboard plugin for OpenCPN based on the SignalK data model.\n"
-msgstr ""
-
-#: src/pager.cpp:114
-msgid "Preferences..."
-msgstr ""
-
-#: src/pager.cpp:115
-msgid "Toggle visibility"
-msgstr ""
+msgid "Universal dashboard plugin for OpenCPN based on the SignalK data model.\n"
+msgstr "Πρόσθετο καθολικού ταμπλό για το OpenCPN με βάση το μοντέλο δεδομένων SignalK.\n"
 
 #: src/simplegaugeinstrument.cpp:51
 msgid "New Simple Gauge"
-msgstr ""
+msgstr "Νέος Απλός Μετρητής"
 
 #: src/simplehistograminstrument.cpp:89
 msgid "New Simple Histogram"
-msgstr ""
+msgstr "Νέο Απλό Ιστόγραμμα"
 
 #: src/simplehistograminstrument.cpp:385
 msgid "NO DATA"
-msgstr ""
+msgstr "ΧΩΡΙΣ ΔΕΔΟΜΕΝΑ"
 
 #: src/simplenumberinstrument.cpp:50
 msgid "New Simple Number"
-msgstr ""
+msgstr "Νέος Απλός Αριθμός"
 
 #: src/simplenumberinstrument.cpp:178
 msgid "Error!"
-msgstr ""
+msgstr "Σφάλμα!"
 
 #: src/simplepositioninstrument.cpp:41
 msgid "New Simple Position"
-msgstr ""
+msgstr "Νέα Απλή Θέση"
 
 #: src/simpletextinstrument.cpp:38
 msgid "New Simple Text"
-msgstr ""
+msgstr "Νέο Απλό Κείμενο"

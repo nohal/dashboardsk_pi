@@ -1,113 +1,113 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the DashboardSK_pi package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: DashboardSK_pi 0.1.4\n"
+"Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-08 17:22-0300\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"POT-Creation-Date: 2023-10-08 17:17-0300\n"
+"PO-Revision-Date: 2023-10-08 20:19\n"
+"Last-Translator: \n"
+"Language-Team: Finnish\n"
+"Language: fi_FI\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: opencpn\n"
+"X-Crowdin-Project-ID: 49843\n"
+"X-Crowdin-Language: fi\n"
+"X-Crowdin-File: /plugins/dashboardsk_pi/po/DashboardSK_pi.pot\n"
+"X-Crowdin-File-ID: 405\n"
 
 #: include/dashboardskgui.h:177
 msgid "DashboardSK Configuration"
-msgstr ""
+msgstr "Dashboardsk Asetukset"
 
 #: include/dashboardskgui.h:208
 msgid "SignalK data tree"
-msgstr ""
+msgstr "SignalK datapuu"
 
 #: include/dashboardskgui.h:298 include/dashboardskguiimpl.h:375
 msgid "SignalK Browser"
-msgstr ""
+msgstr "Signalk Selain"
 
 #: include/dashboardskgui.h:354
 msgid "Zones configuration"
-msgstr ""
+msgstr "Alueiden asetukset"
 
 #: include/dashboardskguiimpl.h:503
 msgid "SignalK Zones Configuration"
-msgstr ""
+msgstr "Signalk Alueiden Asetukset"
 
 #: include/instrument.h:93
 msgid "None"
-msgstr ""
+msgstr "Ei yhtään"
 
 #: include/instrument.h:94
 msgid "RAD->DEG"
-msgstr ""
+msgstr "RAD->DEG"
 
 #: include/instrument.h:95
 msgid "m/s -> kn"
-msgstr ""
+msgstr "m/s -> kn"
 
 #: include/instrument.h:96
 msgid "m/s -> km/h"
-msgstr ""
+msgstr "m/s -> km/h"
 
 #: include/instrument.h:97
 msgid "m/s -> mph"
-msgstr ""
+msgstr "m/s -> mph"
 
 #: include/instrument.h:98
 msgid "m -> feet"
-msgstr ""
+msgstr "m -> jalat"
 
 #: include/instrument.h:99
 msgid "m -> fathoms"
-msgstr ""
+msgstr "m -> sylet"
 
 #: include/instrument.h:100
 msgid "m -> NMi"
-msgstr ""
+msgstr "m -> NMi"
 
 #: include/instrument.h:101
 msgid "°K -> °C"
-msgstr ""
+msgstr "°K -> °C"
 
 #: include/instrument.h:102
 msgid "°K -> °F"
-msgstr ""
+msgstr "°K -> °F"
 
 #: include/instrument.h:103
 msgid "ratio -> %"
-msgstr ""
+msgstr "suhde -> %"
 
 #: include/instrument.h:104
 msgid "Pa -> hPa"
-msgstr ""
+msgstr "Pa -> hPa"
 
 #: include/instrument.h:105
 msgid "Pa -> kPa"
-msgstr ""
+msgstr "Pa -> kPa"
 
 #: include/instrument.h:106
 msgid "Pa -> MPa"
-msgstr ""
+msgstr "Pa -> MPa"
 
 #: include/instrument.h:107
 msgid "Pa -> atm"
-msgstr ""
+msgstr "Pa -> atm"
 
 #: include/instrument.h:108
 msgid "Pa -> mmHg"
-msgstr ""
+msgstr "Pa -> mmHg"
 
 #: include/instrument.h:109
 msgid "Pa -> psi"
-msgstr ""
+msgstr "Pa -> psi"
 
 #: include/instrument.h:110
 msgid "Hz -> RPM"
-msgstr ""
+msgstr "Hz -> RPM"
 
 #: include/instrument.h:111
 msgid "RAD/s -> DEG/m"
@@ -115,323 +115,323 @@ msgstr ""
 
 #: include/instrument.h:145
 msgid "Lowest to highest"
-msgstr ""
+msgstr "Matalimmasta korkeimpaan"
 
 #: include/instrument.h:146
 msgid "Highest to lowest"
-msgstr ""
+msgstr "Korkeimmasta alimpaan"
 
 #: include/instrument.h:149
 msgid "1 minute"
-msgstr ""
+msgstr "1 minuutti"
 
 #: include/instrument.h:150
 msgid "5 minutes"
-msgstr ""
+msgstr "5 minuuttia"
 
 #: include/instrument.h:151
 msgid "15 minutes"
-msgstr ""
+msgstr "15 minuuttia"
 
 #: include/instrument.h:152
 msgid "30 minutes"
-msgstr ""
+msgstr "30 minuuttia"
 
 #: include/instrument.h:153
 msgid "1 hour"
-msgstr ""
+msgstr "1 tunti"
 
 #: include/instrument.h:154
 msgid "1 day"
-msgstr ""
+msgstr "1 päivä"
 
 #: include/instrument.h:155
 msgid "3 days"
-msgstr ""
+msgstr "3 päivää"
 
 #: include/simplegaugeinstrument.h:74
 msgid "Relative angle"
-msgstr ""
+msgstr "Suhteellinen kulma"
 
 #: include/simplegaugeinstrument.h:75
 msgid "Direction"
-msgstr ""
+msgstr "Suunta"
 
 #: include/simplegaugeinstrument.h:76
 msgid "Percentile"
-msgstr ""
+msgstr "Prosentti"
 
 #: include/simplegaugeinstrument.h:78
 msgid "Adaptive range indicator"
-msgstr ""
+msgstr "Mukautuvan vaihteluvälin indikaattori"
 
 #: include/simplegaugeinstrument.h:80
 msgid "Fixed range indicator"
-msgstr ""
+msgstr "Kiinteä alueindikaattori"
 
 #: include/simplegaugeinstrument.h:85 include/simplehistograminstrument.h:56
 #: include/simplenumberinstrument.h:60 include/simplepositioninstrument.h:48
 #: include/simpletextinstrument.h:48
 msgid "SK Key"
-msgstr ""
+msgstr "SK Key"
 
 #: include/simplegaugeinstrument.h:87
 msgid "Gauge type"
-msgstr ""
+msgstr "Mittarityyppi"
 
 #: include/simplegaugeinstrument.h:89 include/simplehistograminstrument.h:58
 #: include/simplenumberinstrument.h:62 include/simplepositioninstrument.h:50
 msgid "Format"
-msgstr ""
+msgstr "Muoto"
 
 #: include/simplegaugeinstrument.h:91 include/simplehistograminstrument.h:60
 #: include/simplenumberinstrument.h:64
 msgid "Transformation"
-msgstr ""
+msgstr "Muunnos"
 
 #: include/simplegaugeinstrument.h:93 include/simplenumberinstrument.h:66
 #: src/dashboardskgui.cpp:767
 msgid "Zones"
-msgstr ""
+msgstr "Alueet"
 
 #: include/simplegaugeinstrument.h:95 include/simplenumberinstrument.h:68
 msgid "Data smoothing"
-msgstr ""
+msgstr "Tietojen tasaus"
 
 #: include/simplegaugeinstrument.h:97
 msgid "Instrument size"
-msgstr ""
+msgstr "Laitteen koko"
 
 #: include/simplegaugeinstrument.h:102
 msgid "Needle color"
-msgstr ""
+msgstr "Neulan väri"
 
 #: include/simplegaugeinstrument.h:104
 msgid "Rim color"
-msgstr ""
+msgstr "Reunan väri"
 
 #: include/simplegaugeinstrument.h:106
 msgid "Port color"
-msgstr ""
+msgstr "Portin väri"
 
 #: include/simplegaugeinstrument.h:108
 msgid "Starboard color"
-msgstr ""
+msgstr "Starboardin väri"
 
 #: include/simplegaugeinstrument.h:110
 msgid "Dead angle color"
-msgstr ""
+msgstr "Kuolleen kulman väri"
 
 #: include/simplegaugeinstrument.h:112
 msgid "Dial color"
-msgstr ""
+msgstr "Valinnan väri"
 
 #: include/simplegaugeinstrument.h:114 include/simplehistograminstrument.h:76
 #: include/simplenumberinstrument.h:76 include/simplepositioninstrument.h:58
 #: include/simpletextinstrument.h:56
 msgid "Title color"
-msgstr ""
+msgstr "Otsikon väri"
 
 #: include/simplegaugeinstrument.h:116
 msgid "Value color"
-msgstr ""
+msgstr "Arvon väri"
 
 #: include/simplegaugeinstrument.h:118
 msgid "Tick color"
-msgstr ""
+msgstr "Valitse väri"
 
 #: include/simplegaugeinstrument.h:120
 msgid "Dial values"
-msgstr ""
+msgstr "Asteikon arvot"
 
 #: include/simplegaugeinstrument.h:122
 msgid "Normal color"
-msgstr ""
+msgstr "Normaali väri"
 
 #: include/simplegaugeinstrument.h:124 include/simplenumberinstrument.h:84
 msgid "Alert color"
-msgstr ""
+msgstr "Hälytyksen väri"
 
 #: include/simplegaugeinstrument.h:126
 msgid "Warn color"
-msgstr ""
+msgstr "Varoituksen väri"
 
 #: include/simplegaugeinstrument.h:128 include/simplenumberinstrument.h:92
 msgid "Alarm color"
-msgstr ""
+msgstr "Hälytyksen väri"
 
 #: include/simplegaugeinstrument.h:130 include/simplenumberinstrument.h:97
 msgid "Emergency color"
-msgstr ""
+msgstr "Hätätilan väri"
 
 #: include/simplegaugeinstrument.h:132 include/simplehistograminstrument.h:86
 #: include/simplenumberinstrument.h:99 include/simplepositioninstrument.h:64
 #: include/simpletextinstrument.h:62
 msgid "Border color"
-msgstr ""
+msgstr "Reunan väri"
 
 #: include/simplegaugeinstrument.h:346
 msgid "Simple gauge"
-msgstr ""
+msgstr "Yksinkertainen mitta"
 
 #: include/simplehistograminstrument.h:62
 msgid "Order"
-msgstr ""
+msgstr "Järjestys"
 
 #: include/simplehistograminstrument.h:64
 msgid "History"
-msgstr ""
+msgstr "Historia"
 
 #: include/simplehistograminstrument.h:66
 msgid "Instrument width"
-msgstr ""
+msgstr "Laitteen leveys"
 
 #: include/simplehistograminstrument.h:72
 msgid "Instrument height"
-msgstr ""
+msgstr "Laitteen korkeus"
 
 #: include/simplehistograminstrument.h:78
 msgid "Background"
-msgstr ""
+msgstr "Tausta"
 
 #: include/simplehistograminstrument.h:80
 msgid "Graph color"
-msgstr ""
+msgstr "Kaavion väri"
 
 #: include/simplehistograminstrument.h:82
 msgid "Mean color"
-msgstr ""
+msgstr "Välin väri"
 
 #: include/simplehistograminstrument.h:84
 msgid "Time color"
-msgstr ""
+msgstr "Ajan väri"
 
 #: include/simplehistograminstrument.h:294
 msgid "Simple histogram"
-msgstr ""
+msgstr "Yksinkertainen histogrammi"
 
 #: include/simplenumberinstrument.h:70 include/simplepositioninstrument.h:52
 #: include/simpletextinstrument.h:50
 msgid "Title size"
-msgstr ""
+msgstr "Otsikon koko"
 
 #: include/simplenumberinstrument.h:72 include/simplepositioninstrument.h:54
 #: include/simpletextinstrument.h:52
 msgid "Body size"
-msgstr ""
+msgstr "Rungon koko"
 
 #: include/simplenumberinstrument.h:74 include/simplepositioninstrument.h:56
 #: include/simpletextinstrument.h:54
 msgid "Title background"
-msgstr ""
+msgstr "Otsikon tausta"
 
 #: include/simplenumberinstrument.h:78 include/simplepositioninstrument.h:60
 #: include/simpletextinstrument.h:58
 msgid "Body background"
-msgstr ""
+msgstr "Rungon tausta"
 
 #: include/simplenumberinstrument.h:80 include/simplepositioninstrument.h:62
 #: include/simpletextinstrument.h:60
 msgid "Body color"
-msgstr ""
+msgstr "Rungon väri"
 
 #: include/simplenumberinstrument.h:82
 msgid "Alert background"
-msgstr ""
+msgstr "Hälytyksen tausta"
 
 #: include/simplenumberinstrument.h:86
 msgid "Warning background"
-msgstr ""
+msgstr "Varoituksen tausta"
 
 #: include/simplenumberinstrument.h:88
 msgid "Warning color"
-msgstr ""
+msgstr "Varoituksen väri"
 
 #: include/simplenumberinstrument.h:90
 msgid "Alarm background"
-msgstr ""
+msgstr "Hälytyksen tausta"
 
 #: include/simplenumberinstrument.h:95
 msgid "Emergency background"
-msgstr ""
+msgstr "Hätätilanteiden tausta"
 
 #: include/simplenumberinstrument.h:211
 msgid "Simple number"
-msgstr ""
+msgstr "Yksinkertainen numero"
 
 #: include/simplepositioninstrument.h:160
 msgid "Simple position"
-msgstr ""
+msgstr "Yksinkertainen sijainti"
 
 #: include/simpletextinstrument.h:154
 msgid "Simple text"
-msgstr ""
+msgstr "Yksinkertainen teksti"
 
 #: include/zone.h:122
 #, c-format
 msgid "%.1f to %.1f, %s"
-msgstr ""
+msgstr "%.1f - %.1f, %s"
 
 #: include/zone.h:132
 #, c-format
 msgid "%.1f,%.1f,%s"
-msgstr ""
+msgstr "%.1f,%.1f,%s"
 
 #: include/zone.h:186
 msgid "normal"
-msgstr ""
+msgstr "tavallinen"
 
 #: include/zone.h:188
 msgid "alert"
-msgstr ""
+msgstr "hälytys"
 
 #: include/zone.h:190
 msgid "warn"
-msgstr ""
+msgstr "varoita"
 
 #: include/zone.h:192
 msgid "alarm"
-msgstr ""
+msgstr "hälytys:"
 
 #: include/zone.h:194
 msgid "emergency"
-msgstr ""
+msgstr "hätätila"
 
 #: include/zone.h:196
 msgid "nominal"
-msgstr ""
+msgstr "nimellinen"
 
 #: src/dashboard.cpp:32
 msgid "Bottom"
-msgstr ""
+msgstr "Alaosa"
 
 #: src/dashboard.cpp:32
 msgid "Top"
-msgstr ""
+msgstr "Yläosa"
 
 #: src/dashboard.cpp:32
 msgid "Left"
-msgstr ""
+msgstr "Vasen"
 
 #: src/dashboard.cpp:33
 msgid "Right"
-msgstr ""
+msgstr "Oikea"
 
 #: src/dashboardskgui.cpp:34
 msgid "Own context"
-msgstr ""
+msgstr "Oma konteksti"
 
 #: src/dashboardskgui.cpp:44
 msgid "Cfg Edit"
-msgstr ""
+msgstr "Cfg Muokkaus"
 
 #: src/dashboardskgui.cpp:48
 msgid "SignalK"
-msgstr ""
+msgstr "SignalK"
 
 #: src/dashboardskgui.cpp:52
 msgid "Dashboard"
-msgstr ""
+msgstr "Dashboard"
 
 #: src/dashboardskgui.cpp:65
 msgid "Rename"
@@ -439,43 +439,43 @@ msgstr ""
 
 #: src/dashboardskgui.cpp:69
 msgid "New"
-msgstr ""
+msgstr "Uusi"
 
 #: src/dashboardskgui.cpp:80
 msgid "Remove"
-msgstr ""
+msgstr "Poista"
 
 #: src/dashboardskgui.cpp:101
 msgid "Instruments"
-msgstr ""
+msgstr "Mittarit"
 
 #: src/dashboardskgui.cpp:177
 msgid "Name"
-msgstr ""
+msgstr "Nimi"
 
 #: src/dashboardskgui.cpp:186
 msgid "Title"
-msgstr ""
+msgstr "Otsikko"
 
 #: src/dashboardskgui.cpp:199
 msgid "Instrument"
-msgstr ""
+msgstr "Instrumentti"
 
 #: src/dashboardskgui.cpp:206
 msgid "Timeout"
-msgstr ""
+msgstr "Aikakatkaisu"
 
 #: src/dashboardskgui.cpp:216
 msgid "sec"
-msgstr ""
+msgstr "sek"
 
 #: src/dashboardskgui.cpp:256
 msgid "Enabled"
-msgstr ""
+msgstr "Sallittu"
 
 #: src/dashboardskgui.cpp:262
 msgid "Canvas"
-msgstr ""
+msgstr "Piirtoalue"
 
 #: src/dashboardskgui.cpp:271
 msgid "Page"
@@ -483,104 +483,104 @@ msgstr ""
 
 #: src/dashboardskgui.cpp:280
 msgid "Anchor"
-msgstr ""
+msgstr "Ankkuri"
 
 #: src/dashboardskgui.cpp:291
 msgid "Offset h"
-msgstr ""
+msgstr "Siirtymä h"
 
 #: src/dashboardskgui.cpp:300
 msgid "Offset v"
-msgstr ""
+msgstr "Siirtymä v"
 
 #: src/dashboardskgui.cpp:309
 msgid "Spacing h"
-msgstr ""
+msgstr "Väli h"
 
 #: src/dashboardskgui.cpp:318
 msgid "Spacing v"
-msgstr ""
+msgstr "Väli v"
 
 #: src/dashboardskgui.cpp:334
 msgid "Export"
-msgstr ""
+msgstr "Vie"
 
 #: src/dashboardskgui.cpp:338
 msgid "Import"
-msgstr ""
+msgstr "Tuo"
 
 #: src/dashboardskgui.cpp:624 src/dashboardskgui.cpp:654
 msgid "..."
-msgstr ""
+msgstr "..."
 
 #: src/dashboardskgui.cpp:692 src/dashboardskguiimpl.cpp:1107
 #: src/dashboardskguiimpl.cpp:1135
 msgid "Collapse"
-msgstr ""
+msgstr "Kutista"
 
 #: src/dashboardskgui.cpp:696
 msgid "Own vessel"
-msgstr ""
+msgstr "Oma alus"
 
 #: src/dashboardskgui.cpp:797
 msgid "Lower bound"
-msgstr ""
+msgstr "Alempi raja"
 
 #: src/dashboardskgui.cpp:807
 msgid "Upper bound"
-msgstr ""
+msgstr "Yläraja"
 
 #: src/dashboardskgui.cpp:817
 msgid "State"
-msgstr ""
+msgstr "Tila"
 
 #: src/dashboardskgui.cpp:821
 msgid "Nominal"
-msgstr ""
+msgstr "Nimellinen"
 
 #: src/dashboardskgui.cpp:821
 msgid "Normal"
-msgstr ""
+msgstr "Normaali"
 
 #: src/dashboardskgui.cpp:821
 msgid "Alert"
-msgstr ""
+msgstr "Hälytys"
 
 #: src/dashboardskgui.cpp:822
 msgid "Warning"
-msgstr ""
+msgstr "Varoitus"
 
 #: src/dashboardskgui.cpp:822
 msgid "Alarm"
-msgstr ""
+msgstr "Hälytys"
 
 #: src/dashboardskgui.cpp:822
 msgid "Emergency"
-msgstr ""
+msgstr "Hätätila"
 
 #: src/dashboardskgui.cpp:834
 msgid "All values not covered by the zones are considered normal."
-msgstr ""
+msgstr "Kaikkia arvoja, joita vyöhykkeet eivät kata, pidetään normaalina."
 
 #: src/dashboardskguiimpl.cpp:242
 msgid "Enter name for the newly created dashboard"
-msgstr ""
+msgstr "Syötä nimi juuri luodulle dashboardille"
 
 #: src/dashboardskguiimpl.cpp:243
 msgid "Create new dashboard"
-msgstr ""
+msgstr "Luo uusi dashboard"
 
 #: src/dashboardskguiimpl.cpp:243
 msgid "New dashboard"
-msgstr ""
+msgstr "Uusi dashboard"
 
 #: src/dashboardskguiimpl.cpp:259
 msgid "Do you really want to delete dashboard"
-msgstr ""
+msgstr "Haluatko todella poistaa dashboardin"
 
 #: src/dashboardskguiimpl.cpp:262
 msgid "Delete dashboard"
-msgstr ""
+msgstr "Poista dashboard"
 
 #: src/dashboardskguiimpl.cpp:294
 msgid "Enter new name for the dashboard"
@@ -592,106 +592,95 @@ msgstr ""
 
 #: src/dashboardskguiimpl.cpp:568
 msgid "Select type of the new instrument"
-msgstr ""
+msgstr "Valitse uuden instrumentin tyyppi"
 
 #: src/dashboardskguiimpl.cpp:569
 msgid "Add new instrument"
-msgstr ""
+msgstr "Lisää uusi mittari"
 
 #: src/dashboardskguiimpl.cpp:673
 msgid "Configuration data (Edit carefully!)"
-msgstr ""
+msgstr "Konfiguraatiotiedot (Muokkaa huolellisesti!)"
 
 #: src/dashboardskguiimpl.cpp:694
-msgid ""
-"The configuration data were not a valid JSON document and could not be used!"
+msgid "The configuration data were not a valid JSON document and could not be used!"
 msgstr ""
 
 #: src/dashboardskguiimpl.cpp:696
 msgid "JSON not valid"
-msgstr ""
+msgstr "JSON ei kelpaa"
 
 #: src/dashboardskguiimpl.cpp:829
 msgid "Save instrument to file"
-msgstr ""
+msgstr "Tallenna mittari tiedostoon"
 
 #: src/dashboardskguiimpl.cpp:854
 msgid "Load instrument(s) from file(s)"
-msgstr ""
+msgstr "Lataa mittari(t) tiedosto(i)sta"
 
 #: src/dashboardskguiimpl.cpp:878
 #, c-format
-msgid ""
-"The file %s does not seem to be a DashboardSK instrument JSON definition."
-msgstr ""
+msgid "The file %s does not seem to be a DashboardSK instrument JSON definition."
+msgstr "Tiedosto %s ei näytä olevan DashboardSK mittarin JSON määritelmä."
 
 #: src/dashboardskguiimpl.cpp:881 src/dashboardskguiimpl.cpp:957
 msgid "Error during import"
-msgstr ""
+msgstr "Tuonnin aikana tapahtui virhe"
 
 #: src/dashboardskguiimpl.cpp:906
 msgid "Save dashboard to file"
-msgstr ""
+msgstr "Tallenna dashboard tiedostoon"
 
 #: src/dashboardskguiimpl.cpp:931
 msgid "Load dashboard(s) from file(s)"
-msgstr ""
+msgstr "Lataa dashboard(it) tiedosto(i)sta"
 
 #: src/dashboardskguiimpl.cpp:954
 #, c-format
 msgid "The file %s does not seem to be a DashboardSK dashboard JSON definition."
-msgstr ""
+msgstr "Tiedosto %s ei näytä olevan DashboardSK dashboard JSON -määritelmä."
 
 #: src/dashboardskguiimpl.cpp:1132
 msgid "Expand"
-msgstr ""
+msgstr "Laajenna"
 
 #: src/dashboardsk_pi.cpp:97 src/dashboardsk_pi.cpp:102
 #: src/dashboardsk_pi.cpp:128
 msgid "DashboardSK"
-msgstr ""
+msgstr "DashboardSK"
 
 #: src/dashboardsk_pi.cpp:132
 msgid "SignalK dashboard PlugIn for OpenCPN"
-msgstr ""
+msgstr "SignalK dashboard lisäosa OpenCPN:lle"
 
 #: src/dashboardsk_pi.cpp:137
-msgid ""
-"Universal dashboard plugin for OpenCPN based on the SignalK data model.\n"
-msgstr ""
-
-#: src/pager.cpp:114
-msgid "Preferences..."
-msgstr ""
-
-#: src/pager.cpp:115
-msgid "Toggle visibility"
-msgstr ""
+msgid "Universal dashboard plugin for OpenCPN based on the SignalK data model.\n"
+msgstr "OpenCPN:n yleinen kojelautaliitännäinen, joka perustuu SignalK-tietomalliin.\n"
 
 #: src/simplegaugeinstrument.cpp:51
 msgid "New Simple Gauge"
-msgstr ""
+msgstr "Uusi Yksinkertainen Mittari"
 
 #: src/simplehistograminstrument.cpp:89
 msgid "New Simple Histogram"
-msgstr ""
+msgstr "Uusi Yksinkertainen Histogrammi"
 
 #: src/simplehistograminstrument.cpp:385
 msgid "NO DATA"
-msgstr ""
+msgstr "EI TIETOA"
 
 #: src/simplenumberinstrument.cpp:50
 msgid "New Simple Number"
-msgstr ""
+msgstr "Uusi Yksinkertainen Numero"
 
 #: src/simplenumberinstrument.cpp:178
 msgid "Error!"
-msgstr ""
+msgstr "Virhe!"
 
 #: src/simplepositioninstrument.cpp:41
 msgid "New Simple Position"
-msgstr ""
+msgstr "Uusi Yksinkertainen Sijainti"
 
 #: src/simpletextinstrument.cpp:38
 msgid "New Simple Text"
-msgstr ""
+msgstr "Uusi Yksinkertainen Teksti"

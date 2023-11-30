@@ -162,7 +162,7 @@ void SimpleHistogramInstrument::SetSetting(
     }
 }
 
-wxBitmap SimpleHistogramInstrument::Render(double scale)
+void SimpleHistogramInstrument::ProcessData()
 {
     if (!m_new_data) {
         if (!m_timed_out
@@ -202,6 +202,11 @@ wxBitmap SimpleHistogramInstrument::Render(double scale)
             m_history.Add(dval);
         }
     }
+}
+
+wxBitmap SimpleHistogramInstrument::Render(double scale)
+{
+    ProcessData();
 
     if (!m_needs_redraw) {
         return m_bmp;

@@ -115,6 +115,42 @@ void SimpleNumberInstrument::SetSetting(const wxString& key, const int& value)
     }
 }
 
+void SimpleNumberInstrument::ProcessData()
+{
+    if (!m_new_data) {
+        if (!m_timed_out
+            && (m_allowed_age_sec > 0
+                && std::chrono::duration_cast<std::chrono::seconds>(
+                       std::chrono::system_clock::now() - m_last_change)
+                        .count()
+                    > m_allowed_age_sec)) {
+            m_needs_redraw = true;
+            m_timed_out = true;
+            m_old_value = std::numeric_limits<double>::min();
+        }
+    } else {
+        m_new_data = false;
+        m_needs_redraw = true;
+        m_last_change = std::chrono::system_clock::now();
+        m_timed_out = false;
+        const wxJSONValue* val = m_parent_dashboard->GetSKData(m_sk_key);
+        if (val) {
+            wxJSONValue v = val->Get("value", *val);
+            if ((unsigned)m_format_index < m_format_strings.GetCount()) {
+                double dval
+                    = Transform(v.IsDouble() ? v.AsDouble() : v.AsLong());
+                if (m_old_value > std::numeric_limits<double>::min()) {
+                    dval = (m_smoothing * m_old_value
+                               + (DSK_SNI_SMOOTHING_MAX - m_smoothing + 1)
+                                   * dval)
+                        / (DSK_SNI_SMOOTHING_MAX + 1);
+                }
+                m_old_value = dval;
+            }
+        }
+    }
+}
+
 wxBitmap SimpleNumberInstrument::Render(double scale)
 {
     wxString value;

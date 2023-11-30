@@ -588,6 +588,9 @@ public:
     ///
     /// \return Dot separated SignalK path
     virtual wxString GetPrimarySKKey() const { return wxEmptyString; };
+
+    /// Only process the SK data without drawing anything
+    virtual void ProcessData() {};
 };
 
 PLUGIN_END_NAMESPACE
