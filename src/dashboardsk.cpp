@@ -44,6 +44,13 @@ DashboardSK::DashboardSK(const wxString& data_path)
     m_sk_data["vessels"].AddComment("Root of the vessel tree");
 }
 
+void DashboardSK::ProcessData()
+{
+    for (auto dashboard : m_dashboards) {
+        dashboard->ProcessData();
+    }
+}
+
 void DashboardSK::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
 {
     if (m_displayed_pages.find(canvasIndex) == m_displayed_pages.end()) {

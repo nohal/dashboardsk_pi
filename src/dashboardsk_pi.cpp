@@ -248,7 +248,14 @@ bool dashboardsk_pi::RenderGLOverlayMultiCanvas(
         // return false;
     }
 
-    if (!vp || !m_shown) {
+    if (!vp) {
+        return false;
+    }
+
+    if (!m_shown) {
+        if (m_dsk) {
+            m_dsk->ProcessData();
+        }
         return false;
     }
 

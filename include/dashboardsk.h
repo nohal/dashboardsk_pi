@@ -424,6 +424,10 @@ public:
     /// Check if the dashboard is visible
     /// @return true if visible
     bool IsVisible();
+
+    /// Process data without drawing anything
+    /// Serves primarily to update instruments with history
+    void ProcessData();
 };
 
 PLUGIN_END_NAMESPACE
