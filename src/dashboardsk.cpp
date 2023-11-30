@@ -51,6 +51,12 @@ void DashboardSK::ProcessData()
     }
 }
 
+
+int DashboardSK::ToPhis(int x)
+{
+    return m_parent_plugin->ToPhis(x);
+}
+
 void DashboardSK::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
 {
     if (m_displayed_pages.find(canvasIndex) == m_displayed_pages.end()) {
@@ -488,6 +494,14 @@ void DashboardSK::ToggleVisibility()
     m_parent_plugin->OnToolbarToolCallback(0);
 }
 
-bool DashboardSK::IsVisible() { return m_parent_plugin->IsVisible(); }
+bool DashboardSK::IsVisible()
+{
+    return m_parent_plugin->IsVisible();
+}
+
+double DashboardSK::GetContentScaleFactor() const
+{
+    return m_parent_plugin->GetContentScaleFactor();
+}
 
 PLUGIN_END_NAMESPACE

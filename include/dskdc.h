@@ -46,6 +46,8 @@ public:
     dskDC(wxGLCanvas& canvas)
         : piDC(canvas)
     {
+        glcanvas = &canvas;
+        m_scale_factor = canvas.GetContentScaleFactor();
         m_is_gl = true;
     };
 
@@ -55,6 +57,8 @@ public:
     dskDC(wxDC& pdc)
         : piDC(pdc)
     {
+        dc = &pdc;
+        m_scale_factor = pdc.GetContentScaleFactor();
         m_is_gl = false;
     };
 

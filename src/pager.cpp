@@ -44,9 +44,9 @@ void Pager::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
     if (m_pages.size() < 2) {
         return;
     }
-    auto bmp = Render(1.0);
-    m_x_pos = PAGER_LEFT_OFFSET;
-    m_y_pos = vp->pix_height - PAGER_BOTTOM_OFFSET;
+    auto bmp = Render(m_parent->GetContentScaleFactor());
+    m_x_pos = m_parent->ToPhis(PAGER_LEFT_OFFSET);
+    m_y_pos = vp->pix_height - m_parent->ToPhis(PAGER_BOTTOM_OFFSET);
     dc->DrawBitmap(bmp, m_x_pos, m_y_pos,
         bmp.HasAlpha()); // TODO: make the position configurable
 }
@@ -71,14 +71,14 @@ wxBitmap Pager::Render(double scale)
     auto bmp = GetBitmapFromSVGFile(m_parent->GetDataDir()
             + wxFileName::GetPathSeparator() + "p"
             + std::to_string(m_current_page) + ".svg",
-        PAGER_ICON_SIZE, PAGER_ICON_SIZE);
+        PAGER_ICON_SIZE * scale, PAGER_ICON_SIZE * scale);
     return m_parent->ApplyBitmapBrightness(bmp);
 }
 
 bool Pager::IsClicked(int& x, int& y)
 {
-    if (m_pages.size() >= 2 && x >= m_x_pos && x <= m_x_pos + PAGER_ICON_SIZE
-        && y >= m_y_pos && y <= m_y_pos + PAGER_ICON_SIZE) {
+    if (m_pages.size() >= 2 && x >= m_x_pos && x <= m_x_pos + m_parent->ToPhis(PAGER_ICON_SIZE)
+        && y >= m_y_pos && y <= m_y_pos + m_parent->ToPhis(PAGER_ICON_SIZE)) {
         return true;
     }
     return false;
@@ -111,15 +111,15 @@ bool Pager::ProcessMouseEvent(wxMouseEvent& event)
         return false;
     }
     if (event.LeftIsDown()) {
-        int x = event.GetX(); // Convert to per-canvas coordinates
-        int y = event.GetY(); // Convert to per-canvas coordinates
+        int x = m_parent->ToPhis(event.GetX()); // Convert to per-canvas coordinates
+        int y = m_parent->ToPhis(event.GetY()); // Convert to per-canvas coordinates
         if (IsClicked(x, y)) {
             SetCurrentPage(GetNextPage());
             return true;
         }
     } else if (event.RightIsDown()) {
-        int x = event.GetX(); // Convert to per-canvas coordinates
-        int y = event.GetY(); // Convert to per-canvas coordinates
+        int x = m_parent->ToPhis(event.GetX()); // Convert to per-canvas coordinates
+        int y = m_parent->ToPhis(event.GetY()); // Convert to per-canvas coordinates
         if (!IsClicked(x, y)) {
             return false;
         }

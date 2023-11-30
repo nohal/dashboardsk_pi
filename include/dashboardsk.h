@@ -428,6 +428,16 @@ public:
     /// Process data without drawing anything
     /// Serves primarily to update instruments with history
     void ProcessData();
+
+    /// @brief Converts DIP to physical pixels
+    /// @param x Device independent pixels
+    /// @return Physical pixels
+    int ToPhis(int x);
+
+    /// Get the scale factor of the device context
+    ///
+    /// \return The scale factor
+    double GetContentScaleFactor() const;
 };
 
 PLUGIN_END_NAMESPACE

@@ -231,6 +231,16 @@ public:
     /// Check if the dashboard is visible
     /// @return true if visible
     bool IsVisible();
+
+    /// @brief Converts DIP to physical pixels
+    /// @param x Device independent pixels
+    /// @return Physical pixels
+    int ToPhis(int x);
+
+    /// Get the scale factor of the device context
+    ///
+    /// \return The scale factor
+    double GetContentScaleFactor() const;
 };
 
 PLUGIN_END_NAMESPACE
