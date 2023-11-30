@@ -227,6 +227,10 @@ public:
     /// @return True if we processed the event ourselves, false if we do not
     /// care about it.
     bool MouseEventHook(wxMouseEvent& event);
+
+    /// Check if the dashboard is visible
+    /// @return true if visible
+    bool IsVisible();
 };
 
 PLUGIN_END_NAMESPACE

@@ -107,6 +107,9 @@ void Pager::OnPopupClick(wxCommandEvent& evt)
 
 bool Pager::ProcessMouseEvent(wxMouseEvent& event)
 {
+    if (!m_parent->IsVisible()) {
+        return false;
+    }
     if (event.LeftIsDown()) {
         int x = event.GetX(); // Convert to per-canvas coordinates
         int y = event.GetY(); // Convert to per-canvas coordinates
@@ -124,7 +127,7 @@ bool Pager::ProcessMouseEvent(wxMouseEvent& event)
         mnu.Append(ID_PREFERENCES, _("Preferences..."));
         mnu.Append(ID_VISIBILITY, _("Toggle visibility"));
         for (auto& page : m_pages) {
-            wxString s = wxString::Format(_("Page %d"), page);
+            wxString s = wxString::Format(_("Page %llu"), page);
             mnu.Append(ID_PAGES + page, s);
         }
         mnu.Connect(wxEVT_COMMAND_MENU_SELECTED,

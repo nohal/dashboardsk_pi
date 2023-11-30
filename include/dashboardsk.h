@@ -420,6 +420,10 @@ public:
 
     /// Toggle the visibility of the dashboards
     void ToggleVisibility();
+
+    /// Check if the dashboard is visible
+    /// @return true if visible
+    bool IsVisible();
 };
 
 PLUGIN_END_NAMESPACE

@@ -481,4 +481,6 @@ void DashboardSK::ToggleVisibility()
     m_parent_plugin->OnToolbarToolCallback(0);
 }
 
+bool DashboardSK::IsVisible() { return m_parent_plugin->IsVisible(); }
+
 PLUGIN_END_NAMESPACE

@@ -305,4 +305,6 @@ bool dashboardsk_pi::MouseEventHook(wxMouseEvent& event)
     return m_dsk->ProcessMouseEvent(event);
 }
 
+bool dashboardsk_pi::IsVisible() { return m_shown; }
+
 PLUGIN_END_NAMESPACE
