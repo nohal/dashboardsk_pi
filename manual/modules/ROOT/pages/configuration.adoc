@@ -78,6 +78,9 @@ Changes in parameters are reflected in the displayed instrument as soon as an ac
 |Canvas
 |Id of the chart canvas on which the dashboard is displayed
 
+|Page
+|The plugin allows grouping dashboards on pages to allow complex setups while maintaining enough space for the chart canvas. If more than one page is defined, a pager control is displlayed in the lower left corner of the screen allowing switching between pages. The pager control also provides a context menu accessible using right-click to quickly access the preferences, switch page or hide the dashboard completely. image::pager.png[Pager control with context menu]
+
 |Anchor
 |Edge of the screen to which the dashboard is docked
 

@@ -1,7 +1,7 @@
 :imagesdir: ../images/
 == Signal K key selection
 
-Each instrument requires binding to a Signal K data object represented by a path pointing to a specific leaf of the data tree. The path to the data node has to be fully qualified, reresenting the whole path from the root of the data tree to the node eg. `vessels.urn:mrn:signalk:uuid:76bb2350-c92e-4e47-b3c3-e12273f21155.navigation.datetime`
+Each instrument requires binding to a Signal K data object represented by a path pointing to a specific leaf of the data tree. The path to the data node has to be fully qualified, reresenting the whole path from the root of the data tree to the node, including the source of the data (There may be multiple instruments providing the same information) eg. `vessels.urn:mrn:imo:mmsi:265599691.environment.wind.angleTrueWater.SRC:blueconv-WI`
 
 If the full path is known, it can be written or copy-pasted directly to the text part of the control.
 

@@ -23,7 +23,7 @@ A circular instrument displaying a single numerical value. Allows to select form
 |3
 
 |SK key
-|Fully qualified Signal K path to the value displayed by the instrument
+|Fully qualified xref:skkeys.adoc[Signal K path] to the value displayed by the instrument
 |vessels.urn:mrn:signalk:uuid:76bb2350-c92e-4e47-b3c3-e12273f21155.environment.depth.belowTransducer
 
 |Gauge type
