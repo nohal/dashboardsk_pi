@@ -78,19 +78,19 @@ public:
 
     /// Set currently displayed page
     /// @param new_page number of currently displayed
-    void SetCurrentPage(size_t new_page);
+    void SetCurrentPage(int new_page);
 
     /// Get currently displayed page number
     /// @return page number
-    const size_t GetCurrentPage() { return m_current_page; }
+    const int GetCurrentPage() { return m_current_page; }
 
     /// Adds a page
     /// @param pg Page number
-    void AddPage(const size_t pg) { m_pages.insert(pg); }
+    void AddPage(const int pg) { m_pages.insert(pg); }
 
     /// Get next page with rollover to the beginning of the list
     /// @return Page number
-    const size_t GetNextPage();
+    const int GetNextPage();
 
     /// @brief Return true if the are covered by the pager was clicked
     /// @param x
@@ -113,8 +113,8 @@ public:
 
 private:
     DashboardSK* m_parent;
-    size_t m_current_page;
-    std::set<size_t> m_pages;
+    int m_current_page;
+    std::set<int> m_pages;
     wxCoord m_x_pos;
     wxCoord m_y_pos;
 };

@@ -51,7 +51,7 @@ void Pager::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
         bmp.HasAlpha()); // TODO: make the position configurable
 }
 
-const size_t Pager::GetNextPage()
+const int Pager::GetNextPage()
 {
     auto it = m_pages.find(m_current_page);
     it++;
@@ -132,7 +132,7 @@ bool Pager::ProcessMouseEvent(wxMouseEvent& event)
         mnu.Append(ID_PREFERENCES, _("Preferences..."));
         mnu.Append(ID_VISIBILITY, _("Toggle visibility"));
         for (auto& page : m_pages) {
-            wxString s = wxString::Format(_("Page %llu"), page);
+            wxString s = wxString::Format(_("Page %d"), page);
             mnu.Append(ID_PAGES + page, s);
         }
         mnu.Connect(wxEVT_COMMAND_MENU_SELECTED,
@@ -143,7 +143,7 @@ bool Pager::ProcessMouseEvent(wxMouseEvent& event)
     return false;
 }
 
-void Pager::SetCurrentPage(size_t new_page)
+void Pager::SetCurrentPage(int new_page)
 {
     if (m_pages.find(new_page) != m_pages.end()) {
         m_current_page = new_page;
