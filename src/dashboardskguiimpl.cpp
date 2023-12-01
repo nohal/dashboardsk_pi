@@ -38,6 +38,11 @@
 #include <wx/wfstream.h>
 #include <wx/windowptr.h>
 
+#if __WXQT__
+// FromDIP is not available on wxQT
+#define FromDIP(x) (x)
+#endif
+
 PLUGIN_BEGIN_NAMESPACE
 
 //====================================
