@@ -28,7 +28,11 @@
 #define _DASHBOARDSKGUIIMPL_H_
 
 #include "dashboard.h"
+#if __WXQT__
+#include "dashboardskguiandroid.h"
+#else
 #include "dashboardskgui.h"
+#endif
 #include "instrument.h"
 #include "pi_common.h"
 
@@ -273,16 +277,25 @@ public:
     /// Fill the form with configuration file
     void SetCodeConfig(const wxString& config)
     {
+#if not __WXQT__
         m_scintillaCode->SetReadOnly(false);
         m_scintillaCode->SetText(config);
         m_scintillaCode->SetSTCCursor(wxSTC_CURSORNORMAL);
+#endif
         m_sdbSizerBtnsCancel->Show();
     };
 
     /// Get the displayed document as text
     ///
     /// \return (Hopefully) JSON text
-    const wxString GetValue() { return m_scintillaCode->GetText(); }
+    const wxString GetValue()
+    {
+#if not __WXQT__
+        return m_scintillaCode->GetText();
+#else
+        return m_scintillaCode->GetValue();
+#endif
+    }
 };
 
 /// Implementation of the widget for editing SignalK path in a textbox or
