@@ -25,10 +25,14 @@
  ******************************************************************************/
 
 #include "dashboardsk_pi.h"
+#if __WXQT__
+// TODO: Include Android GUI
+#else
 #include "dashboardskguiimpl.h"
-
+#endif
 #include "wx/jsonreader.h"
 #include "wx/jsonwriter.h"
+#include <wx/filename.h>
 #include <wx/wfstream.h>
 
 PLUGIN_BEGIN_NAMESPACE
@@ -151,8 +155,12 @@ int dashboardsk_pi::GetToolbarToolCount() { return 1; }
 
 void dashboardsk_pi::ShowPreferencesDialog(wxWindow* parent)
 {
+#if __WXQT__
+// TODO: Show Android GUI
+#else
     MainConfigFrameImpl mf(this, parent);
     mf.ShowModal();
+#endif
 }
 
 void dashboardsk_pi::OnToolbarToolCallback(int id)

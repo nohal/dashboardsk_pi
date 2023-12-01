@@ -77,10 +77,16 @@ set(SRC_DASHBOARD
     ${CMAKE_SOURCE_DIR}/src/simplehistograminstrument.cpp
     ${CMAKE_SOURCE_DIR}/src/pager.cpp)
 
-set(SRC
-    ${SRC_DASHBOARD} ${CMAKE_SOURCE_DIR}/src/dashboardsk_pi.cpp
-    ${CMAKE_SOURCE_DIR}/src/dashboardskgui.cpp
-    ${CMAKE_SOURCE_DIR}/src/dashboardskguiimpl.cpp)
+set(SRC_GUI_DESKTOP ${CMAKE_SOURCE_DIR}/src/dashboardskgui.cpp
+                    ${CMAKE_SOURCE_DIR}/src/dashboardskguiimpl.cpp)
+
+if(QT_ANDROID)
+  set(SRC_GUI ${SRC_GUI_ANDROID})
+else()
+  set(SRC_GUI ${SRC_GUI_DESKTOP})
+endif()
+
+set(SRC ${SRC_DASHBOARD} ${SRC_GUI} ${CMAKE_SOURCE_DIR}/src/dashboardsk_pi.cpp)
 
 set(PKG_API_LIB api-18) # A dir in opencpn-libs/ e. g., api-17 or api-16
 

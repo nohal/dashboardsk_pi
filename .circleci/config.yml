@@ -224,27 +224,27 @@ jobs:
 
   #TODO: wxStyledTextCtrl does not exist in wxQT, so we would have to replace it.
   #      And there will be more for sure.
-  #build-android-arm64:
-  #  docker:
-  #    - image: circleci/android:api-28-ndk
-  #  environment:
-  #    - OCPN_TARGET: android-aarch64
-  #    - CMAKE_BUILD_PARALLEL_LEVEL: 2
-  #  steps:
-  #    - checkout
-  #    - run: ci/circleci-build-android.sh
-  #    - run: ci/maybe-push-upload.sh
+  build-android-arm64:
+    docker:
+      - image: circleci/android:api-28-ndk
+    environment:
+      - OCPN_TARGET: android-aarch64
+      - CMAKE_BUILD_PARALLEL_LEVEL: 2
+    steps:
+      - checkout
+      - run: ci/circleci-build-android.sh
+      - run: ci/maybe-push-upload.sh
 
-  #build-android-armhf:
-  #  docker:
-  #    - image: circleci/android:api-28-ndk
-  #  environment:
-  #    - OCPN_TARGET: android-armhf
-  #    - CMAKE_BUILD_PARALLEL_LEVEL: 2
-  #  steps:
-  #    - checkout
-  #    - run: ci/circleci-build-android.sh
-  #    - run: ci/maybe-push-upload.sh
+  build-android-armhf:
+    docker:
+      - image: circleci/android:api-28-ndk
+    environment:
+      - OCPN_TARGET: android-armhf
+      - CMAKE_BUILD_PARALLEL_LEVEL: 2
+    steps:
+      - checkout
+      - run: ci/circleci-build-android.sh
+      - run: ci/maybe-push-upload.sh
 
 std-filters: &std-filters
   filters:
@@ -269,11 +269,11 @@ workflows:
       - build-macos:
           <<: *std-filters
 
-#      - build-android-arm64:
-#          <<: *std-filters
-#
-#      - build-android-armhf:
-#          <<: *std-filters
+      - build-android-arm64:
+          <<: *std-filters
+
+      - build-android-armhf:
+          <<: *std-filters
 
       - build-bullseye-wx32:
           <<: *std-filters
