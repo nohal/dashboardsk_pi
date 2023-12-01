@@ -5,9 +5,14 @@ image::dashboardsk_pi_icon.png[DashboardSK logo]
 
 === Features
 
-The plugin provides universal data display based on the https://signalk.org[Signal K] data model.
-The data is displayed using configurable overlay instruments anchored to any edge of chart canvas.
+The plugin provides universal data display based on the https://signalk.org[Signal K] data model. Virtually any data can be visualised.
+
+The data is displayed using configurable overlay instruments anchored to any edge of chart canvas. Various transformation and formatting functions are available.
+
+The plugin allows grouping dashboards on pages to allow complex setups while maintaining enough space for the chart canvas. If more than one page is defined, a pager control is displlayed in the lower left corner of the screen allowing switching between pages. The pager control also provides a context menu accessible using right-click to quickly access the preferences, switch page or hide the dashboard completely.
+
 The instruments may also be configured to trigger alarms based on the values they process.
+
 For boats with only basic legacy NMEA 0183 data available, the https://opencpn-manuals.github.io/main/nsk/[NSK_pi plugin] provides conversion to the Signal K delta format allowing the user to use the DashboardSK plugin without the need to setup complex systems.
 
 In any but the very basic scenario, it is preferable to run a real Signal K server. There is no need to setup a separate system for it, Signal K server can run on any machine running https://github.com/SignalK/signalk-server-windows[Windows], https://github.com/SignalK/signalk-server/blob/master/raspberry_pi_installation.md#installing-signal-k[Linux] or macOS.

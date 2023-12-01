@@ -65,6 +65,7 @@ a|Function to be used to convert the value from the SI unit used by Signal K to 
 * Pa -> mmHg
 * Pa -> psi
 * Hz -> RPM
+* RAD/s -> Degrees/min
 |
 
 |Order
