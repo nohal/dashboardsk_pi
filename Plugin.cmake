@@ -80,6 +80,8 @@ set(SRC_DASHBOARD
 set(SRC_GUI_DESKTOP ${CMAKE_SOURCE_DIR}/src/dashboardskgui.cpp
                     ${CMAKE_SOURCE_DIR}/src/dashboardskguiimpl.cpp)
 
+set(SRC_GUI_DESKTOP ${CMAKE_SOURCE_DIR}/src/dashboardskguiandroid.cpp)
+
 if(QT_ANDROID)
   set(SRC_GUI ${SRC_GUI_ANDROID})
 else()
