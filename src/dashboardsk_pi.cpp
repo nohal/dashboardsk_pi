@@ -151,13 +151,8 @@ int dashboardsk_pi::GetToolbarToolCount() { return 1; }
 
 void dashboardsk_pi::ShowPreferencesDialog(wxWindow* parent)
 {
-#if __WXQT__
-    MainConfigFrame mf(parent);
-    mf.ShowModal();
-#else
     MainConfigFrameImpl mf(this, parent);
     mf.ShowModal();
-#endif
 }
 
 void dashboardsk_pi::OnToolbarToolCallback(int id)
