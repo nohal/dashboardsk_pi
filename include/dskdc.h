@@ -76,12 +76,13 @@ public:
     /// \return The scale factor
     double GetContentScaleFactor() const
     {
-        if (glcanvas) {
-            return glcanvas->GetContentScaleFactor();
-        } else if (dc) {
-            return dc->GetContentScaleFactor();
-        } else
-            return m_scale_factor;
+        // TODO: For some reason the bellow seems crashing on flatpak
+        // if (glcanvas) {
+        //     return glcanvas->GetContentScaleFactor();
+        // } else if (dc) {
+        //     return dc->GetContentScaleFactor();
+        // } else
+        return m_scale_factor;
     };
 
     /// Set the scale factor of the device context
