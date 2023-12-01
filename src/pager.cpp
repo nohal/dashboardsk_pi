@@ -77,8 +77,9 @@ wxBitmap Pager::Render(double scale)
 
 bool Pager::IsClicked(int& x, int& y)
 {
-    if (m_pages.size() >= 2 && x >= m_x_pos && x <= m_x_pos + m_parent->ToPhis(PAGER_ICON_SIZE)
-        && y >= m_y_pos && y <= m_y_pos + m_parent->ToPhis(PAGER_ICON_SIZE)) {
+    if (m_pages.size() >= 2 && x >= m_x_pos
+        && x <= m_x_pos + m_parent->ToPhis(PAGER_ICON_SIZE) && y >= m_y_pos
+        && y <= m_y_pos + m_parent->ToPhis(PAGER_ICON_SIZE)) {
         return true;
     }
     return false;
@@ -111,15 +112,19 @@ bool Pager::ProcessMouseEvent(wxMouseEvent& event)
         return false;
     }
     if (event.LeftIsDown()) {
-        int x = m_parent->ToPhis(event.GetX()); // Convert to per-canvas coordinates
-        int y = m_parent->ToPhis(event.GetY()); // Convert to per-canvas coordinates
+        int x = m_parent->ToPhis(
+            event.GetX()); // Convert to per-canvas coordinates
+        int y = m_parent->ToPhis(
+            event.GetY()); // Convert to per-canvas coordinates
         if (IsClicked(x, y)) {
             SetCurrentPage(GetNextPage());
             return true;
         }
     } else if (event.RightIsDown()) {
-        int x = m_parent->ToPhis(event.GetX()); // Convert to per-canvas coordinates
-        int y = m_parent->ToPhis(event.GetY()); // Convert to per-canvas coordinates
+        int x = m_parent->ToPhis(
+            event.GetX()); // Convert to per-canvas coordinates
+        int y = m_parent->ToPhis(
+            event.GetY()); // Convert to per-canvas coordinates
         if (!IsClicked(x, y)) {
             return false;
         }

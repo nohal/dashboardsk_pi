@@ -51,11 +51,7 @@ void DashboardSK::ProcessData()
     }
 }
 
-
-int DashboardSK::ToPhis(int x)
-{
-    return m_parent_plugin->ToPhis(x);
-}
+int DashboardSK::ToPhis(int x) { return m_parent_plugin->ToPhis(x); }
 
 void DashboardSK::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
 {
@@ -494,10 +490,7 @@ void DashboardSK::ToggleVisibility()
     m_parent_plugin->OnToolbarToolCallback(0);
 }
 
-bool DashboardSK::IsVisible()
-{
-    return m_parent_plugin->IsVisible();
-}
+bool DashboardSK::IsVisible() { return m_parent_plugin->IsVisible(); }
 
 double DashboardSK::GetContentScaleFactor() const
 {

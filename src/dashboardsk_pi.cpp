@@ -266,11 +266,12 @@ bool dashboardsk_pi::RenderGLOverlayMultiCanvas(
     if (!m_oDC) {
         m_oDC = new dskDC();
 
-        //GLint dims[4] = { 0 };
-        //glGetIntegerv(GL_VIEWPORT, dims);
-        //GLint fbWidth = dims[2];
-        //m_oDC->SetContentScaleFactor((double)fbWidth / vp->pix_width);
-        m_oDC->SetContentScaleFactor(GetOCPNCanvasWindow()->GetContentScaleFactor());
+        // GLint dims[4] = { 0 };
+        // glGetIntegerv(GL_VIEWPORT, dims);
+        // GLint fbWidth = dims[2];
+        // m_oDC->SetContentScaleFactor((double)fbWidth / vp->pix_width);
+        m_oDC->SetContentScaleFactor(
+            GetOCPNCanvasWindow()->GetContentScaleFactor());
         m_oDC->SetVP(vp);
     }
     glEnable(GL_BLEND);
@@ -316,7 +317,8 @@ bool dashboardsk_pi::MouseEventHook(wxMouseEvent& event)
 
 bool dashboardsk_pi::IsVisible() { return m_shown; }
 
-int dashboardsk_pi::ToPhis(int x) {
+int dashboardsk_pi::ToPhis(int x)
+{
     if (m_oDC) {
         return x * m_oDC->GetContentScaleFactor();
     }

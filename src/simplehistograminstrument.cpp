@@ -319,8 +319,7 @@ wxBitmap SimpleHistogramInstrument::Render(double scale)
     double height_coef
         = range != 0.0 ? static_cast<double>(height) / range : 1.0;
     height_coef *= 0.9;
-    wxCoord vertical_shift
-        = (height - height * 0.9) / 2;
+    wxCoord vertical_shift = (height - height * 0.9) / 2;
     HistoryValue lastval;
     double sum = 0.0;
     size_t cnt = 0;
@@ -333,10 +332,9 @@ wxBitmap SimpleHistogramInstrument::Render(double scale)
     dc.SetPen(wxPen(GetDimedColor(GetColor(color_item::body_fg)),
         BORDER_LINE_WIDTH * 2, wxPENSTYLE_SOLID));
     dc.SetTextForeground(GetDimedColor(GetColor(color_item::time_fg)));
-    dc.SetFont(wxFont(height / 8 / AUTO_TEXT_SIZE_COEF,
-        wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
-    int max_labels
-        = width / (dc.GetTextExtent("100s").GetWidth() * 1.5);
+    dc.SetFont(wxFont(height / 8 / AUTO_TEXT_SIZE_COEF, wxFONTFAMILY_SWISS,
+        wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
+    int max_labels = width / (dc.GetTextExtent("100s").GetWidth() * 1.5);
     int current_label = 1;
     for (auto& v : vals) {
         if (cnt > 0) {
@@ -387,11 +385,10 @@ wxBitmap SimpleHistogramInstrument::Render(double scale)
     }
     if (m_timed_out) {
         dc.SetTextForeground(GetDimedColor(GetColor(color_item::mean_fg)));
-        dc.SetFont(wxFont(height / 4 / AUTO_TEXT_SIZE_COEF,
-            wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
+        dc.SetFont(wxFont(height / 4 / AUTO_TEXT_SIZE_COEF, wxFONTFAMILY_SWISS,
+            wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
         wxString s = _("NO DATA");
-        dc.DrawText(s,
-            (width - dc.GetTextExtent(s).GetWidth()) / 2,
+        dc.DrawText(s, (width - dc.GetTextExtent(s).GetWidth()) / 2,
             (height - dc.GetTextExtent(s).GetHeight()) / 2);
     }
     // Mean
@@ -400,19 +397,16 @@ wxBitmap SimpleHistogramInstrument::Render(double scale)
             BORDER_LINE_WIDTH, wxPENSTYLE_SOLID));
         if (m_value_order == value_order::lowest_highest) {
             dc.DrawLine(0, vertical_shift + (sum / cnt - min) * height_coef,
-                width,
-                vertical_shift + (sum / cnt - min) * height_coef);
+                width, vertical_shift + (sum / cnt - min) * height_coef);
         } else {
             dc.DrawLine(0,
-                height
-                    - (vertical_shift + (sum / cnt - min) * height_coef),
+                height - (vertical_shift + (sum / cnt - min) * height_coef),
                 width,
-                height
-                    - (vertical_shift + (sum / cnt - min) * height_coef));
+                height - (vertical_shift + (sum / cnt - min) * height_coef));
         }
         dc.SetTextForeground(GetDimedColor(GetColor(color_item::mean_fg)));
-        dc.SetFont(wxFont(height / 8 / AUTO_TEXT_SIZE_COEF,
-            wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
+        dc.SetFont(wxFont(height / 8 / AUTO_TEXT_SIZE_COEF, wxFONTFAMILY_SWISS,
+            wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
         if (m_value_order == value_order::lowest_highest) {
             dc.DrawText(FormatValue(sum / cnt), BORDER_LINE_WIDTH,
                 (sum / cnt - min) * height_coef);
@@ -424,8 +418,8 @@ wxBitmap SimpleHistogramInstrument::Render(double scale)
 
     // Labels for Y-axis
     dc.SetTextForeground(GetDimedColor(GetColor(color_item::body_fg)));
-    dc.SetFont(wxFont(height / 8 / AUTO_TEXT_SIZE_COEF,
-        wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
+    dc.SetFont(wxFont(height / 8 / AUTO_TEXT_SIZE_COEF, wxFONTFAMILY_SWISS,
+        wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
     wxString lbl_btm;
     wxString lbl_top;
     if (m_value_order == value_order::lowest_highest) {
@@ -436,16 +430,15 @@ wxBitmap SimpleHistogramInstrument::Render(double scale)
         lbl_btm = FormatValue(min);
     }
     dc.DrawText(lbl_top, BORDER_LINE_WIDTH, 0);
-    dc.DrawText(lbl_btm, BORDER_LINE_WIDTH,
-        height - dc.GetTextExtent("9").GetHeight());
+    dc.DrawText(
+        lbl_btm, BORDER_LINE_WIDTH, height - dc.GetTextExtent("9").GetHeight());
 
     // Title
     dc.SetTextForeground(GetDimedColor(GetColor(color_item::title_fg)));
-    dc.SetFont(wxFont(height / 6 / AUTO_TEXT_SIZE_COEF,
-        wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
+    dc.SetFont(wxFont(height / 6 / AUTO_TEXT_SIZE_COEF, wxFONTFAMILY_SWISS,
+        wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
     dc.DrawText(m_title,
-        width - dc.GetTextExtent(m_title).GetWidth()
-            - BORDER_LINE_WIDTH,
+        width - dc.GetTextExtent(m_title).GetWidth() - BORDER_LINE_WIDTH,
         BORDER_LINE_WIDTH);
 
     // Border
@@ -453,8 +446,7 @@ wxBitmap SimpleHistogramInstrument::Render(double scale)
         BORDER_LINE_WIDTH, wxPENSTYLE_SOLID));
     dc.SetBrush(*wxTRANSPARENT_BRUSH);
     dc.DrawRectangle(BORDER_LINE_WIDTH / 2, BORDER_LINE_WIDTH / 2,
-        width - BORDER_LINE_WIDTH / 2,
-        height - BORDER_LINE_WIDTH / 2);
+        width - BORDER_LINE_WIDTH / 2, height - BORDER_LINE_WIDTH / 2);
     // Done drawing
     mdc.SelectObject(wxNullBitmap);
     return m_bmp;

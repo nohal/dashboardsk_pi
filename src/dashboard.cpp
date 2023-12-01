@@ -105,7 +105,8 @@ void Dashboard::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
         break;
     case anchor_edge::right:
         dir = -1;
-        start_pos = canvas_width - m_parent->ToPhis(m_offset_x) - m_parent->ToPhis(dashboard_offset);
+        start_pos = canvas_width - m_parent->ToPhis(m_offset_x)
+            - m_parent->ToPhis(dashboard_offset);
         row_nr = 1;
         y = m_parent->ToPhis(m_offset_y);
         break;
@@ -114,7 +115,8 @@ void Dashboard::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
     }
 
     for (auto& instrument : m_instruments) {
-        const wxBitmap bmp(instrument->Render(m_parent->GetContentScaleFactor()));
+        const wxBitmap bmp(
+            instrument->Render(m_parent->GetContentScaleFactor()));
         wxCoord width = bmp.GetWidth();
         wxCoord height = bmp.GetHeight();
         if (bmp.IsOk()) {
@@ -122,7 +124,8 @@ void Dashboard::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
                 || m_anchor == anchor_edge::top) {
                 if (x + width + m_parent->ToPhis(m_offset_x) > canvas_width) {
                     // We don't fit, next row
-                    row_offset += current_row_size + m_parent->ToPhis(m_spacing_v);
+                    row_offset
+                        += current_row_size + m_parent->ToPhis(m_spacing_v);
                     current_row_size = 0;
                     x = m_parent->ToPhis(m_offset_x);
                 }
@@ -136,9 +139,11 @@ void Dashboard::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
                 if (y + height + m_parent->ToPhis(m_offset_y) > canvas_height) {
                     y = m_parent->ToPhis(m_offset_y);
                     if (m_anchor == anchor_edge::left) {
-                        start_pos += dir * current_row_size + dir * m_parent->ToPhis(m_spacing_h);
+                        start_pos += dir * current_row_size
+                            + dir * m_parent->ToPhis(m_spacing_h);
                     } else {
-                        row_offset += current_row_size + m_parent->ToPhis(m_spacing_h);
+                        row_offset
+                            += current_row_size + m_parent->ToPhis(m_spacing_h);
                     }
                     current_row_size = 0;
                 }
