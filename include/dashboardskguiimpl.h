@@ -36,7 +36,7 @@
 #include "instrument.h"
 #include "pi_common.h"
 
-#if (wxCHECK_VERSION(3, 1, 0))
+#if not __WXQT__ and (wxCHECK_VERSION(3, 1, 0))
 #define BMP_SZ FromDIP(16) // Size of the bitmap for wxBitmapButton
 #else
 #define BMP_SZ 16
