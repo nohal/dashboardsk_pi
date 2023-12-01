@@ -42,10 +42,14 @@ MainConfigFrame::MainConfigFrame(wxWindow* parent, wxWindowID id,
 
     m_btnCfgEdit = new wxButton(
         this, wxID_ANY, _("Cfg Edit"), wxDefaultPosition, wxDefaultSize, 0);
+    m_btnCfgEdit->Enable(false);
+
     fgSizerDashboards->Add(m_btnCfgEdit, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
     m_btnSignalK = new wxButton(
         this, wxID_ANY, _("SignalK"), wxDefaultPosition, wxDefaultSize, 0);
+    m_btnSignalK->Enable(false);
+
     fgSizerDashboards->Add(m_btnSignalK, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
     m_stDashboard = new wxStaticText(
@@ -83,11 +87,94 @@ MainConfigFrame::MainConfigFrame(wxWindow* parent, wxWindowID id,
 
     ConfigSizer->Add(fgSizerDashboards, 0, wxEXPAND, 5);
 
-    wxBoxSizer* PanelSizer;
-    PanelSizer = new wxBoxSizer(wxHORIZONTAL);
+    wxFlexGridSizer* fgSizerLayout;
+    fgSizerLayout = new wxFlexGridSizer(0, 4, 0, 0);
+    fgSizerLayout->SetFlexibleDirection(wxBOTH);
+    fgSizerLayout->SetNonFlexibleGrowMode(wxFLEX_GROWMODE_SPECIFIED);
 
-    m_panelList = new wxPanel(
-        this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+    m_cbEnabled = new wxCheckBox(
+        this, wxID_ANY, _("Enabled"), wxDefaultPosition, wxDefaultSize, 0);
+    fgSizerLayout->Add(m_cbEnabled, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+    fgSizerLayout->Add(0, 0, 1, wxEXPAND, 5);
+
+    m_stCanvas = new wxStaticText(
+        this, wxID_ANY, _("Canvas"), wxDefaultPosition, wxDefaultSize, 0);
+    m_stCanvas->Wrap(-1);
+    fgSizerLayout->Add(m_stCanvas, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+    m_spCanvas = new wxSpinCtrl(this, wxID_ANY, wxEmptyString,
+        wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 1, 0);
+    fgSizerLayout->Add(m_spCanvas, 0, wxALL, 5);
+
+    m_stPage = new wxStaticText(
+        this, wxID_ANY, _("Page"), wxDefaultPosition, wxDefaultSize, 0);
+    m_stPage->Wrap(-1);
+    fgSizerLayout->Add(m_stPage, 0, wxALL, 5);
+
+    m_spPage = new wxSpinCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition,
+        wxDefaultSize, wxSP_ARROW_KEYS, 1, 9, 1);
+    fgSizerLayout->Add(m_spPage, 0, wxALL, 5);
+
+    m_stAnchor = new wxStaticText(
+        this, wxID_ANY, _("Anchor"), wxDefaultPosition, wxDefaultSize, 0);
+    m_stAnchor->Wrap(-1);
+    fgSizerLayout->Add(m_stAnchor, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+    wxArrayString m_chAnchorChoices;
+    m_chAnchor = new wxChoice(
+        this, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_chAnchorChoices, 0);
+    m_chAnchor->SetSelection(0);
+    fgSizerLayout->Add(m_chAnchor, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+    m_stOffsetX = new wxStaticText(
+        this, wxID_ANY, _("Offset h"), wxDefaultPosition, wxDefaultSize, 0);
+    m_stOffsetX->Wrap(-1);
+    fgSizerLayout->Add(m_stOffsetX, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+    m_spOffsetX = new wxSpinCtrl(this, wxID_ANY, wxEmptyString,
+        wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 0);
+    fgSizerLayout->Add(m_spOffsetX, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+    m_stOffsetY = new wxStaticText(
+        this, wxID_ANY, _("Offset v"), wxDefaultPosition, wxDefaultSize, 0);
+    m_stOffsetY->Wrap(-1);
+    fgSizerLayout->Add(m_stOffsetY, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+    m_spOffsetY = new wxSpinCtrl(this, wxID_ANY, wxEmptyString,
+        wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 0);
+    fgSizerLayout->Add(m_spOffsetY, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+    m_stSpacingH = new wxStaticText(
+        this, wxID_ANY, _("Spacing h"), wxDefaultPosition, wxDefaultSize, 0);
+    m_stSpacingH->Wrap(-1);
+    fgSizerLayout->Add(m_stSpacingH, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+    m_spSpacingH = new wxSpinCtrl(this, wxID_ANY, wxEmptyString,
+        wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 0);
+    fgSizerLayout->Add(m_spSpacingH, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+    m_stSpacingV = new wxStaticText(
+        this, wxID_ANY, _("Spacing v"), wxDefaultPosition, wxDefaultSize, 0);
+    m_stSpacingV->Wrap(-1);
+    fgSizerLayout->Add(m_stSpacingV, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+    m_spSpacingV = new wxSpinCtrl(this, wxID_ANY, wxEmptyString,
+        wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 0);
+    fgSizerLayout->Add(m_spSpacingV, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+    ConfigSizer->Add(fgSizerLayout, 0, wxALIGN_CENTER, 5);
+
+    MainSizer->Add(ConfigSizer, 0, wxEXPAND, 5);
+
+    m_scrolledWindowInstruments = new wxScrolledWindow(this, wxID_ANY,
+        wxDefaultPosition, wxDefaultSize, wxHSCROLL | wxVSCROLL);
+    m_scrolledWindowInstruments->SetScrollRate(5, 5);
+    wxBoxSizer* PanelSizer;
+    PanelSizer = new wxBoxSizer(wxVERTICAL);
+
+    m_panelList = new wxPanel(m_scrolledWindowInstruments, wxID_ANY,
+        wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
     wxBoxSizer* ListMainSizer;
     ListMainSizer = new wxBoxSizer(wxHORIZONTAL);
 
@@ -156,8 +243,8 @@ MainConfigFrame::MainConfigFrame(wxWindow* parent, wxWindowID id,
     ListMainSizer->Fit(m_panelList);
     PanelSizer->Add(m_panelList, 3, wxEXPAND | wxALL, 5);
 
-    m_panelConfig = new wxPanel(
-        this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+    m_panelConfig = new wxPanel(m_scrolledWindowInstruments, wxID_ANY,
+        wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
     wxBoxSizer* ConfigMainSizer;
     ConfigMainSizer = new wxBoxSizer(wxVERTICAL);
 
@@ -245,87 +332,10 @@ MainConfigFrame::MainConfigFrame(wxWindow* parent, wxWindowID id,
     ConfigMainSizer->Fit(m_panelConfig);
     PanelSizer->Add(m_panelConfig, 5, wxEXPAND | wxALL, 5);
 
-    ConfigSizer->Add(PanelSizer, 1, wxEXPAND, 5);
-
-    wxFlexGridSizer* fgSizerLayout;
-    fgSizerLayout = new wxFlexGridSizer(0, 8, 0, 0);
-    fgSizerLayout->SetFlexibleDirection(wxBOTH);
-    fgSizerLayout->SetNonFlexibleGrowMode(wxFLEX_GROWMODE_SPECIFIED);
-
-    m_cbEnabled = new wxCheckBox(
-        this, wxID_ANY, _("Enabled"), wxDefaultPosition, wxDefaultSize, 0);
-    fgSizerLayout->Add(m_cbEnabled, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-    fgSizerLayout->Add(0, 0, 1, wxEXPAND, 5);
-
-    m_stCanvas = new wxStaticText(
-        this, wxID_ANY, _("Canvas"), wxDefaultPosition, wxDefaultSize, 0);
-    m_stCanvas->Wrap(-1);
-    fgSizerLayout->Add(m_stCanvas, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-    m_spCanvas = new wxSpinCtrl(this, wxID_ANY, wxEmptyString,
-        wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 1, 0);
-    fgSizerLayout->Add(m_spCanvas, 0, wxALL, 5);
-
-    m_stPage = new wxStaticText(
-        this, wxID_ANY, _("Page"), wxDefaultPosition, wxDefaultSize, 0);
-    m_stPage->Wrap(-1);
-    fgSizerLayout->Add(m_stPage, 0, wxALL, 5);
-
-    m_spPage = new wxSpinCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition,
-        wxDefaultSize, wxSP_ARROW_KEYS, 1, 9, 1);
-    fgSizerLayout->Add(m_spPage, 0, wxALL, 5);
-
-    m_stAnchor = new wxStaticText(
-        this, wxID_ANY, _("Anchor"), wxDefaultPosition, wxDefaultSize, 0);
-    m_stAnchor->Wrap(-1);
-    fgSizerLayout->Add(m_stAnchor, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-    wxArrayString m_chAnchorChoices;
-    m_chAnchor = new wxChoice(
-        this, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_chAnchorChoices, 0);
-    m_chAnchor->SetSelection(0);
-    fgSizerLayout->Add(m_chAnchor, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-    m_stOffsetX = new wxStaticText(
-        this, wxID_ANY, _("Offset h"), wxDefaultPosition, wxDefaultSize, 0);
-    m_stOffsetX->Wrap(-1);
-    fgSizerLayout->Add(m_stOffsetX, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-    m_spOffsetX = new wxSpinCtrl(this, wxID_ANY, wxEmptyString,
-        wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 0);
-    fgSizerLayout->Add(m_spOffsetX, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-    m_stOffsetY = new wxStaticText(
-        this, wxID_ANY, _("Offset v"), wxDefaultPosition, wxDefaultSize, 0);
-    m_stOffsetY->Wrap(-1);
-    fgSizerLayout->Add(m_stOffsetY, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-    m_spOffsetY = new wxSpinCtrl(this, wxID_ANY, wxEmptyString,
-        wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 0);
-    fgSizerLayout->Add(m_spOffsetY, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-    m_stSpacingH = new wxStaticText(
-        this, wxID_ANY, _("Spacing h"), wxDefaultPosition, wxDefaultSize, 0);
-    m_stSpacingH->Wrap(-1);
-    fgSizerLayout->Add(m_stSpacingH, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-    m_spSpacingH = new wxSpinCtrl(this, wxID_ANY, wxEmptyString,
-        wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 0);
-    fgSizerLayout->Add(m_spSpacingH, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-    m_stSpacingV = new wxStaticText(
-        this, wxID_ANY, _("Spacing v"), wxDefaultPosition, wxDefaultSize, 0);
-    m_stSpacingV->Wrap(-1);
-    fgSizerLayout->Add(m_stSpacingV, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-    m_spSpacingV = new wxSpinCtrl(this, wxID_ANY, wxEmptyString,
-        wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 0);
-    fgSizerLayout->Add(m_spSpacingV, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-    ConfigSizer->Add(fgSizerLayout, 0, wxEXPAND, 5);
-
-    MainSizer->Add(ConfigSizer, 1, wxEXPAND, 5);
+    m_scrolledWindowInstruments->SetSizer(PanelSizer);
+    m_scrolledWindowInstruments->Layout();
+    PanelSizer->Fit(m_scrolledWindowInstruments);
+    MainSizer->Add(m_scrolledWindowInstruments, 1, wxEXPAND | wxALL, 5);
 
     wxBoxSizer* BottomButtonsSizer;
     BottomButtonsSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -377,6 +387,25 @@ MainConfigFrame::MainConfigFrame(wxWindow* parent, wxWindowID id,
         wxCommandEventHandler(
             MainConfigFrame::m_btnRemoveDashboardOnButtonClick),
         NULL, this);
+    m_cbEnabled->Connect(wxEVT_COMMAND_CHECKBOX_CLICKED,
+        wxCommandEventHandler(MainConfigFrame::m_cbEnabledOnCheckBox), NULL,
+        this);
+    m_spCanvas->Connect(wxEVT_COMMAND_SPINCTRL_UPDATED,
+        wxSpinEventHandler(MainConfigFrame::m_spCanvasOnSpinCtrl), NULL, this);
+    m_spPage->Connect(wxEVT_COMMAND_SPINCTRL_UPDATED,
+        wxSpinEventHandler(MainConfigFrame::m_spPageOnSpinCtrl), NULL, this);
+    m_chAnchor->Connect(wxEVT_COMMAND_CHOICE_SELECTED,
+        wxCommandEventHandler(MainConfigFrame::m_chAnchorOnChoice), NULL, this);
+    m_spOffsetX->Connect(wxEVT_COMMAND_SPINCTRL_UPDATED,
+        wxSpinEventHandler(MainConfigFrame::m_spOffsetXOnSpinCtrl), NULL, this);
+    m_spOffsetY->Connect(wxEVT_COMMAND_SPINCTRL_UPDATED,
+        wxSpinEventHandler(MainConfigFrame::m_spOffsetYOnSpinCtrl), NULL, this);
+    m_spSpacingH->Connect(wxEVT_COMMAND_SPINCTRL_UPDATED,
+        wxSpinEventHandler(MainConfigFrame::m_spSpacingHOnSpinCtrl), NULL,
+        this);
+    m_spSpacingV->Connect(wxEVT_COMMAND_SPINCTRL_UPDATED,
+        wxSpinEventHandler(MainConfigFrame::m_spSpacingVOnSpinCtrl), NULL,
+        this);
     m_lbInstruments->Connect(wxEVT_COMMAND_LISTBOX_SELECTED,
         wxCommandEventHandler(MainConfigFrame::m_lbInstrumentsOnListBox), NULL,
         this);
@@ -400,25 +429,6 @@ MainConfigFrame::MainConfigFrame(wxWindow* parent, wxWindowID id,
         wxCommandEventHandler(
             MainConfigFrame::m_bpImportInstrButtonOnButtonClick),
         NULL, this);
-    m_cbEnabled->Connect(wxEVT_COMMAND_CHECKBOX_CLICKED,
-        wxCommandEventHandler(MainConfigFrame::m_cbEnabledOnCheckBox), NULL,
-        this);
-    m_spCanvas->Connect(wxEVT_COMMAND_SPINCTRL_UPDATED,
-        wxSpinEventHandler(MainConfigFrame::m_spCanvasOnSpinCtrl), NULL, this);
-    m_spPage->Connect(wxEVT_COMMAND_SPINCTRL_UPDATED,
-        wxSpinEventHandler(MainConfigFrame::m_spPageOnSpinCtrl), NULL, this);
-    m_chAnchor->Connect(wxEVT_COMMAND_CHOICE_SELECTED,
-        wxCommandEventHandler(MainConfigFrame::m_chAnchorOnChoice), NULL, this);
-    m_spOffsetX->Connect(wxEVT_COMMAND_SPINCTRL_UPDATED,
-        wxSpinEventHandler(MainConfigFrame::m_spOffsetXOnSpinCtrl), NULL, this);
-    m_spOffsetY->Connect(wxEVT_COMMAND_SPINCTRL_UPDATED,
-        wxSpinEventHandler(MainConfigFrame::m_spOffsetYOnSpinCtrl), NULL, this);
-    m_spSpacingH->Connect(wxEVT_COMMAND_SPINCTRL_UPDATED,
-        wxSpinEventHandler(MainConfigFrame::m_spSpacingHOnSpinCtrl), NULL,
-        this);
-    m_spSpacingV->Connect(wxEVT_COMMAND_SPINCTRL_UPDATED,
-        wxSpinEventHandler(MainConfigFrame::m_spSpacingVOnSpinCtrl), NULL,
-        this);
     m_btnExportDashboard->Connect(wxEVT_COMMAND_BUTTON_CLICKED,
         wxCommandEventHandler(
             MainConfigFrame::m_btnExportDashboardOnButtonClick),
@@ -458,6 +468,25 @@ MainConfigFrame::~MainConfigFrame()
         wxCommandEventHandler(
             MainConfigFrame::m_btnRemoveDashboardOnButtonClick),
         NULL, this);
+    m_cbEnabled->Disconnect(wxEVT_COMMAND_CHECKBOX_CLICKED,
+        wxCommandEventHandler(MainConfigFrame::m_cbEnabledOnCheckBox), NULL,
+        this);
+    m_spCanvas->Disconnect(wxEVT_COMMAND_SPINCTRL_UPDATED,
+        wxSpinEventHandler(MainConfigFrame::m_spCanvasOnSpinCtrl), NULL, this);
+    m_spPage->Disconnect(wxEVT_COMMAND_SPINCTRL_UPDATED,
+        wxSpinEventHandler(MainConfigFrame::m_spPageOnSpinCtrl), NULL, this);
+    m_chAnchor->Disconnect(wxEVT_COMMAND_CHOICE_SELECTED,
+        wxCommandEventHandler(MainConfigFrame::m_chAnchorOnChoice), NULL, this);
+    m_spOffsetX->Disconnect(wxEVT_COMMAND_SPINCTRL_UPDATED,
+        wxSpinEventHandler(MainConfigFrame::m_spOffsetXOnSpinCtrl), NULL, this);
+    m_spOffsetY->Disconnect(wxEVT_COMMAND_SPINCTRL_UPDATED,
+        wxSpinEventHandler(MainConfigFrame::m_spOffsetYOnSpinCtrl), NULL, this);
+    m_spSpacingH->Disconnect(wxEVT_COMMAND_SPINCTRL_UPDATED,
+        wxSpinEventHandler(MainConfigFrame::m_spSpacingHOnSpinCtrl), NULL,
+        this);
+    m_spSpacingV->Disconnect(wxEVT_COMMAND_SPINCTRL_UPDATED,
+        wxSpinEventHandler(MainConfigFrame::m_spSpacingVOnSpinCtrl), NULL,
+        this);
     m_lbInstruments->Disconnect(wxEVT_COMMAND_LISTBOX_SELECTED,
         wxCommandEventHandler(MainConfigFrame::m_lbInstrumentsOnListBox), NULL,
         this);
@@ -481,25 +510,6 @@ MainConfigFrame::~MainConfigFrame()
         wxCommandEventHandler(
             MainConfigFrame::m_bpImportInstrButtonOnButtonClick),
         NULL, this);
-    m_cbEnabled->Disconnect(wxEVT_COMMAND_CHECKBOX_CLICKED,
-        wxCommandEventHandler(MainConfigFrame::m_cbEnabledOnCheckBox), NULL,
-        this);
-    m_spCanvas->Disconnect(wxEVT_COMMAND_SPINCTRL_UPDATED,
-        wxSpinEventHandler(MainConfigFrame::m_spCanvasOnSpinCtrl), NULL, this);
-    m_spPage->Disconnect(wxEVT_COMMAND_SPINCTRL_UPDATED,
-        wxSpinEventHandler(MainConfigFrame::m_spPageOnSpinCtrl), NULL, this);
-    m_chAnchor->Disconnect(wxEVT_COMMAND_CHOICE_SELECTED,
-        wxCommandEventHandler(MainConfigFrame::m_chAnchorOnChoice), NULL, this);
-    m_spOffsetX->Disconnect(wxEVT_COMMAND_SPINCTRL_UPDATED,
-        wxSpinEventHandler(MainConfigFrame::m_spOffsetXOnSpinCtrl), NULL, this);
-    m_spOffsetY->Disconnect(wxEVT_COMMAND_SPINCTRL_UPDATED,
-        wxSpinEventHandler(MainConfigFrame::m_spOffsetYOnSpinCtrl), NULL, this);
-    m_spSpacingH->Disconnect(wxEVT_COMMAND_SPINCTRL_UPDATED,
-        wxSpinEventHandler(MainConfigFrame::m_spSpacingHOnSpinCtrl), NULL,
-        this);
-    m_spSpacingV->Disconnect(wxEVT_COMMAND_SPINCTRL_UPDATED,
-        wxSpinEventHandler(MainConfigFrame::m_spSpacingVOnSpinCtrl), NULL,
-        this);
     m_btnExportDashboard->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED,
         wxCommandEventHandler(
             MainConfigFrame::m_btnExportDashboardOnButtonClick),

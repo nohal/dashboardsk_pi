@@ -51,6 +51,22 @@ protected:
     wxButton* m_btnRenameDashboard;
     wxButton* m_btnNewDashboard;
     wxButton* m_btnRemoveDashboard;
+    wxCheckBox* m_cbEnabled;
+    wxStaticText* m_stCanvas;
+    wxSpinCtrl* m_spCanvas;
+    wxStaticText* m_stPage;
+    wxSpinCtrl* m_spPage;
+    wxStaticText* m_stAnchor;
+    wxChoice* m_chAnchor;
+    wxStaticText* m_stOffsetX;
+    wxSpinCtrl* m_spOffsetX;
+    wxStaticText* m_stOffsetY;
+    wxSpinCtrl* m_spOffsetY;
+    wxStaticText* m_stSpacingH;
+    wxSpinCtrl* m_spSpacingH;
+    wxStaticText* m_stSpacingV;
+    wxSpinCtrl* m_spSpacingV;
+    wxScrolledWindow* m_scrolledWindowInstruments;
     wxPanel* m_panelList;
     wxScrolledWindow* m_scrolledWindowInstrumentList;
     wxStaticText* m_stInstruments;
@@ -72,21 +88,6 @@ protected:
     wxSpinCtrl* m_spTimeout;
     wxStaticText* m_stSeconds;
     wxFlexGridSizer* SettingsItemSizer;
-    wxCheckBox* m_cbEnabled;
-    wxStaticText* m_stCanvas;
-    wxSpinCtrl* m_spCanvas;
-    wxStaticText* m_stPage;
-    wxSpinCtrl* m_spPage;
-    wxStaticText* m_stAnchor;
-    wxChoice* m_chAnchor;
-    wxStaticText* m_stOffsetX;
-    wxSpinCtrl* m_spOffsetX;
-    wxStaticText* m_stOffsetY;
-    wxSpinCtrl* m_spOffsetY;
-    wxStaticText* m_stSpacingH;
-    wxSpinCtrl* m_spSpacingH;
-    wxStaticText* m_stSpacingV;
-    wxSpinCtrl* m_spSpacingV;
     wxButton* m_btnExportDashboard;
     wxButton* m_btnImportDashboard;
     wxStdDialogButtonSizer* m_sdbSizer;
@@ -118,6 +119,14 @@ protected:
     {
         event.Skip();
     }
+    virtual void m_cbEnabledOnCheckBox(wxCommandEvent& event) { event.Skip(); }
+    virtual void m_spCanvasOnSpinCtrl(wxSpinEvent& event) { event.Skip(); }
+    virtual void m_spPageOnSpinCtrl(wxSpinEvent& event) { event.Skip(); }
+    virtual void m_chAnchorOnChoice(wxCommandEvent& event) { event.Skip(); }
+    virtual void m_spOffsetXOnSpinCtrl(wxSpinEvent& event) { event.Skip(); }
+    virtual void m_spOffsetYOnSpinCtrl(wxSpinEvent& event) { event.Skip(); }
+    virtual void m_spSpacingHOnSpinCtrl(wxSpinEvent& event) { event.Skip(); }
+    virtual void m_spSpacingVOnSpinCtrl(wxSpinEvent& event) { event.Skip(); }
     virtual void m_lbInstrumentsOnListBox(wxCommandEvent& event)
     {
         event.Skip();
@@ -146,14 +155,6 @@ protected:
     {
         event.Skip();
     }
-    virtual void m_cbEnabledOnCheckBox(wxCommandEvent& event) { event.Skip(); }
-    virtual void m_spCanvasOnSpinCtrl(wxSpinEvent& event) { event.Skip(); }
-    virtual void m_spPageOnSpinCtrl(wxSpinEvent& event) { event.Skip(); }
-    virtual void m_chAnchorOnChoice(wxCommandEvent& event) { event.Skip(); }
-    virtual void m_spOffsetXOnSpinCtrl(wxSpinEvent& event) { event.Skip(); }
-    virtual void m_spOffsetYOnSpinCtrl(wxSpinEvent& event) { event.Skip(); }
-    virtual void m_spSpacingHOnSpinCtrl(wxSpinEvent& event) { event.Skip(); }
-    virtual void m_spSpacingVOnSpinCtrl(wxSpinEvent& event) { event.Skip(); }
     virtual void m_btnExportDashboardOnButtonClick(wxCommandEvent& event)
     {
         event.Skip();
