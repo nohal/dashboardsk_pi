@@ -221,8 +221,8 @@ wxBitmap SimpleGaugeInstrument::RenderAngle(double scale, bool relative)
 
     wxMemoryDC mdc;
 
-    wxCoord size_x = m_instrument_size;
-    wxCoord size_y = m_instrument_size;
+    wxCoord size_x = m_instrument_size * scale;
+    wxCoord size_y = m_instrument_size * scale;
     wxCoord xc = size_x / 2;
     wxCoord yc = size_y / 2;
     wxCoord r = size_y / 2 - size_x / 200 - 1;
@@ -329,10 +329,10 @@ wxBitmap SimpleGaugeInstrument::RenderAdaptive(double scale)
         }
     }
 
-    wxCoord size_x = m_instrument_size;
-    wxCoord size_y = m_instrument_size * (50 + PERC) / 100;
+    wxCoord size_x = m_instrument_size * scale;
+    wxCoord size_y = m_instrument_size * scale * (50 + PERC) / 100;
     wxCoord xc = size_x / 2;
-    wxCoord yc = m_instrument_size / 2;
+    wxCoord yc = m_instrument_size * scale / 2;
     wxCoord r = size_x / 2 - size_x / 200 - 1;
 
 #if defined(__WXGTK__) || defined(__WXQT__)
@@ -509,10 +509,10 @@ wxBitmap SimpleGaugeInstrument::RenderFixed(double scale)
         }
     }
 
-    wxCoord size_x = m_instrument_size;
-    wxCoord size_y = m_instrument_size * (50 + PERC) / 100;
+    wxCoord size_x = m_instrument_size * scale;
+    wxCoord size_y = m_instrument_size * scale * (50 + PERC) / 100;
     wxCoord xc = size_x / 2;
-    wxCoord yc = m_instrument_size / 2;
+    wxCoord yc = m_instrument_size * scale / 2;
     wxCoord r = size_x / 2 - size_x / 200 - 1;
 
 #if defined(__WXGTK__) || defined(__WXQT__)
@@ -689,10 +689,10 @@ wxBitmap SimpleGaugeInstrument::RenderPercent(double scale)
 
     wxMemoryDC mdc;
 
-    wxCoord size_x = m_instrument_size;
-    wxCoord size_y = m_instrument_size * (50 + PERC) / 100;
+    wxCoord size_x = m_instrument_size * scale;
+    wxCoord size_y = m_instrument_size * scale * (50 + PERC) / 100;
     wxCoord xc = size_x / 2;
-    wxCoord yc = m_instrument_size / 2;
+    wxCoord yc = m_instrument_size * scale / 2;
     wxCoord r = size_x / 2 - size_x / 200 - 1;
 
 #if defined(__WXGTK__) || defined(__WXQT__)
