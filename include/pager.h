@@ -84,6 +84,9 @@ public:
     /// @return page number
     const int GetCurrentPage() { return m_current_page; }
 
+    /// Reset currently displayed page number
+    void ResetCurrentPage() { SetCurrentPage(*m_pages.begin()); }
+
     /// Adds a page
     /// @param pg Page number
     void AddPage(const int pg) { m_pages.insert(pg); }

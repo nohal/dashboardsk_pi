@@ -60,14 +60,19 @@ void DashboardSK::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
     }
     m_displayed_pages[canvasIndex]->Draw(dc, vp, canvasIndex);
     Dashboard::ClearOffsets();
+    bool drawn = false;
     for (auto dashboard : m_dashboards) {
         if (!m_frozen
             && m_displayed_pages[canvasIndex]->GetCurrentPage()
                 == dashboard->GetPageNr()) {
             dashboard->Draw(dc, vp, canvasIndex);
+            drawn = true;
         } else {
             dashboard->ProcessData();
         }
+    }
+    if (!drawn) {
+        m_displayed_pages[canvasIndex]->ResetCurrentPage();
     }
 }
 
