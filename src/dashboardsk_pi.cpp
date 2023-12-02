@@ -317,7 +317,7 @@ bool dashboardsk_pi::MouseEventHook(wxMouseEvent& event)
 
 bool dashboardsk_pi::IsVisible() { return m_shown; }
 
-int dashboardsk_pi::ToPhis(int x)
+int dashboardsk_pi::ToPhys(int x)
 {
     if (m_oDC) {
         return x * m_oDC->GetContentScaleFactor();

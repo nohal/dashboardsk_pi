@@ -87,28 +87,28 @@ void Dashboard::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
     switch (m_anchor) {
     case anchor_edge::bottom:
         dir = -1;
-        row_offset = m_parent->ToPhis(m_offset_y);
-        x = m_parent->ToPhis(m_offset_x);
-        start_pos = canvas_height - m_parent->ToPhis(dashboard_offset);
+        row_offset = m_parent->ToPhys(m_offset_y);
+        x = m_parent->ToPhys(m_offset_x);
+        start_pos = canvas_height - m_parent->ToPhys(dashboard_offset);
         row_nr = 1;
         break;
     case anchor_edge::top:
         dir = 1;
-        row_offset = m_parent->ToPhis(m_offset_y);
-        x = m_parent->ToPhis(m_offset_x);
-        start_pos = m_parent->ToPhis(dashboard_offset);
+        row_offset = m_parent->ToPhys(m_offset_y);
+        x = m_parent->ToPhys(m_offset_x);
+        start_pos = m_parent->ToPhys(dashboard_offset);
         break;
     case anchor_edge::left:
         dir = 1;
-        y = m_parent->ToPhis(m_offset_y);
-        start_pos = m_parent->ToPhis(m_offset_x + dashboard_offset);
+        y = m_parent->ToPhys(m_offset_y);
+        start_pos = m_parent->ToPhys(m_offset_x + dashboard_offset);
         break;
     case anchor_edge::right:
         dir = -1;
-        start_pos = canvas_width - m_parent->ToPhis(m_offset_x)
-            - m_parent->ToPhis(dashboard_offset);
+        start_pos = canvas_width - m_parent->ToPhys(m_offset_x)
+            - m_parent->ToPhys(dashboard_offset);
         row_nr = 1;
-        y = m_parent->ToPhis(m_offset_y);
+        y = m_parent->ToPhys(m_offset_y);
         break;
     default:
         break;
@@ -122,12 +122,12 @@ void Dashboard::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
         if (bmp.IsOk()) {
             if (m_anchor == anchor_edge::bottom
                 || m_anchor == anchor_edge::top) {
-                if (x + width + m_parent->ToPhis(m_offset_x) > canvas_width) {
+                if (x + width + m_parent->ToPhys(m_offset_x) > canvas_width) {
                     // We don't fit, next row
                     row_offset
-                        += current_row_size + m_parent->ToPhis(m_spacing_v);
+                        += current_row_size + m_parent->ToPhys(m_spacing_v);
                     current_row_size = 0;
-                    x = m_parent->ToPhis(m_offset_x);
+                    x = m_parent->ToPhys(m_offset_x);
                 }
                 y = start_pos + dir * row_offset + dir * row_nr * height;
                 current_row_size = wxMax(current_row_size, height);
@@ -136,14 +136,14 @@ void Dashboard::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
                 x += width + m_spacing_h;
             } else if (m_anchor == anchor_edge::left
                 || m_anchor == anchor_edge::right) {
-                if (y + height + m_parent->ToPhis(m_offset_y) > canvas_height) {
-                    y = m_parent->ToPhis(m_offset_y);
+                if (y + height + m_parent->ToPhys(m_offset_y) > canvas_height) {
+                    y = m_parent->ToPhys(m_offset_y);
                     if (m_anchor == anchor_edge::left) {
                         start_pos += dir * current_row_size
-                            + dir * m_parent->ToPhis(m_spacing_h);
+                            + dir * m_parent->ToPhys(m_spacing_h);
                     } else {
                         row_offset
-                            += current_row_size + m_parent->ToPhis(m_spacing_h);
+                            += current_row_size + m_parent->ToPhys(m_spacing_h);
                     }
                     current_row_size = 0;
                 }
@@ -151,7 +151,7 @@ void Dashboard::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
                 current_row_size = wxMax(current_row_size, width);
                 dc->DrawBitmap(bmp, x, y, bmp.HasAlpha());
                 instrument->SetPlacement(x, y, width, height);
-                y += height + m_parent->ToPhis(m_spacing_v);
+                y += height + m_parent->ToPhys(m_spacing_v);
             }
         }
     }

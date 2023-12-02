@@ -235,7 +235,7 @@ public:
     /// @brief Converts DIP to physical pixels
     /// @param x Device independent pixels
     /// @return Physical pixels
-    int ToPhis(int x);
+    int ToPhys(int x);
 
     /// Get the scale factor of the device context
     ///

@@ -37,6 +37,8 @@ DashboardSK::DashboardSK(const wxString& data_path)
     , m_frozen(false)
     , m_color_scheme(0)
     , m_data_dir(data_path)
+    , m_parent_plugin(nullptr)
+    , m_parent_window(nullptr)
 {
     for (int i = 0; i < GetCanvasCount(); i++) {
         m_displayed_pages.insert({ i, new Pager(this) });
@@ -51,7 +53,7 @@ void DashboardSK::ProcessData()
     }
 }
 
-int DashboardSK::ToPhis(int x) { return m_parent_plugin->ToPhis(x); }
+int DashboardSK::ToPhys(int x) { return m_parent_plugin->ToPhys(x); }
 
 void DashboardSK::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
 {
