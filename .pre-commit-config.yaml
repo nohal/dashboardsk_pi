@@ -6,6 +6,11 @@ repos:
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
+        exclude: |
+            (?x)^(
+                .*svg|
+                .*png
+            )$
       - id: check-yaml
       - id: check-added-large-files
   - repo: https://github.com/pre-commit/mirrors-clang-format
@@ -15,7 +20,9 @@ repos:
         exclude: |
             (?x)^(
                 sqlite.*|
-                wxsqlite.*
+                wxsqlite.*|
+                .*json|
+                .*yml
             )$
   #- repo: https://github.com/cmake-lint/cmake-lint
   #  rev: 1.4.2
@@ -26,7 +33,15 @@ repos:
     hooks:
     - id: cmake-format
 
-  - repo: https://github.com/redwarp/optimize-png-hooks
-    rev: v1.2.2
+  #- repo: https://github.com/redwarp/optimize-png-hooks
+  #  rev: v1.2.2
+  #  hooks:
+  #    - id: optimize-png
+  - repo: https://github.com/shssoichiro/oxipng
+    rev: v9.0.0
     hooks:
-      - id: optimize-png
+      - id: oxipng
+  - repo: https://github.com/nohal/svgo
+    rev: v3.1.1
+    hooks:
+      - id: svgo
