@@ -70,7 +70,7 @@ dashboardsk_pi::dashboardsk_pi(void* ppimgr)
     if (!wxDirExists(GetDataDir())) {
         wxFileName::Mkdir(GetDataDir(), wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL);
     }
-    m_config_file = GetDataDir() + "config.json";
+    m_config_file = GetConfigDir() + "config.json";
     m_logo = GetBitmapFromSVGFile(
         GetDataDir() + "dashboardsk_pi_toggled.svg", 32, 32);
 }
@@ -171,8 +171,20 @@ void dashboardsk_pi::SetColorScheme(PI_ColorScheme cs)
 
 void dashboardsk_pi::LoadConfig()
 {
-    LOG_VERBOSE("DashboardSK_pi: LoadConfig from %s ", m_config_file.c_str());
+    LOG_VERBOSE("DashboardSK_pi: LoadConfig from %s", m_config_file.c_str());
     if (!wxFileExists(m_config_file)) {
+        // Move config from the possibly read-only location on legacy installs
+        // (see https://github.com/nohal/dashboardsk_pi/issues/66)
+        wxString old_config = GetDataDir() + "config.json";
+        if (wxFileExists(old_config)) {
+            LOG_VERBOSE("DashboardSK_pi: moving %s to %s", old_config.c_str(),
+                m_config_file.c_str());
+            if (wxCopyFile(old_config, m_config_file, false))
+                if (!wxRemoveFile(old_config)) {
+                    LOG_VERBOSE("DashboardSK_pi: failed to remove %s ",
+                        old_config.c_str());
+                }
+        }
         wxString sample_config = GetDataDir() + "sample_config.json";
         if (wxFileExists(sample_config)) {
             wxCopyFile(sample_config, m_config_file, false);
@@ -302,6 +314,16 @@ wxString dashboardsk_pi::GetDataDir()
 {
     return GetPluginDataDir("DashboardSK_pi") + wxFileName::GetPathSeparator()
         + "data" + wxFileName::GetPathSeparator();
+}
+
+wxString dashboardsk_pi::GetConfigDir()
+{
+    wxString cfgPath = *GetpPrivateApplicationDataLocation()
+        + wxFileName::GetPathSeparator() + "DashboardSK_pi"
+        + wxFileName::GetPathSeparator();
+    if (!wxDirExists(cfgPath))
+        wxMkdir(cfgPath);
+    return cfgPath;
 }
 
 wxBitmap dashboardsk_pi::GetBitmapFromSVG(
