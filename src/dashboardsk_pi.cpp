@@ -112,6 +112,7 @@ int dashboardsk_pi::Init()
 bool dashboardsk_pi::DeInit()
 {
     SaveConfig();
+    delete m_oDC;
     delete m_dsk;
     return true;
 }
