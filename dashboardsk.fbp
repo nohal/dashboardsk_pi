@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <wxFormBuilder_Project>
-  <FileVersion major="1" minor="16"/>
-  <object class="Project" expanded="true">
+  <FileVersion major="1" minor="17"/>
+  <object class="Project" expanded="false">
     <property name="class_decoration"></property>
     <property name="code_generation">C++</property>
     <property name="disconnect_events">1</property>
@@ -2060,7 +2060,7 @@
                                     <property name="hidden">0</property>
                                     <property name="id">wxID_ANY</property>
                                     <property name="initial">10</property>
-                                    <property name="max">100</property>
+                                    <property name="max">999</property>
                                     <property name="max_size"></property>
                                     <property name="maximize_button">0</property>
                                     <property name="maximum_size"></property>
@@ -2428,11 +2428,11 @@
                     <event name="OnSpinCtrl">m_spCanvasOnSpinCtrl</event>
                   </object>
                 </object>
-                <object class="sizeritem" expanded="true">
+                <object class="sizeritem" expanded="false">
                   <property name="border">5</property>
                   <property name="flag">wxALL</property>
                   <property name="proportion">0</property>
-                  <object class="wxStaticText" expanded="true">
+                  <object class="wxStaticText" expanded="false">
                     <property name="BottomDockable">1</property>
                     <property name="LeftDockable">1</property>
                     <property name="RightDockable">1</property>
@@ -2490,11 +2490,11 @@
                     <property name="wrap">-1</property>
                   </object>
                 </object>
-                <object class="sizeritem" expanded="true">
+                <object class="sizeritem" expanded="false">
                   <property name="border">5</property>
                   <property name="flag">wxALL</property>
                   <property name="proportion">0</property>
-                  <object class="wxSpinCtrl" expanded="true">
+                  <object class="wxSpinCtrl" expanded="false">
                     <property name="BottomDockable">1</property>
                     <property name="LeftDockable">1</property>
                     <property name="RightDockable">1</property>

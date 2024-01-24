@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version 3.10.1-376-g11d0e737)
+// C++ code generated with wxFormBuilder (version 4.0.0-0-g0efcecf0)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -209,7 +209,7 @@ MainConfigFrame::MainConfigFrame(wxWindow* parent, wxWindowID id,
     bSizerTimeout->Add(m_stTimeout, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
     m_spTimeout = new wxSpinCtrl(m_swConfig, wxID_ANY, wxEmptyString,
-        wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100, 10);
+        wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 999, 10);
     bSizerTimeout->Add(m_spTimeout, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
     m_stSeconds = new wxStaticText(
