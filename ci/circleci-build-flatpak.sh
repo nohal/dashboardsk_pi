@@ -46,7 +46,7 @@ if [ -n "$CI" ]; then
         | sudo apt-key add -
 
     # Use updated flatpak (#457)
-    sudo add-apt-repository -y ppa:alexlarsson/flatpak
+    #sudo add-apt-repository -y ppa:alexlarsson/flatpak
     sudo apt update
 
     # Install or update flatpak and flatpak-builder
