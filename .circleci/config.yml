@@ -174,7 +174,7 @@ jobs:
 
   build-macos:
     macos:
-      xcode: "12.5.1"
+      xcode: "13.4.1"
     environment:
       - OCPN_TARGET: macos
       - CMAKE_BUILD_PARALLEL_LEVEL: 2
@@ -182,12 +182,14 @@ jobs:
       - checkout
       - run: sudo chmod go+w /usr/local
       - restore_cache:
-          key: "{{checksum \"build-deps/macos-cache-stamp\"}}\
+          key: "old-{{checksum \"build-deps/macos-cache-stamp\"}}\
+            -{{checksum \"build-deps/macos-deps\"}}\
             -{{checksum \"cmake/MacosWxwidgets.cmake\"}}\
             -{{checksum \"ci/circleci-build-macos.sh\"}}"
       - run: ci/circleci-build-macos.sh
       - save_cache:
-          key: "{{checksum \"build-deps/macos-cache-stamp\"}}\
+          key: "old-{{checksum \"build-deps/macos-cache-stamp\"}}\
+            -{{checksum \"build-deps/macos-deps\"}}\
             -{{checksum \"cmake/MacosWxwidgets.cmake\"}}\
             -{{checksum \"ci/circleci-build-macos.sh\"}}"
           paths:
@@ -199,6 +201,34 @@ jobs:
       - run: cd build-osx; /bin/bash < upload.sh
       - run: ci/git-push.sh  build-osx
 
+  build-macos-new:
+    macos:
+      xcode: "15.2.0"
+    environment:
+      - OCPN_TARGET: macos
+      - CMAKE_BUILD_PARALLEL_LEVEL: 4
+    steps:
+      - checkout
+      - run: sudo chmod go+w /usr/local
+      - restore_cache:
+          key: "new-{{checksum \"build-deps/macos-cache-stamp\"}}\
+            -{{checksum \"build-deps/macos-deps\"}}\
+            -{{checksum \"cmake/MacosWxwidgets.cmake\"}}\
+            -{{checksum \"ci/circleci-build-macos.sh\"}}"
+      - run: ci/circleci-build-macos.sh
+      - save_cache:
+          key: "new-{{checksum \"build-deps/macos-cache-stamp\"}}\
+            -{{checksum \"build-deps/macos-deps\"}}\
+            -{{checksum \"cmake/MacosWxwidgets.cmake\"}}\
+            -{{checksum \"ci/circleci-build-macos.sh\"}}"
+          paths:
+            - /tmp/local.cache.tar
+            - /Users/distiller/project/cache
+      - run: >
+          sh -c "otool -L build-osx/app/*/OpenCPN.app/Contents/PlugIns/*.dylib"
+      - run: ci/verify-result.sh build-osx
+      - run: cd build-osx; /bin/bash < upload.sh
+      - run: ci/git-push.sh  build-osx
 
   #TODO: wxStyledTextCtrl does not exist in wxQT, so we would have to replace it.
   #      And there will be more for sure.
@@ -244,7 +274,10 @@ workflows:
       - build-flatpak-x86:
           <<: *std-filters
 
-      - build-macos:
+     # - build-macos:
+     #     <<: *std-filters
+
+      - build-macos-new:
           <<: *std-filters
 
       - build-android-arm64:
