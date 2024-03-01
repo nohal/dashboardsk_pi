@@ -31,15 +31,16 @@
 #include <wx/filename.h>
 #include <wx/wfstream.h>
 
-PLUGIN_BEGIN_NAMESPACE
-// the class factories, used to create and destroy instances of the PlugIn
-
 extern "C" DECL_EXP opencpn_plugin* create_pi(void* ppimgr)
 {
-    return static_cast<opencpn_plugin*>(new dashboardsk_pi(ppimgr));
+    return static_cast<opencpn_plugin*>(
+        new DashboardSKPlugin::dashboardsk_pi(ppimgr));
 }
 
 extern "C" DECL_EXP void destroy_pi(opencpn_plugin* p) { delete p; }
+
+PLUGIN_BEGIN_NAMESPACE
+// the class factories, used to create and destroy instances of the PlugIn
 
 //---------------------------------------------------------------------------------------------------------
 //
