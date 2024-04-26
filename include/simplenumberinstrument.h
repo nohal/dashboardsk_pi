@@ -61,42 +61,44 @@
         SignalKKeyCtrl, wxEmptyString, AsString, GetStringSetting)             \
     X(1, DSK_SETTING_FORMAT, 0, _("Format"), ChoiceCtrl,                       \
         ConcatChoiceStrings(m_supported_formats), AsInt, GetIntSetting)        \
-    X(2, DSK_SETTING_TRANSFORMATION, 0, _("Transformation"), ChoiceCtrl,       \
+    X(2, DSK_SETTING_VALUE_SUFFIX, wxString(wxEmptyString), _("Value Suffix"), \
+        TextCtrl, wxEmptyString, AsString, GetStringSetting)		           \
+    X(3, DSK_SETTING_TRANSFORMATION, 0, _("Transformation"), ChoiceCtrl,       \
         ConcatChoiceStrings(m_supported_transforms), AsInt, GetIntSetting)     \
-    X(3, DSK_SETTING_ZONES, wxString(wxEmptyString), _("Zones"),               \
+    X(4, DSK_SETTING_ZONES, wxString(wxEmptyString), _("Zones"),               \
         SignalKZonesCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(4, DSK_SETTING_SMOOTHING, m_smoothing, _("Data smoothing"), SpinCtrl,    \
+    X(5, DSK_SETTING_SMOOTHING, m_smoothing, _("Data smoothing"), SpinCtrl,    \
         "0;" STRINGIFY(DSK_SNI_SMOOTHING_MAX), AsInt, GetIntSetting)           \
-    X(5, DSK_SETTING_TITLE_FONT, m_title_font.GetPointSize(), _("Title size"), \
+    X(6, DSK_SETTING_TITLE_FONT, m_title_font.GetPointSize(), _("Title size"), \
         SpinCtrl, "5;40", AsInt, GetIntSetting)                                \
-    X(6, DSK_SETTING_BODY_FONT, m_body_font.GetPointSize(), _("Body size"),    \
+    X(7, DSK_SETTING_BODY_FONT, m_body_font.GetPointSize(), _("Body size"),    \
         SpinCtrl, "5;40", AsInt, GetIntSetting)                                \
-    X(7, DSK_SETTING_TITLE_BG, DSK_SNI_COLOR_TITLE_BG, _("Title background"),  \
+    X(8, DSK_SETTING_TITLE_BG, DSK_SNI_COLOR_TITLE_BG, _("Title background"),  \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(8, DSK_SETTING_TITLE_FG, DSK_SNI_COLOR_TITLE_FG, _("Title color"),       \
+    X(9, DSK_SETTING_TITLE_FG, DSK_SNI_COLOR_TITLE_FG, _("Title color"),       \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(9, DSK_SETTING_BODY_BG, DSK_SNI_COLOR_BODY_BG, _("Body background"),     \
+    X(10, DSK_SETTING_BODY_BG, DSK_SNI_COLOR_BODY_BG, _("Body background"),    \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(10, DSK_SETTING_BODY_FG, DSK_SNI_COLOR_BODY_FG, _("Body color"),         \
+    X(11, DSK_SETTING_BODY_FG, DSK_SNI_COLOR_BODY_FG, _("Body color"),         \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(11, DSK_SETTING_ALERT_BG, DSK_SNI_COLOR_ALERT_BG, _("Alert background"), \
+    X(12, DSK_SETTING_ALERT_BG, DSK_SNI_COLOR_ALERT_BG, _("Alert background"), \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(12, DSK_SETTING_ALERT_FG, DSK_SNI_COLOR_ALERT_FG, _("Alert color"),      \
+    X(13, DSK_SETTING_ALERT_FG, DSK_SNI_COLOR_ALERT_FG, _("Alert color"),      \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(13, DSK_SETTING_WARN_BG, DSK_SNI_COLOR_WARN_BG, _("Warning background"), \
+    X(14, DSK_SETTING_WARN_BG, DSK_SNI_COLOR_WARN_BG, _("Warning background"), \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(14, DSK_SETTING_WARN_FG, DSK_SNI_COLOR_WARN_FG, _("Warning color"),      \
+    X(15, DSK_SETTING_WARN_FG, DSK_SNI_COLOR_WARN_FG, _("Warning color"),      \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(15, DSK_SETTING_ALRM_BG, DSK_SNI_COLOR_ALRM_BG, _("Alarm background"),   \
+    X(16, DSK_SETTING_ALRM_BG, DSK_SNI_COLOR_ALRM_BG, _("Alarm background"),   \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(16, DSK_SETTING_ALRM_FG, DSK_SNI_COLOR_ALRM_FG, _("Alarm color"),        \
+    X(17, DSK_SETTING_ALRM_FG, DSK_SNI_COLOR_ALRM_FG, _("Alarm color"),        \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(17, DSK_SETTING_EMERG_BG, DSK_SNI_COLOR_EMERG_BG,                        \
+    X(18, DSK_SETTING_EMERG_BG, DSK_SNI_COLOR_EMERG_BG,                        \
         _("Emergency background"), ColourPickerCtrl, wxEmptyString, AsString,  \
         GetStringSetting)                                                      \
-    X(18, DSK_SETTING_EMERG_FG, DSK_SNI_COLOR_EMERG_FG, _("Emergency color"),  \
+    X(19, DSK_SETTING_EMERG_FG, DSK_SNI_COLOR_EMERG_FG, _("Emergency color"),  \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(19, DSK_SETTING_BORDER_COLOR, DSK_SNI_COLOR_BORDER, _("Border color"),   \
+    X(20, DSK_SETTING_BORDER_COLOR, DSK_SNI_COLOR_BORDER, _("Border color"),   \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)
 
 PLUGIN_BEGIN_NAMESPACE
@@ -123,6 +125,9 @@ protected:
         /// Border
         border
     };
+
+
+
 
     /// Font used for the title of the instrument
     wxFont m_title_font;
@@ -154,6 +159,8 @@ protected:
     /// (DSK_SNI_SMOOTHING_MAX-m_smoothing+1)*data(i+1)) /
     /// (DSK_SNI_SMOOTHING_MAX + 1)
     size_t m_smoothing;
+    // add a suffix to the value if applicable
+    wxString m_value_suffix;
     /// Previous value displayed by the instrument
     double m_old_value;
 

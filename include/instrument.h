@@ -84,6 +84,7 @@ PLUGIN_BEGIN_NAMESPACE
 #define DSK_SETTING_INSTR_WIDTH "instrument_width"
 #define DSK_SETTING_INSTR_HEIGHT "instrument_height"
 #define DSK_SETTING_MEAN_FG "mean_color"
+#define DSK_SETTING_VALUE_SUFFIX "value_suffix"
 #define DSK_SETTING_TIME_FG "time_color"
 #define DSK_SETTING_ORDER "instrument_order"
 #define DSK_SETTING_HISTORY "history_length"
