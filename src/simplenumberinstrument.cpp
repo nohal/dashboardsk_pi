@@ -202,7 +202,7 @@ wxBitmap SimpleNumberInstrument::Render(double scale)
                 }
                 m_old_value = dval;
                 value = wxString::Format(
-                    m_format_strings[m_format_index] + m_value_suffix, abs(dval));
+                    m_format_strings[m_format_index], abs(dval)).Append(m_value_suffix);
                 if (dval < 0
                     && !m_supported_formats[m_format_index].StartsWith("ABS")) {
                     value.Prepend("-");
