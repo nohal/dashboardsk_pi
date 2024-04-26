@@ -61,8 +61,8 @@
         SignalKKeyCtrl, wxEmptyString, AsString, GetStringSetting)             \
     X(1, DSK_SETTING_FORMAT, 0, _("Format"), ChoiceCtrl,                       \
         ConcatChoiceStrings(m_supported_formats), AsInt, GetIntSetting)        \
-    X(2, DSK_SETTING_VALUE_SUFFIX, wxString(wxEmptyString), _("Value Suffix"), \
-        TextCtrl, wxEmptyString, AsString, GetStringSetting)		           \
+    X(2, DSK_SETTING_VALUE_SUFFIX, wxString(wxEmptyString), _("Value suffix"), \
+        TextCtrl, wxEmptyString, AsString, GetStringSetting)                   \
     X(3, DSK_SETTING_TRANSFORMATION, 0, _("Transformation"), ChoiceCtrl,       \
         ConcatChoiceStrings(m_supported_transforms), AsInt, GetIntSetting)     \
     X(4, DSK_SETTING_ZONES, wxString(wxEmptyString), _("Zones"),               \
@@ -126,9 +126,6 @@ protected:
         border
     };
 
-
-
-
     /// Font used for the title of the instrument
     wxFont m_title_font;
     /// Font used for the body of the instrument
@@ -159,7 +156,7 @@ protected:
     /// (DSK_SNI_SMOOTHING_MAX-m_smoothing+1)*data(i+1)) /
     /// (DSK_SNI_SMOOTHING_MAX + 1)
     size_t m_smoothing;
-    // add a suffix to the value if applicable
+    /// add a suffix to the value if applicable
     wxString m_value_suffix;
     /// Previous value displayed by the instrument
     double m_old_value;

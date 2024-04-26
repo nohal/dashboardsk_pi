@@ -99,7 +99,6 @@ void SimpleNumberInstrument::SetSetting(
     } else if (key.IsSameAs(DSK_SETTING_VALUE_SUFFIX)) {
         m_value_suffix = value;
     }
-        
 }
 
 void SimpleNumberInstrument::SetSetting(const wxString& key, const int& value)
@@ -202,7 +201,8 @@ wxBitmap SimpleNumberInstrument::Render(double scale)
                 }
                 m_old_value = dval;
                 value = wxString::Format(
-                    m_format_strings[m_format_index], abs(dval)).Append(m_value_suffix);
+                    m_format_strings[m_format_index], abs(dval))
+                            .Append(m_value_suffix);
                 if (dval < 0
                     && !m_supported_formats[m_format_index].StartsWith("ABS")) {
                     value.Prepend("-");
