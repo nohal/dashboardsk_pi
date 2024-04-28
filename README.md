@@ -82,8 +82,9 @@ Everything used from the code should be SVG, think at least twice before using a
 
 ### GUI
 
-The prototypes for the forms are designed using [wxFormBuilder](https://github.com/wxFormBuilder/wxFormBuilder) and the generated code resides in `include/dashboardskgui.h` and `src/dashboardskgui.cpp`. Never edit the generated files manually.
+The prototypes for the forms `dashboardsk.fbp` and `dashboardsk_android.fbp` are designed using [wxFormBuilder](https://github.com/wxFormBuilder/wxFormBuilder) and the generated code resides in `include/dashboardskgui.h` and `src/dashboardskgui.cpp` for the desktop version and `include/dashboardskguiandroid.h` and `src/dashboardskguiandroid.cpp` for the Android. Never edit the generated files manually.
 The actual implementation of the GUI functionality is in `include/dashboardskguiimpl.h` and `src/dashboardskguiimpl.cpp`.
+To minimize te amount of conditionally compiled code always keep the two user interfaces as similar as possible and name all the widgets equally in both the versions.
 If you consider it necessary to break the above and feel it is necessary to start writing the whole GUI code by hand, please think it twice and include a bulletproof justification in the description of the respective pull request, as the change will be hardly reversible and we all probably agree that writing GUI completely by hand tends to be little rewarding activity.
 
 ### Adding new instruments
