@@ -123,7 +123,7 @@ public:
     /// Set user specified name of the dashboard
     ///
     /// \param name The name
-    void SetName(wxString name) { m_name = name; };
+    void SetName(const wxString& name) { m_name = name; };
 
     /// Get name of the dashboard
     ///

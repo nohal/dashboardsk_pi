@@ -32,13 +32,13 @@
 PLUGIN_BEGIN_NAMESPACE
 
 DashboardSK::DashboardSK(const wxString& data_path)
-    : m_self(wxEmptyString)
+    : m_parent_window(nullptr)
+    , m_parent_plugin(nullptr)
+    , m_self(wxEmptyString)
     , m_self_ptr(nullptr)
     , m_frozen(false)
     , m_color_scheme(0)
     , m_data_dir(data_path)
-    , m_parent_plugin(nullptr)
-    , m_parent_window(nullptr)
 {
     for (int i = 0; i < GetCanvasCount(); i++) {
         m_displayed_pages.insert({ i, new Pager(this) });

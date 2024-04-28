@@ -94,14 +94,15 @@ int dashboardsk_pi::Init()
 
     if (m_shown) {
         m_leftclick_tool_id = InsertPlugInToolSVG(_T( "DashboardSK" ),
-            _svg_dashboardsk_toggled, _svg_dashboardsk_rollover,
-            _svg_dashboardsk, wxITEM_CHECK, _("DashboardSK"), _T( "" ), nullptr,
+            std::move(_svg_dashboardsk_toggled),
+            std::move(_svg_dashboardsk_rollover), std::move(_svg_dashboardsk),
+            wxITEM_CHECK, _("DashboardSK"), _T( "" ), nullptr,
             DASHBOARDSK_TOOL_POSITION, 0, this);
     } else {
         m_leftclick_tool_id = InsertPlugInToolSVG(_T( "DashboardSK" ),
-            _svg_dashboardsk, _svg_dashboardsk_rollover,
-            _svg_dashboardsk_toggled, wxITEM_CHECK, _("DashboardSK"), _T( "" ),
-            nullptr, DASHBOARDSK_TOOL_POSITION, 0, this);
+            std::move(_svg_dashboardsk), std::move(_svg_dashboardsk_rollover),
+            std::move(_svg_dashboardsk_toggled), wxITEM_CHECK, _("DashboardSK"),
+            _T( "" ), nullptr, DASHBOARDSK_TOOL_POSITION, 0, this);
     }
 
     return (WANTS_OVERLAY_CALLBACK | WANTS_OPENGL_OVERLAY_CALLBACK
