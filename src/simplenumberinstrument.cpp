@@ -56,6 +56,8 @@ void SimpleNumberInstrument::Init()
         15, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
     m_body_font
         = wxFont(30, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
+    m_suffix_font
+        = wxFont(30, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
     m_smoothing = 0;
     m_old_value = std::numeric_limits<double>::min();
 
@@ -84,7 +86,8 @@ void SimpleNumberInstrument::SetSetting(
         || key.IsSameAs(DSK_SETTING_TRANSFORMATION)
         || key.IsSameAs(DSK_SETTING_SMOOTHING)
         || key.IsSameAs(DSK_SETTING_BODY_FONT)
-        || key.IsSameAs(DSK_SETTING_TITLE_FONT)) {
+        || key.IsSameAs(DSK_SETTING_TITLE_FONT)
+        || key.IsSameAs(DSK_SETTING_SUFFIX_FONT)) {
         // TODO: The above manually maintained list should be replaced with
         // something using the information from the DSK_SNI_SETTINGS macro
         int i;
@@ -110,6 +113,8 @@ void SimpleNumberInstrument::SetSetting(const wxString& key, const int& value)
         m_transformation = static_cast<transformation>(value);
     } else if (key.IsSameAs(DSK_SETTING_TITLE_FONT)) {
         m_title_font.SetPointSize(value);
+    } else if (key.IsSameAs(DSK_SETTING_SUFFIX_FONT)) {
+        m_suffix_font.SetPointSize(value);
     } else if (key.IsSameAs(DSK_SETTING_BODY_FONT)) {
         m_body_font.SetPointSize(value);
     } else if (key.IsSameAs(DSK_SETTING_SMOOTHING)) {
@@ -201,8 +206,7 @@ wxBitmap SimpleNumberInstrument::Render(double scale)
                 }
                 m_old_value = dval;
                 value = wxString::Format(
-                    m_format_strings[m_format_index], abs(dval))
-                            .Append(m_value_suffix);
+                    m_format_strings[m_format_index], abs(dval));
                 if (dval < 0
                     && !m_supported_formats[m_format_index].StartsWith("ABS")) {
                     value.Prepend("-");
@@ -228,21 +232,27 @@ wxBitmap SimpleNumberInstrument::Render(double scale)
         "9999"); // dummy string to size the instrument consistently
     wxCoord size_x, size_y;
     wxCoord title_x, title_y;
-    wxCoord body_x, body_y;
+    wxCoord body_x, body_y, body_d;
+    wxCoord suffix_x, suffix_y, suffix_d;
     wxCoord dummy_x, dummy_y;
     wxMemoryDC mdc;
 
     wxFont tf = m_title_font;
+    wxFont sf = m_suffix_font;
+    wxFont bf = m_body_font;
     tf.SetPointSize(m_title_font.GetPointSize() * scale);
+    sf.SetPointSize(m_suffix_font.GetPointSize() * scale);
     mdc.SetFont(tf);
     mdc.GetTextExtent(m_title, &title_x, &title_y);
-    wxFont bf = m_body_font;
     bf.SetPointSize(m_body_font.GetPointSize() * scale);
     mdc.SetFont(bf);
     mdc.GetTextExtent(dummy_str, &dummy_x, &dummy_y);
-    mdc.GetTextExtent(value, &body_x, &body_y);
-    size_x = (wxMax(title_x, wxMax(body_x, dummy_x)) + 2 * BORDER_SIZE);
-    size_y = (title_y + body_y + 4 * BORDER_SIZE);
+    mdc.GetTextExtent(value, &body_x, &body_y, &body_d);
+    mdc.GetTextExtent(
+        m_value_suffix, &suffix_x, &suffix_y, &suffix_d, NULL, &sf);
+    size_x
+        = wxMax(title_x, wxMax(body_x + suffix_x, dummy_x)) + 2 * BORDER_SIZE;
+    size_y = title_y + wxMax(body_y, suffix_y) + 4 * BORDER_SIZE;
 #if defined(__WXGTK__) || defined(__WXQT__)
     m_bmp = wxBitmap(size_x, size_y, 32);
 #else
@@ -267,7 +277,17 @@ wxBitmap SimpleNumberInstrument::Render(double scale)
     dc.DrawText(m_title, (size_x - title_x) / 2, BORDER_SIZE);
     dc.SetFont(bf);
     dc.SetTextForeground(cbf);
-    dc.DrawText(value, (size_x - body_x) / 2, title_y + 3 * BORDER_SIZE);
+    dc.DrawLabel(value,
+        wxRect((size_x - (body_x + suffix_x)) / 2,
+            title_y + 3 * BORDER_SIZE + wxMin(body_d, suffix_d), body_x,
+            wxMax(body_y, suffix_y) - suffix_d),
+        wxALIGN_CENTER_HORIZONTAL | wxALIGN_BOTTOM);
+    dc.SetFont(sf);
+    dc.DrawLabel(m_value_suffix,
+        wxRect((size_x - (body_x + suffix_x)) / 2 + body_x,
+            title_y + 3 * BORDER_SIZE + wxMin(body_d, suffix_d), suffix_x,
+            wxMax(body_y, suffix_y) - body_d),
+        wxALIGN_CENTER_HORIZONTAL | wxALIGN_BOTTOM);
     dc.SetPen(wxPen(cb, BORDER_LINE_WIDTH, wxPENSTYLE_SOLID));
     dc.SetBrush(*wxTRANSPARENT_BRUSH);
     dc.DrawRectangle(BORDER_LINE_WIDTH / 2, BORDER_LINE_WIDTH / 2,
