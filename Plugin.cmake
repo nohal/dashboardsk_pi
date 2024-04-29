@@ -25,8 +25,8 @@ set(OCPN_RELEASE_REPO
 # -------  Plugin setup --------
 #
 set(PKG_NAME DashboardSK_pi)
-set(PKG_VERSION "0.2.0")
-set(PKG_PRERELEASE "") # Empty, or a tag like 'beta'
+set(PKG_VERSION "0.3.0")
+set(PKG_PRERELEASE "beta") # Empty, or a tag like 'beta'
 
 set(DISPLAY_NAME DashboardSK) # Dialogs, installer artifacts, ...
 set(PLUGIN_API_NAME DashboardSK) # As of GetCommonName() in plugin API
@@ -77,10 +77,18 @@ set(SRC_DASHBOARD
     ${CMAKE_SOURCE_DIR}/src/simplehistograminstrument.cpp
     ${CMAKE_SOURCE_DIR}/src/pager.cpp)
 
-set(SRC
-    ${SRC_DASHBOARD} ${CMAKE_SOURCE_DIR}/src/dashboardsk_pi.cpp
-    ${CMAKE_SOURCE_DIR}/src/dashboardskgui.cpp
-    ${CMAKE_SOURCE_DIR}/src/dashboardskguiimpl.cpp)
+set(SRC_GUI_DESKTOP ${CMAKE_SOURCE_DIR}/src/dashboardskgui.cpp
+                    ${CMAKE_SOURCE_DIR}/src/dashboardskguiimpl.cpp)
+set(SRC_GUI_ANDROID ${CMAKE_SOURCE_DIR}/src/dashboardskguiandroid.cpp
+                    ${CMAKE_SOURCE_DIR}/src/dashboardskguiimpl.cpp)
+
+if(QT_ANDROID)
+  set(SRC_GUI ${SRC_GUI_ANDROID})
+else()
+  set(SRC_GUI ${SRC_GUI_DESKTOP})
+endif()
+
+set(SRC ${SRC_DASHBOARD} ${SRC_GUI} ${CMAKE_SOURCE_DIR}/src/dashboardsk_pi.cpp)
 
 set(PKG_API_LIB api-18) # A dir in opencpn-libs/ e. g., api-17 or api-16
 

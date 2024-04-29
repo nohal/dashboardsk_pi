@@ -20,6 +20,7 @@ set -x
 if [ -f ~/.config/local-build.rc ]; then source ~/.config/local-build.rc; fi
 if [ -d /ci-source ]; then cd /ci-source; fi
 
+git config --global protocol.file.allow always
 git submodule update --init opencpn-libs
 
 # Set up build directory and a visible link in /
@@ -46,7 +47,7 @@ if [ -n "$CI" ]; then
         | sudo apt-key add -
 
     # Use updated flatpak (#457)
-    sudo add-apt-repository -y ppa:alexlarsson/flatpak
+    #sudo add-apt-repository -y ppa:alexlarsson/flatpak
     sudo apt update
 
     # Install or update flatpak and flatpak-builder

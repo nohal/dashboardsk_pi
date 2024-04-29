@@ -25,28 +25,6 @@ flatpak-steps: &flatpak-steps
     - run: ci/git-push.sh /build-flatpak
 
 jobs:
-  build-buster:
-    docker:
-      - image: circleci/buildpack-deps:bullseye-scm
-    environment:
-      - OCPN_TARGET: bullseye
-      - CMAKE_BUILD_PARALLEL_LEVEL: 2
-    steps:
-      - checkout
-      - run: ci/circleci-build-buster.sh
-      - run: sh -c "ci/maybe-push-upload.sh"
-
-  build-buster-armhf:
-    machine:
-      image: ubuntu-2004:202101-01
-    resource_class: arm.medium
-    environment:
-      - CMAKE_BUILD_PARALLEL_LEVEL: 2
-    steps:
-      - checkout
-      - run: ci/circleci-build-buster-armhf.sh
-      - run: ci/maybe-push-upload.sh
-
   build-bullseye:
     docker:
       - image: circleci/buildpack-deps:bullseye-scm
@@ -67,7 +45,7 @@ jobs:
 
   build-bullseye-armhf:
     machine:
-      image: ubuntu-2004:202101-01
+      image: ubuntu-2204:current
     resource_class: arm.medium
     environment:
       - TARGET_TUPLE: debian;11;armhf
@@ -81,7 +59,7 @@ jobs:
 
   build-bullseye-wx32-armhf:
     machine:
-      image: ubuntu-2004:202101-01
+      image: ubuntu-2204:current
     resource_class: arm.medium
     environment:
       - TARGET_TUPLE: debian-wx32;11;armhf
@@ -97,7 +75,7 @@ jobs:
 
   build-bullseye-arm64:
     machine:
-      image: ubuntu-2004:2022.04.1
+      image: ubuntu-2204:current
     resource_class: arm.medium
     environment:
       - OCPN_TARGET: bullseye
@@ -111,7 +89,7 @@ jobs:
 
   build-bullseye-wx32-arm64:
     machine:
-      image: ubuntu-2004:2022.04.1
+      image: ubuntu-2204:current
     resource_class: arm.medium
     environment:
       - OCPN_TARGET: bullseye
@@ -127,7 +105,7 @@ jobs:
 
   build-bookworm:
     machine:
-      image: ubuntu-2004:2022.04.1
+      image: ubuntu-2204:current
     resource_class: medium
     environment:
       - OCPN_TARGET: bookworm
@@ -141,7 +119,7 @@ jobs:
 
   build-bookworm-arm64:
     machine:
-      image: ubuntu-2004:2022.04.1
+      image: ubuntu-2204:current
     resource_class: arm.medium
     environment:
       - OCPN_TARGET: bookworm
@@ -155,7 +133,7 @@ jobs:
 
   build-bookworm-armhf:
     machine:
-      image: ubuntu-2004:202101-01
+      image: ubuntu-2204:current
     resource_class: arm.medium
     environment:
       - TARGET_TUPLE: debian;12;armhf
@@ -169,7 +147,7 @@ jobs:
 
   build-flatpak-arm64:
     machine:
-      image: ubuntu-2004:202101-01
+      image: ubuntu-2204:current
     resource_class: arm.medium
     environment:
       - OCPN_TARGET: flatpak-arm64
@@ -183,7 +161,7 @@ jobs:
 
   build-flatpak-x86:
     machine:
-      image: ubuntu-2004:202010-01
+      image: ubuntu-2204:current
     environment:
       - OCPN_TARGET: flatpak
       - CMAKE_BUILD_PARALLEL_LEVEL: 2
@@ -196,7 +174,7 @@ jobs:
 
   build-macos:
     macos:
-      xcode: "12.5.1"
+      xcode: "13.4.1"
     environment:
       - OCPN_TARGET: macos
       - CMAKE_BUILD_PARALLEL_LEVEL: 2
@@ -204,12 +182,14 @@ jobs:
       - checkout
       - run: sudo chmod go+w /usr/local
       - restore_cache:
-          key: "{{checksum \"build-deps/macos-cache-stamp\"}}\
+          key: "old-{{checksum \"build-deps/macos-cache-stamp\"}}\
+            -{{checksum \"build-deps/macos-deps\"}}\
             -{{checksum \"cmake/MacosWxwidgets.cmake\"}}\
             -{{checksum \"ci/circleci-build-macos.sh\"}}"
       - run: ci/circleci-build-macos.sh
       - save_cache:
-          key: "{{checksum \"build-deps/macos-cache-stamp\"}}\
+          key: "old-{{checksum \"build-deps/macos-cache-stamp\"}}\
+            -{{checksum \"build-deps/macos-deps\"}}\
             -{{checksum \"cmake/MacosWxwidgets.cmake\"}}\
             -{{checksum \"ci/circleci-build-macos.sh\"}}"
           paths:
@@ -221,30 +201,58 @@ jobs:
       - run: cd build-osx; /bin/bash < upload.sh
       - run: ci/git-push.sh  build-osx
 
+  build-macos-new:
+    macos:
+      xcode: "15.2.0"
+    environment:
+      - OCPN_TARGET: macos
+      - CMAKE_BUILD_PARALLEL_LEVEL: 4
+    steps:
+      - checkout
+      - run: sudo chmod go+w /usr/local
+      - restore_cache:
+          key: "new-{{checksum \"build-deps/macos-cache-stamp\"}}\
+            -{{checksum \"build-deps/macos-deps\"}}\
+            -{{checksum \"cmake/MacosWxwidgets.cmake\"}}\
+            -{{checksum \"ci/circleci-build-macos.sh\"}}"
+      - run: ci/circleci-build-macos.sh
+      - save_cache:
+          key: "new-{{checksum \"build-deps/macos-cache-stamp\"}}\
+            -{{checksum \"build-deps/macos-deps\"}}\
+            -{{checksum \"cmake/MacosWxwidgets.cmake\"}}\
+            -{{checksum \"ci/circleci-build-macos.sh\"}}"
+          paths:
+            - /tmp/local.cache.tar
+            - /Users/distiller/project/cache
+      - run: >
+          sh -c "otool -L build-osx/app/*/OpenCPN.app/Contents/PlugIns/*.dylib"
+      - run: ci/verify-result.sh build-osx
+      - run: cd build-osx; /bin/bash < upload.sh
+      - run: ci/git-push.sh  build-osx
 
   #TODO: wxStyledTextCtrl does not exist in wxQT, so we would have to replace it.
   #      And there will be more for sure.
-  #build-android-arm64:
-  #  docker:
-  #    - image: circleci/android:api-28-ndk
-  #  environment:
-  #    - OCPN_TARGET: android-aarch64
-  #    - CMAKE_BUILD_PARALLEL_LEVEL: 2
-  #  steps:
-  #    - checkout
-  #    - run: ci/circleci-build-android.sh
-  #    - run: ci/maybe-push-upload.sh
+  build-android-arm64:
+    docker:
+      - image: circleci/android:api-28-ndk
+    environment:
+      - OCPN_TARGET: android-aarch64
+      - CMAKE_BUILD_PARALLEL_LEVEL: 2
+    steps:
+      - checkout
+      - run: ci/circleci-build-android.sh
+      - run: ci/maybe-push-upload.sh
 
-  #build-android-armhf:
-  #  docker:
-  #    - image: circleci/android:api-28-ndk
-  #  environment:
-  #    - OCPN_TARGET: android-armhf
-  #    - CMAKE_BUILD_PARALLEL_LEVEL: 2
-  #  steps:
-  #    - checkout
-  #    - run: ci/circleci-build-android.sh
-  #    - run: ci/maybe-push-upload.sh
+  build-android-armhf:
+    docker:
+      - image: circleci/android:api-28-ndk
+    environment:
+      - OCPN_TARGET: android-armhf
+      - CMAKE_BUILD_PARALLEL_LEVEL: 2
+    steps:
+      - checkout
+      - run: ci/circleci-build-android.sh
+      - run: ci/maybe-push-upload.sh
 
 std-filters: &std-filters
   filters:
@@ -266,14 +274,17 @@ workflows:
       - build-flatpak-x86:
           <<: *std-filters
 
-      - build-macos:
+     # - build-macos:
+     #     <<: *std-filters
+
+      - build-macos-new:
           <<: *std-filters
 
-#      - build-android-arm64:
-#          <<: *std-filters
-#
-#      - build-android-armhf:
-#          <<: *std-filters
+      - build-android-arm64:
+          <<: *std-filters
+
+      - build-android-armhf:
+          <<: *std-filters
 
       - build-bullseye-wx32:
           <<: *std-filters
@@ -300,10 +311,4 @@ workflows:
           <<: *std-filters
 
       - build-bookworm:
-          <<: *std-filters
-
-      - build-buster:
-          <<: *std-filters
-
-      - build-buster-armhf:
           <<: *std-filters

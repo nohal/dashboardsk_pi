@@ -51,7 +51,7 @@ MainConfigFrameImpl::MainConfigFrameImpl(dashboardsk_pi* dsk_pi,
     , m_edited_dashboard(nullptr)
     , m_edited_instrument(nullptr)
 {
-#if (wxCHECK_VERSION(3, 1, 0))
+#if !__WXQT__ && wxCHECK_VERSION(3, 1, 0)
     SetSize(FromDIP(GetSize()));
 #endif
     m_dsk_pi = dsk_pi;
@@ -66,7 +66,7 @@ MainConfigFrameImpl::MainConfigFrameImpl(dashboardsk_pi* dsk_pi,
     m_orig_config = m_dsk_pi->GetDSK()->GenerateJSONConfig();
     m_tSelf->SetValue(m_dsk_pi->GetDSK()->Self());
 
-#if (wxCHECK_VERSION(3, 1, 6))
+#if wxCHECK_VERSION(3, 1, 6)
     m_bpAddButton->SetBitmap(wxBitmapBundle::FromSVGFile(
         m_dsk_pi->GetDataDir() + "plus.svg", wxSize(BMP_SZ, BMP_SZ)));
     m_bpRemoveButton->SetBitmap(wxBitmapBundle::FromSVGFile(
@@ -404,7 +404,7 @@ void MainConfigFrameImpl::FillInstrumentDetails()
                     wxString token = tokenizer.GetNextToken();
                     switch (pos) {
                     case 0:
-#if (wxCHECK_VERSION(3, 1, 6))
+#if wxCHECK_VERSION(3, 1, 6)
                         if (!token.ToInt(&min)) {
                             min = -99999;
                         }
@@ -413,7 +413,7 @@ void MainConfigFrameImpl::FillInstrumentDetails()
 #endif
                         break;
                     case 1:
-#if (wxCHECK_VERSION(3, 1, 6))
+#if wxCHECK_VERSION(3, 1, 6)
                         if (!token.ToInt(&max)) {
                             max = 99999;
                         }
@@ -447,7 +447,7 @@ void MainConfigFrameImpl::FillInstrumentDetails()
                     wxString token = tokenizer.GetNextToken();
                     switch (pos) {
                     case 0:
-#if (wxCHECK_VERSION(3, 1, 6))
+#if wxCHECK_VERSION(3, 1, 6)
                         if (!token.ToDouble(&min)) {
                             min = -99999.9;
                         }
@@ -456,7 +456,7 @@ void MainConfigFrameImpl::FillInstrumentDetails()
 #endif
                         break;
                     case 1:
-#if (wxCHECK_VERSION(3, 1, 6))
+#if wxCHECK_VERSION(3, 1, 6)
                         if (!token.ToDouble(&max)) {
                             max = 99999.9;
                         }
@@ -970,9 +970,10 @@ void MainConfigFrameImpl::m_btnImportDashboardOnButtonClick(
 SKDataTreeImpl::SKDataTreeImpl(wxWindow* parent)
     : SKDataTree(parent)
 {
-#if (wxCHECK_VERSION(3, 1, 0))
+#if !__WXQT__ && wxCHECK_VERSION(3, 1, 0)
     SetSize(FromDIP(GetSize()));
 #endif
+#if !__WXQT__
     m_scintillaCode->StyleClearAll();
     m_scintillaCode->StyleSetForeground(
         wxSTC_STYLE_DEFAULT, GetForegroundColour());
@@ -1035,15 +1036,20 @@ SKDataTreeImpl::SKDataTreeImpl(wxWindow* parent)
         wxSTC_JSON_ESCAPESEQUENCE, GetBackgroundColour());
     m_scintillaCode->SetCaretForeground(GetForegroundColour());
 #endif
+#endif
     DimeWindow(this);
 }
 
 void SKDataTreeImpl::SetCodeSKTree(DashboardSK* dsk)
 {
     m_sdbSizerBtnsCancel->Hide();
+#if !__WXQT__
     m_scintillaCode->SetReadOnly(false);
     m_scintillaCode->SetText(dsk->GetSignalKTreeText());
     m_scintillaCode->SetReadOnly(true);
+#else
+    m_scintillaCode->SetValue(dsk->GetSignalKTreeText());
+#endif
 }
 
 //====================================
@@ -1054,7 +1060,7 @@ SKPathBrowserImpl::SKPathBrowserImpl(wxWindow* parent, wxWindowID id,
     const wxString& title, const wxPoint& pos, const wxSize& size, long style)
     : SKPathBrowser(parent, id, title, pos, size, style)
 {
-#if (wxCHECK_VERSION(3, 1, 0))
+#if !__WXQT__ and wxCHECK_VERSION(3, 1, 0)
     SetSize(FromDIP(GetSize()));
 #endif
     DimeWindow(this);
@@ -1245,12 +1251,12 @@ ZonesConfigDialogImpl::ZonesConfigDialogImpl(wxWindow* parent,
     : ZonesConfigDialog(parent, id, title, pos, size, style)
     , m_edited_zone(nullptr)
 {
-#if (wxCHECK_VERSION(3, 1, 0))
+#if !__WXQT__ and wxCHECK_VERSION(3, 1, 0)
     SetSize(FromDIP(GetSize()));
 #endif
     m_dsk_pi = dsk_pi;
     if (m_dsk_pi) {
-#if (wxCHECK_VERSION(3, 1, 6))
+#if wxCHECK_VERSION(3, 1, 6)
         m_bpAdd->SetBitmap(wxBitmapBundle::FromSVGFile(
             m_dsk_pi->GetDataDir() + "plus.svg", wxSize(BMP_SZ, BMP_SZ)));
         m_bpRemove->SetBitmap(wxBitmapBundle::FromSVGFile(

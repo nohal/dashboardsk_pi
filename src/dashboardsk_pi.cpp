@@ -26,20 +26,21 @@
 
 #include "dashboardsk_pi.h"
 #include "dashboardskguiimpl.h"
-
 #include "wx/jsonreader.h"
 #include "wx/jsonwriter.h"
+#include <wx/filename.h>
 #include <wx/wfstream.h>
-
-PLUGIN_BEGIN_NAMESPACE
-// the class factories, used to create and destroy instances of the PlugIn
 
 extern "C" DECL_EXP opencpn_plugin* create_pi(void* ppimgr)
 {
-    return static_cast<opencpn_plugin*>(new dashboardsk_pi(ppimgr));
+    return static_cast<opencpn_plugin*>(
+        new DashboardSKPlugin::dashboardsk_pi(ppimgr));
 }
 
 extern "C" DECL_EXP void destroy_pi(opencpn_plugin* p) { delete p; }
+
+PLUGIN_BEGIN_NAMESPACE
+// the class factories, used to create and destroy instances of the PlugIn
 
 //---------------------------------------------------------------------------------------------------------
 //
@@ -93,14 +94,15 @@ int dashboardsk_pi::Init()
 
     if (m_shown) {
         m_leftclick_tool_id = InsertPlugInToolSVG(_T( "DashboardSK" ),
-            _svg_dashboardsk_toggled, _svg_dashboardsk_rollover,
-            _svg_dashboardsk, wxITEM_CHECK, _("DashboardSK"), _T( "" ), nullptr,
+            std::move(_svg_dashboardsk_toggled),
+            std::move(_svg_dashboardsk_rollover), std::move(_svg_dashboardsk),
+            wxITEM_CHECK, _("DashboardSK"), _T( "" ), nullptr,
             DASHBOARDSK_TOOL_POSITION, 0, this);
     } else {
         m_leftclick_tool_id = InsertPlugInToolSVG(_T( "DashboardSK" ),
-            _svg_dashboardsk, _svg_dashboardsk_rollover,
-            _svg_dashboardsk_toggled, wxITEM_CHECK, _("DashboardSK"), _T( "" ),
-            nullptr, DASHBOARDSK_TOOL_POSITION, 0, this);
+            std::move(_svg_dashboardsk), std::move(_svg_dashboardsk_rollover),
+            std::move(_svg_dashboardsk_toggled), wxITEM_CHECK, _("DashboardSK"),
+            _T( "" ), nullptr, DASHBOARDSK_TOOL_POSITION, 0, this);
     }
 
     return (WANTS_OVERLAY_CALLBACK | WANTS_OPENGL_OVERLAY_CALLBACK
