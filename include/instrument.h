@@ -45,7 +45,7 @@ PLUGIN_BEGIN_NAMESPACE
 // The font sizing logic is inconsistent between platforms, define some magic
 // constants used to improve the look of the instruments
 #if defined(__WXGTK__)
-#define AUTO_TEXT_SIZE_COEF 1.5
+#define AUTO_TEXT_SIZE_COEF (1.5 * Instrument::GetSystemFontScalingFactor())
 #define AUTO_TEXT_SHIFT_COEF 1.2
 #elif defined(__WXMSW__)
 #define AUTO_TEXT_SIZE_COEF 1.2
@@ -439,6 +439,12 @@ public:
     ///
     /// \return Name of the instrument gauge
     static wxString DisplayType() { return wxEmptyString; };
+
+    /// Gets the scaling factor configured in the system for fonts, especially
+    /// Gnome sucks as it applies scaling to the fonts after we have already
+    /// scaled them as required \return the scaling factor for fonts set in the
+    /// system
+    static double GetSystemFontScalingFactor();
 
     /// Get name of the instrument
     ///

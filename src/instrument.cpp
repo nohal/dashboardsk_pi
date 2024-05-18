@@ -26,6 +26,9 @@
 
 #include "instrument.h"
 #include "dashboard.h"
+#if defined(__WXGTK__)
+#include <giomm/settings.h>
+#endif
 
 PLUGIN_BEGIN_NAMESPACE
 
@@ -34,6 +37,17 @@ Instrument::~Instrument()
     if (m_parent_dashboard) {
         m_parent_dashboard->Unsubscribe(this);
     }
+}
+
+double Instrument::GetSystemFontScalingFactor()
+{
+#if defined(__WXGTK__)
+    Glib::RefPtr<Gio::Settings> s
+        = Gio::Settings::create("org.gnome.desktop.interface");
+    return s->get_double("text-scaling-factor");
+#else
+    return 1.0;
+#endif
 }
 
 wxColor Instrument::GetDimedColor(const wxColor& c) const
