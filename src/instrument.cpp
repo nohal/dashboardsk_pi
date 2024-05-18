@@ -24,11 +24,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-#include "instrument.h"
-#include "dashboard.h"
 #if defined(__WXGTK__)
 #include <giomm/settings.h>
 #endif
+#include "dashboard.h"
+#include "instrument.h"
 
 PLUGIN_BEGIN_NAMESPACE
 
