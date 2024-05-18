@@ -13,6 +13,15 @@ finish-args:
   - --device=all
 
 modules:
+  - name: glibmm
+    rm-configure: true
+    config-opts:
+      - --disable-static
+      - --disable-documentation
+    sources:
+      - type: archive
+        url: https://ftp.gnome.org/pub/GNOME/sources/glibmm/2.62/glibmm-2.62.0.tar.xz
+        sha256: 36659f13cc73282392d1305858f3bbca46fbd1ce2f078cc9db8b9f79b2e93cfe
   - name: dashboardsk
     no-autogen: true
     buildsystem: cmake
