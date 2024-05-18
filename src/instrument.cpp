@@ -24,7 +24,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-#if defined(__WXGTK__)
+#if defined(DASHBOARDSK_USE_GIOMM)
 #include <giomm/settings.h>
 #endif
 #include "dashboard.h"
@@ -41,7 +41,7 @@ Instrument::~Instrument()
 
 double Instrument::GetSystemFontScalingFactor()
 {
-#if defined(__WXGTK__)
+#if defined(DASHBOARDSK_USE_GIOMM)
     Glib::RefPtr<Gio::Settings> s
         = Gio::Settings::create("org.gnome.desktop.interface");
     return s->get_double("text-scaling-factor");
