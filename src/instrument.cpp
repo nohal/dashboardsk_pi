@@ -24,8 +24,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-#include "instrument.h"
+#if defined(DASHBOARDSK_USE_GIOMM)
+#include <giomm/settings.h>
+#endif
 #include "dashboard.h"
+#include "instrument.h"
 
 PLUGIN_BEGIN_NAMESPACE
 
@@ -34,6 +37,17 @@ Instrument::~Instrument()
     if (m_parent_dashboard) {
         m_parent_dashboard->Unsubscribe(this);
     }
+}
+
+double Instrument::GetSystemFontScalingFactor()
+{
+#if defined(DASHBOARDSK_USE_GIOMM)
+    Glib::RefPtr<Gio::Settings> s
+        = Gio::Settings::create("org.gnome.desktop.interface");
+    return s->get_double("text-scaling-factor");
+#else
+    return 1.0;
+#endif
 }
 
 wxColor Instrument::GetDimedColor(const wxColor& c) const
