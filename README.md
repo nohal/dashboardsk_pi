@@ -30,7 +30,8 @@ make
 Run `x86 Native Tools Command Prompt for VS 2022` from the Start menu as Administrator
 
 ```
-git git submodule update --init clone https://github.com/nohal/dashboardsk_pi.git
+git clone https://github.com/nohal/dashboardsk_pi.git
+git submodule update --init
 cd dashboardsk_pi.git
 ci\appveyor.bat
 cd build
