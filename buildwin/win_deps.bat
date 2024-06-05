@@ -11,7 +11,7 @@
 ::
 if not exist "%HomeDrive%%HomePath%\.local\bin\pathman.exe" (
     pushd "%HomeDrive%%HomePath%"
-    curl.exe -sA "MS" https://webinstall.dev/pathman | powershell
+    curl.exe https://webi.ms/pathman | powershell
     popd
 )
 pathman list > nul 2>&1
