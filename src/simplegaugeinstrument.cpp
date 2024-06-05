@@ -97,6 +97,8 @@ void SimpleGaugeInstrument::SetSetting(
         i = wxAtoi(value);
 #endif
         SetSetting(key, i);
+    } else if (key.IsSameAs(DSK_SETTING_VALUE_SUFFIX)) {
+        m_value_suffix = value;
     }
 }
 
@@ -212,6 +214,7 @@ wxBitmap SimpleGaugeInstrument::RenderAngle(double scale, bool relative)
                 && !m_supported_formats[m_format_index].StartsWith("ABS")) {
                 value.Prepend("-");
             }
+            value = value.Append(m_value_suffix);
         }
     } else {
         if (!m_timed_out && m_bmp.IsOk()) {
@@ -322,6 +325,7 @@ wxBitmap SimpleGaugeInstrument::RenderAdaptive(double scale)
                 && !m_supported_formats[m_format_index].StartsWith("ABS")) {
                 value.Prepend("-");
             }
+            value = value.Append(m_value_suffix);
         }
     } else {
         if (!m_timed_out && m_bmp.IsOk()) {
@@ -502,6 +506,7 @@ wxBitmap SimpleGaugeInstrument::RenderFixed(double scale)
                 && !m_supported_formats[m_format_index].StartsWith("ABS")) {
                 value.Prepend("-");
             }
+            value = value.Append(m_value_suffix);
         }
     } else {
         if (!m_timed_out && m_bmp.IsOk()) {
@@ -680,6 +685,7 @@ wxBitmap SimpleGaugeInstrument::RenderPercent(double scale)
                 && !m_supported_formats[m_format_index].StartsWith("ABS")) {
                 value.Prepend("-");
             }
+            value = value.Append(m_value_suffix);
         }
     } else {
         if (!m_timed_out && m_bmp.IsOk()) {

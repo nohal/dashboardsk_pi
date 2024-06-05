@@ -88,48 +88,50 @@
         ConcatChoiceStrings(m_gauge_types), AsInt, GetIntSetting)              \
     X(2, DSK_SETTING_FORMAT, 0, _("Format"), ChoiceCtrl,                       \
         ConcatChoiceStrings(m_supported_formats), AsInt, GetIntSetting)        \
-    X(3, DSK_SETTING_TRANSFORMATION, 0, _("Transformation"), ChoiceCtrl,       \
+    X(3, DSK_SETTING_VALUE_SUFFIX, wxString(wxEmptyString), _("Value suffix"), \
+        TextCtrl, wxEmptyString, AsString, GetStringSetting)                   \
+    X(4, DSK_SETTING_TRANSFORMATION, 0, _("Transformation"), ChoiceCtrl,       \
         ConcatChoiceStrings(m_supported_transforms), AsInt, GetIntSetting)     \
-    X(4, DSK_SETTING_ZONES, wxString(wxEmptyString), _("Zones"),               \
+    X(5, DSK_SETTING_ZONES, wxString(wxEmptyString), _("Zones"),               \
         SignalKZonesCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(5, DSK_SETTING_SMOOTHING, m_smoothing, _("Data smoothing"), SpinCtrl,    \
+    X(6, DSK_SETTING_SMOOTHING, m_smoothing, _("Data smoothing"), SpinCtrl,    \
         "0;" STRINGIFY(DSK_SGI_SMOOTHING_MAX), AsInt, GetIntSetting)           \
-    X(6, DSK_SETTING_INSTR_SIZE, m_instrument_size, _("Instrument size"),      \
+    X(7, DSK_SETTING_INSTR_SIZE, m_instrument_size, _("Instrument size"),      \
         SpinCtrl,                                                              \
         STRINGIFY(DSK_SGI_INSTR_MIN_SIZE) ";" STRINGIFY(                       \
             DSK_SGI_INSTR_MAX_SIZE),                                           \
         AsInt, GetIntSetting)                                                  \
-    X(7, DSK_SGI_NEEDLE_FG, DSK_SGI_COLOR_NEEDLE, _("Needle color"),           \
+    X(8, DSK_SGI_NEEDLE_FG, DSK_SGI_COLOR_NEEDLE, _("Needle color"),           \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(7, DSK_SGI_RIM_NOMINAL, DSK_SGI_COLOR_RIM, _("Rim color"),               \
+    X(9, DSK_SGI_RIM_NOMINAL, DSK_SGI_COLOR_RIM, _("Rim color"),               \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(8, DSK_SGI_RIM_PORT, DSK_SGI_COLOR_RIM_P, _("Port color"),               \
+    X(10, DSK_SGI_RIM_PORT, DSK_SGI_COLOR_RIM_P, _("Port color"),              \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(9, DSK_SGI_RIM_STBD, DSK_SGI_COLOR_RIM_S, _("Starboard color"),          \
+    X(11, DSK_SGI_RIM_STBD, DSK_SGI_COLOR_RIM_S, _("Starboard color"),         \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(10, DSK_SGI_RIM_DEAD, DSK_SGI_COLOR_RIM_D, _("Dead angle color"),        \
+    X(12, DSK_SGI_RIM_DEAD, DSK_SGI_COLOR_RIM_D, _("Dead angle color"),        \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(11, DSK_SGI_DIAL_COLOR, DSK_SGI_COLOR_DIAL, _("Dial color"),             \
+    X(13, DSK_SGI_DIAL_COLOR, DSK_SGI_COLOR_DIAL, _("Dial color"),             \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(12, DSK_SETTING_TITLE_FG, DSK_SGI_COLOR_TITLE, _("Title color"),         \
+    X(14, DSK_SETTING_TITLE_FG, DSK_SGI_COLOR_TITLE, _("Title color"),         \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(13, DSK_SETTING_NOMINAL_FG, DSK_SGI_COLOR_VALUE, _("Value color"),       \
+    X(15, DSK_SETTING_NOMINAL_FG, DSK_SGI_COLOR_VALUE, _("Value color"),       \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(14, DSK_SGI_TICK_FG, DSK_SGI_COLOR_TICK, _("Tick color"),                \
+    X(16, DSK_SGI_TICK_FG, DSK_SGI_COLOR_TICK, _("Tick color"),                \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(15, DSK_SGI_TICK_LEGEND, DSK_SGI_COLOR_TICK_TXT, _("Dial values"),       \
+    X(17, DSK_SGI_TICK_LEGEND, DSK_SGI_COLOR_TICK_TXT, _("Dial values"),       \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(16, DSK_SETTING_NORMAL_FG, DSK_SGI_COLOR_NORMAL, _("Normal color"),      \
+    X(18, DSK_SETTING_NORMAL_FG, DSK_SGI_COLOR_NORMAL, _("Normal color"),      \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(17, DSK_SETTING_ALERT_FG, DSK_SGI_COLOR_ALERT, _("Alert color"),         \
+    X(19, DSK_SETTING_ALERT_FG, DSK_SGI_COLOR_ALERT, _("Alert color"),         \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(18, DSK_SETTING_WARN_FG, DSK_SGI_COLOR_WARN, _("Warn color"),            \
+    X(20, DSK_SETTING_WARN_FG, DSK_SGI_COLOR_WARN, _("Warn color"),            \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(19, DSK_SETTING_ALRM_FG, DSK_SGI_COLOR_ALARM, _("Alarm color"),          \
+    X(21, DSK_SETTING_ALRM_FG, DSK_SGI_COLOR_ALARM, _("Alarm color"),          \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(20, DSK_SETTING_EMERG_FG, DSK_SGI_COLOR_EMERG, _("Emergency color"),     \
+    X(22, DSK_SETTING_EMERG_FG, DSK_SGI_COLOR_EMERG, _("Emergency color"),     \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
-    X(21, DSK_SETTING_BORDER_COLOR, DSK_SGI_COLOR_BORDER, _("Border color"),   \
+    X(23, DSK_SETTING_BORDER_COLOR, DSK_SGI_COLOR_BORDER, _("Border color"),   \
         ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)
 
 PLUGIN_BEGIN_NAMESPACE
@@ -210,6 +212,8 @@ protected:
     double m_min_val;
     /// Size of the instrument in device independent pixels
     wxCoord m_instrument_size;
+    /// add a suffix to the value if applicable
+    wxString m_value_suffix;
 
     /// Draw arc sector. The arc is drawn counterclockwise from \c start_angle
     /// to  \c end_angle
