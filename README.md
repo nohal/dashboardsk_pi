@@ -5,6 +5,7 @@ This project provides an universal instrument dashboard display for [OpenCPN](ht
 
 [![Hosted By: Cloudsmith](https://img.shields.io/badge/OSS%20hosting%20by-cloudsmith-blue?logo=cloudsmith&style=flat-square)](https://cloudsmith.com)
 [![Coverity Scan Build Status](https://scan.coverity.com/projects/27049/badge.svg)](https://scan.coverity.com/projects/nohal-dashboardsk_pi)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/nohal/dashboardsk_pi/main.svg)](https://results.pre-commit.ci/latest/github/nohal/dashboardsk_pi/main)
 
 ## Dependencies
 
