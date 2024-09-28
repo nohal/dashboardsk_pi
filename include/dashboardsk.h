@@ -41,8 +41,8 @@
 #include "simplenumberinstrument.h"
 #include "simplepositioninstrument.h"
 #include "simpletextinstrument.h"
-//#include "andanotherinstrument.h"
-// All the instrument classes must be defined here
+// #include "andanotherinstrument.h"
+//  All the instrument classes must be defined here
 #define INSTRUMENTS                                                            \
     X(0, SimpleNumberInstrument)                                               \
     X(1, SimpleGaugeInstrument)                                                \

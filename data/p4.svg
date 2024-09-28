@@ -1,8 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="120.945" height="120.945" viewBox="0 0 32 32">
-    <g transform="translate(-45.458 -62.812)">
-        <rect width="30.862" height="30.862" x="46.027" y="63.382" ry="5.189" style="font-variation-settings:&quot;wght&quot;700;fill:#000;stroke:#000;stroke-width:1.1382"/>
-        <g style="font-size:36.0315px;font-family:&quot;sans-serif&quot;;-inkscape-font-specification:&quot;sans-serif, @wght=700&quot;;font-variation-settings:&quot;wght&quot;700;fill:#f0f;stroke:none;stroke-width:1.4591">
-            <path d="M71.15 86.343h-3.098v5.333h-5.297v-5.333h-10.99V82.56l11.279-16.61h5.008v16.177h3.099zm-8.395-8.575v-1.442l.072-1.693q.037-.865.073-1.514.036-.684.072-.936h-.145q-.324.72-.684 1.405-.36.684-.865 1.405l-4.72 7.134h6.197z" aria-label="4" style="stroke:none"/>
-        </g>
-    </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="120.945" height="120.945" viewBox="0 0 32 32"><g transform="translate(-45.458 -62.812)"><rect width="30.862" height="30.862" x="46.027" y="63.382" ry="5.189" style="font-variation-settings:&quot;wght&quot;700;fill:#000;stroke:#000;stroke-width:1.1382"/><g style="font-size:36.0315px;font-family:&quot;sans-serif&quot;;-inkscape-font-specification:&quot;sans-serif, @wght=700&quot;;font-variation-settings:&quot;wght&quot;700;fill:#f0f;stroke:none;stroke-width:1.4591"><path d="M71.15 86.343h-3.098v5.333h-5.297v-5.333h-10.99V82.56l11.279-16.61h5.008v16.177h3.099zm-8.395-8.575v-1.442l.072-1.693q.037-.865.073-1.514.036-.684.072-.936h-.145q-.324.72-.684 1.405-.36.684-.865 1.405l-4.72 7.134h6.197z" aria-label="4" style="stroke:none"/></g></g></svg>
