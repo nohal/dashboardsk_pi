@@ -205,7 +205,7 @@ void Dashboard::ReadConfig(wxJSONValue& config)
                     LOG_VERBOSE(
                         "DashboardSK_pi: Problem loading instrument with class "
                         + config["instruments"][i]["config"]["class"]
-                              .AsString());
+                            .AsString());
                     continue;
                 }
                 instr->ReadConfig(config["instruments"][i]["config"]);

@@ -240,7 +240,7 @@ wxBitmap SimpleHistogramInstrument::Render(double scale)
         vals.push_back(dummy);
     }
     for (auto it = m_history.m_last_minute.rbegin();
-         it != m_history.m_last_minute.rend(); ++it) {
+        it != m_history.m_last_minute.rend(); ++it) {
         if (m_history_length == history_length::len_1min
             && it->OlderThan(60s)) {
             break;
@@ -256,7 +256,7 @@ wxBitmap SimpleHistogramInstrument::Render(double scale)
     if (m_history.m_last_minute.size() == HISTORY_1S
         && m_history_length > history_length::len_1min) {
         for (auto it = m_history.m_last_hour.rbegin();
-             it != m_history.m_last_hour.rend(); ++it) {
+            it != m_history.m_last_hour.rend(); ++it) {
             if (it->OlderThan(vals.back())) { // Skip the values we have with
                                               // better precision
                 continue;
@@ -289,7 +289,7 @@ wxBitmap SimpleHistogramInstrument::Render(double scale)
     if (m_history.m_last_hour.size() == HISTORY_10S
         && m_history_length > history_length::len_1hour) {
         for (auto it = m_history.m_last_3days.rbegin();
-             it != m_history.m_last_3days.rend(); ++it) {
+            it != m_history.m_last_3days.rend(); ++it) {
             if (it->OlderThan(vals.back())) { // Skip the values we have with
                                               // better precision
                 continue;

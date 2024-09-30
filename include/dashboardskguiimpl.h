@@ -306,7 +306,7 @@ public:
     /// Constructor
     SKKeyCtrlImpl()
         : SKKeyCtrl(NULL)
-        , m_sk_tree(nullptr) {};
+        , m_sk_tree(nullptr) { };
 
     /// Constructor
     ///
@@ -443,7 +443,7 @@ public:
     /// Constructor
     SKZonesCtrlImpl()
         : SKZonesCtrl(NULL)
-        , m_dsk_pi(nullptr) {};
+        , m_dsk_pi(nullptr) { };
 
     /// Constructor
     ///
