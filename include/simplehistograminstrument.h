@@ -96,11 +96,11 @@ struct HistoryValue {
     HistoryValue()
         : ts(std::chrono::system_clock::now())
         , values(0)
-        , sum(0.0) {};
+        , sum(0.0) { };
     explicit HistoryValue(const double& val)
         : ts(std::chrono::system_clock::now())
         , values(1)
-        , sum(val) {};
+        , sum(val) { };
     void Add(const double& val)
     {
         ++values;

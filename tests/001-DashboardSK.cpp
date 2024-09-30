@@ -60,18 +60,17 @@ TEST_CASE("DashboardSK - ID normalization")
     d.SetSelf("vessels.urn:mrn:imo:mmsi:223456789");
 
     REQUIRE(d.NormalizeID("123456789").IsSameAs("urn:mrn:imo:mmsi:123456789"));
-    REQUIRE(
-        d.NormalizeID("c0d79334-4e25-4245-8892-54e8ccc8021d")
+    REQUIRE(d.NormalizeID("c0d79334-4e25-4245-8892-54e8ccc8021d")
             .IsSameAs(
                 "urn:mrn:signalk:uuid:c0d79334-4e25-4245-8892-54e8ccc8021d"));
     REQUIRE(d.NormalizeID("http://example.com")
-                .IsSameAs("urn:mrn:http://example.com"));
+            .IsSameAs("urn:mrn:http://example.com"));
     REQUIRE(d.NormalizeID("https://example.com")
-                .IsSameAs("urn:mrn:https://example.com"));
+            .IsSameAs("urn:mrn:https://example.com"));
     REQUIRE(d.NormalizeID("mailto:test@example.com")
-                .IsSameAs("urn:mrn:mailto:test@example.com"));
+            .IsSameAs("urn:mrn:mailto:test@example.com"));
     REQUIRE(d.NormalizeID("tel:+420603200300")
-                .IsSameAs("urn:mrn:tel:+420603200300"));
+            .IsSameAs("urn:mrn:tel:+420603200300"));
     REQUIRE(d.NormalizeID("") == ("urn:mrn:imo:mmsi:223456789"));
 }
 

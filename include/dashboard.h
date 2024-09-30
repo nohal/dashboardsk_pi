@@ -89,7 +89,7 @@ private:
 
         canvas_edge_anchor(int c, anchor_edge e)
             : canvas(c)
-            , edge(e) {};
+            , edge(e) { };
 
         bool operator<(const canvas_edge_anchor& R) const
         {
