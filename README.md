@@ -13,7 +13,7 @@ The plugin uses wxWidgets 3.2 or newer (although building against wxWidgets 3.0 
 
 ## Compiling
 
-To compile this plugin you have to be able to compile OpenCPN itself, refer to the [OpenCPN Developer Manual](https://opencpn-manuals.github.io/main/ocpn-dev-manual/intro-AboutThisManual.html) for instructions on preparing the environment
+To compile this plugin you have to be able to compile OpenCPN itself, refer to the [OpenCPN Developer Manual](https://opencpn-manuals.github.io/main/ocpn-dev-manual/0.1/index.html) for instructions on preparing the environment
 
 ### Linux/macOS
 
