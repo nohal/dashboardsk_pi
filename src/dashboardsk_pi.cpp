@@ -279,7 +279,7 @@ bool dashboardsk_pi::RenderGLOverlayMultiCanvas(
         m_oDC = nullptr;
     }
     if (!m_oDC) {
-        m_oDC = new dskDC();
+        m_oDC = new dskDC(pcontext);
 
         // GLint dims[4] = { 0 };
         // glGetIntegerv(GL_VIEWPORT, dims);
