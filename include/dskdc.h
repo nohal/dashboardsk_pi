@@ -43,11 +43,9 @@ public:
     /// Constructor
     ///
     /// \param canvas OpenGL canvas to draw on
-    dskDC(wxGLCanvas& canvas)
-        : piDC(canvas)
+    dskDC(wxGLContext* context)
+        : piDC(context)
     {
-        glcanvas = &canvas;
-        m_scale_factor = canvas.GetContentScaleFactor();
         m_is_gl = true;
     };
 
