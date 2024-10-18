@@ -311,13 +311,13 @@ void dashboardsk_pi::SetPluginMessage(
     }
 }
 
-wxString dashboardsk_pi::GetDataDir()
+wxString dashboardsk_pi::GetDataDir() const
 {
     return GetPluginDataDir("DashboardSK_pi") + wxFileName::GetPathSeparator()
         + "data" + wxFileName::GetPathSeparator();
 }
 
-wxString dashboardsk_pi::GetConfigDir()
+wxString dashboardsk_pi::GetConfigDir() const
 {
     wxString cfgPath = *GetpPrivateApplicationDataLocation()
         + wxFileName::GetPathSeparator() + "DashboardSK_pi"

@@ -209,13 +209,13 @@ public:
     /// Get Path to the plugin data
     ///
     /// \return Path to the plugin data including the trailing separator
-    wxString GetDataDir();
+    wxString GetDataDir() const;
 
     /// Get Path to the plugin configuration data
     ///
     /// \return Path to the plugin configuration data including the trailing
     /// separator
-    wxString GetConfigDir();
+    wxString GetConfigDir() const;
 
     /// Get bitmap from SVG file
     ///
