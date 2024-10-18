@@ -28,18 +28,16 @@
 #define _DASHBOARDSKPI_H_
 
 #include "config.h"
+#include "dashboardsk.h"
 #include "dskdc.h"
 #include "pi_common.h"
+#include "wx/jsonreader.h"
 
-#define MY_API_VERSION_MAJOR 1
-#define MY_API_VERSION_MINOR 18
+constexpr int MY_API_VERSION_MAJOR = 1;
+constexpr int MY_API_VERSION_MINOR = 18;
 
-#include "dashboardsk.h"
-
-#define DASHBOARDSK_TOOL_POSITION                                              \
-    -1 // Request default positioning of toolbar tool
-
-class wxJSONReader;
+constexpr int DASHBOARDSK_TOOL_POSITION
+    = -1; // Request default positioning of toolbar tool
 
 PLUGIN_BEGIN_NAMESPACE
 
@@ -47,7 +45,7 @@ PLUGIN_BEGIN_NAMESPACE
 //    The PlugIn Class Definition
 //----------------------------------------------------------------------------------------------------------
 /// Class representing the plugin for OpenCPN Plugin API
-class dashboardsk_pi : public opencpn_plugin_118 {
+class dashboardsk_pi final : public opencpn_plugin_118 {
 private:
     /// Parent window pointer
     wxWindow* m_parent_window;
@@ -65,8 +63,8 @@ private:
     dskDC* m_oDC;
     /// Path to the configuration file
     wxString m_config_file;
-    /// Pointer to the reader used for the JSON dafa parsing
-    wxJSONReader* m_json_reader;
+    /// Reader used for the JSON data parsing
+    wxJSONReader m_json_reader;
 
     /// Load the configuration from disk
     void LoadConfig();
@@ -78,18 +76,18 @@ public:
     explicit dashboardsk_pi(void* ppimgr);
 
     /// Destructor
-    ~dashboardsk_pi();
+    ~dashboardsk_pi() override;
 
     //    The required PlugIn Methods
     /// Initialize the plugin
     ///
     /// \return
-    int Init();
+    int Init() override;
 
     /// Deinitialize the plugin
     ///
     /// \return
-    bool DeInit();
+    bool DeInit() override;
 
     /// Save the configuration to disk
     void SaveConfig();
@@ -97,52 +95,52 @@ public:
     /// Get major version of the plugin API the plugin requires
     ///
     /// \return Major version of the API
-    int GetAPIVersionMajor();
+    int GetAPIVersionMajor() override;
 
     /// Get minor version of the plugin API the plugin requires
     ///
     /// \return Minor version of the API
-    int GetAPIVersionMinor();
+    int GetAPIVersionMinor() override;
 
     /// Get major version of the plugin
     ///
     /// \return MAjor version of the plugin
-    int GetPlugInVersionMajor();
+    int GetPlugInVersionMajor() override;
 
     /// Get minor version of the plugin
     ///
     /// \return Minor version of the plugin
-    int GetPlugInVersionMinor();
+    int GetPlugInVersionMinor() override;
 
     /// Forms a semantic version together with GetPlugInVersionMajor() and
     /// GetPlugInVersionMinor(), see https://semver.org/
-    int GetPlugInVersionPatch();
+    int GetPlugInVersionPatch() override;
 
     /// Post-release version part, extends the semver spec.
-    int GetPlugInVersionPost();
+    int GetPlugInVersionPost() override;
 
     /// Pre-release tag version part, see GetPlugInVersionPatch()
-    const char* GetPlugInVersionPre();
+    const char* GetPlugInVersionPre() override;
 
     /// Build version part  see GetPlugInVersionPatch()
-    const char* GetPlugInVersionBuild();
+    const char* GetPlugInVersionBuild() override;
 
     /// Get bitmap icon of the plugin logo
     ///
     /// \return pointer to the bitmap containing the logo
-    wxBitmap* GetPlugInBitmap();
+    wxBitmap* GetPlugInBitmap() override;
 
     /// Get the name of the plugin
     ///
     /// \return Name of the plugin
-    wxString GetCommonName();
+    wxString GetCommonName() override;
 
     /// Get short description of the plugin
     /// The description should be a short single line text that fits the list
     /// view in the OpenCPN plugin manager tab of the Toolbox
     ///
     /// \return Short description of the plugin
-    wxString GetShortDescription();
+    wxString GetShortDescription() override;
 
     /// Get long description of the plugin
     ///
@@ -150,7 +148,7 @@ public:
     /// tile
     ///         in the OpenCPN plugin manager tab of the Toolbox once the plugin
     ///         is selected.
-    wxString GetLongDescription();
+    wxString GetLongDescription() override;
 
     //    The override PlugIn Methods
     /// Render the overlay on the chart canvas in non-OpenGL mode
@@ -161,7 +159,7 @@ public:
     /// \param priority
     /// \return
     bool RenderOverlayMultiCanvas(
-        wxDC& dc, PlugIn_ViewPort* vp, int canvasIndex, int priority);
+        wxDC& dc, PlugIn_ViewPort* vp, int canvasIndex, int priority) override;
 
     /// Render the overlay on the chart canvas in OpenGL mode
     ///
@@ -171,36 +169,37 @@ public:
     /// \param priority
     /// \return
     bool RenderGLOverlayMultiCanvas(wxGLContext* pcontext, PlugIn_ViewPort* vp,
-        int canvasIndex, int priority);
+        int canvasIndex, int priority) override;
 
     /// Get the number of toolbar icons the plugin provides
-    int GetToolbarToolCount();
+    int GetToolbarToolCount() override;
 
     /// Show preferences dialog for the plugin when the respective button is
     /// clicked on the plugin detail tile in the OpenCPN plugin manager tab of
     /// the Toolbox once the plugin is selected.
     ///
     /// \param parent Parent window owning the preferences dialog
-    void ShowPreferencesDialog(wxWindow* parent);
+    void ShowPreferencesDialog(wxWindow* parent) override;
 
     /// Callback to perform any actions bound to the click on a toolbar icon
     /// provided by the plugin
     ///
     /// \param id Id of the toolbar tool clicked
-    void OnToolbarToolCallback(int id);
+    void OnToolbarToolCallback(int id) override;
 
     /// Set color scheme the plugin should use
     /// Invoked when the core application color scheme is changed
     ///
     /// \param cs Color scheme
-    void SetColorScheme(PI_ColorScheme cs);
+    void SetColorScheme(PI_ColorScheme cs) override;
 
     /// Callback delivering JSON messages from the core application
     ///
     /// \param message_id id of the message (We are interested at least in
     /// OCPN_CORE_SIGNAL, but there might be more to come) \param message_body
     /// The actual JSON message
-    void SetPluginMessage(wxString& message_id, wxString& message_body);
+    void SetPluginMessage(
+        wxString& message_id, wxString& message_body) override;
 
     /// Get pointer to the actual dashboard logic
     ///
@@ -232,7 +231,7 @@ public:
     /// @param event
     /// @return True if we processed the event ourselves, false if we do not
     /// care about it.
-    bool MouseEventHook(wxMouseEvent& event);
+    bool MouseEventHook(wxMouseEvent& event) override;
 
     /// Check if the dashboard is visible
     /// @return true if visible

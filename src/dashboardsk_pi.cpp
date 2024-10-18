@@ -26,7 +26,6 @@
 
 #include "dashboardsk_pi.h"
 #include "dashboardskguiimpl.h"
-#include "wx/jsonreader.h"
 #include "wx/jsonwriter.h"
 #include <wx/filename.h>
 #include <wx/wfstream.h>
@@ -66,7 +65,6 @@ dashboardsk_pi::dashboardsk_pi(void* ppimgr)
     // Get a pointer to the opencpn display canvas, to use as a parent for the
     // dashboard
     m_parent_window = GetOCPNCanvasWindow();
-    m_json_reader = new wxJSONReader();
 
     if (!wxDirExists(GetDataDir())) {
         wxFileName::Mkdir(GetDataDir(), wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL);
@@ -76,7 +74,7 @@ dashboardsk_pi::dashboardsk_pi(void* ppimgr)
         GetDataDir() + "dashboardsk_pi_toggled.svg", 32, 32);
 }
 
-dashboardsk_pi::~dashboardsk_pi() { delete m_json_reader; }
+dashboardsk_pi::~dashboardsk_pi() { }
 
 int dashboardsk_pi::Init()
 {
@@ -201,7 +199,7 @@ void dashboardsk_pi::LoadConfig()
             return;
         }
         wxJSONValue config;
-        m_json_reader->Parse(str, &config);
+        m_json_reader.Parse(str, &config);
         wxJSONValue defaultFalse(false);
         m_shown = config.Get("shown", defaultFalse).AsBool();
         m_dsk->ReadConfig(config["dashboardsk"]);
@@ -307,7 +305,7 @@ void dashboardsk_pi::SetPluginMessage(
                            // sources following common naming convention
         if (m_dsk) {
             wxJSONValue v;
-            m_json_reader->Parse(message_body, &v);
+            m_json_reader.Parse(message_body, &v);
             m_dsk->SendSKDelta(v);
         }
     }
