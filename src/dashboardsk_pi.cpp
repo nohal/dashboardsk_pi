@@ -272,7 +272,7 @@ bool dashboardsk_pi::RenderGLOverlayMultiCanvas(
         return false;
     }
 
-    if (m_oDC && !m_oDC->IsGL()) {
+    if (m_oDC && (!m_oDC->IsGL() || !m_oDC->CheckContext(pcontext))) {
         delete m_oDC;
         m_oDC = nullptr;
     }

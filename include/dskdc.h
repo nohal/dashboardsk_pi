@@ -67,7 +67,15 @@ public:
         m_is_gl = true;
     };
 
-    bool IsGL() { return m_is_gl; }
+    bool IsGL() const { return m_is_gl; }
+
+    /// Check if our GL context is the same as the one passed
+    /// \param context The context to check
+    /// \return True if the contexts are the same
+    bool CheckContext(wxGLContext* context) const
+    {
+        return glcontext == context;
+    }
 
     /// Get the scale factor of the device context
     ///
