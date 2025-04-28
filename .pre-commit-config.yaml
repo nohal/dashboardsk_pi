@@ -33,7 +33,7 @@ repos:
     hooks:
     - id: cmake-format
   - repo: https://github.com/shssoichiro/oxipng
-    rev: v9.1.4
+    rev: v9.1.5
     hooks:
       - id: oxipng
   - repo: https://github.com/nohal/mirrors-svgo
