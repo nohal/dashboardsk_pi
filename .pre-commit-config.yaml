@@ -36,7 +36,7 @@ repos:
     rev: v9.1.5
     hooks:
       - id: oxipng
-  - repo: https://github.com/nohal/mirrors-svgo
-    rev: v3.1.0
+  - repo: https://github.com/kytta/mirrors-svgo
+    rev: v4.0.0
     hooks:
       - id: svgo
