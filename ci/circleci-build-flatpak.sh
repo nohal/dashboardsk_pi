@@ -24,6 +24,7 @@ else
   export FLATHUB_REPO=flathub
 fi
 
+
 # Load local environment if it exists i. e., this is a local build
 if [ -f ~/.config/local-build.rc ]; then source ~/.config/local-build.rc; fi
 if [ -d /ci-source ]; then cd /ci-source; fi
@@ -56,7 +57,7 @@ if [ -n "$CI" ]; then
 
     # Use updated flatpak (#457)
     #sudo add-apt-repository -y ppa:alexlarsson/flatpak
-    sudo apt update
+    #sudo apt update
 
     # Install or update flatpak and flatpak-builder
     sudo apt install flatpak flatpak-builder
@@ -72,8 +73,6 @@ flatpak remote-add --user --if-not-exists flathub-beta \
     https://flathub.org/beta-repo/flathub-beta.flatpakrepo
 flatpak remote-add --user --if-not-exists \
     flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-
-    # FIXME (leamas) revert to stable when 058 is published there
 flatpak install --user -y --noninteractive \
     flathub org.freedesktop.Sdk//${SDK:-22.08}
 
@@ -89,9 +88,10 @@ flatpak install --user -y --or-update --noninteractive \
     ${FLATHUB_REPO:-flathub}  org.opencpn.OpenCPN
 
 # Configure and build the plugin tarball and metadata.
-cmake -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:-Release} \
-      -DOCPN_TARGET_TUPLE="flatpak-$(uname -m);${SDK};$(uname -m)" \
-      ..
+cmake \
+    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:-Release} \
+    -DOCPN_TARGET_TUPLE="flatpak-$(uname -m);${SDK};$(uname -m)" \
+    ..
 # Do not build flatpak in parallel; make becomes unreliable
 make -j 1 VERBOSE=1 flatpak
 
