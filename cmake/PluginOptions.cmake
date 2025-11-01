@@ -37,7 +37,6 @@ if(DEFINED ENV{CMAKE_BUILD_PARALLEL_LEVEL})
   set(_nproc $ENV{CMAKE_BUILD_PARALLEL_LEVEL})
 else()
   if(WIN32)
-    # cmake-lint: disable=C0103
     set(_nproc_cmd
         cmd
         /C

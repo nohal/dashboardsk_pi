@@ -122,17 +122,22 @@ function(android_target)
       -DOCPN_TARGET_TUPLE:STRING=${OCPN_TARGET_TUPLE} $ENV{CMAKE_BUILD_OPTS}
       ${CMAKE_BINARY_DIR})
   add_custom_target(android-build DEPENDS android-conf-stamp)
-  add_custom_command(TARGET android-build COMMAND ${_build_target_cmd}
-                                                  ${PKG_NAME})
+  add_custom_command(
+    TARGET android-build
+    COMMAND ${_build_target_cmd} ${PKG_NAME}
+    POST_BUILD)
   add_custom_target(android-install)
-  add_custom_command(TARGET android-install COMMAND ${_install_cmd})
+  add_custom_command(
+    TARGET android-install
+    COMMAND ${_install_cmd}
+    POST_BUILD)
 
   create_finish_script()
   add_custom_target(android-finish)
   add_custom_command(
     TARGET android-finish
     COMMAND cmake -P ${CMAKE_BINARY_DIR}/finish_tarball.cmake
-    VERBATIM)
+    VERBATIM POST_BUILD)
   add_custom_target(android)
   add_dependencies(android android-finish)
   add_dependencies(android-finish android-install)
@@ -151,18 +156,23 @@ function(tarball_target)
       -DBUILD_TYPE:STRING=tarball $ENV{CMAKE_BUILD_OPTS} ${CMAKE_BINARY_DIR})
 
   add_custom_target(tarball-build DEPENDS tarball-conf-stamp)
-  add_custom_command(TARGET tarball-build COMMAND ${_build_target_cmd}
-                                                  ${PKG_NAME})
+  add_custom_command(
+    TARGET tarball-build
+    COMMAND ${_build_target_cmd} ${PKG_NAME}
+    POST_BUILD)
 
   add_custom_target(tarball-install)
-  add_custom_command(TARGET tarball-install COMMAND ${_install_cmd})
+  add_custom_command(
+    TARGET tarball-install
+    COMMAND ${_install_cmd}
+    POST_BUILD)
 
   create_finish_script()
   add_custom_target(tarball-finish)
   add_custom_command(
     TARGET tarball-finish # Compute checksum
     COMMAND cmake -P ${CMAKE_BINARY_DIR}/finish_tarball.cmake
-    VERBATIM)
+    VERBATIM POST_BUILD)
   add_dependencies(tarball-install tarball-build)
   add_dependencies(tarball-finish tarball-install)
 
@@ -176,7 +186,8 @@ function(flatpak_target manifest)
   add_custom_command(
     TARGET flatpak-conf
     COMMAND cmake -DBUILD_TYPE:STRING=flatpak -Uplugin_target
-            $ENV{CMAKE_BUILD_OPTS} ${CMAKE_BINARY_DIR})
+            $ENV{CMAKE_BUILD_OPTS} ${CMAKE_BINARY_DIR}
+    POST_BUILD)
 
   # Script used to copy out files from the flatpak sandbox
   file(
@@ -201,21 +212,21 @@ function(flatpak_target manifest)
       WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
       COMMAND
         flatpak-builder --run app ${manifest}
-          bash copy_out lib${PACKAGE_NAME}.so ${CMAKE_BINARY_DIR}
+           bash copy_out lib${PACKAGE_NAME}.so ${CMAKE_BINARY_DIR}
     )
-    if(NOT EXISTS app/files/lib/opencpn/lib${PACKAGE_NAME}.so)
+    if (NOT EXISTS app/files/lib/opencpn/lib${PACKAGE_NAME}.so)
       message(FATAL_ERROR \"Cannot find generated file lib${PACKAGE_NAME}.so\")
-    endif()
+    endif ()
     execute_process(
       COMMAND bash -c \"sed -e '/@checksum@/d' \
           < ${pkg_xmlname}.xml.in > app/files/metadata.xml\"
     )
-    if(${CMAKE_BUILD_TYPE} MATCHES Release|MinSizeRel)
+    if (${CMAKE_BUILD_TYPE} MATCHES Release|MinSizeRel)
       message(STATUS \"Stripping app/files/lib/opencpn/lib${PACKAGE_NAME}.so\")
       execute_process(
         COMMAND strip app/files/lib/opencpn/lib${PACKAGE_NAME}.so
       )
-    endif()
+    endif ()
     execute_process(
       WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/app
       COMMAND mv -fT files ${pkg_displayname}
@@ -237,7 +248,7 @@ function(flatpak_target manifest)
   add_custom_command(
     TARGET flatpak
     COMMAND cmake -P ${CMAKE_BINARY_DIR}/build_flatpak.cmake
-    VERBATIM)
+    VERBATIM POST_BUILD)
   add_dependencies(flatpak flatpak-conf)
 endfunction()
 

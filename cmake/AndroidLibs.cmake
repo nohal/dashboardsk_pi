@@ -12,7 +12,7 @@
 # Foundation; either version 3 of the License, or (at your option) any later
 # version.
 
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.5)
 
 find_package(Gettext REQUIRED)
 

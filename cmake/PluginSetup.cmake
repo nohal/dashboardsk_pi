@@ -1,6 +1,6 @@
 # ~~~
-# Summary:     Set up and export plugin_target and plugin_target_version
-# License:     GPLv3+
+# Summary:      Set up plugin_target and plugin_target_version.
+# License:      GPLv3+
 # Copyright (c) 2020-2021 Alec Leamas
 # ~~~
 
@@ -8,6 +8,8 @@
 # the terms of the GNU General Public License as published by the Free Software
 # Foundation; either version 3 of the License, or (at your option) any later
 # version.
+
+include(GetArch)
 
 if(DEFINED plugin_target)
   return()
@@ -17,7 +19,7 @@ if(NOT "${OCPN_TARGET_TUPLE}" STREQUAL "")
   list(GET OCPN_TARGET_TUPLE 0 plugin_target)
   list(GET OCPN_TARGET_TUPLE 1 plugin_target_version)
 elseif("${BUILD_TYPE}" STREQUAL "flatpak")
-  set(plugin_target "flatpak")
+  set(plugin_target "flatpak-${ARCH}")
   file(GLOB manifest_path "${PROJECT_SOURCE_DIR}/flatpak/org.opencpn.*.yaml")
   file(READ ${manifest_path} manifest)
   string(REPLACE "\n" ";" manifest_lines "${manifest}")
@@ -47,7 +49,6 @@ elseif(APPLE)
   set(plugin_target "darwin-wx32")
   set(plugin_target_version "10.13.6")
 elseif(UNIX)
-  # Some linux dist:
   execute_process(
     COMMAND "lsb_release" "-is"
     OUTPUT_VARIABLE plugin_target
@@ -56,6 +57,9 @@ elseif(UNIX)
     COMMAND "lsb_release" "-rs"
     OUTPUT_VARIABLE plugin_target_version
     OUTPUT_STRIP_TRAILING_WHITESPACE)
+  if(NOT ${plugin_target} MATCHES ${ARCH})
+    set(plugin_target "${plugin_target}-${ARCH}")
+  endif()
 else()
   set(plugin_target "unknown")
   set(plugin_target_version 1)
@@ -66,27 +70,6 @@ string(TOLOWER "${plugin_target}" plugin_target)
 string(STRIP "${plugin_target_version}" plugin_target_version)
 string(TOLOWER "${plugin_target_version}" plugin_target_version)
 
-if(plugin_target STREQUAL "ubuntu")
-  if(DEFINED wxWidgets_CONFIG_EXECUTABLE)
-    set(_WX_CONFIG_PROG ${wxWidgets_CONFIG_EXECUTABLE})
-  else()
-    find_program(_WX_CONFIG_PROG NAMES $ENV{WX_CONFIG} wx-config)
-  endif()
-  if(_WX_CONFIG_PROG)
-    execute_process(
-      COMMAND ${_WX_CONFIG_PROG} --selected-config
-      OUTPUT_VARIABLE _WX_SELECTED_CONFIG
-      OUTPUT_STRIP_TRAILING_WHITESPACE)
-    if(_WX_SELECTED_CONFIG MATCHES gtk3)
-      if(${plugin_target_version} VERSION_LESS 22.04)
-        set(plugin_target ubuntu-gtk3)
-      endif()
-    endif()
-  else()
-    message(WARNING "Cannot locate wx-config utility")
-  endif()
-endif()
-
-string(CONCAT msg "Building for target-release "
-              "${plugin_target}-${plugin_target_version}")
-message(STATUS "${msg}")
+message(
+  STATUS "Building for target:release ${plugin_target}:${plugin_target_version}"
+)
