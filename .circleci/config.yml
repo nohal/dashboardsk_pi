@@ -205,7 +205,7 @@ jobs:
 
   build-macos:
     macos:
-      xcode: "13.4.1"
+      xcode: "14.3.1"
     environment:
       - OCPN_TARGET: macos
       - CMAKE_BUILD_PARALLEL_LEVEL: 2
@@ -234,7 +234,7 @@ jobs:
 
   build-macos-new:
     macos:
-      xcode: "15.2.0"
+      xcode: "15.4.0"
     environment:
       - OCPN_TARGET: macos
       - CMAKE_BUILD_PARALLEL_LEVEL: 4
