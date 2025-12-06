@@ -243,6 +243,8 @@ std-filters: &std-filters
       ignore:
         - tmp
         - /tmp-.*/
+    tags:
+      only: /.*/
 
 workflows:
   version: 2
