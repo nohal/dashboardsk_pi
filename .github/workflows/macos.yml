@@ -34,8 +34,8 @@ jobs:
             cmake_defines: -DCMAKE_CXX_STANDARD=17
             use_homebrew: 1
             push_cloudsmith: 0
-          - name: macOS 15 Homebrew wxOSX
-            runner: macos-15
+          - name: macOS 26 Homebrew wxOSX
+            runner: macos-26
             cmake_generator: Ninja
             cmake_defines: -DCMAKE_CXX_STANDARD=17
             use_homebrew: 1
