@@ -314,6 +314,10 @@ double Instrument::Transform(const double& val, const transformation& formula)
         return val * 60;
     case transformation::rads2degm:
         return val * 3437.7467747131;
+    case transformation::joul2kwh:
+        return val / 3600000;
+    case transformation::joul2wh:
+        return val / 3600;
     default:
         return val;
     }
