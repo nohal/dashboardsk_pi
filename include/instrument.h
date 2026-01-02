@@ -112,7 +112,9 @@ PLUGIN_BEGIN_NAMESPACE
     X(Instrument::transformation::hz2rpm, _("Hz -> RPM"))                      \
     X(Instrument::transformation::rads2degm, _("RAD/s -> DEG/m"))              \
     X(Instrument::transformation::joul2kwh, _("Jouls-> kWh"))                  \
-    X(Instrument::transformation::joul2wh, _("Jouls -> Wh"))
+    X(Instrument::transformation::joul2wh, _("Jouls -> Wh"))                   \
+    X(Instrument::transformation::sec2hour, _("Seconds -> Hours"))             \
+    X(Instrument::transformation::m3s2lh, _("Cubic m/s -> l/h"))
 
 // Table of supported numerical formats and the respective formatting strings
 #define DSK_VALUE_FORMATS                                                      \
@@ -255,7 +257,11 @@ public:
         /// Jouls to kilowatthours
         joul2kwh,
         /// Jouls to watthours
-        joul2wh
+        joul2wh,
+        /// Seconds to hours
+        sec2hour,
+        /// Cubic meters per second to liters per hour
+        m3s2lh
     };
 
     /// Supported formats for position

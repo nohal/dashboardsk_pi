@@ -318,6 +318,10 @@ double Instrument::Transform(const double& val, const transformation& formula)
         return val / 3600000;
     case transformation::joul2wh:
         return val / 3600;
+    case transformation::sec2hour:
+        return val / 3600;
+    case transformation::m3s2lh:
+        return val * 3600000;
     default:
         return val;
     }
