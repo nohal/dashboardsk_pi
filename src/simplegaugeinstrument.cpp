@@ -820,10 +820,7 @@ void SimpleGaugeInstrument::ProcessData()
         m_timed_out = false;
         const wxJSONValue* val = m_parent_dashboard->GetSKData(m_sk_key);
         if (val) {
-            wxJSONValue v = *val;
-            if (val->IsObject()) {
-                v = v["value"];
-            }
+            wxJSONValue v = val->Get("value", *val);
 
             double dval = Transform(v.IsDouble() ? v.AsDouble()
                     : v.IsLong()                 ? v.AsLong()
