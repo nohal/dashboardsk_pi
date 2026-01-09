@@ -40,7 +40,7 @@ Example uses: wind angle, COG, tank level, like `environment.wind.angleApparent`
 
 ==== Simple text
 
-Simple instrument displaying a textual Signal K value. The instrument is not suitable to display compound balues like position, use the respective specialozed instruments for these.
+Simple instrument displaying a textual Signal K value. The instrument is not suitable to display compound values like position, use the respective specialozed instruments for these.
 
 Example uses: all Signal K `enum` paths, like `navigation.state`
 
