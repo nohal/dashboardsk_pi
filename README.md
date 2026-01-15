@@ -109,7 +109,7 @@ To execute the tests, simply run `ctest` in the build directory.
 
 ### Sanitizers support
 
-To configure the build to enable sanitizer support, run cmake with `-DSANITIZE=<comma separated list of sanitizers>`, eg. `cmake -DSANITIZE=address ..` to enable the adderess sanitizer reporting memory leaks.
+To configure the build to enable sanitizer support, run cmake with `-DSANITIZE=<comma separated list of sanitizers>`, eg. `cmake -DSANITIZE=address ..` to enable the address sanitizer reporting memory leaks.
 
 ## Credits
 
