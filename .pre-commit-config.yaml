@@ -37,6 +37,6 @@ repos:
     hooks:
       - id: oxipng
   - repo: https://github.com/kytta/mirrors-svgo
-    rev: v4.0.0
+    rev: v4.0.1
     hooks:
       - id: svgo
