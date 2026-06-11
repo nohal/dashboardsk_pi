@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-08 17:17-0300\n"
-"PO-Revision-Date: 2023-10-08 20:19\n"
+"POT-Creation-Date: 2023-10-08 17:22-0300\n"
+"PO-Revision-Date: 2026-06-11 11:28\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Language: es_ES\n"
@@ -43,7 +43,7 @@ msgstr "Nada"
 
 #: include/instrument.h:94
 msgid "RAD->DEG"
-msgstr "RAD->DEG"
+msgstr "RAD->GRA"
 
 #: include/instrument.h:95
 msgid "m/s -> kn"
@@ -59,11 +59,11 @@ msgstr "m/s -> mph"
 
 #: include/instrument.h:98
 msgid "m -> feet"
-msgstr "m -> feet"
+msgstr "m -> pies"
 
 #: include/instrument.h:99
 msgid "m -> fathoms"
-msgstr "m -> fathoms"
+msgstr "m -> brazas"
 
 #: include/instrument.h:100
 msgid "m -> NMi"
@@ -111,7 +111,7 @@ msgstr "Hz -> RPM"
 
 #: include/instrument.h:111
 msgid "RAD/s -> DEG/m"
-msgstr ""
+msgstr "RAD/s -> GRA/m"
 
 #: include/instrument.h:145
 msgid "Lowest to highest"
@@ -435,7 +435,7 @@ msgstr "Tablero instrumentos"
 
 #: src/dashboardskgui.cpp:65
 msgid "Rename"
-msgstr ""
+msgstr "Renombrar"
 
 #: src/dashboardskgui.cpp:69
 msgid "New"
@@ -479,7 +479,7 @@ msgstr "Canvas"
 
 #: src/dashboardskgui.cpp:271
 msgid "Page"
-msgstr ""
+msgstr "Página"
 
 #: src/dashboardskgui.cpp:280
 msgid "Anchor"
@@ -584,11 +584,11 @@ msgstr "Eliminar el panel"
 
 #: src/dashboardskguiimpl.cpp:294
 msgid "Enter new name for the dashboard"
-msgstr ""
+msgstr "Introduce un nuevo nombre para el panel"
 
 #: src/dashboardskguiimpl.cpp:295
 msgid "Rename dashboard"
-msgstr ""
+msgstr "Renombrar panel"
 
 #: src/dashboardskguiimpl.cpp:568
 msgid "Select type of the new instrument"
@@ -604,7 +604,7 @@ msgstr "Datos de configuración (¡Editar con cuidado!)"
 
 #: src/dashboardskguiimpl.cpp:694
 msgid "The configuration data were not a valid JSON document and could not be used!"
-msgstr ""
+msgstr "¡Los datos de configuración no eran un documento JSON válido y no podrían ser usados!"
 
 #: src/dashboardskguiimpl.cpp:696
 msgid "JSON not valid"
@@ -656,6 +656,14 @@ msgstr "PlugIn \"Tablero de Instrumentos\" SignalK para OpenCPN"
 #: src/dashboardsk_pi.cpp:137
 msgid "Universal dashboard plugin for OpenCPN based on the SignalK data model.\n"
 msgstr "Plugin de panel universal para OpenCPN basado en el modelo de datos SignalK.\n"
+
+#: src/pager.cpp:114
+msgid "Preferences..."
+msgstr "Preferencias..."
+
+#: src/pager.cpp:115
+msgid "Toggle visibility"
+msgstr "Cambiar visibilidad"
 
 #: src/simplegaugeinstrument.cpp:51
 msgid "New Simple Gauge"

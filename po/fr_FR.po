@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-08 17:17-0300\n"
-"PO-Revision-Date: 2023-10-08 20:19\n"
+"POT-Creation-Date: 2023-10-08 17:22-0300\n"
+"PO-Revision-Date: 2026-06-09 18:53\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Language: fr_FR\n"
@@ -111,7 +111,7 @@ msgstr "Hz -> T/min"
 
 #: include/instrument.h:111
 msgid "RAD/s -> DEG/m"
-msgstr ""
+msgstr "RAD/s -> DEG/m"
 
 #: include/instrument.h:145
 msgid "Lowest to highest"
@@ -435,7 +435,7 @@ msgstr "Tableau de bord"
 
 #: src/dashboardskgui.cpp:65
 msgid "Rename"
-msgstr ""
+msgstr "Renommer"
 
 #: src/dashboardskgui.cpp:69
 msgid "New"
@@ -479,7 +479,7 @@ msgstr "Panneau"
 
 #: src/dashboardskgui.cpp:271
 msgid "Page"
-msgstr ""
+msgstr "Page"
 
 #: src/dashboardskgui.cpp:280
 msgid "Anchor"
@@ -584,11 +584,11 @@ msgstr "Supprimer le tableau de bord"
 
 #: src/dashboardskguiimpl.cpp:294
 msgid "Enter new name for the dashboard"
-msgstr ""
+msgstr "Veuillez saisir le nom du tableau de bord"
 
 #: src/dashboardskguiimpl.cpp:295
 msgid "Rename dashboard"
-msgstr ""
+msgstr "Renommer le tableau de bord"
 
 #: src/dashboardskguiimpl.cpp:568
 msgid "Select type of the new instrument"
@@ -604,7 +604,7 @@ msgstr "Données de configuration (éditer avec précaution !)"
 
 #: src/dashboardskguiimpl.cpp:694
 msgid "The configuration data were not a valid JSON document and could not be used!"
-msgstr ""
+msgstr "Les données de configuration ne constitue pas un document JSON valide et ne peuvent être utilisées !"
 
 #: src/dashboardskguiimpl.cpp:696
 msgid "JSON not valid"
@@ -656,6 +656,14 @@ msgstr "Complément \"Tableau de bord SignalK\" pour OpenCPN"
 #: src/dashboardsk_pi.cpp:137
 msgid "Universal dashboard plugin for OpenCPN based on the SignalK data model.\n"
 msgstr "Complément de tableau de bord universel pour OpenCPN basé sur le modèle de données SignalK.\n"
+
+#: src/pager.cpp:114
+msgid "Preferences..."
+msgstr "Préférences ..."
+
+#: src/pager.cpp:115
+msgid "Toggle visibility"
+msgstr "Visibilité : Voir/Cacher"
 
 #: src/simplegaugeinstrument.cpp:51
 msgid "New Simple Gauge"

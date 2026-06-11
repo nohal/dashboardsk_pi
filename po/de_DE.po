@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-08 17:17-0300\n"
-"PO-Revision-Date: 2023-10-08 20:19\n"
+"POT-Creation-Date: 2023-10-08 17:22-0300\n"
+"PO-Revision-Date: 2026-06-11 11:28\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Language: de_DE\n"
@@ -520,7 +520,7 @@ msgstr ""
 
 #: src/dashboardskgui.cpp:696
 msgid "Own vessel"
-msgstr ""
+msgstr "Eigenes Fahrzeug"
 
 #: src/dashboardskgui.cpp:797
 msgid "Lower bound"
@@ -655,6 +655,14 @@ msgstr ""
 
 #: src/dashboardsk_pi.cpp:137
 msgid "Universal dashboard plugin for OpenCPN based on the SignalK data model.\n"
+msgstr ""
+
+#: src/pager.cpp:114
+msgid "Preferences..."
+msgstr ""
+
+#: src/pager.cpp:115
+msgid "Toggle visibility"
 msgstr ""
 
 #: src/simplegaugeinstrument.cpp:51

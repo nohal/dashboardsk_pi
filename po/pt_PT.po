@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-08 17:17-0300\n"
-"PO-Revision-Date: 2023-10-08 20:19\n"
+"POT-Creation-Date: 2023-10-08 17:22-0300\n"
+"PO-Revision-Date: 2026-06-09 18:54\n"
 "Last-Translator: \n"
 "Language-Team: Portuguese\n"
 "Language: pt_PT\n"
@@ -111,7 +111,7 @@ msgstr "Hz -> RPM"
 
 #: include/instrument.h:111
 msgid "RAD/s -> DEG/m"
-msgstr ""
+msgstr "RAD/s -> GRA/m"
 
 #: include/instrument.h:145
 msgid "Lowest to highest"
@@ -435,7 +435,7 @@ msgstr "Painel de Instrumentos"
 
 #: src/dashboardskgui.cpp:65
 msgid "Rename"
-msgstr ""
+msgstr "Renomear"
 
 #: src/dashboardskgui.cpp:69
 msgid "New"
@@ -479,7 +479,7 @@ msgstr "Tela"
 
 #: src/dashboardskgui.cpp:271
 msgid "Page"
-msgstr ""
+msgstr "Página"
 
 #: src/dashboardskgui.cpp:280
 msgid "Anchor"
@@ -584,11 +584,11 @@ msgstr "Eliminar painel "
 
 #: src/dashboardskguiimpl.cpp:294
 msgid "Enter new name for the dashboard"
-msgstr ""
+msgstr "Digite o novo nome para o painel de controle"
 
 #: src/dashboardskguiimpl.cpp:295
 msgid "Rename dashboard"
-msgstr ""
+msgstr "Renomear painel de controle"
 
 #: src/dashboardskguiimpl.cpp:568
 msgid "Select type of the new instrument"
@@ -604,7 +604,7 @@ msgstr "Dados de configuração (editar com cuidado!)"
 
 #: src/dashboardskguiimpl.cpp:694
 msgid "The configuration data were not a valid JSON document and could not be used!"
-msgstr ""
+msgstr "Os dados de configuração não eram um documento JSON válido e não podem ser usados!"
 
 #: src/dashboardskguiimpl.cpp:696
 msgid "JSON not valid"
@@ -656,6 +656,14 @@ msgstr "Plugin do painel SignalK para OpenCPN"
 #: src/dashboardsk_pi.cpp:137
 msgid "Universal dashboard plugin for OpenCPN based on the SignalK data model.\n"
 msgstr "Plugin de painel universal para OpenCPN com base no modelo de dados de sinalK.\n"
+
+#: src/pager.cpp:114
+msgid "Preferences..."
+msgstr "Preferências..."
+
+#: src/pager.cpp:115
+msgid "Toggle visibility"
+msgstr "Alternar visibilidade"
 
 #: src/simplegaugeinstrument.cpp:51
 msgid "New Simple Gauge"

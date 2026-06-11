@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-08 17:17-0300\n"
-"PO-Revision-Date: 2023-10-08 20:19\n"
+"POT-Creation-Date: 2023-10-08 17:22-0300\n"
+"PO-Revision-Date: 2026-02-13 20:43\n"
 "Last-Translator: \n"
 "Language-Team: Finnish\n"
 "Language: fi_FI\n"
@@ -111,7 +111,7 @@ msgstr "Hz -> RPM"
 
 #: include/instrument.h:111
 msgid "RAD/s -> DEG/m"
-msgstr ""
+msgstr "RAD/s -> DEG/m"
 
 #: include/instrument.h:145
 msgid "Lowest to highest"
@@ -435,7 +435,7 @@ msgstr "Dashboard"
 
 #: src/dashboardskgui.cpp:65
 msgid "Rename"
-msgstr ""
+msgstr "Nimeä uudelleen"
 
 #: src/dashboardskgui.cpp:69
 msgid "New"
@@ -479,7 +479,7 @@ msgstr "Piirtoalue"
 
 #: src/dashboardskgui.cpp:271
 msgid "Page"
-msgstr ""
+msgstr "Sivu"
 
 #: src/dashboardskgui.cpp:280
 msgid "Anchor"
@@ -584,11 +584,11 @@ msgstr "Poista dashboard"
 
 #: src/dashboardskguiimpl.cpp:294
 msgid "Enter new name for the dashboard"
-msgstr ""
+msgstr "Anna mittaritaulun uusi nimi"
 
 #: src/dashboardskguiimpl.cpp:295
 msgid "Rename dashboard"
-msgstr ""
+msgstr "Nimeä mittaritaulu"
 
 #: src/dashboardskguiimpl.cpp:568
 msgid "Select type of the new instrument"
@@ -604,7 +604,7 @@ msgstr "Konfiguraatiotiedot (Muokkaa huolellisesti!)"
 
 #: src/dashboardskguiimpl.cpp:694
 msgid "The configuration data were not a valid JSON document and could not be used!"
-msgstr ""
+msgstr "Konfiguraatio ei ole kelvollinen JSON-dokumentti, joten sitä ei voi käyttää!"
 
 #: src/dashboardskguiimpl.cpp:696
 msgid "JSON not valid"
@@ -656,6 +656,14 @@ msgstr "SignalK dashboard lisäosa OpenCPN:lle"
 #: src/dashboardsk_pi.cpp:137
 msgid "Universal dashboard plugin for OpenCPN based on the SignalK data model.\n"
 msgstr "OpenCPN:n yleinen kojelautaliitännäinen, joka perustuu SignalK-tietomalliin.\n"
+
+#: src/pager.cpp:114
+msgid "Preferences..."
+msgstr "Ominaisuudet..."
+
+#: src/pager.cpp:115
+msgid "Toggle visibility"
+msgstr "Näytä/piilota"
 
 #: src/simplegaugeinstrument.cpp:51
 msgid "New Simple Gauge"

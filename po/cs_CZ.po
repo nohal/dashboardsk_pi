@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-08 17:17-0300\n"
-"PO-Revision-Date: 2023-10-08 20:19\n"
+"POT-Creation-Date: 2023-10-08 17:22-0300\n"
+"PO-Revision-Date: 2026-03-19 13:52\n"
 "Last-Translator: \n"
 "Language-Team: Czech\n"
 "Language: cs_CZ\n"
@@ -435,7 +435,7 @@ msgstr "Dashboard"
 
 #: src/dashboardskgui.cpp:65
 msgid "Rename"
-msgstr ""
+msgstr "Přejmenovat"
 
 #: src/dashboardskgui.cpp:69
 msgid "New"
@@ -479,7 +479,7 @@ msgstr "Plátno"
 
 #: src/dashboardskgui.cpp:271
 msgid "Page"
-msgstr ""
+msgstr "Stránka"
 
 #: src/dashboardskgui.cpp:280
 msgid "Anchor"
@@ -584,11 +584,11 @@ msgstr "Odstranit dashboard"
 
 #: src/dashboardskguiimpl.cpp:294
 msgid "Enter new name for the dashboard"
-msgstr ""
+msgstr "Zadej nový název pro dashboard"
 
 #: src/dashboardskguiimpl.cpp:295
 msgid "Rename dashboard"
-msgstr ""
+msgstr "Přejmenovat dashboard"
 
 #: src/dashboardskguiimpl.cpp:568
 msgid "Select type of the new instrument"
@@ -604,7 +604,7 @@ msgstr "Konfigurační data (upravovat pečlivě!)"
 
 #: src/dashboardskguiimpl.cpp:694
 msgid "The configuration data were not a valid JSON document and could not be used!"
-msgstr ""
+msgstr "Konfigurační data nebyla platným JSON dokumentem a nemohla být použita!"
 
 #: src/dashboardskguiimpl.cpp:696
 msgid "JSON not valid"
@@ -656,6 +656,14 @@ msgstr "Doplněk Signal K dashboard pro OpenCPN"
 #: src/dashboardsk_pi.cpp:137
 msgid "Universal dashboard plugin for OpenCPN based on the SignalK data model.\n"
 msgstr "Univerzální dashboard plugin pro OpenCPN založený na datovém modelu Signal K.\n"
+
+#: src/pager.cpp:114
+msgid "Preferences..."
+msgstr "Nastavení..."
+
+#: src/pager.cpp:115
+msgid "Toggle visibility"
+msgstr "Přepnout viditelnost"
 
 #: src/simplegaugeinstrument.cpp:51
 msgid "New Simple Gauge"

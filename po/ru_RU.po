@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-08 17:17-0300\n"
-"PO-Revision-Date: 2023-10-08 20:19\n"
+"POT-Creation-Date: 2023-10-08 17:22-0300\n"
+"PO-Revision-Date: 2026-04-17 22:02\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
@@ -43,31 +43,31 @@ msgstr ""
 
 #: include/instrument.h:94
 msgid "RAD->DEG"
-msgstr ""
+msgstr "радианы -> градусы"
 
 #: include/instrument.h:95
 msgid "m/s -> kn"
-msgstr ""
+msgstr "м/с -> узлы"
 
 #: include/instrument.h:96
 msgid "m/s -> km/h"
-msgstr ""
+msgstr "м/с -> км/ч"
 
 #: include/instrument.h:97
 msgid "m/s -> mph"
-msgstr ""
+msgstr "м/с -> миль/ч"
 
 #: include/instrument.h:98
 msgid "m -> feet"
-msgstr ""
+msgstr "м -> футы"
 
 #: include/instrument.h:99
 msgid "m -> fathoms"
-msgstr ""
+msgstr "м -> фатомы"
 
 #: include/instrument.h:100
 msgid "m -> NMi"
-msgstr ""
+msgstr "м -> м.мили"
 
 #: include/instrument.h:101
 msgid "°K -> °C"
@@ -655,6 +655,14 @@ msgstr ""
 
 #: src/dashboardsk_pi.cpp:137
 msgid "Universal dashboard plugin for OpenCPN based on the SignalK data model.\n"
+msgstr ""
+
+#: src/pager.cpp:114
+msgid "Preferences..."
+msgstr ""
+
+#: src/pager.cpp:115
+msgid "Toggle visibility"
 msgstr ""
 
 #: src/simplegaugeinstrument.cpp:51
