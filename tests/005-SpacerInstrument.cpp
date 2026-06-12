@@ -7,7 +7,7 @@
  ******************************************************************************
  * This file is part of the DashboardSK plugin
  * (https://github.com/nohal/dashboardsk_pi).
- *   Copyright (C) 2022 by Pavel Kalian
+ *   Copyright (C) 2026 by Pavel Kalian
  *   https://github.com/nohal
  *
  * This program is free software: you can redistribute it and/or modify
@@ -34,42 +34,53 @@
 #include "dashboard.h"
 #include "dashboardsk.h"
 #include "instrument.h"
-#include "simplenumberinstrument.h"
+#include "spacerinstrument.h"
 
 using namespace DashboardSKPlugin;
 
-TEST_CASE("SimpleNumberInstrument Creation - properties set to defaults")
+TEST_CASE("SpacerInstrument Creation - properties set to defaults")
 {
-    SimpleNumberInstrument i(nullptr);
+    SpacerInstrument i(nullptr);
     REQUIRE(i.Class() != "Instrument");
-    REQUIRE(i.DisplayType().IsSameAs("Simple number"));
-    REQUIRE(i.ConfigControls().size() == 22);
-    REQUIRE(i.Class().IsSameAs("SimpleNumberInstrument"));
+    REQUIRE(i.DisplayType().IsSameAs("Spacer"));
+    REQUIRE(i.ConfigControls().size() == 2);
+    REQUIRE(i.Class().IsSameAs("SpacerInstrument"));
 }
 
-TEST_CASE("SimpleNumberInstrument Configuration Storage - if JSON not "
+TEST_CASE("SpacerInstrument Configuration Storage - if JSON not "
           "complete, defaults have to stay")
 {
-    SimpleNumberInstrument i(nullptr);
+    SpacerInstrument i(nullptr);
     wxJSONValue v;
     wxJSONReader r;
-    wxJSONWriter w;
-    wxString out;
 
-    r.Parse("{ \"sk_key\": \"vessels.123456789.navigation.test\" }", &v);
+    r.Parse("{ \"instrument_width\": 50 }", &v);
     i.ReadConfig(v);
     v = i.GenerateJSONConfig();
-    w.Write(v, out);
 
-    REQUIRE(v[DSK_SETTING_SK_KEY].AsString().IsSameAs(
-        "vessels.123456789.navigation.test"));
-    REQUIRE(v[DSK_SETTING_TITLE_BG].AsString().StartsWith("#"));
-    REQUIRE(v[DSK_SETTING_TITLE_FG].AsString().StartsWith("#"));
-    REQUIRE(v[DSK_SETTING_BODY_BG].AsString().StartsWith("#"));
-    REQUIRE(v[DSK_SETTING_BODY_FG].AsString().StartsWith("#"));
-    REQUIRE(v[DSK_SETTING_BORDER_COLOR].AsString().StartsWith("#"));
-    REQUIRE(v[DSK_SETTING_BODY_FONT].AsInt() > 1);
-    REQUIRE(v[DSK_SETTING_BODY_FONT].AsInt() < 40);
-    REQUIRE(v[DSK_SETTING_TITLE_FONT].AsInt() > 1);
-    REQUIRE(v[DSK_SETTING_TITLE_FONT].AsInt() < 30);
+    REQUIRE(v[DSK_SETTING_INSTR_WIDTH].AsInt() == 50);
+    REQUIRE(v[DSK_SETTING_INSTR_HEIGHT].AsInt() == 20);
+}
+
+TEST_CASE("SpacerInstrument Rendering - bitmap dimensions follow the "
+          "configured size")
+{
+    SpacerInstrument i(nullptr);
+    wxJSONValue v;
+    wxJSONReader r;
+
+    r.Parse("{ \"instrument_width\": 50, \"instrument_height\": 30 }", &v);
+    i.ReadConfig(v);
+    wxBitmap bmp = i.Render(1.0);
+    REQUIRE(bmp.IsOk());
+    REQUIRE(bmp.GetWidth() == 50);
+    REQUIRE(bmp.GetHeight() == 30);
+
+    // Scaled rendering
+    r.Parse("{ \"instrument_height\": 40 }", &v);
+    i.ReadConfig(v);
+    bmp = i.Render(2.0);
+    REQUIRE(bmp.IsOk());
+    REQUIRE(bmp.GetWidth() == 100);
+    REQUIRE(bmp.GetHeight() == 80);
 }

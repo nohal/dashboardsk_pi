@@ -70,10 +70,19 @@ wxColor Instrument::GetDimedColor(const wxColor& c) const
 
 void Instrument::ReadConfig(wxJSONValue& config)
 {
-    m_name = config["name"].AsString();
-    m_title = config["title"].AsString();
-    m_allowed_age_sec = config["allowed_age"].AsInt();
-    m_zones = Zone::ParseZonesFromString(config[DSK_SETTING_ZONES].AsString());
+    if (config.HasMember("name")) {
+        m_name = config["name"].AsString();
+    }
+    if (config.HasMember("title")) {
+        m_title = config["title"].AsString();
+    }
+    if (config.HasMember("allowed_age")) {
+        m_allowed_age_sec = config["allowed_age"].AsInt();
+    }
+    if (config.HasMember(DSK_SETTING_ZONES)) {
+        m_zones
+            = Zone::ParseZonesFromString(config[DSK_SETTING_ZONES].AsString());
+    }
 }
 
 wxJSONValue Instrument::GenerateJSONConfig()

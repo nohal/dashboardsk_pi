@@ -36,11 +36,13 @@
 #include <unordered_map>
 
 // All the instrument class headers must be included here
+#include "dividerinstrument.h"
 #include "simplegaugeinstrument.h"
 #include "simplehistograminstrument.h"
 #include "simplenumberinstrument.h"
 #include "simplepositioninstrument.h"
 #include "simpletextinstrument.h"
+#include "spacerinstrument.h"
 // #include "andanotherinstrument.h"
 //  All the instrument classes must be defined here
 #define INSTRUMENTS                                                            \
@@ -49,7 +51,9 @@
     X(2, SimpleTextInstrument)                                                 \
     X(3, SimplePositionInstrument)                                             \
     X(4, SimpleHistogramInstrument)                                            \
-    // X(4, AndAnotherInstrument)
+    X(5, DividerInstrument)                                                    \
+    X(6, SpacerInstrument)                                                     \
+    // X(7, AndAnotherInstrument)
 
 #define SRC_MAGIC_STRING "SRC:"
 

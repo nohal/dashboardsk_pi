@@ -1,5 +1,6 @@
 include/dashboard.h
 include/dashboardskgui.h
+include/dividerinstrument.h
 include/dashboardskguiimpl.h
 include/dashboardsk.h
 include/dashboardsk_pi.h
@@ -13,9 +14,11 @@ include/simplehistograminstrument.h
 include/simplenumberinstrument.h
 include/simplepositioninstrument.h
 include/simpletextinstrument.h
+include/spacerinstrument.h
 include/zone.h
 src/dashboard.cpp
 src/dashboardsk.cpp
+src/dividerinstrument.cpp
 src/dashboardskgui.cpp
 src/dashboardskguiimpl.cpp
 src/dashboardsk_pi.cpp
@@ -26,3 +29,4 @@ src/simplehistograminstrument.cpp
 src/simplenumberinstrument.cpp
 src/simplepositioninstrument.cpp
 src/simpletextinstrument.cpp
+src/spacerinstrument.cpp

@@ -60,6 +60,18 @@ Simple instrument showing history of a single Signal K path numerical value.
 
 * xref:simplehistograminstrument.adoc[Detailed documentation]
 
+==== Divider
+
+Dummy instrument displaying a divider line with configurable length, thickness, style and color, used to visually group the other instruments in the dashboard.
+
+* xref:dividerinstrument.adoc[Detailed documentation]
+
+==== Spacer
+
+Dummy instrument displaying a blank space of configurable size, used to visually group the other instruments in the dashboard.
+
+* xref:spacerinstrument.adoc[Detailed documentation]
+
 === Installation
 
 Use the xref:installation.adoc[integrated plugin manager] to install the plugin.

@@ -41,7 +41,7 @@ using namespace DashboardSKPlugin;
 
 TEST_CASE("DashboardSK Creation - properties set to defaults")
 {
-    DashboardSK d;
+    DashboardSK d(wxEmptyString);
 
     REQUIRE(true); // TODO
 }
@@ -49,14 +49,14 @@ TEST_CASE("DashboardSK Creation - properties set to defaults")
 TEST_CASE("DashboardSK Configuration Storage - if JSON not complete, defaults "
           "have to stay")
 {
-    DashboardSK d;
+    DashboardSK d(wxEmptyString);
 
     REQUIRE(true); // TODO
 }
 
 TEST_CASE("DashboardSK - ID normalization")
 {
-    DashboardSK d;
+    DashboardSK d(wxEmptyString);
     d.SetSelf("vessels.urn:mrn:imo:mmsi:223456789");
 
     REQUIRE(d.NormalizeID("123456789").IsSameAs("urn:mrn:imo:mmsi:123456789"));
@@ -76,7 +76,7 @@ TEST_CASE("DashboardSK - ID normalization")
 
 TEST_CASE("DashboardSK - Meta Delta")
 {
-    DashboardSK d;
+    DashboardSK d(wxEmptyString);
     wxJSONValue v;
     wxJSONReader r;
     wxFileInputStream s("samples/delta/docs-data_model_meta_deltas.json");

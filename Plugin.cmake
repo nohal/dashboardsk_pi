@@ -63,6 +63,8 @@ set(HDR_DASHBOARD
     ${CMAKE_SOURCE_DIR}/include/simpletextinstrument.h
     ${CMAKE_SOURCE_DIR}/include/simplepositioninstrument.h
     ${CMAKE_SOURCE_DIR}/include/simplehistograminstrument.h
+    ${CMAKE_SOURCE_DIR}/include/dividerinstrument.h
+    ${CMAKE_SOURCE_DIR}/include/spacerinstrument.h
     ${CMAKE_SOURCE_DIR}/include/zone.h
     ${CMAKE_SOURCE_DIR}/include/displayscale.h
     ${CMAKE_SOURCE_DIR}/include/pager.h)
@@ -75,6 +77,8 @@ set(SRC_DASHBOARD
     ${CMAKE_SOURCE_DIR}/src/simpletextinstrument.cpp
     ${CMAKE_SOURCE_DIR}/src/simplepositioninstrument.cpp
     ${CMAKE_SOURCE_DIR}/src/simplehistograminstrument.cpp
+    ${CMAKE_SOURCE_DIR}/src/dividerinstrument.cpp
+    ${CMAKE_SOURCE_DIR}/src/spacerinstrument.cpp
     ${CMAKE_SOURCE_DIR}/src/pager.cpp)
 
 set(SRC_GUI_DESKTOP ${CMAKE_SOURCE_DIR}/src/dashboardskgui.cpp
