@@ -1,0 +1,32 @@
+:imagesdir: ../images/
+== Spacer instrument
+
+image::spacer_divider.png[Spacer instrument]
+
+Dummy instrument displaying nothing but a fully transparent blank space of configurable size. It does not display any Signal K data and is used purely to visually group the other instruments in the dashboard by inserting gaps between them.
+
+.Configuration parameters
+[cols="1h,5,1"]
+|===
+|Parameter |Description |Example
+
+|Name
+|Name of the instrument
+|Gap after engine group
+
+|Title
+|Title of the instrument. Not displayed, may be left empty.
+|
+
+|Timeout
+|Not used by this instrument as it displays no data, the value is irrelevant.
+|3
+
+|Width
+|Width of the blank space in device independent pixels
+|20
+
+|Height
+|Height of the blank space in device independent pixels
+|20
+|===
