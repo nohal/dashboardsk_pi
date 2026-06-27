@@ -87,8 +87,8 @@ wxBitmap SpacerInstrument::Render(double scale)
     }
     m_needs_redraw = false;
 
-    wxCoord size_x = m_instrument_width * scale;
-    wxCoord size_y = m_instrument_height * scale;
+    wxCoord size_x = wxMax(1, m_instrument_width * scale);
+    wxCoord size_y = wxMax(1, m_instrument_height * scale);
 #if defined(__WXGTK__) || defined(__WXQT__)
     m_bmp = wxBitmap(size_x, size_y, 32);
 #else
