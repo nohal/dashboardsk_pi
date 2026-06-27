@@ -364,7 +364,7 @@ void Instrument::ConfigureFromMeta(wxJSONValue& sk_meta)
                 sk_meta["zones"][i]["upper"].AsDouble(),
                 Zone::StateFromString(sk_meta["zones"][i]["state"].AsString()),
                 sk_meta["zones"][i].HasMember("message")
-                    ? sk_meta["zones"][i].AsString()
+                    ? sk_meta["zones"][i]["message"].AsString()
                     : ""));
         }
     }
