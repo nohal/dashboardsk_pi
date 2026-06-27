@@ -553,7 +553,7 @@ public:
     ///
     /// \param key Identification key of the parameter
     /// \return Value of the parameter as double
-    virtual int GetDoubleSetting(const wxString& key);
+    virtual double GetDoubleSetting(const wxString& key);
 
     /// Get a string representation of a configuration parameter of the
     /// instrument

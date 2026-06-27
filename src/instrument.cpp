@@ -257,7 +257,7 @@ int Instrument::GetIntSetting(const wxString& key)
     return i;
 }
 
-int Instrument::GetDoubleSetting(const wxString& key)
+double Instrument::GetDoubleSetting(const wxString& key)
 {
     double i = 0.0;
     if (m_config_vals.find(UNORDERED_KEY(key)) != m_config_vals.end()) {
