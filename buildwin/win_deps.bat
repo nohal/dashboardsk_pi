@@ -6,29 +6,17 @@
 :: privileges.
 ::
 
-:: Install the pathman tool: https://github.com/therootcompany/pathman
-:: Fix PATH so it can be used in this script
-::
-if not exist "%HomeDrive%%HomePath%\.local\bin\pathman.exe" (
-    pushd "%HomeDrive%%HomePath%"
-    curl.exe https://webi.ms/pathman | powershell
-    popd
-)
-pathman list > nul 2>&1
-if errorlevel 1 set PATH=%PATH%;%HomeDrive%\%HomePath%\.local\bin
-pathman add %HomeDrive%%HomePath%\.local\bin >nul
-
-:: Install choco cmake and add it's persistent user path element
+:: Install choco cmake and add it to the current session PATH
 ::
 set CMAKE_HOME=C:\Program Files\CMake
 if not exist "%CMAKE_HOME%\bin\cmake.exe" choco install --no-progress -y cmake
-pathman add "%CMAKE_HOME%\bin" > nul
+set "PATH=%PATH%;%CMAKE_HOME%\bin"
 
-:: Install choco poedit and add it's persistent user path element
+:: Install choco poedit and add it to the current session PATH
 ::
 set POEDIT_HOME=C:\Program Files\Poedit\Gettexttools
 if not exist "%POEDIT_HOME%" choco install --no-progress -y poedit
-pathman add "%POEDIT_HOME%\bin" > nul
+set "PATH=%PATH%;%POEDIT_HOME%\bin"
 
 :: Update required python stuff
 ::
@@ -61,7 +49,4 @@ if not exist "%WXWIN%" (
   7z x -aoa wxWidgetsDev.7z -o%WXWIN%
   ren "%WXWIN%\lib\vc14x_dll" vc_dll
 )
-pathman add "%WXWIN%" > nul
-pathman add "%wxWidgets_LIB_DIR%" > nul
-
-refreshenv
+set "PATH=%PATH%;%WXWIN%;%wxWidgets_LIB_DIR%"
