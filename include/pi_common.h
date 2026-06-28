@@ -173,6 +173,23 @@ inline wxString DumpJSON(const Json::Value& v)
 }
 ///@}
 
+/// \c wxWindow::FromDIP wrapper that becomes a no-op on toolkits/wx versions
+/// lacking it (Android's old Qt-based wxWidgets has no \c wxWindow::FromDIP).
+/// Works for any value \c FromDIP accepts (\c int, \c wxSize, \c wxPoint).
+///
+/// \param win Window providing the DPI context
+/// \param value Value in DIPs to scale
+/// \return The scaled value, or \p value unchanged when FromDIP is unavailable
+template <typename T> inline T DskFromDIP(const wxWindow* win, T value)
+{
+#if !defined(__WXQT__) && wxCHECK_VERSION(3, 1, 0)
+    return win->FromDIP(value);
+#else
+    (void)win;
+    return value;
+#endif
+}
+
 #ifdef __WXGTK__
 #include <netinet/in.h>
 #include <sys/ioctl.h>

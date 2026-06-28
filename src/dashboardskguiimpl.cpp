@@ -56,17 +56,17 @@ static void ShowSchemaErrorDialog(wxWindow* parent, const wxString& title,
     wxDialog dlg(parent, wxID_ANY, title, wxDefaultPosition, wxDefaultSize,
         wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
     auto* sizer = new wxBoxSizer(wxVERTICAL);
-    const int border = dlg.FromDIP(8);
+    const int border = DskFromDIP(&dlg, 8);
     auto* lbl = new wxStaticText(&dlg, wxID_ANY, intro);
-    lbl->Wrap(dlg.FromDIP(460));
+    lbl->Wrap(DskFromDIP(&dlg, 460));
     sizer->Add(lbl, 0, wxALL, border);
     auto* txt = new wxTextCtrl(&dlg, wxID_ANY, errors, wxDefaultPosition,
         wxDefaultSize, wxTE_MULTILINE | wxTE_READONLY | wxTE_DONTWRAP);
     sizer->Add(txt, 1, wxEXPAND | wxLEFT | wxRIGHT, border);
     sizer->Add(dlg.CreateButtonSizer(wxOK), 0, wxALL | wxALIGN_RIGHT, border);
     dlg.SetSizer(sizer);
-    dlg.SetMinSize(dlg.FromDIP(wxSize(320, 220)));
-    dlg.SetSize(dlg.FromDIP(wxSize(500, 350)));
+    dlg.SetMinSize(DskFromDIP(&dlg, wxSize(320, 220)));
+    dlg.SetSize(DskFromDIP(&dlg, wxSize(500, 350)));
     dlg.CentreOnParent();
     dlg.ShowModal();
 }
@@ -82,9 +82,7 @@ MainConfigFrameImpl::MainConfigFrameImpl(dashboardsk_pi* dsk_pi,
     , m_edited_dashboard(nullptr)
     , m_edited_instrument(nullptr)
 {
-#if !__WXQT__ && wxCHECK_VERSION(3, 1, 0)
-    SetSize(FromDIP(GetSize()));
-#endif
+    SetSize(DskFromDIP(this, GetSize()));
     m_dsk_pi = dsk_pi;
     m_chAnchor->Clear();
 #if wxCHECK_VERSION(3, 1, 0)
@@ -1046,9 +1044,7 @@ void MainConfigFrameImpl::m_btnImportDashboardOnButtonClick(
 SKDataTreeImpl::SKDataTreeImpl(wxWindow* parent)
     : SKDataTree(parent)
 {
-#if !__WXQT__ && wxCHECK_VERSION(3, 1, 0)
-    SetSize(FromDIP(GetSize()));
-#endif
+    SetSize(DskFromDIP(this, GetSize()));
 #if !__WXQT__
     m_scintillaCode->StyleClearAll();
     m_scintillaCode->StyleSetForeground(
@@ -1136,9 +1132,7 @@ SKPathBrowserImpl::SKPathBrowserImpl(wxWindow* parent, wxWindowID id,
     const wxString& title, const wxPoint& pos, const wxSize& size, long style)
     : SKPathBrowser(parent, id, title, pos, size, style)
 {
-#if !__WXQT__ and wxCHECK_VERSION(3, 1, 0)
-    SetSize(FromDIP(GetSize()));
-#endif
+    SetSize(DskFromDIP(this, GetSize()));
     DimeWindow(this);
     m_self = wxEmptyString;
     m_self_item_id = m_treePaths->GetRootItem();
@@ -1328,9 +1322,7 @@ ZonesConfigDialogImpl::ZonesConfigDialogImpl(wxWindow* parent,
     : ZonesConfigDialog(parent, id, title, pos, size, style)
     , m_edited_zone(nullptr)
 {
-#if !__WXQT__ and wxCHECK_VERSION(3, 1, 0)
-    SetSize(FromDIP(GetSize()));
-#endif
+    SetSize(DskFromDIP(this, GetSize()));
     m_dsk_pi = dsk_pi;
     if (m_dsk_pi) {
 #if wxCHECK_VERSION(3, 1, 6)
