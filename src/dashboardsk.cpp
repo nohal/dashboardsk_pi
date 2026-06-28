@@ -69,7 +69,8 @@ void DashboardSK::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
     bool drawn = false;
     for (auto dashboard : m_dashboards) {
         if (!m_frozen
-            && m_displayed_pages[canvasIndex]->GetCurrentPage()
+            && static_cast<size_t>(
+                   m_displayed_pages[canvasIndex]->GetCurrentPage())
                 == dashboard->GetPageNr()) {
             dashboard->Draw(dc, vp, canvasIndex);
             drawn = true;
