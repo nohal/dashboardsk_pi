@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: opencpn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-08 17:22-0300\n"
-"PO-Revision-Date: 2025-01-28 18:02\n"
+"POT-Creation-Date: 2026-06-28 18:18-0300\n"
+"PO-Revision-Date: 2026-06-28 21:28\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -17,136 +17,294 @@ msgstr ""
 "X-Crowdin-File: /plugins/dashboardsk_pi/po/DashboardSK_pi.pot\n"
 "X-Crowdin-File-ID: 405\n"
 
-#: include/dashboardskgui.h:177
+#: include/dashboardskgui.h:178
 msgid "DashboardSK Configuration"
 msgstr ""
 
-#: include/dashboardskgui.h:208
+#: include/dashboardskgui.h:209
 msgid "SignalK data tree"
 msgstr ""
 
-#: include/dashboardskgui.h:298 include/dashboardskguiimpl.h:375
+#: include/dashboardskgui.h:318 include/dashboardskguiimpl.h:392
 msgid "SignalK Browser"
 msgstr ""
 
-#: include/dashboardskgui.h:354
+#: include/dashboardskgui.h:374
 msgid "Zones configuration"
 msgstr ""
 
-#: include/dashboardskguiimpl.h:503
+#: include/dividerinstrument.h:53
+msgid "Auto"
+msgstr ""
+
+#: include/dividerinstrument.h:54
+msgid "Horizontal"
+msgstr ""
+
+#: include/dividerinstrument.h:55
+msgid "Vertical"
+msgstr ""
+
+#: include/dividerinstrument.h:59
+msgid "Solid"
+msgstr ""
+
+#: include/dividerinstrument.h:60
+msgid "Dashes"
+msgstr ""
+
+#: include/dividerinstrument.h:61
+msgid "Dots"
+msgstr ""
+
+#: include/dividerinstrument.h:62
+msgid "Dash-Dot"
+msgstr ""
+
+#: include/dividerinstrument.h:67 include/compositewindinstrument.h:46
+msgid "Orientation"
+msgstr ""
+
+#: include/dividerinstrument.h:69
+msgid "Length"
+msgstr ""
+
+#: include/dividerinstrument.h:72
+msgid "Line width"
+msgstr ""
+
+#: include/dividerinstrument.h:76
+msgid "Line style"
+msgstr ""
+
+#: include/dividerinstrument.h:78
+msgid "Line color"
+msgstr ""
+
+#: include/dividerinstrument.h:177
+msgid "Divider"
+msgstr ""
+
+#: include/dashboardskguiimpl.h:537
 msgid "SignalK Zones Configuration"
 msgstr ""
 
-#: include/instrument.h:93
+#: include/instrument.h:95
 msgid "None"
 msgstr ""
 
-#: include/instrument.h:94
+#: include/instrument.h:96
 msgid "RAD->DEG"
 msgstr ""
 
-#: include/instrument.h:95
+#: include/instrument.h:97
 msgid "m/s -> kn"
 msgstr ""
 
-#: include/instrument.h:96
+#: include/instrument.h:98
 msgid "m/s -> km/h"
 msgstr ""
 
-#: include/instrument.h:97
+#: include/instrument.h:99
 msgid "m/s -> mph"
 msgstr ""
 
-#: include/instrument.h:98
+#: include/instrument.h:100
 msgid "m -> feet"
 msgstr ""
 
-#: include/instrument.h:99
+#: include/instrument.h:101
 msgid "m -> fathoms"
 msgstr ""
 
-#: include/instrument.h:100
+#: include/instrument.h:102
 msgid "m -> NMi"
 msgstr ""
 
-#: include/instrument.h:101
+#: include/instrument.h:103
 msgid "°K -> °C"
 msgstr ""
 
-#: include/instrument.h:102
+#: include/instrument.h:104
 msgid "°K -> °F"
 msgstr ""
 
-#: include/instrument.h:103
+#: include/instrument.h:105
 msgid "ratio -> %"
 msgstr ""
 
-#: include/instrument.h:104
+#: include/instrument.h:106
 msgid "Pa -> hPa"
 msgstr ""
 
-#: include/instrument.h:105
+#: include/instrument.h:107
 msgid "Pa -> kPa"
 msgstr ""
 
-#: include/instrument.h:106
+#: include/instrument.h:108
 msgid "Pa -> MPa"
 msgstr ""
 
-#: include/instrument.h:107
+#: include/instrument.h:109
 msgid "Pa -> atm"
 msgstr ""
 
-#: include/instrument.h:108
+#: include/instrument.h:110
 msgid "Pa -> mmHg"
 msgstr ""
 
-#: include/instrument.h:109
+#: include/instrument.h:111
 msgid "Pa -> psi"
 msgstr ""
 
-#: include/instrument.h:110
+#: include/instrument.h:112
 msgid "Hz -> RPM"
 msgstr ""
 
-#: include/instrument.h:111
+#: include/instrument.h:113
 msgid "RAD/s -> DEG/m"
 msgstr ""
 
-#: include/instrument.h:145
-msgid "Lowest to highest"
+#: include/instrument.h:114
+msgid "Jouls-> kWh"
 msgstr ""
 
-#: include/instrument.h:146
-msgid "Highest to lowest"
+#: include/instrument.h:115
+msgid "Jouls -> Wh"
 msgstr ""
 
-#: include/instrument.h:149
-msgid "1 minute"
+#: include/instrument.h:116
+msgid "Seconds -> Hours"
 msgstr ""
 
-#: include/instrument.h:150
-msgid "5 minutes"
+#: include/instrument.h:117
+msgid "Cubic m/s -> l/h"
 msgstr ""
 
 #: include/instrument.h:151
-msgid "15 minutes"
+msgid "Lowest to highest"
 msgstr ""
 
 #: include/instrument.h:152
-msgid "30 minutes"
-msgstr ""
-
-#: include/instrument.h:153
-msgid "1 hour"
-msgstr ""
-
-#: include/instrument.h:154
-msgid "1 day"
+msgid "Highest to lowest"
 msgstr ""
 
 #: include/instrument.h:155
+msgid "1 minute"
+msgstr ""
+
+#: include/instrument.h:156
+msgid "5 minutes"
+msgstr ""
+
+#: include/instrument.h:157
+msgid "15 minutes"
+msgstr ""
+
+#: include/instrument.h:158
+msgid "30 minutes"
+msgstr ""
+
+#: include/instrument.h:159
+msgid "1 hour"
+msgstr ""
+
+#: include/instrument.h:160
+msgid "1 day"
+msgstr ""
+
+#: include/instrument.h:161
 msgid "3 days"
+msgstr ""
+
+#: include/compositewindinstrument.h:34
+msgid "AWA key"
+msgstr ""
+
+#: include/compositewindinstrument.h:36
+msgid "AWS key"
+msgstr ""
+
+#: include/compositewindinstrument.h:38
+msgid "TWA key"
+msgstr ""
+
+#: include/compositewindinstrument.h:40
+msgid "TWS key"
+msgstr ""
+
+#: include/compositewindinstrument.h:42
+msgid "Heading key"
+msgstr ""
+
+#: include/compositewindinstrument.h:44
+msgid "COG key"
+msgstr ""
+
+#: include/compositewindinstrument.h:47
+msgid "North up;Heading up"
+msgstr ""
+
+#: include/compositewindinstrument.h:48 include/simplegaugeinstrument.h:99
+msgid "Instrument size"
+msgstr ""
+
+#: include/compositewindinstrument.h:50
+msgid "Ring color"
+msgstr ""
+
+#: include/compositewindinstrument.h:52 include/simplegaugeinstrument.h:120
+msgid "Tick color"
+msgstr ""
+
+#: include/compositewindinstrument.h:54
+msgid "Text color"
+msgstr ""
+
+#: include/compositewindinstrument.h:56
+msgid "AWA color"
+msgstr ""
+
+#: include/compositewindinstrument.h:58
+msgid "TWA color"
+msgstr ""
+
+#: include/compositewindinstrument.h:60
+msgid "Heading color"
+msgstr ""
+
+#: include/compositewindinstrument.h:62
+msgid "COG color"
+msgstr ""
+
+#: include/compositewindinstrument.h:64 include/simplegaugeinstrument.h:108
+msgid "Port color"
+msgstr ""
+
+#: include/compositewindinstrument.h:66 include/simplegaugeinstrument.h:110
+msgid "Starboard color"
+msgstr ""
+
+#: include/compositewindinstrument.h:68 include/simplegaugeinstrument.h:134
+#: include/simplehistograminstrument.h:86 include/simplenumberinstrument.h:103
+#: include/simplepositioninstrument.h:64 include/simpletextinstrument.h:62
+msgid "Border color"
+msgstr ""
+
+#: include/compositewindinstrument.h:93
+msgid "Composite wind"
+msgstr ""
+
+#: include/combinedgaugeinstrument.h:43
+msgid "Center value SK Key"
+msgstr ""
+
+#: include/combinedgaugeinstrument.h:45
+msgid "Center value transformation"
+msgstr ""
+
+#: include/combinedgaugeinstrument.h:76
+msgid "Combined gauge"
 msgstr ""
 
 #: include/simplegaugeinstrument.h:74
@@ -184,93 +342,75 @@ msgstr ""
 msgid "Format"
 msgstr ""
 
-#: include/simplegaugeinstrument.h:91 include/simplehistograminstrument.h:60
-#: include/simplenumberinstrument.h:64
+#: include/simplegaugeinstrument.h:91 include/simplenumberinstrument.h:64
+msgid "Value suffix"
+msgstr ""
+
+#: include/simplegaugeinstrument.h:93 include/simplehistograminstrument.h:60
+#: include/simplenumberinstrument.h:66
 msgid "Transformation"
 msgstr ""
 
-#: include/simplegaugeinstrument.h:93 include/simplenumberinstrument.h:66
-#: src/dashboardskgui.cpp:767
+#: include/simplegaugeinstrument.h:95 include/simplenumberinstrument.h:68
+#: src/dashboardskgui.cpp:826
 msgid "Zones"
 msgstr ""
 
-#: include/simplegaugeinstrument.h:95 include/simplenumberinstrument.h:68
+#: include/simplegaugeinstrument.h:97 include/simplenumberinstrument.h:70
 msgid "Data smoothing"
 msgstr ""
 
-#: include/simplegaugeinstrument.h:97
-msgid "Instrument size"
-msgstr ""
-
-#: include/simplegaugeinstrument.h:102
+#: include/simplegaugeinstrument.h:104
 msgid "Needle color"
 msgstr ""
 
-#: include/simplegaugeinstrument.h:104
+#: include/simplegaugeinstrument.h:106
 msgid "Rim color"
 msgstr ""
 
-#: include/simplegaugeinstrument.h:106
-msgid "Port color"
-msgstr ""
-
-#: include/simplegaugeinstrument.h:108
-msgid "Starboard color"
-msgstr ""
-
-#: include/simplegaugeinstrument.h:110
+#: include/simplegaugeinstrument.h:112
 msgid "Dead angle color"
 msgstr ""
 
-#: include/simplegaugeinstrument.h:112
+#: include/simplegaugeinstrument.h:114
 msgid "Dial color"
 msgstr ""
 
-#: include/simplegaugeinstrument.h:114 include/simplehistograminstrument.h:76
-#: include/simplenumberinstrument.h:76 include/simplepositioninstrument.h:58
+#: include/simplegaugeinstrument.h:116 include/simplehistograminstrument.h:76
+#: include/simplenumberinstrument.h:80 include/simplepositioninstrument.h:58
 #: include/simpletextinstrument.h:56
 msgid "Title color"
 msgstr ""
 
-#: include/simplegaugeinstrument.h:116
+#: include/simplegaugeinstrument.h:118
 msgid "Value color"
 msgstr ""
 
-#: include/simplegaugeinstrument.h:118
-msgid "Tick color"
-msgstr ""
-
-#: include/simplegaugeinstrument.h:120
+#: include/simplegaugeinstrument.h:122
 msgid "Dial values"
 msgstr ""
 
-#: include/simplegaugeinstrument.h:122
+#: include/simplegaugeinstrument.h:124
 msgid "Normal color"
 msgstr ""
 
-#: include/simplegaugeinstrument.h:124 include/simplenumberinstrument.h:84
+#: include/simplegaugeinstrument.h:126 include/simplenumberinstrument.h:88
 msgid "Alert color"
 msgstr ""
 
-#: include/simplegaugeinstrument.h:126
+#: include/simplegaugeinstrument.h:128
 msgid "Warn color"
 msgstr ""
 
-#: include/simplegaugeinstrument.h:128 include/simplenumberinstrument.h:92
+#: include/simplegaugeinstrument.h:130 include/simplenumberinstrument.h:96
 msgid "Alarm color"
 msgstr ""
 
-#: include/simplegaugeinstrument.h:130 include/simplenumberinstrument.h:97
+#: include/simplegaugeinstrument.h:132 include/simplenumberinstrument.h:101
 msgid "Emergency color"
 msgstr ""
 
-#: include/simplegaugeinstrument.h:132 include/simplehistograminstrument.h:86
-#: include/simplenumberinstrument.h:99 include/simplepositioninstrument.h:64
-#: include/simpletextinstrument.h:62
-msgid "Border color"
-msgstr ""
-
-#: include/simplegaugeinstrument.h:346
+#: include/simplegaugeinstrument.h:362
 msgid "Simple gauge"
 msgstr ""
 
@@ -310,52 +450,56 @@ msgstr ""
 msgid "Simple histogram"
 msgstr ""
 
-#: include/simplenumberinstrument.h:70 include/simplepositioninstrument.h:52
+#: include/simplenumberinstrument.h:72 include/simplepositioninstrument.h:52
 #: include/simpletextinstrument.h:50
 msgid "Title size"
 msgstr ""
 
-#: include/simplenumberinstrument.h:72 include/simplepositioninstrument.h:54
+#: include/simplenumberinstrument.h:74 include/simplepositioninstrument.h:54
 #: include/simpletextinstrument.h:52
 msgid "Body size"
 msgstr ""
 
-#: include/simplenumberinstrument.h:74 include/simplepositioninstrument.h:56
+#: include/simplenumberinstrument.h:77
+msgid "Suffix size"
+msgstr ""
+
+#: include/simplenumberinstrument.h:78 include/simplepositioninstrument.h:56
 #: include/simpletextinstrument.h:54
 msgid "Title background"
 msgstr ""
 
-#: include/simplenumberinstrument.h:78 include/simplepositioninstrument.h:60
+#: include/simplenumberinstrument.h:82 include/simplepositioninstrument.h:60
 #: include/simpletextinstrument.h:58
 msgid "Body background"
 msgstr ""
 
-#: include/simplenumberinstrument.h:80 include/simplepositioninstrument.h:62
+#: include/simplenumberinstrument.h:84 include/simplepositioninstrument.h:62
 #: include/simpletextinstrument.h:60
 msgid "Body color"
 msgstr ""
 
-#: include/simplenumberinstrument.h:82
+#: include/simplenumberinstrument.h:86
 msgid "Alert background"
 msgstr ""
 
-#: include/simplenumberinstrument.h:86
+#: include/simplenumberinstrument.h:90
 msgid "Warning background"
 msgstr ""
 
-#: include/simplenumberinstrument.h:88
+#: include/simplenumberinstrument.h:92
 msgid "Warning color"
 msgstr ""
 
-#: include/simplenumberinstrument.h:90
+#: include/simplenumberinstrument.h:94
 msgid "Alarm background"
 msgstr ""
 
-#: include/simplenumberinstrument.h:95
+#: include/simplenumberinstrument.h:99
 msgid "Emergency background"
 msgstr ""
 
-#: include/simplenumberinstrument.h:211
+#: include/simplenumberinstrument.h:219
 msgid "Simple number"
 msgstr ""
 
@@ -365,6 +509,18 @@ msgstr ""
 
 #: include/simpletextinstrument.h:154
 msgid "Simple text"
+msgstr ""
+
+#: include/spacerinstrument.h:40
+msgid "Width"
+msgstr ""
+
+#: include/spacerinstrument.h:43
+msgid "Height"
+msgstr ""
+
+#: include/spacerinstrument.h:107
+msgid "Spacer"
 msgstr ""
 
 #: include/zone.h:122
@@ -401,20 +557,33 @@ msgstr ""
 msgid "nominal"
 msgstr ""
 
-#: src/dashboard.cpp:32
+#: src/dashboard.cpp:36
 msgid "Bottom"
 msgstr ""
 
-#: src/dashboard.cpp:32
+#: src/dashboard.cpp:36
 msgid "Top"
 msgstr ""
 
-#: src/dashboard.cpp:32
+#: src/dashboard.cpp:36
 msgid "Left"
 msgstr ""
 
-#: src/dashboard.cpp:33
+#: src/dashboard.cpp:37
 msgid "Right"
+msgstr ""
+
+#: src/dashboard.cpp:37
+msgid "Own ship"
+msgstr ""
+
+#: src/dashboard.cpp:223
+#, c-format
+msgid "Configure %s..."
+msgstr ""
+
+#: src/dividerinstrument.cpp:49
+msgid "New Divider"
 msgstr ""
 
 #: src/dashboardskgui.cpp:34
@@ -513,156 +682,208 @@ msgstr ""
 msgid "..."
 msgstr ""
 
-#: src/dashboardskgui.cpp:692 src/dashboardskguiimpl.cpp:1107
-#: src/dashboardskguiimpl.cpp:1135
+#: src/dashboardskgui.cpp:692
+msgid "Source:"
+msgstr ""
+
+#: src/dashboardskgui.cpp:698
+msgid "Specific"
+msgstr ""
+
+#: src/dashboardskgui.cpp:711
+msgid "Any"
+msgstr ""
+
+#: src/dashboardskgui.cpp:714
+msgid "Lock (session)"
+msgstr ""
+
+#: src/dashboardskgui.cpp:719
+msgid "Lock (persist)"
+msgstr ""
+
+#: src/dashboardskgui.cpp:729 src/dashboardskguiimpl.cpp:1207
+#: src/dashboardskguiimpl.cpp:1239
 msgid "Collapse"
 msgstr ""
 
-#: src/dashboardskgui.cpp:696
+#: src/dashboardskgui.cpp:733
 msgid "Own vessel"
 msgstr ""
 
-#: src/dashboardskgui.cpp:797
+#: src/dashboardskgui.cpp:856
 msgid "Lower bound"
 msgstr ""
 
-#: src/dashboardskgui.cpp:807
+#: src/dashboardskgui.cpp:866
 msgid "Upper bound"
 msgstr ""
 
-#: src/dashboardskgui.cpp:817
+#: src/dashboardskgui.cpp:876
 msgid "State"
 msgstr ""
 
-#: src/dashboardskgui.cpp:821
+#: src/dashboardskgui.cpp:880
 msgid "Nominal"
 msgstr ""
 
-#: src/dashboardskgui.cpp:821
+#: src/dashboardskgui.cpp:880
 msgid "Normal"
 msgstr ""
 
-#: src/dashboardskgui.cpp:821
+#: src/dashboardskgui.cpp:880
 msgid "Alert"
 msgstr ""
 
-#: src/dashboardskgui.cpp:822
+#: src/dashboardskgui.cpp:881
 msgid "Warning"
 msgstr ""
 
-#: src/dashboardskgui.cpp:822
+#: src/dashboardskgui.cpp:881
 msgid "Alarm"
 msgstr ""
 
-#: src/dashboardskgui.cpp:822
+#: src/dashboardskgui.cpp:881
 msgid "Emergency"
 msgstr ""
 
-#: src/dashboardskgui.cpp:834
+#: src/dashboardskgui.cpp:893
 msgid "All values not covered by the zones are considered normal."
 msgstr ""
 
-#: src/dashboardskguiimpl.cpp:242
+#: src/dashboardskguiimpl.cpp:290
 msgid "Enter name for the newly created dashboard"
 msgstr ""
 
-#: src/dashboardskguiimpl.cpp:243
+#: src/dashboardskguiimpl.cpp:291
 msgid "Create new dashboard"
 msgstr ""
 
-#: src/dashboardskguiimpl.cpp:243
+#: src/dashboardskguiimpl.cpp:291
 msgid "New dashboard"
 msgstr ""
 
-#: src/dashboardskguiimpl.cpp:259
+#: src/dashboardskguiimpl.cpp:307
 msgid "Do you really want to delete dashboard"
 msgstr ""
 
-#: src/dashboardskguiimpl.cpp:262
+#: src/dashboardskguiimpl.cpp:310
 msgid "Delete dashboard"
 msgstr ""
 
-#: src/dashboardskguiimpl.cpp:294
+#: src/dashboardskguiimpl.cpp:342
 msgid "Enter new name for the dashboard"
 msgstr ""
 
-#: src/dashboardskguiimpl.cpp:295
+#: src/dashboardskguiimpl.cpp:343
 msgid "Rename dashboard"
 msgstr ""
 
-#: src/dashboardskguiimpl.cpp:568
+#: src/dashboardskguiimpl.cpp:616
 msgid "Select type of the new instrument"
 msgstr ""
 
-#: src/dashboardskguiimpl.cpp:569
+#: src/dashboardskguiimpl.cpp:617
 msgid "Add new instrument"
 msgstr ""
 
-#: src/dashboardskguiimpl.cpp:673
+#: src/dashboardskguiimpl.cpp:721
 msgid "Configuration data (Edit carefully!)"
 msgstr ""
 
-#: src/dashboardskguiimpl.cpp:694
+#: src/dashboardskguiimpl.cpp:733
+msgid "Invalid configuration"
+msgstr ""
+
+#: src/dashboardskguiimpl.cpp:734
+msgid "The configuration data do not match the expected schema and could not be used!"
+msgstr ""
+
+#: src/dashboardskguiimpl.cpp:744
 msgid "The configuration data were not a valid JSON document and could not be used!"
 msgstr ""
 
-#: src/dashboardskguiimpl.cpp:696
+#: src/dashboardskguiimpl.cpp:746
 msgid "JSON not valid"
 msgstr ""
 
-#: src/dashboardskguiimpl.cpp:829
+#: src/dashboardskguiimpl.cpp:879
 msgid "Save instrument to file"
 msgstr ""
 
-#: src/dashboardskguiimpl.cpp:854
+#: src/dashboardskguiimpl.cpp:903
 msgid "Load instrument(s) from file(s)"
 msgstr ""
 
-#: src/dashboardskguiimpl.cpp:878
+#: src/dashboardskguiimpl.cpp:921 src/dashboardskguiimpl.cpp:944
+#: src/dashboardskguiimpl.cpp:1012 src/dashboardskguiimpl.cpp:1031
+msgid "Error during import"
+msgstr ""
+
+#: src/dashboardskguiimpl.cpp:923
+#, c-format
+msgid "The file %s does not match the expected instrument schema and was skipped."
+msgstr ""
+
+#: src/dashboardskguiimpl.cpp:941
 #, c-format
 msgid "The file %s does not seem to be a DashboardSK instrument JSON definition."
 msgstr ""
 
-#: src/dashboardskguiimpl.cpp:881 src/dashboardskguiimpl.cpp:957
-msgid "Error during import"
-msgstr ""
-
-#: src/dashboardskguiimpl.cpp:906
+#: src/dashboardskguiimpl.cpp:969
 msgid "Save dashboard to file"
 msgstr ""
 
-#: src/dashboardskguiimpl.cpp:931
+#: src/dashboardskguiimpl.cpp:992
 msgid "Load dashboard(s) from file(s)"
 msgstr ""
 
-#: src/dashboardskguiimpl.cpp:954
+#: src/dashboardskguiimpl.cpp:1014
+#, c-format
+msgid "The file %s does not match the expected dashboard schema and was skipped."
+msgstr ""
+
+#: src/dashboardskguiimpl.cpp:1028
 #, c-format
 msgid "The file %s does not seem to be a DashboardSK dashboard JSON definition."
 msgstr ""
 
-#: src/dashboardskguiimpl.cpp:1132
+#: src/dashboardskguiimpl.cpp:1236
 msgid "Expand"
 msgstr ""
 
-#: src/dashboardsk_pi.cpp:97 src/dashboardsk_pi.cpp:102
-#: src/dashboardsk_pi.cpp:128
+#: src/dashboardsk_pi.cpp:98 src/dashboardsk_pi.cpp:103
+#: src/dashboardsk_pi.cpp:138
 msgid "DashboardSK"
 msgstr ""
 
-#: src/dashboardsk_pi.cpp:132
+#: src/dashboardsk_pi.cpp:142
 msgid "SignalK dashboard PlugIn for OpenCPN"
 msgstr ""
 
-#: src/dashboardsk_pi.cpp:137
+#: src/dashboardsk_pi.cpp:147
 msgid "Universal dashboard plugin for OpenCPN based on the SignalK data model.\n"
 msgstr ""
 
-#: src/pager.cpp:114
+#: src/compositewindinstrument.cpp:50
+msgid "New Composite Wind"
+msgstr ""
+
+#: src/combinedgaugeinstrument.cpp:36
+msgid "New Combined Gauge"
+msgstr ""
+
+#: src/pager.cpp:134
 msgid "Preferences..."
 msgstr ""
 
-#: src/pager.cpp:115
+#: src/pager.cpp:135
 msgid "Toggle visibility"
+msgstr ""
+
+#: src/pager.cpp:137
+#, c-format
+msgid "Page %d"
 msgstr ""
 
 #: src/simplegaugeinstrument.cpp:51
@@ -673,7 +894,7 @@ msgstr ""
 msgid "New Simple Histogram"
 msgstr ""
 
-#: src/simplehistograminstrument.cpp:385
+#: src/simplehistograminstrument.cpp:387
 msgid "NO DATA"
 msgstr ""
 
@@ -681,7 +902,7 @@ msgstr ""
 msgid "New Simple Number"
 msgstr ""
 
-#: src/simplenumberinstrument.cpp:178
+#: src/simplenumberinstrument.cpp:221
 msgid "Error!"
 msgstr ""
 
@@ -691,4 +912,8 @@ msgstr ""
 
 #: src/simpletextinstrument.cpp:38
 msgid "New Simple Text"
+msgstr ""
+
+#: src/spacerinstrument.cpp:37
+msgid "New Spacer"
 msgstr ""
