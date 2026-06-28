@@ -25,11 +25,15 @@
  ******************************************************************************/
 
 #include "dashboardskguiimpl.h"
+#include "configvalidator.h"
 #include "dashboardsk.h"
 #include "dashboardsk_pi.h"
 #include <wx/choicdlg.h>
 #include <wx/dialog.h>
 #include <wx/msgdlg.h>
+#include <wx/sizer.h>
+#include <wx/stattext.h>
+#include <wx/textctrl.h>
 #include <wx/textdlg.h>
 #include <wx/tokenzr.h>
 #include <wx/txtstrm.h>
@@ -37,6 +41,35 @@
 #include <wx/windowptr.h>
 
 PLUGIN_BEGIN_NAMESPACE
+
+/// Show schema validation problems in a bounded, resizable dialog with a
+/// scrollable read-only text area, so a long list of errors can never grow the
+/// dialog past the screen.
+///
+/// \param parent Parent window
+/// \param title Dialog title
+/// \param intro Short message shown above the error list
+/// \param errors Detailed validation errors (one per line)
+static void ShowSchemaErrorDialog(wxWindow* parent, const wxString& title,
+    const wxString& intro, const wxString& errors)
+{
+    wxDialog dlg(parent, wxID_ANY, title, wxDefaultPosition, wxDefaultSize,
+        wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
+    auto* sizer = new wxBoxSizer(wxVERTICAL);
+    const int border = dlg.FromDIP(8);
+    auto* lbl = new wxStaticText(&dlg, wxID_ANY, intro);
+    lbl->Wrap(dlg.FromDIP(460));
+    sizer->Add(lbl, 0, wxALL, border);
+    auto* txt = new wxTextCtrl(&dlg, wxID_ANY, errors, wxDefaultPosition,
+        wxDefaultSize, wxTE_MULTILINE | wxTE_READONLY | wxTE_DONTWRAP);
+    sizer->Add(txt, 1, wxEXPAND | wxLEFT | wxRIGHT, border);
+    sizer->Add(dlg.CreateButtonSizer(wxOK), 0, wxALL | wxALIGN_RIGHT, border);
+    dlg.SetSizer(sizer);
+    dlg.SetMinSize(dlg.FromDIP(wxSize(320, 220)));
+    dlg.SetSize(dlg.FromDIP(wxSize(500, 350)));
+    dlg.CentreOnParent();
+    dlg.ShowModal();
+}
 
 //====================================
 // MainConfigFrameImpl
@@ -693,16 +726,22 @@ void MainConfigFrameImpl::m_btnCfgEditOnButtonClick(wxCommandEvent& event)
     dlg->ShowWindowModalThenDo([this, dlg](int retcode) {
         if (retcode == wxID_OK) {
             Json::Value v;
+            wxString schema_errors;
             if (ParseJSON(dlg->GetValue(), v) && v.isMember("signalk")) {
+                if (!ValidateConfigJSON(dlg->GetValue(),
+                        m_dsk_pi->GetDataDir()
+                            + "dashboardsk.config.schema.json",
+                        "#/definitions/Dashboardsk", schema_errors)) {
+                    ShowSchemaErrorDialog(this, _("Invalid configuration"),
+                        _("The configuration data do not match the expected "
+                          "schema and could not be used!"),
+                        schema_errors);
+                    return;
+                }
                 m_edited_instrument = nullptr;
                 m_edited_dashboard = nullptr;
                 m_dsk_pi->GetDSK()->ReadConfig(v);
                 FillForm();
-                // TODO: The above is VERY fragile, we should add as many checks
-                // as possible both here and to the editing form before screwing
-                // up the configuration (Although on Cancel click we load the
-                // old one, which is not broken, so we are not a complete
-                // disaster)
             } else {
                 wxMessageBox(_("The configuration data were not a valid JSON "
                                "document and could not be used!"),
@@ -875,7 +914,21 @@ void MainConfigFrameImpl::m_bpImportInstrButtonOnButtonClick(
                 if (input_stream.IsOk() && m_edited_dashboard) {
                     Json::Value v;
                     wxString s = LoadStringFromFile(input_stream);
-                    ParseJSON(m_dsk_pi->GetDSK()->SelfPopulate(s), v);
+                    wxString populated = m_dsk_pi->GetDSK()->SelfPopulate(s);
+                    wxString schema_errors;
+                    if (!ValidateConfigJSON(populated,
+                            m_dsk_pi->GetDataDir()
+                                + "dashboardsk.config.schema.json",
+                            "#/definitions/Config", schema_errors)) {
+                        ShowSchemaErrorDialog(this, _("Error during import"),
+                            wxString::Format(
+                                _("The file %s does not match the expected "
+                                  "instrument schema and was skipped."),
+                                p.c_str()),
+                            schema_errors);
+                        continue;
+                    }
+                    ParseJSON(populated, v);
 
                     Instrument* instr = DashboardSK::CreateInstrumentInstance(
                         DashboardSK::GetClassIndex(
@@ -949,9 +1002,23 @@ void MainConfigFrameImpl::m_btnImportDashboardOnButtonClick(
                 wxFileInputStream input_stream(p);
                 if (input_stream.IsOk()) {
                     Json::Value v;
-                    ParseJSON(m_dsk_pi->GetDSK()->SelfPopulate(
-                                  LoadStringFromFile(input_stream)),
-                        v);
+                    wxString populated = m_dsk_pi->GetDSK()->SelfPopulate(
+                        LoadStringFromFile(input_stream));
+                    ParseJSON(populated, v);
+                    wxString schema_errors;
+                    if (v.isMember("instruments")
+                        && !ValidateConfigJSON(populated,
+                            m_dsk_pi->GetDataDir()
+                                + "dashboardsk.config.schema.json",
+                            "#/definitions/Dashboard", schema_errors)) {
+                        ShowSchemaErrorDialog(this, _("Error during import"),
+                            wxString::Format(
+                                _("The file %s does not match the expected "
+                                  "dashboard schema and was skipped."),
+                                p.c_str()),
+                            schema_errors);
+                        continue;
+                    }
                     if (v.isMember("instruments")) {
                         m_edited_dashboard = m_dsk_pi->GetDSK()->AddDashboard();
                         m_edited_dashboard->ReadConfig(v);

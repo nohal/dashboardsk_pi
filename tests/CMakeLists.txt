@@ -29,6 +29,7 @@ set(SOURCES_TESTS
     003-SimpleNumberInstrument.cpp
     004-DividerInstrument.cpp
     005-SpacerInstrument.cpp
+    006-ConfigValidator.cpp
     opencpn_mock.cpp
     ${SRC_DASHBOARD})
 
@@ -58,6 +59,16 @@ if(NOT TARGET ocpn::jsoncpp)
                    "${CMAKE_CURRENT_BINARY_DIR}/jsoncpp")
 endif()
 target_link_libraries(tests ocpn::jsoncpp)
+if(NOT TARGET ocpn::json-schema-validator)
+  add_subdirectory("${CMAKE_SOURCE_DIR}/opencpn-libs/json-schema-validator"
+                   "${CMAKE_CURRENT_BINARY_DIR}/json-schema-validator")
+endif()
+target_link_libraries(tests ocpn::json-schema-validator)
+target_compile_definitions(
+  tests
+  PRIVATE
+    DSK_SCHEMA_PATH="${CMAKE_SOURCE_DIR}/data/dashboardsk.config.schema.json"
+    DSK_SAMPLE_PATH="${CMAKE_SOURCE_DIR}/data/sample_config.json")
 target_link_libraries(tests ${wxWidgets_LIBRARIES})
 if(GIOMM_FOUND)
   target_link_libraries(tests ${GIOMM_LIBRARIES})

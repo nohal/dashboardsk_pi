@@ -25,6 +25,7 @@
  ******************************************************************************/
 
 #include "dashboardsk_pi.h"
+#include "configvalidator.h"
 #include "dashboardskguiimpl.h"
 #include <wx/ffile.h>
 #include <wx/filename.h>
@@ -212,6 +213,15 @@ void dashboardsk_pi::LoadConfig()
             LOG_VERBOSE("DashboardSK_pi: Can't parse configuration from %s",
                 m_config_file.c_str());
             return;
+        }
+        wxString schema_errors;
+        if (!ValidateConfigJSON(text,
+                GetDataDir() + "dashboardsk.config.schema.json",
+                "#/definitions/DashboardSK", schema_errors)) {
+            // Log only - never block startup or discard the user's config
+            LOG_VERBOSE(
+                "DashboardSK_pi: Configuration does not match schema:\n%s",
+                schema_errors.c_str());
         }
         m_shown = config.get("shown", false).asBool();
         m_dsk->ReadConfig(config["dashboardsk"]);

@@ -67,6 +67,7 @@ set(HDR_DASHBOARD
     ${CMAKE_SOURCE_DIR}/include/spacerinstrument.h
     ${CMAKE_SOURCE_DIR}/include/zone.h
     ${CMAKE_SOURCE_DIR}/include/displayscale.h
+    ${CMAKE_SOURCE_DIR}/include/configvalidator.h
     ${CMAKE_SOURCE_DIR}/include/pager.h)
 set(SRC_DASHBOARD
     ${CMAKE_SOURCE_DIR}/src/dashboardsk.cpp
@@ -79,6 +80,7 @@ set(SRC_DASHBOARD
     ${CMAKE_SOURCE_DIR}/src/simplehistograminstrument.cpp
     ${CMAKE_SOURCE_DIR}/src/dividerinstrument.cpp
     ${CMAKE_SOURCE_DIR}/src/spacerinstrument.cpp
+    ${CMAKE_SOURCE_DIR}/src/configvalidator.cpp
     ${CMAKE_SOURCE_DIR}/src/pager.cpp)
 
 set(SRC_GUI_DESKTOP ${CMAKE_SOURCE_DIR}/src/dashboardskgui.cpp
@@ -140,6 +142,9 @@ macro(add_plugin_libraries)
 
   add_subdirectory("opencpn-libs/jsoncpp")
   target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
+
+  add_subdirectory("${CMAKE_SOURCE_DIR}/opencpn-libs/json-schema-validator")
+  target_link_libraries(${PACKAGE_NAME} ocpn::json-schema-validator)
   if(${WITH_TESTS})
     include(CTest)
     add_subdirectory("${CMAKE_SOURCE_DIR}/tests")

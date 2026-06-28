@@ -19,6 +19,8 @@ The JSON configuration data of the plugin can be edited directly using a visual 
 
 image::config_json_editor.png[Configuration data editor]
 
+When the edited data is applied, and whenever a configuration, dashboard or instrument is imported from a file, the JSON is validated against the plugin configuration schema. If it does not match, the change is rejected and the reported problems are shown, leaving the current configuration untouched.
+
 === Signal K data tree viewer (3)
 
 The data tree constructed from the received Signal K delta messages can be displayed as a collapsible tree structure by clicking on the *Signal K* button.

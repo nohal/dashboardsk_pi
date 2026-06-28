@@ -1,0 +1,253 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$ref": "#/definitions/DashboardSK",
+    "definitions": {
+        "DashboardSK": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "shown": {
+                    "type": "boolean"
+                },
+                "dashboardsk": {
+                    "$ref": "#/definitions/Dashboardsk"
+                }
+            },
+            "required": [
+                "dashboardsk",
+                "shown"
+            ],
+            "title": "DashboardSK"
+        },
+        "Dashboardsk": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "signalk": {
+                    "$ref": "#/definitions/Signalk"
+                },
+                "dashboards": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Dashboard"
+                    }
+                },
+                "canvas": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Canvas"
+                    }
+                }
+            },
+            "required": [
+                "dashboards",
+                "signalk"
+            ],
+            "title": "Dashboardsk"
+        },
+        "Dashboard": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "instruments": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Instrument"
+                    }
+                },
+                "offset_h": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "anchor": {
+                    "type": "integer"
+                },
+                "offset_v": {
+                    "type": "integer"
+                },
+                "spacing_v": {
+                    "type": "integer"
+                },
+                "canvas": {
+                    "type": "integer"
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "enabled": {
+                    "type": "boolean"
+                },
+                "spacing_h": {
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "name"
+            ],
+            "title": "Dashboard"
+        },
+        "Canvas": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "page": {
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "id",
+                "page"
+            ],
+            "title": "Canvas"
+        },
+        "Instrument": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "config": {
+                    "$ref": "#/definitions/Config"
+                }
+            },
+            "required": [
+                "config"
+            ],
+            "title": "Instrument"
+        },
+        "Config": {
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {
+                "instrument_size": {
+                    "type": "integer"
+                },
+                "class": {
+                    "type": "string"
+                },
+                "alarm_color": {
+                    "type": "string"
+                },
+                "smoothing": {
+                    "type": "integer"
+                },
+                "tick_legend": {
+                    "type": "string"
+                },
+                "allowed_age": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "rim_port": {
+                    "type": "string"
+                },
+                "zones": {
+                    "type": "string"
+                },
+                "border_color": {
+                    "type": "string"
+                },
+                "title_color": {
+                    "type": "string"
+                },
+                "rim_dead": {
+                    "type": "string"
+                },
+                "nominal_color": {
+                    "type": "string"
+                },
+                "dial_color": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "gauge_type": {
+                    "type": "integer"
+                },
+                "needle_color": {
+                    "type": "string"
+                },
+                "format": {
+                    "type": "integer"
+                },
+                "sk_key": {
+                    "type": "string"
+                },
+                "warn_color": {
+                    "type": "string"
+                },
+                "rim_color": {
+                    "type": "string"
+                },
+                "alert_color": {
+                    "type": "string"
+                },
+                "transformation": {
+                    "type": "integer"
+                },
+                "normal_color": {
+                    "type": "string"
+                },
+                "emergency_color": {
+                    "type": "string"
+                },
+                "tick_color": {
+                    "type": "string"
+                },
+                "rim_starboard": {
+                    "type": "string"
+                },
+                "title_background": {
+                    "type": "string"
+                },
+                "warn_background": {
+                    "type": "string"
+                },
+                "title_font": {
+                    "type": "integer"
+                },
+                "alarm_background": {
+                    "type": "string"
+                },
+                "alert_background": {
+                    "type": "string"
+                },
+                "body_background": {
+                    "type": "string"
+                },
+                "body_font": {
+                    "type": "integer"
+                },
+                "body_color": {
+                    "type": "string"
+                },
+                "emergency_background": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "class"
+            ],
+            "title": "Config"
+        },
+        "Signalk": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "self": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "self"
+            ],
+            "title": "Signalk"
+        }
+    }
+}
