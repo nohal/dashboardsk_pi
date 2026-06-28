@@ -1,0 +1,23 @@
+site:
+  title: DashboardSK
+  url:  https://nowhere.net
+  start_page: dashboardsk:ROOT:index.adoc
+
+content:
+  sources:
+    - url: ..
+      start_path: manual
+      branches: HEAD
+
+ui:
+  bundle:
+    url: https://gitlab.com/leamas/antora-ui-default/-/raw/master/latest/ui-bundle.zip
+    snapshot: true
+
+antora:
+  extensions:
+    - require: '@antora/pdf-extension'
+
+output:
+  dir: ./pdf
+  clean: true

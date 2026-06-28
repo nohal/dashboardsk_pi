@@ -166,3 +166,11 @@ add_custom_target(
   COMMAND asciidoxy -D apidocs --spec-file packages.toml api.adoc
   WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
   DEPENDS doxygen-docs)
+
+# Build the user manual as a PDF via Antora's PDF extension. Output lands in
+# manual/pdf/ (see manual/site-pdf.yml). Requires antora +
+# @antora/pdf-extension.
+add_custom_target(
+  manual-pdf
+  COMMAND npx antora --fetch site-pdf.yml
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/manual)
