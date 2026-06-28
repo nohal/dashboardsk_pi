@@ -26,7 +26,7 @@
 
 #include "dashboardsk_pi.h"
 #include "dashboardskguiimpl.h"
-#include "wx/jsonwriter.h"
+#include <wx/ffile.h>
 #include <wx/filename.h>
 #include <wx/wfstream.h>
 
@@ -192,32 +192,35 @@ void dashboardsk_pi::LoadConfig()
         }
     }
     if (wxFileExists(m_config_file)) {
-        wxFileInputStream str(m_config_file);
-        if (!str.IsOk()) {
+        wxFFile f(m_config_file, "r");
+        wxString text;
+        if (!f.IsOpened() || !f.ReadAll(&text)) {
             LOG_VERBOSE("DashboardSK_pi: Can't load configuration from %s",
                 m_config_file.c_str());
             return;
         }
-        wxJSONValue config;
-        m_json_reader.Parse(str, &config);
-        wxJSONValue defaultFalse(false);
-        m_shown = config.Get("shown", defaultFalse).AsBool();
+        Json::Value config;
+        if (!ParseJSON(text, config)) {
+            LOG_VERBOSE("DashboardSK_pi: Can't parse configuration from %s",
+                m_config_file.c_str());
+            return;
+        }
+        m_shown = config.get("shown", false).asBool();
         m_dsk->ReadConfig(config["dashboardsk"]);
     }
 }
 void dashboardsk_pi::SaveConfig()
 {
-    wxFileOutputStream str(m_config_file);
-    if (!str.IsOk()) {
+    Json::Value config;
+    config["shown"] = m_shown;
+    config["dashboardsk"] = m_dsk->GenerateJSONConfig();
+    wxFFile f(m_config_file, "w");
+    if (!f.IsOpened()) {
         LOG_VERBOSE("DashboardSK_pi: Can't save configuration to %s",
             m_config_file.c_str());
         return;
     }
-    wxJSONWriter writer;
-    wxJSONValue config;
-    config["shown"] = m_shown;
-    config["dashboardsk"] = m_dsk->GenerateJSONConfig();
-    writer.Write(config, str);
+    f.Write(DumpJSON(config), wxConvUTF8);
 }
 
 bool dashboardsk_pi::RenderOverlayMultiCanvas(
@@ -304,9 +307,10 @@ void dashboardsk_pi::SetPluginMessage(
                            // "OCPN_CORE_SIGNALK", be prepared for other future
                            // sources following common naming convention
         if (m_dsk) {
-            wxJSONValue v;
-            m_json_reader.Parse(message_body, &v);
-            m_dsk->SendSKDelta(v);
+            Json::Value v;
+            if (ParseJSON(message_body, v)) {
+                m_dsk->SendSKDelta(v);
+            }
         }
     }
 }

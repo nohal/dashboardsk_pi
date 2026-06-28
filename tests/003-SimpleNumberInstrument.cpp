@@ -27,9 +27,6 @@
 #include <catch2/catch_test_macros.hpp>
 
 #include "pi_common.h"
-#include "wx/jsonreader.h"
-#include "wx/jsonval.h"
-#include "wx/jsonwriter.h"
 
 #include "dashboard.h"
 #include "dashboardsk.h"
@@ -51,25 +48,22 @@ TEST_CASE("SimpleNumberInstrument Configuration Storage - if JSON not "
           "complete, defaults have to stay")
 {
     SimpleNumberInstrument i(nullptr);
-    wxJSONValue v;
-    wxJSONReader r;
-    wxJSONWriter w;
-    wxString out;
+    Json::Value v;
 
-    r.Parse("{ \"sk_key\": \"vessels.123456789.navigation.test\" }", &v);
+    ParseJSON("{ \"sk_key\": \"vessels.123456789.navigation.test\" }", v);
     i.ReadConfig(v);
     v = i.GenerateJSONConfig();
-    w.Write(v, out);
 
-    REQUIRE(v[DSK_SETTING_SK_KEY].AsString().IsSameAs(
-        "vessels.123456789.navigation.test"));
-    REQUIRE(v[DSK_SETTING_TITLE_BG].AsString().StartsWith("#"));
-    REQUIRE(v[DSK_SETTING_TITLE_FG].AsString().StartsWith("#"));
-    REQUIRE(v[DSK_SETTING_BODY_BG].AsString().StartsWith("#"));
-    REQUIRE(v[DSK_SETTING_BODY_FG].AsString().StartsWith("#"));
-    REQUIRE(v[DSK_SETTING_BORDER_COLOR].AsString().StartsWith("#"));
-    REQUIRE(v[DSK_SETTING_BODY_FONT].AsInt() > 1);
-    REQUIRE(v[DSK_SETTING_BODY_FONT].AsInt() < 40);
-    REQUIRE(v[DSK_SETTING_TITLE_FONT].AsInt() > 1);
-    REQUIRE(v[DSK_SETTING_TITLE_FONT].AsInt() < 30);
+    REQUIRE(fromJsonVal(v[DSK_SETTING_SK_KEY].asString())
+            .IsSameAs("vessels.123456789.navigation.test"));
+    REQUIRE(fromJsonVal(v[DSK_SETTING_TITLE_BG].asString()).StartsWith("#"));
+    REQUIRE(fromJsonVal(v[DSK_SETTING_TITLE_FG].asString()).StartsWith("#"));
+    REQUIRE(fromJsonVal(v[DSK_SETTING_BODY_BG].asString()).StartsWith("#"));
+    REQUIRE(fromJsonVal(v[DSK_SETTING_BODY_FG].asString()).StartsWith("#"));
+    REQUIRE(
+        fromJsonVal(v[DSK_SETTING_BORDER_COLOR].asString()).StartsWith("#"));
+    REQUIRE(v[DSK_SETTING_BODY_FONT].asInt() > 1);
+    REQUIRE(v[DSK_SETTING_BODY_FONT].asInt() < 40);
+    REQUIRE(v[DSK_SETTING_TITLE_FONT].asInt() > 1);
+    REQUIRE(v[DSK_SETTING_TITLE_FONT].asInt() < 30);
 }

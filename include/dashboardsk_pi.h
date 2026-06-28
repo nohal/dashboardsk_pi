@@ -31,7 +31,6 @@
 #include "dashboardsk.h"
 #include "dskdc.h"
 #include "pi_common.h"
-#include "wx/jsonreader.h"
 
 constexpr int MY_API_VERSION_MAJOR = 1;
 constexpr int MY_API_VERSION_MINOR = 18;
@@ -63,8 +62,6 @@ private:
     dskDC* m_oDC;
     /// Path to the configuration file
     wxString m_config_file;
-    /// Reader used for the JSON data parsing
-    wxJSONReader m_json_reader;
 
     /// Load the configuration from disk
     void LoadConfig();

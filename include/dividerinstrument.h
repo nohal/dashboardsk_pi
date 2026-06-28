@@ -29,7 +29,7 @@
 
 #include "instrument.h"
 #include "pi_common.h"
-#include "wx/jsonval.h"
+#include <json/json.h>
 #include <wx/pen.h>
 
 // Default line color
@@ -62,21 +62,21 @@
     X(wxPENSTYLE_DOT_DASH, _("Dash-Dot"))
 
 // Setting name, default value, label, dskConfigCtrl control type, control
-// parameters string, wxJSONValue conversion function, getter function
+// parameters string, Json::Value conversion function, getter function
 #define DSK_DIV_SETTINGS                                                       \
     X(0, DSK_SETTING_ORIENTATION, 0, _("Orientation"), ChoiceCtrl,             \
-        ConcatChoiceStrings(m_supported_orientations), AsInt, GetIntSetting)   \
+        ConcatChoiceStrings(m_supported_orientations), asInt, GetIntSetting)   \
     X(1, DSK_SETTING_LENGTH, m_length, _("Length"), SpinCtrl,                  \
         STRINGIFY(DSK_DIV_MIN_LENGTH) ";" STRINGIFY(DSK_DIV_MAX_LENGTH),       \
-        AsInt, GetIntSetting)                                                  \
+        asInt, GetIntSetting)                                                  \
     X(2, DSK_SETTING_LINE_WIDTH, m_line_width, _("Line width"), SpinCtrl,      \
         STRINGIFY(DSK_DIV_MIN_LINE_WIDTH) ";" STRINGIFY(                       \
             DSK_DIV_MAX_LINE_WIDTH),                                           \
-        AsInt, GetIntSetting)                                                  \
+        asInt, GetIntSetting)                                                  \
     X(3, DSK_SETTING_LINE_STYLE, 0, _("Line style"), ChoiceCtrl,               \
-        ConcatChoiceStrings(m_supported_styles), AsInt, GetIntSetting)         \
+        ConcatChoiceStrings(m_supported_styles), asInt, GetIntSetting)         \
     X(4, DSK_SETTING_LINE_COLOR, DSK_DIV_COLOR_LINE, _("Line color"),          \
-        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)
+        ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)
 
 PLUGIN_BEGIN_NAMESPACE
 
@@ -178,9 +178,9 @@ public:
 
     wxBitmap Render(double scale) override;
 
-    void ReadConfig(wxJSONValue& config) override;
+    void ReadConfig(Json::Value& config) override;
 
-    wxJSONValue GenerateJSONConfig() override;
+    Json::Value GenerateJSONConfig() override;
 
     void SetSetting(const wxString& key, const wxString& value) override;
     void SetSetting(const wxString& key, const int& value) override;

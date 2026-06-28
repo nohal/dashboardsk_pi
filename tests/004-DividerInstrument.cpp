@@ -27,9 +27,6 @@
 #include <catch2/catch_test_macros.hpp>
 
 #include "pi_common.h"
-#include "wx/jsonreader.h"
-#include "wx/jsonval.h"
-#include "wx/jsonwriter.h"
 
 #include "dashboard.h"
 #include "dashboardsk.h"
@@ -51,30 +48,28 @@ TEST_CASE("DividerInstrument Configuration Storage - if JSON not "
           "complete, defaults have to stay")
 {
     DividerInstrument i(nullptr);
-    wxJSONValue v;
-    wxJSONReader r;
+    Json::Value v;
 
-    r.Parse("{ \"length\": 250 }", &v);
+    ParseJSON("{ \"length\": 250 }", v);
     i.ReadConfig(v);
     v = i.GenerateJSONConfig();
 
-    REQUIRE(v[DSK_SETTING_LENGTH].AsInt() == 250);
-    REQUIRE(v[DSK_SETTING_ORIENTATION].AsInt() == 0);
-    REQUIRE(v[DSK_SETTING_LINE_WIDTH].AsInt() == 2);
-    REQUIRE(v[DSK_SETTING_LINE_STYLE].AsInt() == 0);
-    REQUIRE(v[DSK_SETTING_LINE_COLOR].AsString().StartsWith("#"));
+    REQUIRE(v[DSK_SETTING_LENGTH].asInt() == 250);
+    REQUIRE(v[DSK_SETTING_ORIENTATION].asInt() == 0);
+    REQUIRE(v[DSK_SETTING_LINE_WIDTH].asInt() == 2);
+    REQUIRE(v[DSK_SETTING_LINE_STYLE].asInt() == 0);
+    REQUIRE(fromJsonVal(v[DSK_SETTING_LINE_COLOR].asString()).StartsWith("#"));
 }
 
 TEST_CASE("DividerInstrument Rendering - bitmap dimensions follow "
           "orientation, length and line width")
 {
     DividerInstrument i(nullptr);
-    wxJSONValue v;
-    wxJSONReader r;
+    Json::Value v;
 
     // Automatic orientation without a parent dashboard falls back to a
     // horizontal line
-    r.Parse("{ \"length\": 120, \"line_width\": 4 }", &v);
+    ParseJSON("{ \"length\": 120, \"line_width\": 4 }", v);
     i.ReadConfig(v);
     wxBitmap bmp = i.Render(1.0);
     REQUIRE(bmp.IsOk());
@@ -82,7 +77,7 @@ TEST_CASE("DividerInstrument Rendering - bitmap dimensions follow "
     REQUIRE(bmp.GetHeight() == 4);
 
     // Explicitly vertical
-    r.Parse("{ \"orientation\": 2 }", &v);
+    ParseJSON("{ \"orientation\": 2 }", v);
     i.ReadConfig(v);
     bmp = i.Render(1.0);
     REQUIRE(bmp.IsOk());
@@ -90,7 +85,7 @@ TEST_CASE("DividerInstrument Rendering - bitmap dimensions follow "
     REQUIRE(bmp.GetHeight() == 120);
 
     // Explicitly horizontal, scaled
-    r.Parse("{ \"orientation\": 1 }", &v);
+    ParseJSON("{ \"orientation\": 1 }", v);
     i.ReadConfig(v);
     bmp = i.Render(2.0);
     REQUIRE(bmp.IsOk());

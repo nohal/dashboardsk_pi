@@ -27,8 +27,6 @@
 #include "dashboardskguiimpl.h"
 #include "dashboardsk.h"
 #include "dashboardsk_pi.h"
-#include "wx/jsonreader.h"
-#include "wx/jsonwriter.h"
 #include <wx/choicdlg.h>
 #include <wx/dialog.h>
 #include <wx/msgdlg.h>
@@ -671,16 +669,12 @@ void MainConfigFrameImpl::m_btnCfgEditOnButtonClick(wxCommandEvent& event)
     m_dsk_pi->GetDSK()->Freeze(true);
     wxWindowPtr<SKDataTreeImpl> dlg(new SKDataTreeImpl(this));
     dlg->SetTitle(_("Configuration data (Edit carefully!)"));
-    wxString s;
-    wxJSONWriter w;
-    w.Write(m_dsk_pi->GetDSK()->GenerateJSONConfig(), s);
+    wxString s = DumpJSON(m_dsk_pi->GetDSK()->GenerateJSONConfig());
     dlg->SetCodeConfig(s);
     dlg->ShowWindowModalThenDo([this, dlg](int retcode) {
         if (retcode == wxID_OK) {
-            wxJSONReader r(wxJSONREADER_STRICT);
-            wxJSONValue v;
-            int ret = r.Parse(dlg->GetValue(), &v);
-            if (0 == ret && v.HasMember("signalk")) {
+            Json::Value v;
+            if (ParseJSON(dlg->GetValue(), v) && v.isMember("signalk")) {
                 m_edited_instrument = nullptr;
                 m_edited_dashboard = nullptr;
                 m_dsk_pi->GetDSK()->ReadConfig(v);
@@ -833,10 +827,9 @@ void MainConfigFrameImpl::m_bpSaveInstrButtonOnButtonClick(
         if (retcode == wxID_OK && m_edited_instrument) {
             wxFileOutputStream output_stream(dlg->GetPath());
             if (output_stream.IsOk()) {
-                wxJSONWriter w;
-                wxString s;
+                wxString s
+                    = DumpJSON(m_edited_instrument->GenerateJSONConfig());
                 wxTextOutputStream tos(output_stream);
-                w.Write(m_edited_instrument->GenerateJSONConfig(), s);
                 tos.WriteString(m_dsk_pi->GetDSK()->SelfTranslate(s));
                 output_stream.Close();
                 LOG_INFO("Cannot save current contents in file '%s'.",
@@ -861,18 +854,18 @@ void MainConfigFrameImpl::m_bpImportInstrButtonOnButtonClick(
             for (auto& p : paths) {
                 wxFileInputStream input_stream(p);
                 if (input_stream.IsOk() && m_edited_dashboard) {
-                    wxJSONValue v;
-                    wxJSONReader r;
+                    Json::Value v;
                     wxString s = LoadStringFromFile(input_stream);
-                    r.Parse(m_dsk_pi->GetDSK()->SelfPopulate(s), &v);
+                    ParseJSON(m_dsk_pi->GetDSK()->SelfPopulate(s), v);
 
                     Instrument* instr = DashboardSK::CreateInstrumentInstance(
-                        DashboardSK::GetClassIndex(v["class"].AsString()),
+                        DashboardSK::GetClassIndex(
+                            fromJsonVal(v["class"].asString())),
                         m_edited_dashboard);
                     if (!instr) {
                         LOG_VERBOSE("DashboardSK_pi: Problem loading "
                                     "instrument with class "
-                            + v["class"].AsString());
+                            + fromJsonVal(v["class"].asString()));
                         wxMessageBox(
                             wxString::Format(
                                 _("The file %s does not seem to be a "
@@ -910,10 +903,8 @@ void MainConfigFrameImpl::m_btnExportDashboardOnButtonClick(
         if (retcode == wxID_OK && m_edited_instrument) {
             wxFileOutputStream output_stream(dlg->GetPath());
             if (output_stream.IsOk()) {
-                wxJSONWriter w;
-                wxString s;
+                wxString s = DumpJSON(m_edited_dashboard->GenerateJSONConfig());
                 wxTextOutputStream tos(output_stream);
-                w.Write(m_edited_dashboard->GenerateJSONConfig(), s);
                 tos.WriteString(m_dsk_pi->GetDSK()->SelfTranslate(s));
                 output_stream.Close();
                 LOG_INFO("Cannot save current contents in file '%s'.",
@@ -938,12 +929,11 @@ void MainConfigFrameImpl::m_btnImportDashboardOnButtonClick(
             for (auto& p : paths) {
                 wxFileInputStream input_stream(p);
                 if (input_stream.IsOk()) {
-                    wxJSONValue v;
-                    wxJSONReader r;
-                    r.Parse(m_dsk_pi->GetDSK()->SelfPopulate(
-                                LoadStringFromFile(input_stream)),
-                        &v);
-                    if (v.HasMember("instruments")) {
+                    Json::Value v;
+                    ParseJSON(m_dsk_pi->GetDSK()->SelfPopulate(
+                                  LoadStringFromFile(input_stream)),
+                        v);
+                    if (v.isMember("instruments")) {
                         m_edited_dashboard = m_dsk_pi->GetDSK()->AddDashboard();
                         m_edited_dashboard->ReadConfig(v);
                         m_edited_instrument = nullptr;
@@ -1099,8 +1089,8 @@ wxString SKPathBrowserImpl::GetSKPath()
 
 /// Set pointer to the SignalK full data object
 ///
-/// \param sk_tree Pointer to the \c wxJSONValue holding the data
-void SKPathBrowserImpl::SetSKTree(wxJSONValue* sk_tree)
+/// \param sk_tree Pointer to the \c Json::Value holding the data
+void SKPathBrowserImpl::SetSKTree(Json::Value* sk_tree)
 {
     m_sk_tree = *sk_tree;
     wxTreeItemId root = m_treePaths->GetRootItem();
@@ -1113,16 +1103,17 @@ void SKPathBrowserImpl::SetSKTree(wxJSONValue* sk_tree)
     m_btnCollapse->SetLabel(_("Collapse"));
 }
 
-void SKPathBrowserImpl::AddChildren(wxTreeItemId parent, wxJSONValue& json_node)
+void SKPathBrowserImpl::AddChildren(wxTreeItemId parent, Json::Value& json_node)
 {
-    if (!json_node.IsNull()) {
-        for (const auto& member : json_node.GetMemberNames()) {
-            if (!(member.IsSameAs("value") || member.IsSameAs("source")
-                    || member.IsSameAs("timestamp"))) {
+    if (!json_node.isNull()) {
+        for (const auto& member : json_node.getMemberNames()) {
+            const wxString wmember = fromJsonVal(member);
+            if (!(wmember.IsSameAs("value") || wmember.IsSameAs("source")
+                    || wmember.IsSameAs("timestamp"))) {
                 // TODO: Isn't there a "legal" node with some of the above
                 // names?
-                wxTreeItemId child = m_treePaths->AppendItem(parent, member);
-                if (member.IsSameAs(m_self)) {
+                wxTreeItemId child = m_treePaths->AppendItem(parent, wmember);
+                if (wmember.IsSameAs(m_self)) {
                     m_self_item_id = child;
                 }
                 AddChildren(child, json_node[member]);
@@ -1173,7 +1164,7 @@ void SKKeyCtrlImpl::SetValue(const wxString& value) const
     m_tSKKey->SetValue(value);
 }
 
-void SKKeyCtrlImpl::SetSKTree(wxJSONValue* sk_tree) { m_sk_tree = sk_tree; }
+void SKKeyCtrlImpl::SetSKTree(Json::Value* sk_tree) { m_sk_tree = sk_tree; }
 
 void SKKeyCtrlImpl::SetSelf(const wxString& self) { m_self = self; }
 

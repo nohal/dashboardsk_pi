@@ -32,7 +32,7 @@
 #include "ocpn_plugin.h"
 #include "pager.h"
 #include "pi_common.h"
-#include "wx/jsonval.h"
+#include <json/json.h>
 #include <unordered_map>
 
 // All the instrument class headers must be included here
@@ -74,12 +74,12 @@ private:
     vector<Dashboard*> m_dashboards;
     /// Storage object for SignalK full data dynamically updated from the
     /// received deltas
-    wxJSONValue m_sk_data;
+    Json::Value m_sk_data;
     /// SignalK self context (aka the key to which vessels.self translates)
     wxString m_self;
     /// Pointer to the point of the JSON document tree in #m_sk_data where the
     /// self context is
-    wxJSONValue* m_self_ptr;
+    Json::Value* m_self_ptr;
     /// Updates to the dashboard are not performed if true
     bool m_frozen;
     /// Map of dashboard pages displayed on canvases
@@ -104,7 +104,7 @@ private:
     /// \param value Value to be processed
     /// \param ts Timestamp
     /// \param source Data source name
-    void ProcessComplexValue(wxJSONValue* parent, const wxJSONValue& value,
+    void ProcessComplexValue(Json::Value* parent, const Json::Value& value,
         const wxDateTime& ts, const wxString& source);
 
 public:
@@ -135,12 +135,12 @@ public:
     /// Read the config from JSON objects
     ///
     /// \param config DashboardSK_pi configuration data
-    void ReadConfig(wxJSONValue& config);
+    void ReadConfig(Json::Value& config);
 
     /// Generate the JSON object with complete configuration of the dashboards
     ///
     /// \return JSON object representing the configuration
-    wxJSONValue GenerateJSONConfig();
+    Json::Value GenerateJSONConfig();
 
     /// Set the color scheme of all the dashboards
     ///
@@ -157,12 +157,12 @@ public:
     ///
     ///\param path SignalK fully qualified path
     ///\return Pointer to the data object or NULL if not found
-    const wxJSONValue* GetSKData(const wxString& path);
+    const Json::Value* GetSKData(const wxString& path);
 
     /// Process a JSON object representing SignalK delta message
     ///
     /// \param message JSON object representing SignalK delta message
-    void SendSKDelta(wxJSONValue& message);
+    void SendSKDelta(Json::Value& message);
 
     /// Return the SignalK context representing the generic "vessels.self"
     const wxString Self() { return m_self; };
@@ -175,10 +175,7 @@ public:
     void SetSelf(const wxString& self)
     {
         m_self = NormalizeID(self);
-        if (!m_sk_data["vessels"].HasMember(m_self)) {
-            m_sk_data["vessels"][Self()].AddComment("Own vessel data");
-        }
-        m_self_ptr = &m_sk_data["vessels"][Self()];
+        m_self_ptr = &m_sk_data["vessels"][Self().ToStdString()];
     };
 
     /// Normalize the vessel id (MMSI, UUID, URL...)
@@ -339,7 +336,7 @@ public:
     /// Get pointer to the SignalK data
     ///
     /// \return Pointer to the data
-    wxJSONValue* GetSignalKTree();
+    Json::Value* GetSignalKTree();
 
     /// Force redraw of the instrument on the next overlay refresh
     void ForceRedraw()

@@ -29,9 +29,9 @@
 
 #include "instrument.h"
 #include "pi_common.h"
-#include "wx/jsonval.h"
 #include <chrono>
 #include <deque>
+#include <json/json.h>
 #include <wx/clrpicker.h>
 
 #define BORDER_SIZE 4 * scale
@@ -51,40 +51,40 @@
 #define DSK_SHI_INSTR_MAX_HEIGHT 500
 
 // Setting name, default value, label, dskConfigCtrl control type, control
-// parameters string, wxJSONValue conversion function, getter function
+// parameters string, Json::Value conversion function, getter function
 #define DSK_SHI_SETTINGS                                                       \
     X(0, DSK_SETTING_SK_KEY, wxString(wxEmptyString), _("SK Key"),             \
-        SignalKKeyCtrl, wxEmptyString, AsString, GetStringSetting)             \
+        SignalKKeyCtrl, wxEmptyString, asString, GetStringSetting)             \
     X(1, DSK_SETTING_FORMAT, 0, _("Format"), ChoiceCtrl,                       \
-        ConcatChoiceStrings(m_supported_formats), AsInt, GetIntSetting)        \
+        ConcatChoiceStrings(m_supported_formats), asInt, GetIntSetting)        \
     X(2, DSK_SETTING_TRANSFORMATION, 0, _("Transformation"), ChoiceCtrl,       \
-        ConcatChoiceStrings(m_supported_transforms), AsInt, GetIntSetting)     \
+        ConcatChoiceStrings(m_supported_transforms), asInt, GetIntSetting)     \
     X(3, DSK_SETTING_ORDER, 0, _("Order"), ChoiceCtrl,                         \
-        ConcatChoiceStrings(m_supported_orders), AsInt, GetIntSetting)         \
+        ConcatChoiceStrings(m_supported_orders), asInt, GetIntSetting)         \
     X(4, DSK_SETTING_HISTORY, 0, _("History"), ChoiceCtrl,                     \
-        ConcatChoiceStrings(m_supported_histories), AsInt, GetIntSetting)      \
+        ConcatChoiceStrings(m_supported_histories), asInt, GetIntSetting)      \
     X(5, DSK_SETTING_INSTR_WIDTH, m_instrument_width, _("Instrument width"),   \
         SpinCtrl,                                                              \
         STRINGIFY(DSK_SHI_INSTR_MIN_WIDTH) ";" STRINGIFY(                      \
             DSK_SHI_INSTR_MAX_WIDTH),                                          \
-        AsInt, GetIntSetting)                                                  \
+        asInt, GetIntSetting)                                                  \
     X(6, DSK_SETTING_INSTR_HEIGHT, m_instrument_height,                        \
         _("Instrument height"), SpinCtrl,                                      \
         STRINGIFY(DSK_SHI_INSTR_MIN_WIDTH) ";" STRINGIFY(                      \
             DSK_SHI_INSTR_MAX_WIDTH),                                          \
-        AsInt, GetIntSetting)                                                  \
+        asInt, GetIntSetting)                                                  \
     X(7, DSK_SETTING_TITLE_FG, DSK_SHI_COLOR_TITLE_FG, _("Title color"),       \
-        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
+        ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)           \
     X(8, DSK_SETTING_BODY_BG, DSK_SHI_COLOR_BODY_BG, _("Background"),          \
-        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
+        ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)           \
     X(9, DSK_SETTING_BODY_FG, DSK_SHI_COLOR_BODY_FG, _("Graph color"),         \
-        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
+        ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)           \
     X(10, DSK_SETTING_MEAN_FG, DSK_SHI_COLOR_MEAN_FG, _("Mean color"),         \
-        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
+        ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)           \
     X(11, DSK_SETTING_TIME_FG, DSK_SHI_COLOR_TIME_FG, _("Time color"),         \
-        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
+        ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)           \
     X(12, DSK_SETTING_BORDER_COLOR, DSK_SHI_COLOR_BORDER, _("Border color"),   \
-        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)
+        ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)
 
 PLUGIN_BEGIN_NAMESPACE
 
@@ -295,9 +295,9 @@ public:
 
     wxBitmap Render(double scale) override;
 
-    void ReadConfig(wxJSONValue& config) override;
+    void ReadConfig(Json::Value& config) override;
 
-    wxJSONValue GenerateJSONConfig() override;
+    Json::Value GenerateJSONConfig() override;
 
     void SetSetting(const wxString& key, const wxString& value) override;
     void SetSetting(const wxString& key, const int& value) override;

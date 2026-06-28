@@ -29,7 +29,7 @@
 
 #include "instrument.h"
 #include "pi_common.h"
-#include "wx/jsonval.h"
+#include <json/json.h>
 #include <wx/clrpicker.h>
 
 #define BORDER_SIZE 4 * scale
@@ -55,53 +55,53 @@
 #define DSK_SNI_SMOOTHING_MAX 9
 
 // Setting name, default value, label, dskConfigCtrl control type, control
-// parameters string, wxJSONValue conversion function, getter function
+// parameters string, Json::Value conversion function, getter function
 #define DSK_SNI_SETTINGS                                                       \
     X(0, DSK_SETTING_SK_KEY, wxString(wxEmptyString), _("SK Key"),             \
-        SignalKKeyCtrl, wxEmptyString, AsString, GetStringSetting)             \
+        SignalKKeyCtrl, wxEmptyString, asString, GetStringSetting)             \
     X(1, DSK_SETTING_FORMAT, 0, _("Format"), ChoiceCtrl,                       \
-        ConcatChoiceStrings(m_supported_formats), AsInt, GetIntSetting)        \
+        ConcatChoiceStrings(m_supported_formats), asInt, GetIntSetting)        \
     X(2, DSK_SETTING_VALUE_SUFFIX, wxString(wxEmptyString), _("Value suffix"), \
-        TextCtrl, wxEmptyString, AsString, GetStringSetting)                   \
+        TextCtrl, wxEmptyString, asString, GetStringSetting)                   \
     X(3, DSK_SETTING_TRANSFORMATION, 0, _("Transformation"), ChoiceCtrl,       \
-        ConcatChoiceStrings(m_supported_transforms), AsInt, GetIntSetting)     \
+        ConcatChoiceStrings(m_supported_transforms), asInt, GetIntSetting)     \
     X(4, DSK_SETTING_ZONES, wxString(wxEmptyString), _("Zones"),               \
-        SignalKZonesCtrl, wxEmptyString, AsString, GetStringSetting)           \
+        SignalKZonesCtrl, wxEmptyString, asString, GetStringSetting)           \
     X(5, DSK_SETTING_SMOOTHING, m_smoothing, _("Data smoothing"), SpinCtrl,    \
-        "0;" STRINGIFY(DSK_SNI_SMOOTHING_MAX), AsInt, GetIntSetting)           \
+        "0;" STRINGIFY(DSK_SNI_SMOOTHING_MAX), asInt, GetIntSetting)           \
     X(6, DSK_SETTING_TITLE_FONT, m_title_font.GetPointSize(), _("Title size"), \
-        SpinCtrl, "5;40", AsInt, GetIntSetting)                                \
+        SpinCtrl, "5;40", asInt, GetIntSetting)                                \
     X(7, DSK_SETTING_BODY_FONT, m_body_font.GetPointSize(), _("Body size"),    \
-        SpinCtrl, "5;40", AsInt, GetIntSetting)                                \
+        SpinCtrl, "5;40", asInt, GetIntSetting)                                \
     X(8, DSK_SETTING_SUFFIX_FONT, m_suffix_font.GetPointSize(),                \
-        _("Suffix size"), SpinCtrl, "5;40", AsInt, GetIntSetting)              \
+        _("Suffix size"), SpinCtrl, "5;40", asInt, GetIntSetting)              \
     X(9, DSK_SETTING_TITLE_BG, DSK_SNI_COLOR_TITLE_BG, _("Title background"),  \
-        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
+        ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)           \
     X(10, DSK_SETTING_TITLE_FG, DSK_SNI_COLOR_TITLE_FG, _("Title color"),      \
-        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
+        ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)           \
     X(11, DSK_SETTING_BODY_BG, DSK_SNI_COLOR_BODY_BG, _("Body background"),    \
-        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
+        ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)           \
     X(12, DSK_SETTING_BODY_FG, DSK_SNI_COLOR_BODY_FG, _("Body color"),         \
-        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
+        ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)           \
     X(13, DSK_SETTING_ALERT_BG, DSK_SNI_COLOR_ALERT_BG, _("Alert background"), \
-        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
+        ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)           \
     X(14, DSK_SETTING_ALERT_FG, DSK_SNI_COLOR_ALERT_FG, _("Alert color"),      \
-        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
+        ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)           \
     X(15, DSK_SETTING_WARN_BG, DSK_SNI_COLOR_WARN_BG, _("Warning background"), \
-        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
+        ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)           \
     X(16, DSK_SETTING_WARN_FG, DSK_SNI_COLOR_WARN_FG, _("Warning color"),      \
-        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
+        ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)           \
     X(17, DSK_SETTING_ALRM_BG, DSK_SNI_COLOR_ALRM_BG, _("Alarm background"),   \
-        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
+        ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)           \
     X(18, DSK_SETTING_ALRM_FG, DSK_SNI_COLOR_ALRM_FG, _("Alarm color"),        \
-        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
+        ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)           \
     X(19, DSK_SETTING_EMERG_BG, DSK_SNI_COLOR_EMERG_BG,                        \
-        _("Emergency background"), ColourPickerCtrl, wxEmptyString, AsString,  \
+        _("Emergency background"), ColourPickerCtrl, wxEmptyString, asString,  \
         GetStringSetting)                                                      \
     X(20, DSK_SETTING_EMERG_FG, DSK_SNI_COLOR_EMERG_FG, _("Emergency color"),  \
-        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
+        ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)           \
     X(21, DSK_SETTING_BORDER_COLOR, DSK_SNI_COLOR_BORDER, _("Border color"),   \
-        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)
+        ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)
 
 PLUGIN_BEGIN_NAMESPACE
 
@@ -220,9 +220,9 @@ public:
 
     wxBitmap Render(double scale) override;
 
-    void ReadConfig(wxJSONValue& config) override;
+    void ReadConfig(Json::Value& config) override;
 
-    wxJSONValue GenerateJSONConfig() override;
+    Json::Value GenerateJSONConfig() override;
 
     void SetSetting(const wxString& key, const wxString& value) override;
     void SetSetting(const wxString& key, const int& value) override;

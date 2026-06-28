@@ -68,31 +68,31 @@ wxColor Instrument::GetDimedColor(const wxColor& c) const
     }
 }
 
-void Instrument::ReadConfig(wxJSONValue& config)
+void Instrument::ReadConfig(Json::Value& config)
 {
-    if (config.HasMember("name")) {
-        m_name = config["name"].AsString();
+    if (config.isMember("name")) {
+        m_name = fromJsonVal(config["name"].asString());
     }
-    if (config.HasMember("title")) {
-        m_title = config["title"].AsString();
+    if (config.isMember("title")) {
+        m_title = fromJsonVal(config["title"].asString());
     }
-    if (config.HasMember("allowed_age")) {
-        m_allowed_age_sec = config["allowed_age"].AsInt();
+    if (config.isMember("allowed_age")) {
+        m_allowed_age_sec = config["allowed_age"].asInt();
     }
-    if (config.HasMember(DSK_SETTING_ZONES)) {
-        m_zones
-            = Zone::ParseZonesFromString(config[DSK_SETTING_ZONES].AsString());
+    if (config.isMember(DSK_SETTING_ZONES)) {
+        m_zones = Zone::ParseZonesFromString(
+            fromJsonVal(config[DSK_SETTING_ZONES].asString()));
     }
 }
 
-wxJSONValue Instrument::GenerateJSONConfig()
+Json::Value Instrument::GenerateJSONConfig()
 {
-    wxJSONValue v;
-    v["name"] = m_name;
-    v["title"] = m_title;
-    v["class"] = GetClass();
+    Json::Value v;
+    v["name"] = toJson(m_name);
+    v["title"] = toJson(m_title);
+    v["class"] = toJson(GetClass());
     v["allowed_age"] = m_allowed_age_sec;
-    v[DSK_SETTING_ZONES] = Zone::ZonesToString(m_zones);
+    v[DSK_SETTING_ZONES] = toJson(Zone::ZonesToString(m_zones));
     return v;
 }
 
@@ -348,24 +348,25 @@ const wxString Instrument::ConcatChoiceStrings(wxArrayString arr)
     return s;
 }
 
-void Instrument::ConfigureFromMeta(wxJSONValue& sk_meta)
+void Instrument::ConfigureFromMeta(Json::Value& sk_meta)
 {
-    if (sk_meta.HasMember("shortName") && m_title != DUMMY_TITLE) {
-        m_title = sk_meta["shortName"].AsString();
+    if (sk_meta.isMember("shortName") && m_title != DUMMY_TITLE) {
+        m_title = fromJsonVal(sk_meta["shortName"].asString());
     }
-    if (sk_meta.HasMember("displayName") && m_name.StartsWith("New ")) {
-        m_name = sk_meta["displayName"].AsString();
-    } else if (sk_meta.HasMember("longName") && m_name.StartsWith("New ")) {
-        m_name = sk_meta["longName"].AsString();
+    if (sk_meta.isMember("displayName") && m_name.StartsWith("New ")) {
+        m_name = fromJsonVal(sk_meta["displayName"].asString());
+    } else if (sk_meta.isMember("longName") && m_name.StartsWith("New ")) {
+        m_name = fromJsonVal(sk_meta["longName"].asString());
     }
-    if (sk_meta.HasMember("zones") && sk_meta["zones"].IsArray()) {
-        for (int i = 0; i < sk_meta["zones"].Size(); i++) {
-            m_zones.emplace_back(Zone(sk_meta["zones"][i]["lower"].AsDouble(),
-                sk_meta["zones"][i]["upper"].AsDouble(),
-                Zone::StateFromString(sk_meta["zones"][i]["state"].AsString()),
-                sk_meta["zones"][i].HasMember("message")
-                    ? sk_meta["zones"][i]["message"].AsString()
-                    : ""));
+    if (sk_meta.isMember("zones") && sk_meta["zones"].isArray()) {
+        for (int i = 0; i < (int)sk_meta["zones"].size(); i++) {
+            m_zones.emplace_back(Zone(sk_meta["zones"][i]["lower"].asDouble(),
+                sk_meta["zones"][i]["upper"].asDouble(),
+                Zone::StateFromString(
+                    fromJsonVal(sk_meta["zones"][i]["state"].asString())),
+                sk_meta["zones"][i].isMember("message")
+                    ? fromJsonVal(sk_meta["zones"][i]["message"].asString())
+                    : wxString()));
         }
     }
     // TODO: displayScale (not universal, do in SimpleGauge where we need it or

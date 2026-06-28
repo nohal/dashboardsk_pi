@@ -130,11 +130,11 @@ wxBitmap SimpleTextInstrument::Render(double scale)
         m_needs_redraw = true;
         m_last_change = std::chrono::system_clock::now();
         m_timed_out = false;
-        const wxJSONValue* val = m_parent_dashboard->GetSKData(m_sk_key);
+        const Json::Value* val = m_parent_dashboard->GetSKData(m_sk_key);
         if (val) {
             m_last_change = std::chrono::system_clock::now();
-            wxJSONValue v = val->Get("value", wxJSONValue(value));
-            value = v.AsString();
+            Json::Value v = val->get("value", toJson(value));
+            value = fromJsonVal(v.asString());
         }
     }
 
@@ -199,23 +199,23 @@ wxBitmap SimpleTextInstrument::Render(double scale)
     return m_bmp;
 }
 
-void SimpleTextInstrument::ReadConfig(wxJSONValue& config)
+void SimpleTextInstrument::ReadConfig(Json::Value& config)
 {
     Instrument::ReadConfig(config);
 #define X(a, b, c, d, e, f, g, h)                                              \
-    if (config.HasMember(b)) {                                                 \
-        SetSetting(b, config[b].g());                                          \
+    if (config.isMember(b)) {                                                  \
+        SetSetting(b, fromJsonVal(config[b].g()));                             \
     }
     DSK_STI_SETTINGS
 #undef X
 }
 
-wxJSONValue SimpleTextInstrument::GenerateJSONConfig()
+Json::Value SimpleTextInstrument::GenerateJSONConfig()
 {
     // Shared parameters from the parent
-    wxJSONValue v = Instrument::GenerateJSONConfig();
+    Json::Value v = Instrument::GenerateJSONConfig();
     // my own parameters
-#define X(a, b, c, d, e, f, g, h) v[b] = h(b);
+#define X(a, b, c, d, e, f, g, h) v[b] = toJson(h(b));
     DSK_STI_SETTINGS
 #undef X
     return v;

@@ -60,7 +60,7 @@ private:
     Instrument* m_edited_instrument;
     /// Copy of the original configuration used to revert all the changes on
     /// Cancel
-    wxJSONValue m_orig_config;
+    Json::Value m_orig_config;
 
     /// Enables or disables form items
     /// \param dashboard_selection Desired state for the dashboard selection
@@ -337,8 +337,8 @@ public:
 
     /// Set pointer to the SignalK full data object
     ///
-    /// \param sk_tree Pointer to the \c wxJSONValue holding the data
-    void SetSKTree(wxJSONValue* sk_tree);
+    /// \param sk_tree Pointer to the \c Json::Value holding the data
+    void SetSKTree(Json::Value* sk_tree);
 
     // Set ID of own vessel
     /// Must be called before \c SetSKTree
@@ -355,8 +355,8 @@ protected:
     virtual wxSize DoGetBestSize() const;
 
 private:
-    /// Pointer to the \c wxJSONValue object holding SignalK data
-    wxJSONValue* m_sk_tree;
+    /// Pointer to the \c Json::Value object holding SignalK data
+    Json::Value* m_sk_tree;
 
     /// ID of the own vessel
     wxString m_self;
@@ -400,8 +400,8 @@ public:
 
     /// Set pointer to the SignalK full data object
     ///
-    /// \param sk_tree Pointer to the \c wxJSONValue holding the data
-    void SetSKTree(wxJSONValue* sk_tree);
+    /// \param sk_tree Pointer to the \c Json::Value holding the data
+    void SetSKTree(Json::Value* sk_tree);
 
     /// Set ID of own vessel
     /// Must be called before \c SetSKTree
@@ -420,10 +420,10 @@ private:
     /// \param parent ID of the parent tree node
     /// \param json_node Reference to the SignalK data node to be used for
     /// population
-    void AddChildren(wxTreeItemId parent, wxJSONValue& json_node);
+    void AddChildren(wxTreeItemId parent, Json::Value& json_node);
 
     /// Pointer to the object holding the SignalK data
-    wxJSONValue m_sk_tree;
+    Json::Value m_sk_tree;
 
     /// ID of the own vessel
     wxString m_self;

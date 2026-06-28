@@ -139,13 +139,13 @@ wxBitmap SimplePositionInstrument::Render(double scale)
         m_needs_redraw = true;
         m_last_change = std::chrono::system_clock::now();
         m_timed_out = false;
-        const wxJSONValue* val = m_parent_dashboard->GetSKData(m_sk_key);
+        const Json::Value* val = m_parent_dashboard->GetSKData(m_sk_key);
         if (val) {
-            wxJSONValue v = *val;
-            if (v.HasMember("latitude") && v.HasMember("longitude")) {
+            Json::Value v = *val;
+            if (v.isMember("latitude") && v.isMember("longitude")) {
                 m_last_change = std::chrono::system_clock::now();
-                double lat = v["latitude"]["value"].AsDouble();
-                double lon = v["longitude"]["value"].AsDouble();
+                double lat = v["latitude"]["value"].asDouble();
+                double lon = v["longitude"]["value"].asDouble();
                 switch (m_format) {
                 case Instrument::position_format::deg_decimal_min: {
                     value = wxString::Format(
@@ -274,23 +274,23 @@ wxBitmap SimplePositionInstrument::Render(double scale)
     return m_bmp;
 }
 
-void SimplePositionInstrument::ReadConfig(wxJSONValue& config)
+void SimplePositionInstrument::ReadConfig(Json::Value& config)
 {
     Instrument::ReadConfig(config);
 #define X(a, b, c, d, e, f, g, h)                                              \
-    if (config.HasMember(b)) {                                                 \
-        SetSetting(b, config[b].g());                                          \
+    if (config.isMember(b)) {                                                  \
+        SetSetting(b, fromJsonVal(config[b].g()));                             \
     }
     DSK_SPI_SETTINGS
 #undef X
 }
 
-wxJSONValue SimplePositionInstrument::GenerateJSONConfig()
+Json::Value SimplePositionInstrument::GenerateJSONConfig()
 {
     // Shared parameters from the parent
-    wxJSONValue v = Instrument::GenerateJSONConfig();
+    Json::Value v = Instrument::GenerateJSONConfig();
     // my own parameters
-#define X(a, b, c, d, e, f, g, h) v[b] = h(b);
+#define X(a, b, c, d, e, f, g, h) v[b] = toJson(h(b));
     DSK_SPI_SETTINGS
 #undef X
     return v;

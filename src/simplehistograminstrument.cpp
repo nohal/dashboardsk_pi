@@ -189,11 +189,11 @@ void SimpleHistogramInstrument::ProcessData()
         m_needs_redraw = true;
         m_last_change = std::chrono::system_clock::now();
         m_timed_out = false;
-        const wxJSONValue* val = m_parent_dashboard->GetSKData(m_sk_key);
+        const Json::Value* val = m_parent_dashboard->GetSKData(m_sk_key);
         if (val) {
-            wxJSONValue v = val->Get("value", *val);
-            double dval = Transform(v.IsDouble() ? v.AsDouble()
-                    : v.IsLong()                 ? v.AsLong()
+            Json::Value v = val->get("value", *val);
+            double dval = Transform(v.isDouble() ? v.asDouble()
+                    : v.isInt64()                ? v.asInt64()
                                                  : 0.0);
             m_old_value = dval;
             m_history.Add(dval);
@@ -449,24 +449,24 @@ wxBitmap SimpleHistogramInstrument::Render(double scale)
     return m_bmp;
 }
 
-void SimpleHistogramInstrument::ReadConfig(wxJSONValue& config)
+void SimpleHistogramInstrument::ReadConfig(Json::Value& config)
 {
     Instrument::ReadConfig(config);
 #define X(a, b, c, d, e, f, g, h)                                              \
-    if (config.HasMember(b)) {                                                 \
-        SetSetting(b, config[b].g());                                          \
+    if (config.isMember(b)) {                                                  \
+        SetSetting(b, fromJsonVal(config[b].g()));                             \
     }
     DSK_SHI_SETTINGS
 #undef X
 }
 
-wxJSONValue SimpleHistogramInstrument::GenerateJSONConfig()
+Json::Value SimpleHistogramInstrument::GenerateJSONConfig()
 {
     // Shared parameters from the parent
-    wxJSONValue v = Instrument::GenerateJSONConfig();
+    Json::Value v = Instrument::GenerateJSONConfig();
 #define X(a, b, c, d, e, f, g, h)                                              \
     if (!wxString(b).IsSameAs(DSK_SETTING_ZONES)) {                            \
-        v[b] = h(b);                                                           \
+        v[b] = toJson(h(b));                                                   \
     }
     DSK_SHI_SETTINGS
 #undef X

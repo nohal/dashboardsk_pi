@@ -27,8 +27,6 @@
 #include <catch2/catch_test_macros.hpp>
 
 #include "pi_common.h"
-#include "wx/jsonreader.h"
-#include "wx/jsonval.h"
 
 #include "dashboard.h"
 #include "dashboardsk.h"
@@ -41,36 +39,35 @@ TEST_CASE("Dashboard Creation - properties set to defaults")
 {
     Dashboard d(nullptr);
 
-    wxJSONValue config = d.GenerateJSONConfig();
-    REQUIRE(config["name"].AsString().IsSameAs(wxEmptyString));
-    REQUIRE(config["canvas"].AsInt() == 0);
-    REQUIRE((Dashboard::anchor_edge)config["anchor"].AsInt()
+    Json::Value config = d.GenerateJSONConfig();
+    REQUIRE(fromJsonVal(config["name"].asString()).IsSameAs(wxEmptyString));
+    REQUIRE(config["canvas"].asInt() == 0);
+    REQUIRE((Dashboard::anchor_edge)config["anchor"].asInt()
         == Dashboard::anchor_edge::bottom);
-    REQUIRE(config["offset_h"].AsInt() == DEFAULT_OFFSET_X);
-    REQUIRE(config["offset_v"].AsInt() == DEFAULT_OFFSET_Y);
-    REQUIRE(config["spacing_h"].AsInt() == DEFAULT_SPACING_H);
-    REQUIRE(config["spacing_v"].AsInt() == DEFAULT_SPACING_V);
-    REQUIRE(config["enabled"].AsBool() == true);
+    REQUIRE(config["offset_h"].asInt() == DEFAULT_OFFSET_X);
+    REQUIRE(config["offset_v"].asInt() == DEFAULT_OFFSET_Y);
+    REQUIRE(config["spacing_h"].asInt() == DEFAULT_SPACING_H);
+    REQUIRE(config["spacing_v"].asInt() == DEFAULT_SPACING_V);
+    REQUIRE(config["enabled"].asBool() == true);
 }
 
 TEST_CASE("Dashboard Configuration Storage - if JSON not complete, defaults "
           "have to stay")
 {
     Dashboard d(nullptr);
-    wxJSONValue config;
-    wxJSONReader r;
+    Json::Value config;
 
-    r.Parse("{ \"name\": \"My Dashboard\" }", &config);
+    ParseJSON("{ \"name\": \"My Dashboard\" }", config);
     d.ReadConfig(config);
     config = d.GenerateJSONConfig();
 
-    REQUIRE(config["name"].AsString().IsSameAs("My Dashboard"));
-    REQUIRE(config["canvas"].AsInt() == 0);
-    REQUIRE((Dashboard::anchor_edge)config["anchor"].AsInt()
+    REQUIRE(fromJsonVal(config["name"].asString()).IsSameAs("My Dashboard"));
+    REQUIRE(config["canvas"].asInt() == 0);
+    REQUIRE((Dashboard::anchor_edge)config["anchor"].asInt()
         == Dashboard::anchor_edge::bottom);
-    REQUIRE(config["offset_h"].AsInt() == DEFAULT_OFFSET_X);
-    REQUIRE(config["offset_v"].AsInt() == DEFAULT_OFFSET_Y);
-    REQUIRE(config["spacing_h"].AsInt() == DEFAULT_SPACING_H);
-    REQUIRE(config["spacing_v"].AsInt() == DEFAULT_SPACING_V);
-    REQUIRE(config["enabled"].AsBool() == true);
+    REQUIRE(config["offset_h"].asInt() == DEFAULT_OFFSET_X);
+    REQUIRE(config["offset_v"].asInt() == DEFAULT_OFFSET_Y);
+    REQUIRE(config["spacing_h"].asInt() == DEFAULT_SPACING_H);
+    REQUIRE(config["spacing_v"].asInt() == DEFAULT_SPACING_V);
+    REQUIRE(config["enabled"].asBool() == true);
 }

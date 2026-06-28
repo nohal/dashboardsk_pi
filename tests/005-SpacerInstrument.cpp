@@ -27,9 +27,6 @@
 #include <catch2/catch_test_macros.hpp>
 
 #include "pi_common.h"
-#include "wx/jsonreader.h"
-#include "wx/jsonval.h"
-#include "wx/jsonwriter.h"
 
 #include "dashboard.h"
 #include "dashboardsk.h"
@@ -51,25 +48,23 @@ TEST_CASE("SpacerInstrument Configuration Storage - if JSON not "
           "complete, defaults have to stay")
 {
     SpacerInstrument i(nullptr);
-    wxJSONValue v;
-    wxJSONReader r;
+    Json::Value v;
 
-    r.Parse("{ \"instrument_width\": 50 }", &v);
+    ParseJSON("{ \"instrument_width\": 50 }", v);
     i.ReadConfig(v);
     v = i.GenerateJSONConfig();
 
-    REQUIRE(v[DSK_SETTING_INSTR_WIDTH].AsInt() == 50);
-    REQUIRE(v[DSK_SETTING_INSTR_HEIGHT].AsInt() == 20);
+    REQUIRE(v[DSK_SETTING_INSTR_WIDTH].asInt() == 50);
+    REQUIRE(v[DSK_SETTING_INSTR_HEIGHT].asInt() == 20);
 }
 
 TEST_CASE("SpacerInstrument Rendering - bitmap dimensions follow the "
           "configured size")
 {
     SpacerInstrument i(nullptr);
-    wxJSONValue v;
-    wxJSONReader r;
+    Json::Value v;
 
-    r.Parse("{ \"instrument_width\": 50, \"instrument_height\": 30 }", &v);
+    ParseJSON("{ \"instrument_width\": 50, \"instrument_height\": 30 }", v);
     i.ReadConfig(v);
     wxBitmap bmp = i.Render(1.0);
     REQUIRE(bmp.IsOk());
@@ -77,7 +72,7 @@ TEST_CASE("SpacerInstrument Rendering - bitmap dimensions follow the "
     REQUIRE(bmp.GetHeight() == 30);
 
     // Scaled rendering
-    r.Parse("{ \"instrument_height\": 40 }", &v);
+    ParseJSON("{ \"instrument_height\": 40 }", v);
     i.ReadConfig(v);
     bmp = i.Render(2.0);
     REQUIRE(bmp.IsOk());

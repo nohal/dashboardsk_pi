@@ -29,20 +29,20 @@
 
 #include "instrument.h"
 #include "pi_common.h"
-#include "wx/jsonval.h"
+#include <json/json.h>
 
 #define DSK_SPACER_MIN_SIZE 1
 #define DSK_SPACER_MAX_SIZE 500
 
 // Setting name, default value, label, dskConfigCtrl control type, control
-// parameters string, wxJSONValue conversion function, getter function
+// parameters string, Json::Value conversion function, getter function
 #define DSK_SPACER_SETTINGS                                                    \
     X(0, DSK_SETTING_INSTR_WIDTH, m_instrument_width, _("Width"), SpinCtrl,    \
         STRINGIFY(DSK_SPACER_MIN_SIZE) ";" STRINGIFY(DSK_SPACER_MAX_SIZE),     \
-        AsInt, GetIntSetting)                                                  \
+        asInt, GetIntSetting)                                                  \
     X(1, DSK_SETTING_INSTR_HEIGHT, m_instrument_height, _("Height"), SpinCtrl, \
         STRINGIFY(DSK_SPACER_MIN_SIZE) ";" STRINGIFY(DSK_SPACER_MAX_SIZE),     \
-        AsInt, GetIntSetting)
+        asInt, GetIntSetting)
 
 PLUGIN_BEGIN_NAMESPACE
 
@@ -108,9 +108,9 @@ public:
 
     wxBitmap Render(double scale) override;
 
-    void ReadConfig(wxJSONValue& config) override;
+    void ReadConfig(Json::Value& config) override;
 
-    wxJSONValue GenerateJSONConfig() override;
+    Json::Value GenerateJSONConfig() override;
 
     void SetSetting(const wxString& key, const wxString& value) override;
     void SetSetting(const wxString& key, const int& value) override;

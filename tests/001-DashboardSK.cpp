@@ -27,9 +27,6 @@
 #include <catch2/catch_test_macros.hpp>
 
 #include "pi_common.h"
-#include "wx/jsonreader.h"
-#include "wx/jsonval.h"
-#include "wx/jsonwriter.h"
 #include <wx/wfstream.h>
 
 #include "dashboard.h"
@@ -77,20 +74,15 @@ TEST_CASE("DashboardSK - ID normalization")
 TEST_CASE("DashboardSK - Meta Delta")
 {
     DashboardSK d(wxEmptyString);
-    wxJSONValue v;
-    wxJSONReader r;
-    wxFileInputStream s("samples/delta/docs-data_model_meta_deltas.json");
-    r.Parse(s, &v);
+    Json::Value v;
+    ParseJSONFile("samples/delta/docs-data_model_meta_deltas.json", v);
     d.SendSKDelta(v);
-    wxJSONWriter w;
-    wxString st;
-    w.Write(*d.GetSignalKTree(), st);
 
     REQUIRE((*d.GetSignalKTree())["vessels"]["urn:mrn:imo:mmsi:234567890"]
                                  ["environment"]["wind"]["speedApparent"]
-                                     .HasMember("meta"));
+                                     .isMember("meta"));
     REQUIRE((*d.GetSignalKTree())["vessels"]["urn:mrn:imo:mmsi:234567890"]
                                  ["environment"]["wind"]["speedApparent"]
                                  ["meta"]["zones"]
-                                     .IsArray());
+                                     .isArray());
 }

@@ -173,23 +173,23 @@ wxBitmap DividerInstrument::Render(double scale)
     return m_bmp;
 }
 
-void DividerInstrument::ReadConfig(wxJSONValue& config)
+void DividerInstrument::ReadConfig(Json::Value& config)
 {
     Instrument::ReadConfig(config);
 #define X(a, b, c, d, e, f, g, h)                                              \
-    if (config.HasMember(b)) {                                                 \
-        SetSetting(b, config[b].g());                                          \
+    if (config.isMember(b)) {                                                  \
+        SetSetting(b, fromJsonVal(config[b].g()));                             \
     }
     DSK_DIV_SETTINGS
 #undef X
 }
 
-wxJSONValue DividerInstrument::GenerateJSONConfig()
+Json::Value DividerInstrument::GenerateJSONConfig()
 {
     // Shared parameters from the parent
-    wxJSONValue v = Instrument::GenerateJSONConfig();
+    Json::Value v = Instrument::GenerateJSONConfig();
     // my own parameters
-#define X(a, b, c, d, e, f, g, h) v[b] = h(b);
+#define X(a, b, c, d, e, f, g, h) v[b] = toJson(h(b));
     DSK_DIV_SETTINGS
 #undef X
     return v;

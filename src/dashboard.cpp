@@ -169,43 +169,45 @@ void Dashboard::SetColorScheme(int cs)
 
 const int Dashboard::GetColorScheme() { return m_color_scheme; }
 
-void Dashboard::ReadConfig(wxJSONValue& config)
+void Dashboard::ReadConfig(Json::Value& config)
 {
     LOG_VERBOSE("DashboardSK_pi: Reading dashboard config");
-    if (config.HasMember("name"))
-        m_name = config["name"].AsString();
-    if (config.HasMember("canvas"))
-        m_canvas_nr = config["canvas"].AsInt();
-    if (config.HasMember("page")) {
-        m_page_nr = config["page"].AsInt();
+    if (config.isMember("name"))
+        m_name = fromJsonVal(config["name"].asString());
+    if (config.isMember("canvas"))
+        m_canvas_nr = config["canvas"].asInt();
+    if (config.isMember("page")) {
+        m_page_nr = config["page"].asInt();
         m_parent->AddPageToCanvas(m_canvas_nr, m_page_nr);
     }
-    if (config.HasMember("anchor"))
-        m_anchor = (anchor_edge)config["anchor"].AsInt();
-    if (config.HasMember("offset_h"))
-        m_offset_x = config["offset_h"].AsInt();
-    if (config.HasMember("offset_v"))
-        m_offset_y = config["offset_v"].AsInt();
-    if (config.HasMember("spacing_h"))
-        m_spacing_h = config["spacing_h"].AsInt();
-    if (config.HasMember("spacing_v"))
-        m_spacing_v = config["spacing_v"].AsInt();
-    if (config.HasMember("enabled"))
-        m_enabled = config["enabled"].AsBool();
-    if (config.HasMember("instruments")) {
+    if (config.isMember("anchor"))
+        m_anchor = (anchor_edge)config["anchor"].asInt();
+    if (config.isMember("offset_h"))
+        m_offset_x = config["offset_h"].asInt();
+    if (config.isMember("offset_v"))
+        m_offset_y = config["offset_v"].asInt();
+    if (config.isMember("spacing_h"))
+        m_spacing_h = config["spacing_h"].asInt();
+    if (config.isMember("spacing_v"))
+        m_spacing_v = config["spacing_v"].asInt();
+    if (config.isMember("enabled"))
+        m_enabled = config["enabled"].asBool();
+    if (config.isMember("instruments")) {
         LOG_VERBOSE("DashboardSK_pi: Dashboard has instruments");
-        if (config["instruments"].IsArray()) {
+        if (config["instruments"].isArray()) {
             LOG_VERBOSE("DashboardSK_pi: instruments are an array");
-            for (int i = 0; i < config["instruments"].Size(); i++) {
+            for (int i = 0; i < (int)config["instruments"].size(); i++) {
                 auto instr = DashboardSK::CreateInstrumentInstance(
                     DashboardSK::GetClassIndex(
-                        config["instruments"][i]["config"]["class"].AsString()),
+                        fromJsonVal(config["instruments"][i]["config"]["class"]
+                                .asString())),
                     this);
                 if (!instr) {
                     LOG_VERBOSE(
                         "DashboardSK_pi: Problem loading instrument with class "
-                        + config["instruments"][i]["config"]["class"]
-                            .AsString());
+                        + fromJsonVal(
+                            config["instruments"][i]["config"]["class"]
+                                .asString()));
                     continue;
                 }
                 instr->ReadConfig(config["instruments"][i]["config"]);
@@ -218,10 +220,10 @@ void Dashboard::ReadConfig(wxJSONValue& config)
     }
 }
 
-wxJSONValue Dashboard::GenerateJSONConfig()
+Json::Value Dashboard::GenerateJSONConfig()
 {
-    wxJSONValue v;
-    v["name"] = m_name;
+    Json::Value v;
+    v["name"] = toJson(m_name);
     v["canvas"] = m_canvas_nr;
     v["page"] = m_page_nr;
     v["anchor"] = (int)m_anchor;
@@ -231,9 +233,9 @@ wxJSONValue Dashboard::GenerateJSONConfig()
     v["spacing_v"] = m_spacing_v;
     v["enabled"] = m_enabled;
     for (auto& m_instrument : m_instruments) {
-        wxJSONValue instr;
+        Json::Value instr;
         instr["config"] = m_instrument->GenerateJSONConfig();
-        v["instruments"].Append(instr);
+        v["instruments"].append(instr);
     }
     return v;
 }
@@ -263,7 +265,7 @@ wxArrayString Dashboard::GetInstrumentNames()
     return as;
 }
 
-const wxJSONValue* Dashboard::GetSKData(const wxString& path)
+const Json::Value* Dashboard::GetSKData(const wxString& path)
 {
     return m_parent->GetSKData(path);
 }

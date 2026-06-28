@@ -31,7 +31,7 @@
 #include "instrument.h"
 #include "ocpn_plugin.h"
 #include "pi_common.h"
-#include "wx/jsonval.h"
+#include <json/json.h>
 #include <map>
 #include <tuple>
 
@@ -227,12 +227,12 @@ public:
     /// Read the config from JSON objects
     ///
     /// \param config Configuration of the dashboard
-    void ReadConfig(wxJSONValue& config);
+    void ReadConfig(Json::Value& config);
 
     /// Generate the JSON object with complete configuration of the dashboards
     ///
     /// \return JSON object representing the configuration
-    wxJSONValue GenerateJSONConfig();
+    Json::Value GenerateJSONConfig();
 
     /// Subscribe the instrument to notifications about value updates of a path
     ///
@@ -313,7 +313,7 @@ public:
     ///
     /// \param path SignalK fully qualified path
     /// \return Pointer to the data object or NULL if not found
-    const wxJSONValue* GetSKData(const wxString& path);
+    const Json::Value* GetSKData(const wxString& path);
 
     /// Force redraw of the instrument on the next overlay refresh
     void ForceRedraw()

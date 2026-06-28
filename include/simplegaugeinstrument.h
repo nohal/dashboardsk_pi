@@ -29,7 +29,7 @@
 
 #include "instrument.h"
 #include "pi_common.h"
-#include "wx/jsonval.h"
+#include <json/json.h>
 #include <wx/clrpicker.h>
 
 #define BORDER_SIZE 4 * scale
@@ -80,59 +80,59 @@
         _("Fixed range indicator"))
 
 // Setting name, default value, label, dskConfigCtrl control type, control
-// parameters string, wxJSONValue conversion function, getter function
+// parameters string, Json::Value conversion function, getter function
 #define DSK_SGI_SETTINGS                                                       \
     X(0, DSK_SETTING_SK_KEY, wxString(wxEmptyString), _("SK Key"),             \
-        SignalKKeyCtrl, wxEmptyString, AsString, GetStringSetting)             \
+        SignalKKeyCtrl, wxEmptyString, asString, GetStringSetting)             \
     X(1, DSK_SGI_GAUGE_TYPE, 0, _("Gauge type"), ChoiceCtrl,                   \
-        ConcatChoiceStrings(m_gauge_types), AsInt, GetIntSetting)              \
+        ConcatChoiceStrings(m_gauge_types), asInt, GetIntSetting)              \
     X(2, DSK_SETTING_FORMAT, 0, _("Format"), ChoiceCtrl,                       \
-        ConcatChoiceStrings(m_supported_formats), AsInt, GetIntSetting)        \
+        ConcatChoiceStrings(m_supported_formats), asInt, GetIntSetting)        \
     X(3, DSK_SETTING_VALUE_SUFFIX, wxString(wxEmptyString), _("Value suffix"), \
-        TextCtrl, wxEmptyString, AsString, GetStringSetting)                   \
+        TextCtrl, wxEmptyString, asString, GetStringSetting)                   \
     X(4, DSK_SETTING_TRANSFORMATION, 0, _("Transformation"), ChoiceCtrl,       \
-        ConcatChoiceStrings(m_supported_transforms), AsInt, GetIntSetting)     \
+        ConcatChoiceStrings(m_supported_transforms), asInt, GetIntSetting)     \
     X(5, DSK_SETTING_ZONES, wxString(wxEmptyString), _("Zones"),               \
-        SignalKZonesCtrl, wxEmptyString, AsString, GetStringSetting)           \
+        SignalKZonesCtrl, wxEmptyString, asString, GetStringSetting)           \
     X(6, DSK_SETTING_SMOOTHING, m_smoothing, _("Data smoothing"), SpinCtrl,    \
-        "0;" STRINGIFY(DSK_SGI_SMOOTHING_MAX), AsInt, GetIntSetting)           \
+        "0;" STRINGIFY(DSK_SGI_SMOOTHING_MAX), asInt, GetIntSetting)           \
     X(7, DSK_SETTING_INSTR_SIZE, m_instrument_size, _("Instrument size"),      \
         SpinCtrl,                                                              \
         STRINGIFY(DSK_SGI_INSTR_MIN_SIZE) ";" STRINGIFY(                       \
             DSK_SGI_INSTR_MAX_SIZE),                                           \
-        AsInt, GetIntSetting)                                                  \
+        asInt, GetIntSetting)                                                  \
     X(8, DSK_SGI_NEEDLE_FG, DSK_SGI_COLOR_NEEDLE, _("Needle color"),           \
-        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
+        ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)           \
     X(9, DSK_SGI_RIM_NOMINAL, DSK_SGI_COLOR_RIM, _("Rim color"),               \
-        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
+        ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)           \
     X(10, DSK_SGI_RIM_PORT, DSK_SGI_COLOR_RIM_P, _("Port color"),              \
-        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
+        ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)           \
     X(11, DSK_SGI_RIM_STBD, DSK_SGI_COLOR_RIM_S, _("Starboard color"),         \
-        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
+        ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)           \
     X(12, DSK_SGI_RIM_DEAD, DSK_SGI_COLOR_RIM_D, _("Dead angle color"),        \
-        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
+        ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)           \
     X(13, DSK_SGI_DIAL_COLOR, DSK_SGI_COLOR_DIAL, _("Dial color"),             \
-        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
+        ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)           \
     X(14, DSK_SETTING_TITLE_FG, DSK_SGI_COLOR_TITLE, _("Title color"),         \
-        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
+        ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)           \
     X(15, DSK_SETTING_NOMINAL_FG, DSK_SGI_COLOR_VALUE, _("Value color"),       \
-        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
+        ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)           \
     X(16, DSK_SGI_TICK_FG, DSK_SGI_COLOR_TICK, _("Tick color"),                \
-        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
+        ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)           \
     X(17, DSK_SGI_TICK_LEGEND, DSK_SGI_COLOR_TICK_TXT, _("Dial values"),       \
-        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
+        ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)           \
     X(18, DSK_SETTING_NORMAL_FG, DSK_SGI_COLOR_NORMAL, _("Normal color"),      \
-        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
+        ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)           \
     X(19, DSK_SETTING_ALERT_FG, DSK_SGI_COLOR_ALERT, _("Alert color"),         \
-        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
+        ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)           \
     X(20, DSK_SETTING_WARN_FG, DSK_SGI_COLOR_WARN, _("Warn color"),            \
-        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
+        ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)           \
     X(21, DSK_SETTING_ALRM_FG, DSK_SGI_COLOR_ALARM, _("Alarm color"),          \
-        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
+        ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)           \
     X(22, DSK_SETTING_EMERG_FG, DSK_SGI_COLOR_EMERG, _("Emergency color"),     \
-        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)           \
+        ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)           \
     X(23, DSK_SETTING_BORDER_COLOR, DSK_SGI_COLOR_BORDER, _("Border color"),   \
-        ColourPickerCtrl, wxEmptyString, AsString, GetStringSetting)
+        ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)
 
 PLUGIN_BEGIN_NAMESPACE
 
@@ -351,9 +351,9 @@ public:
 
     wxBitmap Render(double scale) override;
 
-    void ReadConfig(wxJSONValue& config) override;
+    void ReadConfig(Json::Value& config) override;
 
-    wxJSONValue GenerateJSONConfig() override;
+    Json::Value GenerateJSONConfig() override;
 
     void SetSetting(const wxString& key, const wxString& value) override;
     void SetSetting(const wxString& key, const int& value) override;

@@ -140,12 +140,12 @@ void SimpleNumberInstrument::ProcessData()
         m_needs_redraw = true;
         m_last_change = std::chrono::system_clock::now();
         m_timed_out = false;
-        const wxJSONValue* val = m_parent_dashboard->GetSKData(m_sk_key);
+        const Json::Value* val = m_parent_dashboard->GetSKData(m_sk_key);
         if (val) {
-            wxJSONValue v = val->Get("value", *val);
+            Json::Value v = val->get("value", *val);
             if ((unsigned)m_format_index < m_format_strings.GetCount()) {
                 double dval
-                    = Transform(v.IsDouble() ? v.AsDouble() : v.AsLong());
+                    = Transform(v.isDouble() ? v.asDouble() : v.asInt64());
                 if (m_old_value > std::numeric_limits<double>::min()) {
                     dval = (m_smoothing * m_old_value
                                + (DSK_SNI_SMOOTHING_MAX - m_smoothing + 1)
@@ -187,9 +187,9 @@ wxBitmap SimpleNumberInstrument::Render(double scale)
         m_needs_redraw = true;
         m_last_change = std::chrono::system_clock::now();
         m_timed_out = false;
-        const wxJSONValue* val = m_parent_dashboard->GetSKData(m_sk_key);
+        const Json::Value* val = m_parent_dashboard->GetSKData(m_sk_key);
         if (val) {
-            wxJSONValue v = val->Get("value", *val);
+            Json::Value v = val->get("value", *val);
             if ((unsigned)m_format_index >= m_format_strings.GetCount()) {
                 value = wxString::Format(
                     "E: format", m_format_index, m_format_strings.GetCount());
@@ -197,7 +197,7 @@ wxBitmap SimpleNumberInstrument::Render(double scale)
                 cbf = GetDimedColor(GetColorSetting(DSK_SETTING_ALERT_FG));
             } else {
                 double dval
-                    = Transform(v.IsDouble() ? v.AsDouble() : v.AsLong());
+                    = Transform(v.isDouble() ? v.asDouble() : v.asInt64());
                 if (m_old_value > std::numeric_limits<double>::min()) {
                     dval = (m_smoothing * m_old_value
                                + (DSK_SNI_SMOOTHING_MAX - m_smoothing + 1)
@@ -297,25 +297,25 @@ wxBitmap SimpleNumberInstrument::Render(double scale)
     return m_bmp;
 }
 
-void SimpleNumberInstrument::ReadConfig(wxJSONValue& config)
+void SimpleNumberInstrument::ReadConfig(Json::Value& config)
 {
     Instrument::ReadConfig(config);
 #define X(a, b, c, d, e, f, g, h)                                              \
-    if (config.HasMember(b)) {                                                 \
-        SetSetting(b, config[b].g());                                          \
+    if (config.isMember(b)) {                                                  \
+        SetSetting(b, fromJsonVal(config[b].g()));                             \
     }
     DSK_SNI_SETTINGS
 #undef X
 }
 
-wxJSONValue SimpleNumberInstrument::GenerateJSONConfig()
+Json::Value SimpleNumberInstrument::GenerateJSONConfig()
 {
     // Shared parameters from the parent
-    wxJSONValue v = Instrument::GenerateJSONConfig();
+    Json::Value v = Instrument::GenerateJSONConfig();
     // my own parameters
 #define X(a, b, c, d, e, f, g, h)                                              \
     if (!wxString(b).IsSameAs(DSK_SETTING_ZONES)) {                            \
-        v[b] = h(b);                                                           \
+        v[b] = toJson(h(b));                                                   \
     }
     DSK_SNI_SETTINGS
 #undef X

@@ -87,8 +87,83 @@ extern "C" {
 #include <wx/translation.h>
 
 #include <fstream>
+#include <memory>
+
+#include <json/json.h>
 
 using namespace std;
+
+/// \name JSON conversion helpers
+/// Bridge between wxString and the jsoncpp \c Json::Value tree, doing the
+/// UTF-8 conversion at the boundary so non-ASCII payloads survive a round
+/// trip. \c toJson() goes wxString/scalar -> JSON, \c fromJsonVal() goes the
+/// JSON scalar accessor result back to a wxString/scalar. Overloaded so the
+/// instrument settings X-macros work uniformly for string and numeric values.
+///@{
+/// Convert a wxString to a JSON string value (UTF-8)
+inline Json::Value toJson(const wxString& s)
+{
+    return Json::Value(s.ToStdString(wxConvUTF8));
+}
+/// Convert an integer to a JSON value
+inline Json::Value toJson(int v) { return Json::Value(v); }
+/// Convert a double to a JSON value
+inline Json::Value toJson(double v) { return Json::Value(v); }
+/// Convert a bool to a JSON value
+inline Json::Value toJson(bool v) { return Json::Value(v); }
+
+/// Convert a JSON string accessor result to a wxString (UTF-8)
+inline wxString fromJsonVal(const std::string& s)
+{
+    return wxString::FromUTF8(s.c_str());
+}
+/// Pass-through for an integer JSON accessor result
+inline int fromJsonVal(int v) { return v; }
+/// Pass-through for a bool JSON accessor result
+inline bool fromJsonVal(bool v) { return v; }
+/// Pass-through for a double JSON accessor result
+inline double fromJsonVal(double v) { return v; }
+
+/// Parse JSON text into a \c Json::Value
+///
+/// \param text JSON document
+/// \param out Parsed value (untouched on failure)
+/// \return true on success
+inline bool ParseJSON(const wxString& text, Json::Value& out)
+{
+    Json::CharReaderBuilder builder;
+    const std::string s = text.ToStdString(wxConvUTF8);
+    std::unique_ptr<Json::CharReader> reader(builder.newCharReader());
+    std::string errors;
+    return reader->parse(s.data(), s.data() + s.size(), &out, &errors);
+}
+
+/// Parse a JSON file into a \c Json::Value
+///
+/// \param path Path to the JSON file
+/// \param out Parsed value (untouched on failure)
+/// \return true on success
+inline bool ParseJSONFile(const std::string& path, Json::Value& out)
+{
+    std::ifstream f(path);
+    if (!f.is_open()) {
+        return false;
+    }
+    Json::CharReaderBuilder builder;
+    std::string errors;
+    return Json::parseFromStream(builder, f, &out, &errors);
+}
+
+/// Serialize a \c Json::Value to indented JSON text
+///
+/// \param v Value to serialize
+/// \return JSON document as wxString
+inline wxString DumpJSON(const Json::Value& v)
+{
+    Json::StreamWriterBuilder builder;
+    return wxString::FromUTF8(Json::writeString(builder, v).c_str());
+}
+///@}
 
 #ifdef __WXGTK__
 #include <netinet/in.h>

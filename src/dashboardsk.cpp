@@ -26,7 +26,6 @@
 
 #include "dashboardsk.h"
 #include "dashboardsk_pi.h"
-#include "wx/jsonwriter.h"
 #include <wx/tokenzr.h>
 
 PLUGIN_BEGIN_NAMESPACE
@@ -43,7 +42,7 @@ DashboardSK::DashboardSK(const wxString& data_path)
     for (int i = 0; i < GetCanvasCount(); i++) {
         m_displayed_pages.insert({ i, new Pager(this) });
     }
-    m_sk_data["vessels"].AddComment("Root of the vessel tree");
+    m_sk_data["vessels"] = Json::Value(Json::objectValue);
 }
 
 void DashboardSK::ProcessData()
@@ -78,21 +77,21 @@ void DashboardSK::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
     }
 }
 
-void DashboardSK::ReadConfig(wxJSONValue& config)
+void DashboardSK::ReadConfig(Json::Value& config)
 {
     LOG_VERBOSE("DashboardSK_pi: Reading DashboardSK config");
     for (auto db : m_dashboards) {
         delete db;
     }
     m_dashboards.clear();
-    if (config["signalk"].HasMember("self")) {
-        SetSelf(config["signalk"]["self"].AsString());
+    if (config["signalk"].isMember("self")) {
+        SetSelf(fromJsonVal(config["signalk"]["self"].asString()));
     }
-    if (!config.HasMember("dashboards")) {
+    if (!config.isMember("dashboards")) {
         LOG_VERBOSE("DashboardSK_pi: No dashboards node in JSON");
     }
-    if (config["dashboards"].IsArray()) {
-        for (int i = 0; i < config["dashboards"].Size(); i++) {
+    if (config["dashboards"].isArray()) {
+        for (int i = 0; i < (int)config["dashboards"].size(); i++) {
             auto* d = new Dashboard(this);
             d->ReadConfig(config["dashboards"][i]);
             d->SetColorScheme(m_color_scheme);
@@ -106,15 +105,15 @@ void DashboardSK::ReadConfig(wxJSONValue& config)
     } else {
         LOG_VERBOSE("DashboardSK_pi: No dashboards array");
     }
-    if (config["canvas"].IsArray()) {
-        for (int i = 0; i < config["canvas"].Size(); i++) {
-            if (m_displayed_pages.find(config["canvas"][i]["id"].AsInt())
+    if (config["canvas"].isArray()) {
+        for (int i = 0; i < (int)config["canvas"].size(); i++) {
+            if (m_displayed_pages.find(config["canvas"][i]["id"].asInt())
                 == m_displayed_pages.end()) {
-                m_displayed_pages[config["canvas"][i]["id"].AsInt()]
+                m_displayed_pages[config["canvas"][i]["id"].asInt()]
                     = new Pager(this);
             }
-            m_displayed_pages[config["canvas"][i]["id"].AsInt()]
-                ->SetCurrentPage(config["canvas"][i]["page"].AsInt());
+            m_displayed_pages[config["canvas"][i]["id"].asInt()]
+                ->SetCurrentPage(config["canvas"][i]["page"].asInt());
         }
     }
     for (int i = 0; i < GetCanvasCount(); i++) {
@@ -125,18 +124,18 @@ void DashboardSK::ReadConfig(wxJSONValue& config)
     }
 }
 
-wxJSONValue DashboardSK::GenerateJSONConfig()
+Json::Value DashboardSK::GenerateJSONConfig()
 {
-    wxJSONValue v;
-    v["signalk"]["self"] = m_self;
+    Json::Value v;
+    v["signalk"]["self"] = toJson(m_self);
     for (auto dashboard : m_dashboards) {
-        v["dashboards"].Append(dashboard->GenerateJSONConfig());
+        v["dashboards"].append(dashboard->GenerateJSONConfig());
     }
     for (auto page : m_displayed_pages) {
-        wxJSONValue vc;
+        Json::Value vc;
         vc["id"] = page.first;
         vc["page"] = page.second->GetCurrentPage();
-        v["canvas"].Append(vc);
+        v["canvas"].append(vc);
     }
     return v;
 }
@@ -151,15 +150,16 @@ void DashboardSK::SetColorScheme(int cs)
 
 const int DashboardSK::GetColorScheme() { return m_color_scheme; }
 
-const wxJSONValue* DashboardSK::GetSKData(const wxString& path)
+const Json::Value* DashboardSK::GetSKData(const wxString& path)
 {
     wxStringTokenizer tokenizer(path, ".");
-    wxJSONValue* ptr = &m_sk_data;
+    Json::Value* ptr = &m_sk_data;
     wxString token;
     while (tokenizer.HasMoreTokens()) {
         token = tokenizer.GetNextToken();
-        if (ptr->HasMember(token)) {
-            ptr = &(*ptr)[token];
+        const std::string key = token.ToStdString();
+        if (ptr->isMember(key)) {
+            ptr = &(*ptr)[key];
         } else {
             return nullptr; // Not found
         }
@@ -167,50 +167,49 @@ const wxJSONValue* DashboardSK::GetSKData(const wxString& path)
     return ptr;
 }
 
-void DashboardSK::ProcessComplexValue(wxJSONValue* parent,
-    const wxJSONValue& value, const wxDateTime& ts, const wxString& source)
+void DashboardSK::ProcessComplexValue(Json::Value* parent,
+    const Json::Value& value, const wxDateTime& ts, const wxString& source)
 {
-    if (value.IsObject()) {
-        wxArrayString vals = value.GetMemberNames();
-        for (wxString val : vals) {
-            (*parent)[val] = wxJSONValue();
+    if (value.isObject()) {
+        for (const std::string& val : value.getMemberNames()) {
+            (*parent)[val] = Json::Value();
             ProcessComplexValue(
-                &(*parent)[val], value.Get(val, wxJSONValue()), ts, source);
+                &(*parent)[val], value.get(val, Json::Value()), ts, source);
         }
     } else {
         (*parent)["value"] = value;
-        (*parent)["timestamp"] = ts.FormatISOCombined();
-        (*parent)["source"] = source;
+        (*parent)["timestamp"] = toJson(ts.FormatISOCombined());
+        (*parent)["source"] = toJson(source);
     }
 }
 
-void DashboardSK::SendSKDelta(wxJSONValue& message)
+void DashboardSK::SendSKDelta(Json::Value& message)
 {
-    LOG_RECEIVE("Received SK message: " + message.AsString());
-    if (m_self.IsEmpty() && message.HasMember("self")) {
+    LOG_RECEIVE("Received SK message: " + DumpJSON(message));
+    if (m_self.IsEmpty() && message.isMember("self")) {
         // If we still don't have Self ID set, we accept it from the core
         // TODO: We perhaps might allow this until the user ever modifies it
         // manually in the prefs
-        LOG_RECEIVE_DEBUG(
-            "Message contains self indentifier " + message["self"].AsString());
-        SetSelf(message["self"].AsString());
+        LOG_RECEIVE_DEBUG("Message contains self indentifier "
+            + fromJsonVal(message["self"].asString()));
+        SetSelf(fromJsonVal(message["self"].asString()));
     }
     wxString fullKey;
-    if (!message.HasMember("context")) {
-        LOG_RECEIVE(
-            "Message does not contain context " + message.GetMemberNames()[0]);
-        if (!message.HasMember("updates") || !message["updates"].IsArray()) {
+    if (!message.isMember("context")) {
+        LOG_RECEIVE("Message does not contain context "
+            + fromJsonVal(message.getMemberNames()[0]));
+        if (!message.isMember("updates") || !message["updates"].isArray()) {
             LOG_RECEIVE("Message does not look OK");
             return; // Invalid SK delta
         }
         fullKey = "vessels.self";
     } else {
-        fullKey = message["context"].AsString();
+        fullKey = fromJsonVal(message["context"].asString());
     }
     LOG_RECEIVE_DEBUG("Message seems OK");
 
     int skip_tokens = 0;
-    wxJSONValue* ptr;
+    Json::Value* ptr;
     if (fullKey.StartsWith("vessels.self")) {
         // "vessels.self" translated to fully qualified identified ID and we can
         // skip the first two levels directly
@@ -222,7 +221,8 @@ void DashboardSK::SendSKDelta(wxJSONValue& message)
         fullKey = wxEmptyString;
     }
     LOG_RECEIVE_DEBUG("Full key before parsing: " + fullKey);
-    wxStringTokenizer ctx_tokenizer(message["context"].AsString(), ".");
+    wxStringTokenizer ctx_tokenizer(
+        fromJsonVal(message["context"].asString()), ".");
     int token_nr = 0;
     wxString token;
     while (ctx_tokenizer.HasMoreTokens()) {
@@ -239,15 +239,16 @@ void DashboardSK::SendSKDelta(wxJSONValue& message)
                 }
             }
 
-            if (!ptr->HasMember(token)) {
-                LOG_RECEIVE_DEBUG(ptr->GetInfo() + " does NOT have member "
-                    + token + ", adding it");
-                (*ptr)[token] = wxJSONValue();
-                ptr = &(*ptr)[token];
+            const std::string tkey = token.ToStdString();
+            if (!ptr->isMember(tkey)) {
+                LOG_RECEIVE_DEBUG(
+                    "Node does NOT have member " + token + ", adding it");
+                (*ptr)[tkey] = Json::Value();
+                ptr = &(*ptr)[tkey];
             } else {
-                LOG_RECEIVE_DEBUG(ptr->GetInfo() + " does have member " + token
-                    + ", reusing it");
-                ptr = &(*ptr)[token];
+                LOG_RECEIVE_DEBUG(
+                    "Node does have member " + token + ", reusing it");
+                ptr = &(*ptr)[tkey];
             }
         } else {
             skip_tokens--;
@@ -255,11 +256,11 @@ void DashboardSK::SendSKDelta(wxJSONValue& message)
     }
     LOG_RECEIVE_DEBUG("Full key after parsing: " + fullKey);
     wxDateTime ts;
-    for (int i = 0; i < message["updates"].Size(); i++) {
+    for (int i = 0; i < (int)message["updates"].size(); i++) {
         LOG_RECEIVE_DEBUG("processing update #%i", i);
-        if (message["updates"][i].HasMember("timestamp")) {
-            if (!ts.ParseISOCombined(
-                    message["updates"][i]["timestamp"].AsString())) {
+        if (message["updates"][i].isMember("timestamp")) {
+            if (!ts.ParseISOCombined(fromJsonVal(
+                    message["updates"][i]["timestamp"].asString()))) {
                 ts = wxDateTime::Now();
             }
         } else {
@@ -269,58 +270,64 @@ void DashboardSK::SendSKDelta(wxJSONValue& message)
         // position.timestamp), we could sometimes use or maybe even prefer them
         wxString fullKeyWithPath;
         wxString source = wxEmptyString;
-        if (message["updates"][i].HasMember("$source")) {
-            source = message["updates"][i]["$source"].AsString();
-        } else if (message["updates"][i].HasMember("source")) {
-            if (message["updates"][i]["source"]["type"].AsString()
+        if (message["updates"][i].isMember("$source")) {
+            source = fromJsonVal(message["updates"][i]["$source"].asString());
+        } else if (message["updates"][i].isMember("source")) {
+            if (message["updates"][i]["source"]["type"].asString()
                 == "NMEA0183") {
                 source
-                    .Append(message["updates"][i]["source"]["label"].AsString())
+                    .Append(message["updates"][i]["source"]["label"].asString())
                     .Append("-")
                     .Append(
-                        message["updates"][i]["source"]["talker"].AsString())
+                        message["updates"][i]["source"]["talker"].asString())
                     .Append("-")
                     .Append(
-                        message["updates"][i]["source"]["sentence"].AsString());
-            } else if (message["updates"][i]["source"]["type"].AsString()
+                        message["updates"][i]["source"]["sentence"].asString());
+            } else if (message["updates"][i]["source"]["type"].asString()
                 == "NMEA2000") {
                 source
-                    .Append(message["updates"][i]["source"]["label"].AsString())
+                    .Append(message["updates"][i]["source"]["label"].asString())
                     .Append("-")
-                    .Append(message["updates"][i]["source"]["pgn"].AsString());
+                    .Append(message["updates"][i]["source"]["pgn"].asString());
             } else {
                 source.Append(
-                    message["updates"][i]["source"]["label"].AsString());
+                    message["updates"][i]["source"]["label"].asString());
             }
         }
         wxString utoken;
-        if (message["updates"][i].HasMember("values")) {
-            for (int j = 0; j < message["updates"][i]["values"].Size(); j++) {
-                wxJSONValue* val_ptr = ptr;
+        if (message["updates"][i].isMember("values")) {
+            for (int j = 0; j < (int)message["updates"][i]["values"].size();
+                j++) {
+                Json::Value* val_ptr = ptr;
                 fullKeyWithPath = fullKey;
                 LOG_RECEIVE_DEBUG("processing value #%i (%s) under %s", j,
-                    message["updates"][i]["values"][j]["path"].AsCString(),
+                    fromJsonVal(
+                        message["updates"][i]["values"][j]["path"].asString())
+                        .c_str(),
                     fullKeyWithPath.c_str());
                 wxStringTokenizer path_tokenizer(
-                    message["updates"][i]["values"][j]["path"].AsString(), ".");
+                    fromJsonVal(
+                        message["updates"][i]["values"][j]["path"].asString()),
+                    ".");
                 while (path_tokenizer.HasMoreTokens()) {
                     utoken = path_tokenizer.GetNextToken();
                     fullKeyWithPath.Append(".").Append(utoken);
-                    if (!val_ptr->HasMember(utoken)
+                    const std::string ukey = utoken.ToStdString();
+                    if (!val_ptr->isMember(ukey)
                         && path_tokenizer.HasMoreTokens()) {
                         // If we are not done parsing the path yet, we add
                         // another branch if needed
                         LOG_RECEIVE_DEBUG(fullKeyWithPath
                             + " not yet in the tree, adding " + utoken);
-                        (*val_ptr)[utoken] = wxJSONValue();
-                        val_ptr = &(*val_ptr)[utoken];
+                        (*val_ptr)[ukey] = Json::Value();
+                        val_ptr = &(*val_ptr)[ukey];
                     } else {
                         LOG_RECEIVE_DEBUG(
                             fullKeyWithPath + " already exists in the tree");
-                        val_ptr = &(*val_ptr)[utoken];
+                        val_ptr = &(*val_ptr)[ukey];
                     }
                 }
-                if (!message["updates"][i]["values"][j]["value"].IsNull()) {
+                if (!message["updates"][i]["values"][j]["value"].isNull()) {
                     // We ignore NULL values received from SignalK
                     // TODO: Are some NULLs in SignalK data actually good for
                     // something? (If they are, we want to ignore them later
@@ -328,8 +335,9 @@ void DashboardSK::SendSKDelta(wxJSONValue& message)
                     if (!source.IsEmpty()) {
                         wxString src_key = SRC_MAGIC_STRING + source;
                         src_key.Replace(".", "-", true);
-                        (*val_ptr)[src_key] = wxJSONValue();
-                        val_ptr = &(*val_ptr)[src_key];
+                        const std::string sk = src_key.ToStdString();
+                        (*val_ptr)[sk] = Json::Value();
+                        val_ptr = &(*val_ptr)[sk];
                     }
                     ProcessComplexValue(val_ptr,
                         message["updates"][i]["values"][j]["value"], ts,
@@ -343,33 +351,39 @@ void DashboardSK::SendSKDelta(wxJSONValue& message)
                     }
                 }
             }
-        } else if (message["updates"][i].HasMember("meta")) {
-            for (int j = 0; j < message["updates"][i]["meta"].Size(); j++) {
-                wxJSONValue* val_ptr = ptr;
+        } else if (message["updates"][i].isMember("meta")) {
+            for (int j = 0; j < (int)message["updates"][i]["meta"].size();
+                j++) {
+                Json::Value* val_ptr = ptr;
                 fullKeyWithPath = fullKey;
                 LOG_RECEIVE_DEBUG("processing value #%i (%s) under %s", j,
-                    message["updates"][i]["meta"][j]["path"].AsCString(),
+                    fromJsonVal(
+                        message["updates"][i]["meta"][j]["path"].asString())
+                        .c_str(),
                     fullKeyWithPath.c_str());
                 wxStringTokenizer path_tokenizer(
-                    message["updates"][i]["meta"][j]["path"].AsString(), ".");
+                    fromJsonVal(
+                        message["updates"][i]["meta"][j]["path"].asString()),
+                    ".");
                 while (path_tokenizer.HasMoreTokens()) {
                     utoken = path_tokenizer.GetNextToken();
                     fullKeyWithPath.Append(".").Append(utoken);
-                    if (!val_ptr->HasMember(utoken)
+                    const std::string ukey = utoken.ToStdString();
+                    if (!val_ptr->isMember(ukey)
                         && path_tokenizer.HasMoreTokens()) {
                         // If we are not done parsing the path yet, we add
                         // another branch if needed
                         LOG_RECEIVE_DEBUG(fullKeyWithPath
                             + " not yet in the tree, adding " + utoken);
-                        (*val_ptr)[utoken] = wxJSONValue();
-                        val_ptr = &(*val_ptr)[utoken];
+                        (*val_ptr)[ukey] = Json::Value();
+                        val_ptr = &(*val_ptr)[ukey];
                     } else {
                         LOG_RECEIVE_DEBUG(
                             fullKeyWithPath + " already exists in the tree");
-                        val_ptr = &(*val_ptr)[utoken];
+                        val_ptr = &(*val_ptr)[ukey];
                     }
                 }
-                if (!message["updates"][i]["meta"][j].IsNull()) {
+                if (!message["updates"][i]["meta"][j].isNull()) {
                     (*val_ptr)["meta"]
                         = message["updates"][i]["meta"][j]["value"];
                 }
@@ -378,15 +392,9 @@ void DashboardSK::SendSKDelta(wxJSONValue& message)
     }
 }
 
-wxString DashboardSK::GetSignalKTreeText()
-{
-    wxJSONWriter w;
-    wxString s;
-    w.Write(m_sk_data, s);
-    return s;
-}
+wxString DashboardSK::GetSignalKTreeText() { return DumpJSON(m_sk_data); }
 
-wxJSONValue* DashboardSK::GetSignalKTree() { return &m_sk_data; }
+Json::Value* DashboardSK::GetSignalKTree() { return &m_sk_data; }
 
 const wxString DashboardSK::SelfTranslate(const wxString& path)
 {

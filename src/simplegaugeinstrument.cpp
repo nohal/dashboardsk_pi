@@ -818,12 +818,12 @@ void SimpleGaugeInstrument::ProcessData()
         m_needs_redraw = true;
         m_last_change = std::chrono::system_clock::now();
         m_timed_out = false;
-        const wxJSONValue* val = m_parent_dashboard->GetSKData(m_sk_key);
+        const Json::Value* val = m_parent_dashboard->GetSKData(m_sk_key);
         if (val) {
-            wxJSONValue v = val->Get("value", *val);
+            Json::Value v = val->get("value", *val);
 
-            double dval = Transform(v.IsDouble() ? v.AsDouble()
-                    : v.IsLong()                 ? v.AsLong()
+            double dval = Transform(v.isDouble() ? v.asDouble()
+                    : v.isInt64()                ? v.asInt64()
                                                  : 0.0,
                 m_transformation);
             if (m_old_value > std::numeric_limits<double>::min()) {
@@ -861,25 +861,25 @@ wxBitmap SimpleGaugeInstrument::Render(double scale)
     }
 }
 
-void SimpleGaugeInstrument::ReadConfig(wxJSONValue& config)
+void SimpleGaugeInstrument::ReadConfig(Json::Value& config)
 {
     Instrument::ReadConfig(config);
 #define X(a, b, c, d, e, f, g, h)                                              \
-    if (config.HasMember(b)) {                                                 \
-        SetSetting(b, config[b].g());                                          \
+    if (config.isMember(b)) {                                                  \
+        SetSetting(b, fromJsonVal(config[b].g()));                             \
     }
     DSK_SGI_SETTINGS
 #undef X
 }
 
-wxJSONValue SimpleGaugeInstrument::GenerateJSONConfig()
+Json::Value SimpleGaugeInstrument::GenerateJSONConfig()
 {
     // Shared parameters from the parent
-    wxJSONValue v = Instrument::GenerateJSONConfig();
+    Json::Value v = Instrument::GenerateJSONConfig();
     // my own parameters
 #define X(a, b, c, d, e, f, g, h)                                              \
     if (!wxString(b).IsSameAs(DSK_SETTING_ZONES)) {                            \
-        v[b] = h(b);                                                           \
+        v[b] = toJson(h(b));                                                   \
     }
     DSK_SGI_SETTINGS
 #undef X

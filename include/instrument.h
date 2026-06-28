@@ -33,8 +33,8 @@
 #include <wx/bitmap.h>
 #include <wx/dcgraph.h>
 
-#include "wx/jsonval.h"
 #include <chrono>
+#include <json/json.h>
 #include <unordered_map>
 
 PLUGIN_BEGIN_NAMESPACE
@@ -499,15 +499,15 @@ public:
     /// Load configuration from JSON object
     /// Extended in child instrument classes
     ///
-    /// \param config Reference wxJSONValue containing the configuration
+    /// \param config Reference Json::Value containing the configuration
     /// information
-    virtual void ReadConfig(wxJSONValue& config);
+    virtual void ReadConfig(Json::Value& config);
 
     /// Generate JSON object with configuration parameters
     /// Extended in child instrument classes
     ///
-    /// \return wxJSONValue containing the configuration information
-    virtual wxJSONValue GenerateJSONConfig();
+    /// \return Json::Value containing the configuration information
+    virtual Json::Value GenerateJSONConfig();
 
     /// Notify the instrument there is new data available for some of the paths
     /// it is subscribed to
@@ -597,7 +597,7 @@ public:
     /// Configure the instrument using the SignalK metadata
     ///
     /// \param sk_meta reference to the metadata
-    virtual void ConfigureFromMeta(wxJSONValue& sk_meta);
+    virtual void ConfigureFromMeta(Json::Value& sk_meta);
 
     /// Configure the instrument using the SignalK key path
     ///
