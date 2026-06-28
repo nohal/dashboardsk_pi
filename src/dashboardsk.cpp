@@ -434,7 +434,16 @@ bool DashboardSK::ProcessMouseEvent(wxMouseEvent& event)
             return true;
         }
     }
-    // TODO: Pass to the dashboards for interactive instruments
+    // Dashboards / interactive instruments
+    for (int i = 0; i < static_cast<int>(m_dashboards.size()); ++i) {
+        Dashboard* d = m_dashboards[i];
+        if (d->GetCanvasNr() == GetCanvasIndexUnderMouse()
+            && m_displayed_pages[d->GetCanvasNr()]->GetCurrentPage()
+                == static_cast<int>(d->GetPageNr())
+            && d->ProcessMouseEvent(event, i)) {
+            return true;
+        }
+    }
     return false;
 }
 
@@ -500,6 +509,12 @@ void DashboardSK::SetParentPlugin(dashboardsk_pi* parent)
 void DashboardSK::ShowPreferencesDialog()
 {
     m_parent_plugin->ShowPreferencesDialog(m_parent_window);
+}
+
+void DashboardSK::ShowPreferencesDialog(int dashboard_idx, int instrument_idx)
+{
+    m_parent_plugin->ShowPreferencesDialog(
+        m_parent_window, dashboard_idx, instrument_idx);
 }
 
 void DashboardSK::ToggleVisibility()

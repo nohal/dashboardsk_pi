@@ -178,6 +178,16 @@ public:
     /// \param parent Parent window owning the preferences dialog
     void ShowPreferencesDialog(wxWindow* parent) override;
 
+    /// Show the preferences dialog with a specific instrument pre-selected,
+    /// invoked from an instrument's right-click context menu.
+    ///
+    /// \param parent Parent window owning the preferences dialog
+    /// \param dashboard_idx Index of the dashboard to select
+    /// \param instrument_idx Index of the instrument to select within the
+    /// dashboard
+    void ShowPreferencesDialog(
+        wxWindow* parent, int dashboard_idx, int instrument_idx);
+
     /// Callback to perform any actions bound to the click on a toolbar icon
     /// provided by the plugin
     ///

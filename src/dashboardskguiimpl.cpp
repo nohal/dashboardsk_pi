@@ -116,6 +116,25 @@ void MainConfigFrameImpl::FillForm(bool select_last)
     EnableInstrumentListButtons();
 }
 
+void MainConfigFrameImpl::SelectInstrument(
+    int dashboard_idx, int instrument_idx)
+{
+    Dashboard* dashboard = m_dsk_pi->GetDSK()->GetDashboard(dashboard_idx);
+    if (!dashboard) {
+        return;
+    }
+    m_comboDashboard->SetSelection(dashboard_idx);
+    m_edited_dashboard = dashboard;
+    FillInstrumentList();
+    m_edited_instrument = m_edited_dashboard->GetInstrument(instrument_idx);
+    if (m_edited_instrument) {
+        m_lbInstruments->SetSelection(instrument_idx);
+    }
+    FillInstrumentDetails();
+    EnableItemsForSelectedDashboard();
+    EnableInstrumentListButtons();
+}
+
 void MainConfigFrameImpl::EnableItems(bool dashboard_selection, bool instr_list,
     bool dashboard_config, bool instr_config)
 {

@@ -329,6 +329,15 @@ public:
 
     /// Process SK data without drawing anything.
     void ProcessData();
+
+    /// Process a mouse event, showing the instrument context menu on
+    /// right-click over an instrument.
+    ///
+    /// \param event The mouse event
+    /// \param dashboard_idx Index of this dashboard in the parent, used to
+    /// pre-select the instrument in the preferences dialog
+    /// \return True if the event was handled, false otherwise
+    bool ProcessMouseEvent(wxMouseEvent& event, int dashboard_idx);
 };
 
 PLUGIN_END_NAMESPACE

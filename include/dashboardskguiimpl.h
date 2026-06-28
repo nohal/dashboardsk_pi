@@ -125,6 +125,14 @@ public:
         long style = wxDEFAULT_FRAME_STYLE | wxTAB_TRAVERSAL);
     ~MainConfigFrameImpl() = default;
 
+    /// Pre-select a specific dashboard and instrument in the form, used when
+    /// the dialog is opened from an instrument's right-click context menu.
+    ///
+    /// \param dashboard_idx Index of the dashboard to select
+    /// \param instrument_idx Index of the instrument to select within the
+    /// dashboard
+    void SelectInstrument(int dashboard_idx, int instrument_idx);
+
 protected:
     /// Event handler for displaying the SignalK data
     ///

@@ -419,6 +419,13 @@ public:
     /// Show the preferences dialog
     void ShowPreferencesDialog();
 
+    /// Show the preferences dialog with a specific instrument pre-selected
+    ///
+    /// \param dashboard_idx Index of the dashboard to select
+    /// \param instrument_idx Index of the instrument to select within the
+    /// dashboard
+    void ShowPreferencesDialog(int dashboard_idx, int instrument_idx);
+
     /// Toggle the visibility of the dashboards
     void ToggleVisibility();
 

@@ -26,8 +26,12 @@
 
 #include "dashboard.h"
 #include "dashboardsk.h"
+#include <wx/menu.h>
 
 PLUGIN_BEGIN_NAMESPACE
+
+#define ID_INSTR_CONFIG 3001
+#define ID_INSTR_ACTION_BASE 3100
 
 vector<wxString> Dashboard::AnchorEdgeLabels { _("Bottom"), _("Top"), _("Left"),
     _("Right") };
@@ -157,6 +161,37 @@ void Dashboard::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
     }
     m_offsets[canvas_edge_anchor(canvasIndex, m_anchor)]
         += row_offset + current_row_size;
+}
+
+bool Dashboard::ProcessMouseEvent(wxMouseEvent& event, int dashboard_idx)
+{
+    if (!m_enabled || !event.RightIsDown()) {
+        return false;
+    }
+    int x = m_parent->ToPhys(event.GetX());
+    int y = m_parent->ToPhys(event.GetY());
+    for (size_t i = 0; i < m_instruments.size(); ++i) {
+        Instrument* instr = m_instruments[i];
+        if (!instr->IsClicked(x, y)) {
+            continue;
+        }
+        wxMenu mnu;
+        mnu.Append(ID_INSTR_CONFIG,
+            wxString::Format(_("Configure %s..."), instr->GetName()));
+        wxArrayString actions = instr->GetContextMenuActions();
+        for (size_t a = 0; a < actions.GetCount(); ++a) {
+            mnu.Append(ID_INSTR_ACTION_BASE + static_cast<int>(a), actions[a]);
+        }
+        int sel
+            = m_parent->GetParentWindow()->GetPopupMenuSelectionFromUser(mnu);
+        if (sel == ID_INSTR_CONFIG) {
+            m_parent->ShowPreferencesDialog(dashboard_idx, static_cast<int>(i));
+        } else if (sel >= ID_INSTR_ACTION_BASE) {
+            instr->DoContextMenuAction(sel - ID_INSTR_ACTION_BASE);
+        }
+        return true;
+    }
+    return false;
 }
 
 void Dashboard::SetColorScheme(int cs)

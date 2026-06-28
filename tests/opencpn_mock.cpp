@@ -79,6 +79,11 @@ PLUGIN_BEGIN_NAMESPACE
 
 void dashboardsk_pi::ShowPreferencesDialog(wxWindow* parent) { }
 
+void dashboardsk_pi::ShowPreferencesDialog(
+    wxWindow* parent, int dashboard_idx, int instrument_idx)
+{
+}
+
 void dashboardsk_pi::OnToolbarToolCallback(int id) { }
 
 bool dashboardsk_pi::IsVisible() { return true; }

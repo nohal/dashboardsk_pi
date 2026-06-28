@@ -155,6 +155,14 @@ void dashboardsk_pi::ShowPreferencesDialog(wxWindow* parent)
     mf.ShowModal();
 }
 
+void dashboardsk_pi::ShowPreferencesDialog(
+    wxWindow* parent, int dashboard_idx, int instrument_idx)
+{
+    MainConfigFrameImpl mf(this, parent);
+    mf.SelectInstrument(dashboard_idx, instrument_idx);
+    mf.ShowModal();
+}
+
 void dashboardsk_pi::OnToolbarToolCallback(int id)
 {
     m_shown = !m_shown;
