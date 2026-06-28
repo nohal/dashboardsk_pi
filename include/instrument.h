@@ -343,6 +343,12 @@ protected:
     unordered_map<Zone::state, vector<alarmType>> m_alarm_methods;
     /// Needs redraw on next overlay refresh
     bool m_needs_redraw;
+    /// Source locked for this session (lockfirst mode)
+    wxString m_locked_source;
+    /// SignalK path and mode which own the current source lock
+    wxString m_locked_source_path;
+    /// Timestamp when lock was established (for grace period tracking)
+    std::chrono::system_clock::time_point m_locked_source_time;
 
     /// Get version of a color adjusted to the current color scheme set for the
     /// instrument
@@ -378,6 +384,9 @@ protected:
         , m_height(0)
         , m_new_data(false)
         , m_needs_redraw(true)
+        , m_locked_source(wxEmptyString)
+        , m_locked_source_path(wxEmptyString)
+        , m_locked_source_time(std::chrono::system_clock::now())
     {
     }
 
@@ -640,6 +649,39 @@ public:
 
     /// Only process the SK data without drawing anything
     virtual void ProcessData() { };
+
+    /// Get SignalK data with support for magic source modes (lockfirst,
+    /// lockpersist)
+    ///
+    /// This helper method resolves the path considering lock modes and updates
+    /// the locked source if needed. For lockfirst/lockpersist modes, it ensures
+    /// the lock is established and persisted as appropriate.
+    ///
+    /// \param path SignalK fully qualified path with optional SRC: designation
+    /// \return Pointer to the data object or NULL if not found
+    const Json::Value* GetSKDataResolved(const wxString& path);
+
+    /// Get the locked source for this instrument (used by magic source values)
+    ///
+    /// \return The locked source designation, or empty string if not locked
+    wxString GetLockedSource() const { return m_locked_source; }
+
+    /// Set the locked source for this instrument
+    ///
+    /// \param source The source designation to lock to
+    void SetLockedSource(const wxString& source)
+    {
+        m_locked_source = source;
+        m_locked_source_time = std::chrono::system_clock::now();
+    }
+
+    /// Get the time when the source lock was established
+    ///
+    /// \return Time point when lock was set
+    std::chrono::system_clock::time_point GetLockedSourceTime() const
+    {
+        return m_locked_source_time;
+    }
 };
 
 PLUGIN_END_NAMESPACE

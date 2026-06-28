@@ -3994,6 +3994,80 @@
           </object>
         </object>
         <object class="sizeritem" expanded="false">
+          <property name="border">3</property>
+          <property name="flag">wxEXPAND|wxALL</property>
+          <property name="proportion">0</property>
+          <object class="wxWrapSizer" expanded="false">
+            <property name="minimum_size"></property>
+            <property name="name">bSizerSourceMode</property>
+            <property name="orient">wxHORIZONTAL</property>
+            <object class="sizeritem" expanded="false">
+              <property name="border">3</property>
+              <property name="flag">wxALIGN_CENTER_VERTICAL|wxRIGHT</property>
+              <property name="proportion">0</property>
+              <object class="wxStaticText" expanded="false">
+                <property name="label">Source:</property>
+                <property name="name">m_stSourceLabel</property>
+                <property name="permission">protected</property>
+              </object>
+            </object>
+            <object class="sizeritem" expanded="false">
+              <property name="border">2</property>
+              <property name="flag">wxALIGN_CENTER_VERTICAL|wxRIGHT</property>
+              <property name="proportion">0</property>
+              <object class="wxRadioButton" expanded="false">
+                <property name="label">Specific</property>
+                <property name="name">m_rbSpecific</property>
+                <property name="permission">protected</property>
+                <property name="value">1</property>
+                <event name="OnRadioButton">m_rbSpecificOnRadioButton</event>
+              </object>
+            </object>
+            <object class="sizeritem" expanded="false">
+              <property name="border">2</property>
+              <property name="flag">wxALIGN_CENTER_VERTICAL|wxRIGHT</property>
+              <property name="proportion">0</property>
+              <object class="wxChoice" expanded="false">
+                <property name="name">m_choiceSources</property>
+                <property name="permission">protected</property>
+              </object>
+            </object>
+            <object class="sizeritem" expanded="false">
+              <property name="border">2</property>
+              <property name="flag">wxALIGN_CENTER_VERTICAL|wxRIGHT</property>
+              <property name="proportion">0</property>
+              <object class="wxRadioButton" expanded="false">
+                <property name="label">Any</property>
+                <property name="name">m_rbAny</property>
+                <property name="permission">protected</property>
+                <event name="OnRadioButton">m_rbAnyOnRadioButton</event>
+              </object>
+            </object>
+            <object class="sizeritem" expanded="false">
+              <property name="border">2</property>
+              <property name="flag">wxALIGN_CENTER_VERTICAL|wxRIGHT</property>
+              <property name="proportion">0</property>
+              <object class="wxRadioButton" expanded="false">
+                <property name="label">Lock (session)</property>
+                <property name="name">m_rbLockFirst</property>
+                <property name="permission">protected</property>
+                <event name="OnRadioButton">m_rbLockFirstOnRadioButton</event>
+              </object>
+            </object>
+            <object class="sizeritem" expanded="false">
+              <property name="border">2</property>
+              <property name="flag">wxALIGN_CENTER_VERTICAL</property>
+              <property name="proportion">0</property>
+              <object class="wxRadioButton" expanded="false">
+                <property name="label">Lock (persist)</property>
+                <property name="name">m_rbLockPersist</property>
+                <property name="permission">protected</property>
+                <event name="OnRadioButton">m_rbLockPersistOnRadioButton</event>
+              </object>
+            </object>
+          </object>
+        </object>
+        <object class="sizeritem" expanded="false">
           <property name="border">5</property>
           <property name="flag">wxEXPAND</property>
           <property name="proportion">0</property>

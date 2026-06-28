@@ -152,19 +152,107 @@ const int DashboardSK::GetColorScheme() { return m_color_scheme; }
 
 const Json::Value* DashboardSK::GetSKData(const wxString& path)
 {
-    wxStringTokenizer tokenizer(path, ".");
+    // Handle magic source values (SRC:any, SRC:lockfirst, SRC:lockpersist)
+    int srcPos = path.Find(SRC_MAGIC_STRING);
+    wxString basePath = path;
+    wxString srcDesignation;
+
+    if (srcPos != wxNOT_FOUND) {
+        basePath = path.Left(srcPos - 1); // Remove the "." before "SRC:"
+        srcDesignation = path.Mid(srcPos + strlen(SRC_MAGIC_STRING));
+    }
+
+    // Navigate to the base path first
+    wxStringTokenizer tokenizer(basePath, ".");
     Json::Value* ptr = &m_sk_data;
     wxString token;
+
     while (tokenizer.HasMoreTokens()) {
         token = tokenizer.GetNextToken();
         const std::string key = token.ToStdString();
         if (ptr->isMember(key)) {
             ptr = &(*ptr)[key];
         } else {
-            return nullptr; // Not found
+            return nullptr; // Base path not found
         }
     }
-    return ptr;
+
+    // If no source designation, return the base path value
+    if (srcDesignation.IsEmpty()) {
+        return ptr;
+    }
+
+    // Handle magic source values
+    if (srcDesignation == "any") {
+        // ponytail: scan first available source, may jump if multiple sources
+        // exist Prefer direct value if available, then first SRC: entry
+        if (ptr->isMember("value")) {
+            return ptr;
+        }
+        for (const auto& name : ptr->getMemberNames()) {
+            if (name.find("SRC:") == 0) {
+                const Json::Value* candidate = &(*ptr)[name];
+                // Return this source container if it has any data (value for
+                // scalars, or nested data for complex types like position with
+                // latitude/longitude)
+                if (candidate->isMember("value")
+                    || !candidate->getMemberNames().empty()) {
+                    return candidate;
+                }
+            }
+        }
+        return nullptr;
+    } else if (srcDesignation == "lockfirst") {
+        // ponytail: session lock to first available source, no persistence
+        // This requires access to the calling Instrument, which we don't have
+        // here So we'll implement this at the Instrument level in ProcessData
+        // instead. For now, treat as "any" and log a note about limitation
+        if (ptr->isMember("value")) {
+            return ptr;
+        }
+        for (const auto& name : ptr->getMemberNames()) {
+            if (name.find("SRC:") == 0) {
+                const Json::Value* candidate = &(*ptr)[name];
+                // Return this source container if it has any data (value for
+                // scalars, or nested data for complex types)
+                if (candidate->isMember("value")
+                    || !candidate->getMemberNames().empty()) {
+                    return candidate;
+                }
+            }
+        }
+        return nullptr;
+    } else if (srcDesignation == "lockpersist") {
+        // ponytail: persistent lock with grace period fallback
+        // Similar limitation - needs Instrument context
+        // Treat as "any" for now
+        if (ptr->isMember("value")) {
+            return ptr;
+        }
+        for (const auto& name : ptr->getMemberNames()) {
+            if (name.find("SRC:") == 0) {
+                const Json::Value* candidate = &(*ptr)[name];
+                // Return this source container if it has any data (value for
+                // scalars, or nested data for complex types)
+                if (candidate->isMember("value")
+                    || !candidate->getMemberNames().empty()) {
+                    return candidate;
+                }
+            }
+        }
+        return nullptr;
+    } else {
+        // Exact source designation - navigate to it
+        // Convert dots to dashes as done in ProcessComplexValue
+        wxString src_key = SRC_MAGIC_STRING + srcDesignation;
+        src_key.Replace(".", "-", true);
+        const std::string sk = src_key.ToStdString();
+
+        if (ptr->isMember(sk)) {
+            return &(*ptr)[sk];
+        }
+        return nullptr;
+    }
 }
 
 void DashboardSK::ProcessComplexValue(Json::Value* parent,

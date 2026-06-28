@@ -402,6 +402,12 @@ public:
     /// \return The full path
     wxString GetSKPath();
 
+    /// Set the initial path and configure source selection UI
+    /// Parses SRC: designation and pre-selects the tree node
+    ///
+    /// \param path The SignalK path (may include .SRC:xxx suffix)
+    void SetInitialPath(const wxString& path);
+
     /// Set pointer to the SignalK full data object
     ///
     /// \param sk_tree Pointer to the \c Json::Value holding the data
@@ -416,6 +422,7 @@ public:
 protected:
     virtual void m_btnCollapseOnButtonClick(wxCommandEvent& event);
     virtual void m_btnSelfOnButtonClick(wxCommandEvent& event);
+    virtual void m_treePathOnTreeSelChanged(wxTreeEvent& event);
 
 private:
     /// Recursively populate the tree control with known children from the
@@ -434,6 +441,16 @@ private:
 
     /// Tree item ID of the own vessel
     wxTreeItemId m_self_item_id;
+
+    /// Current source selection mode: "specific", "any", "lockfirst",
+    /// "lockpersist"
+    wxString m_source_mode = "specific";
+
+    /// Event handlers for source mode selection
+    virtual void m_rbSpecificOnRadioButton(wxCommandEvent& event);
+    virtual void m_rbAnyOnRadioButton(wxCommandEvent& event);
+    virtual void m_rbLockFirstOnRadioButton(wxCommandEvent& event);
+    virtual void m_rbLockPersistOnRadioButton(wxCommandEvent& event);
 };
 
 /// Implementation of the widget for editing warning and alarm zones. To obtain

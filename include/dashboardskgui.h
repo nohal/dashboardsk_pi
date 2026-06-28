@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version 4.0.0-0-g0efcecf0)
+// C++ code generated with wxFormBuilder (version 4.2.1-43-gf15ce330-dirty)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -22,6 +22,7 @@
 #include <wx/intl.h>
 #include <wx/listbox.h>
 #include <wx/panel.h>
+#include <wx/radiobut.h>
 #include <wx/scrolwin.h>
 #include <wx/settings.h>
 #include <wx/sizer.h>
@@ -31,12 +32,12 @@
 #include <wx/string.h>
 #include <wx/textctrl.h>
 #include <wx/treectrl.h>
+#include <wx/wrapsizer.h>
 #include <wx/xrc/xmlres.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
 namespace DashboardSKPlugin {
-
 ///////////////////////////////////////////////////////////////////////////////
 /// Class MainConfigFrame
 ///////////////////////////////////////////////////////////////////////////////
@@ -268,6 +269,12 @@ class SKPathBrowser : public wxDialog {
 private:
 protected:
     wxTreeCtrl* m_treePaths;
+    wxStaticText* m_stSourceLabel;
+    wxRadioButton* m_rbSpecific;
+    wxChoice* m_choiceSources;
+    wxRadioButton* m_rbAny;
+    wxRadioButton* m_rbLockFirst;
+    wxRadioButton* m_rbLockPersist;
     wxButton* m_btnCollapse;
     wxButton* m_btnSelf;
     wxStdDialogButtonSizer* m_sdbSizerButtons;
@@ -276,6 +283,19 @@ protected:
 
     // Virtual event handlers, override them in your derived class
     virtual void m_treePathOnTreeSelChanged(wxTreeEvent& event)
+    {
+        event.Skip();
+    }
+    virtual void m_rbSpecificOnRadioButton(wxCommandEvent& event)
+    {
+        event.Skip();
+    }
+    virtual void m_rbAnyOnRadioButton(wxCommandEvent& event) { event.Skip(); }
+    virtual void m_rbLockFirstOnRadioButton(wxCommandEvent& event)
+    {
+        event.Skip();
+    }
+    virtual void m_rbLockPersistOnRadioButton(wxCommandEvent& event)
     {
         event.Skip();
     }

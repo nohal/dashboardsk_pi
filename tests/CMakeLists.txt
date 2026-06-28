@@ -30,6 +30,7 @@ set(SOURCES_TESTS
     004-DividerInstrument.cpp
     005-SpacerInstrument.cpp
     006-ConfigValidator.cpp
+    007-MagicSourceValues.cpp
     opencpn_mock.cpp
     ${SRC_DASHBOARD})
 

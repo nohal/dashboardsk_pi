@@ -83,6 +83,13 @@ void Instrument::ReadConfig(Json::Value& config)
         m_zones = Zone::ParseZonesFromString(
             fromJsonVal(config[DSK_SETTING_ZONES].asString()));
     }
+    if (config.isMember("locked_source")) {
+        m_locked_source = fromJsonVal(config["locked_source"].asString());
+    }
+    if (config.isMember("locked_source_path")) {
+        m_locked_source_path
+            = fromJsonVal(config["locked_source_path"].asString());
+    }
 }
 
 Json::Value Instrument::GenerateJSONConfig()
@@ -93,6 +100,13 @@ Json::Value Instrument::GenerateJSONConfig()
     v["class"] = toJson(GetClass());
     v["allowed_age"] = m_allowed_age_sec;
     v[DSK_SETTING_ZONES] = toJson(Zone::ZonesToString(m_zones));
+    const wxString key = GetPrimarySKKey();
+    if (!m_locked_source.IsEmpty() && key.EndsWith(".SRC:lockpersist")
+        && (m_locked_source_path.IsEmpty()
+            || m_locked_source_path.IsSameAs(key))) {
+        v["locked_source"] = toJson(m_locked_source);
+        v["locked_source_path"] = toJson(key);
+    }
     return v;
 }
 
@@ -380,6 +394,95 @@ void Instrument::ConfigureFromKey(const wxString& key)
     }
     if (!key.IsEmpty() && m_name.StartsWith("New ")) {
         m_name = key.AfterLast('.');
+    }
+}
+
+const Json::Value* Instrument::GetSKDataResolved(const wxString& path)
+{
+    // ponytail: check for magic source modes and apply locking logic
+    if (!m_parent_dashboard) {
+        return nullptr;
+    }
+
+    int srcPos = path.Find("SRC:");
+    if (srcPos == wxNOT_FOUND) {
+        // No source designation - use base path
+        return m_parent_dashboard->GetSKData(path);
+    }
+
+    wxString srcDesignation = path.Mid(srcPos + 4); // Skip "SRC:"
+
+    if (srcDesignation == "any") {
+        // ponytail: for "any" mode, just scan and return first available source
+        // (no locking, returns first available each time)
+        return m_parent_dashboard->GetSKData(path);
+    } else if (srcDesignation == "lockfirst"
+        || srcDesignation == "lockpersist") {
+        wxString basePath = path.Left(srcPos - 1);
+
+        if (!m_locked_source_path.IsEmpty()
+            && !m_locked_source_path.IsSameAs(path)) {
+            m_locked_source.Clear();
+        }
+        m_locked_source_path = path;
+
+        if (!m_locked_source.IsEmpty()) {
+            const Json::Value* lockedValue = m_locked_source.IsSameAs("direct")
+                ? m_parent_dashboard->GetSKData(basePath)
+                : m_parent_dashboard->GetSKData(
+                      basePath + ".SRC:" + m_locked_source);
+            if (lockedValue) {
+                m_locked_source_time = std::chrono::system_clock::now();
+                return lockedValue;
+            }
+            if (srcDesignation == "lockfirst") {
+                return nullptr;
+            }
+
+            const auto age = std::chrono::duration_cast<std::chrono::seconds>(
+                std::chrono::system_clock::now() - m_locked_source_time);
+            if (age.count() < m_allowed_age_sec) {
+                return nullptr;
+            }
+            m_locked_source.Clear();
+        }
+
+        // Lock not established - find first available source and lock to it
+        const Json::Value* baseValue = m_parent_dashboard->GetSKData(basePath);
+        if (!baseValue) {
+            return nullptr;
+        }
+
+        // Try direct value first, then scan for SRC: entries
+        if (baseValue->isMember("value")) {
+            // Direct value exists - lock to it (empty source = direct)
+            m_locked_source = "direct";
+            m_locked_source_time = std::chrono::system_clock::now();
+            return baseValue;
+        }
+
+        // Scan for first available SRC: entry
+        for (const auto& name : baseValue->getMemberNames()) {
+            if (name.find("SRC:") == 0) {
+                const Json::Value* candidate = &(*baseValue)[name];
+                // Return this source container if it has any data (value for
+                // scalars, or nested data for complex types like position with
+                // latitude/longitude)
+                if (candidate->isMember("value")
+                    || !candidate->getMemberNames().empty()) {
+                    // Found first available source - lock to it
+                    wxString srcName(name);
+                    wxString srcValue = srcName.Mid(4); // Skip "SRC:"
+                    m_locked_source = srcValue;
+                    m_locked_source_time = std::chrono::system_clock::now();
+                    return candidate;
+                }
+            }
+        }
+        return nullptr;
+    } else {
+        // Exact source designation - delegate to base GetSKData
+        return m_parent_dashboard->GetSKData(path);
     }
 }
 

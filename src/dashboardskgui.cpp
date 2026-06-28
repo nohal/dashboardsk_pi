@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version 4.0.0-0-g0efcecf0)
+// C++ code generated with wxFormBuilder (version 4.2.1-43-gf15ce330-dirty)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -685,6 +685,43 @@ SKPathBrowser::SKPathBrowser(wxWindow* parent, wxWindowID id,
         this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTR_DEFAULT_STYLE);
     bSizerMain->Add(m_treePaths, 1, wxALL | wxEXPAND, 5);
 
+    wxWrapSizer* bSizerSourceMode;
+    bSizerSourceMode = new wxWrapSizer(wxHORIZONTAL, wxWRAPSIZER_DEFAULT_FLAGS);
+
+    m_stSourceLabel = new wxStaticText(
+        this, wxID_ANY, _("Source:"), wxDefaultPosition, wxDefaultSize, 0);
+    m_stSourceLabel->Wrap(-1);
+    bSizerSourceMode->Add(
+        m_stSourceLabel, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 3);
+
+    m_rbSpecific = new wxRadioButton(
+        this, wxID_ANY, _("Specific"), wxDefaultPosition, wxDefaultSize, 0);
+    m_rbSpecific->SetValue(true);
+    bSizerSourceMode->Add(
+        m_rbSpecific, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 2);
+
+    wxArrayString m_choiceSourcesChoices;
+    m_choiceSources = new wxChoice(this, wxID_ANY, wxDefaultPosition,
+        wxDefaultSize, m_choiceSourcesChoices, 0);
+    m_choiceSources->SetSelection(0);
+    bSizerSourceMode->Add(
+        m_choiceSources, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 2);
+
+    m_rbAny = new wxRadioButton(
+        this, wxID_ANY, _("Any"), wxDefaultPosition, wxDefaultSize, 0);
+    bSizerSourceMode->Add(m_rbAny, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 2);
+
+    m_rbLockFirst = new wxRadioButton(this, wxID_ANY, _("Lock (session)"),
+        wxDefaultPosition, wxDefaultSize, 0);
+    bSizerSourceMode->Add(
+        m_rbLockFirst, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 2);
+
+    m_rbLockPersist = new wxRadioButton(this, wxID_ANY, _("Lock (persist)"),
+        wxDefaultPosition, wxDefaultSize, 0);
+    bSizerSourceMode->Add(m_rbLockPersist, 0, wxALIGN_CENTER_VERTICAL, 2);
+
+    bSizerMain->Add(bSizerSourceMode, 0, wxEXPAND | wxALL, 3);
+
     wxBoxSizer* bSizerButtons;
     bSizerButtons = new wxBoxSizer(wxHORIZONTAL);
 
@@ -718,6 +755,17 @@ SKPathBrowser::SKPathBrowser(wxWindow* parent, wxWindowID id,
     m_treePaths->Connect(wxEVT_COMMAND_TREE_SEL_CHANGED,
         wxTreeEventHandler(SKPathBrowser::m_treePathOnTreeSelChanged), NULL,
         this);
+    m_rbSpecific->Connect(wxEVT_COMMAND_RADIOBUTTON_SELECTED,
+        wxCommandEventHandler(SKPathBrowser::m_rbSpecificOnRadioButton), NULL,
+        this);
+    m_rbAny->Connect(wxEVT_COMMAND_RADIOBUTTON_SELECTED,
+        wxCommandEventHandler(SKPathBrowser::m_rbAnyOnRadioButton), NULL, this);
+    m_rbLockFirst->Connect(wxEVT_COMMAND_RADIOBUTTON_SELECTED,
+        wxCommandEventHandler(SKPathBrowser::m_rbLockFirstOnRadioButton), NULL,
+        this);
+    m_rbLockPersist->Connect(wxEVT_COMMAND_RADIOBUTTON_SELECTED,
+        wxCommandEventHandler(SKPathBrowser::m_rbLockPersistOnRadioButton),
+        NULL, this);
     m_btnCollapse->Connect(wxEVT_COMMAND_BUTTON_CLICKED,
         wxCommandEventHandler(SKPathBrowser::m_btnCollapseOnButtonClick), NULL,
         this);
@@ -739,6 +787,17 @@ SKPathBrowser::~SKPathBrowser()
     m_treePaths->Disconnect(wxEVT_COMMAND_TREE_SEL_CHANGED,
         wxTreeEventHandler(SKPathBrowser::m_treePathOnTreeSelChanged), NULL,
         this);
+    m_rbSpecific->Disconnect(wxEVT_COMMAND_RADIOBUTTON_SELECTED,
+        wxCommandEventHandler(SKPathBrowser::m_rbSpecificOnRadioButton), NULL,
+        this);
+    m_rbAny->Disconnect(wxEVT_COMMAND_RADIOBUTTON_SELECTED,
+        wxCommandEventHandler(SKPathBrowser::m_rbAnyOnRadioButton), NULL, this);
+    m_rbLockFirst->Disconnect(wxEVT_COMMAND_RADIOBUTTON_SELECTED,
+        wxCommandEventHandler(SKPathBrowser::m_rbLockFirstOnRadioButton), NULL,
+        this);
+    m_rbLockPersist->Disconnect(wxEVT_COMMAND_RADIOBUTTON_SELECTED,
+        wxCommandEventHandler(SKPathBrowser::m_rbLockPersistOnRadioButton),
+        NULL, this);
     m_btnCollapse->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED,
         wxCommandEventHandler(SKPathBrowser::m_btnCollapseOnButtonClick), NULL,
         this);

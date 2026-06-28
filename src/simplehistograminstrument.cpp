@@ -189,7 +189,7 @@ void SimpleHistogramInstrument::ProcessData()
         m_needs_redraw = true;
         m_last_change = std::chrono::system_clock::now();
         m_timed_out = false;
-        const Json::Value* val = m_parent_dashboard->GetSKData(m_sk_key);
+        const Json::Value* val = GetSKDataResolved(m_sk_key);
         if (val) {
             Json::Value v = val->get("value", *val);
             double dval = Transform(v.isDouble() ? v.asDouble()

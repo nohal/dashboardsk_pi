@@ -1136,6 +1136,14 @@ SKPathBrowserImpl::SKPathBrowserImpl(wxWindow* parent, wxWindowID id,
     DimeWindow(this);
     m_self = wxEmptyString;
     m_self_item_id = m_treePaths->GetRootItem();
+
+    // Initialize source selection mode UI
+    m_source_mode = "specific";
+    m_rbSpecific->SetValue(true);
+    m_rbAny->SetValue(false);
+    m_rbLockFirst->SetValue(false);
+    m_rbLockPersist->SetValue(false);
+    m_choiceSources->Enable(true);
 }
 
 wxString SKPathBrowserImpl::GetSKPath()
@@ -1164,6 +1172,22 @@ wxString SKPathBrowserImpl::GetSKPath()
             }
         }
     }
+
+    // Append source mode suffix based on user selection
+    if (m_source_mode == "any") {
+        path.Append(".SRC:any");
+    } else if (m_source_mode == "lockfirst") {
+        path.Append(".SRC:lockfirst");
+    } else if (m_source_mode == "lockpersist") {
+        path.Append(".SRC:lockpersist");
+    } else if (m_source_mode == "specific"
+        && m_choiceSources->GetSelection() != wxNOT_FOUND) {
+        wxString selected_source = m_choiceSources->GetStringSelection();
+        if (!selected_source.IsEmpty()) {
+            path.Append(".SRC:").Append(selected_source);
+        }
+    }
+
     return path;
 }
 
@@ -1188,8 +1212,11 @@ void SKPathBrowserImpl::AddChildren(wxTreeItemId parent, Json::Value& json_node)
     if (json_node.isObject()) {
         for (const auto& member : json_node.getMemberNames()) {
             const wxString wmember = fromJsonVal(member);
+            // Skip metadata fields and SRC: designation nodes (source selection
+            // is in UI panel)
             if (!(wmember.IsSameAs("value") || wmember.IsSameAs("source")
-                    || wmember.IsSameAs("timestamp"))) {
+                    || wmember.IsSameAs("timestamp")
+                    || wmember.StartsWith(SRC_MAGIC_STRING))) {
                 // TODO: Isn't there a "legal" node with some of the above
                 // names?
                 wxTreeItemId child = m_treePaths->AppendItem(parent, wmember);
@@ -1220,6 +1247,188 @@ void SKPathBrowserImpl::m_btnSelfOnButtonClick(wxCommandEvent& event)
 }
 
 void SKPathBrowserImpl::SetSelf(const wxString& self) { m_self = self; }
+
+void SKPathBrowserImpl::SetInitialPath(const wxString& path)
+{
+    // Parse path to extract base path (without SRC: suffix) and source mode
+    wxString base_path = path;
+    wxString source_mode = "specific";
+    wxString selected_source = wxEmptyString;
+
+    // Check for SRC: designation
+    int src_pos = path.Find(".SRC:");
+    if (src_pos != wxNOT_FOUND) {
+        base_path = path.Left(src_pos); // everything before .SRC:
+        wxString src_part = path.Mid(
+            src_pos + 5); // everything after .SRC: (5 = strlen(".SRC:"))
+
+        if (src_part == "any") {
+            source_mode = "any";
+        } else if (src_part == "lockfirst") {
+            source_mode = "lockfirst";
+        } else if (src_part == "lockpersist") {
+            source_mode = "lockpersist";
+        } else {
+            source_mode = "specific";
+            selected_source = src_part;
+        }
+    }
+
+    // Navigate tree to select base_path node
+    if (!base_path.IsEmpty()) {
+        wxTreeItemId current = m_treePaths->GetRootItem();
+        wxStringTokenizer tokenizer(base_path, ".");
+
+        while (tokenizer.HasMoreTokens() && current.IsOk()) {
+            wxString token = tokenizer.GetNextToken();
+            wxTreeItemIdValue cookie;
+            wxTreeItemId child = m_treePaths->GetFirstChild(current, cookie);
+            bool found = false;
+
+            while (child.IsOk()) {
+                if (m_treePaths->GetItemText(child) == token) {
+                    current = child;
+                    m_treePaths->ExpandAll(); // expand to make path visible
+                    found = true;
+                    break;
+                }
+                child = m_treePaths->GetNextChild(current, cookie);
+            }
+
+            if (!found) {
+                break;
+            }
+        }
+
+        // Select the found node (triggers tree selection handler)
+        if (current.IsOk()) {
+            m_treePaths->SelectItem(current);
+        }
+    }
+
+    // Set source mode UI based on parsed values
+    if (source_mode == "any") {
+        m_rbAny->SetValue(true);
+        m_rbSpecific->SetValue(false);
+        m_rbLockFirst->SetValue(false);
+        m_rbLockPersist->SetValue(false);
+        m_source_mode = "any";
+        m_choiceSources->Enable(false);
+    } else if (source_mode == "lockfirst") {
+        m_rbLockFirst->SetValue(true);
+        m_rbSpecific->SetValue(false);
+        m_rbAny->SetValue(false);
+        m_rbLockPersist->SetValue(false);
+        m_source_mode = "lockfirst";
+        m_choiceSources->Enable(false);
+    } else if (source_mode == "lockpersist") {
+        m_rbLockPersist->SetValue(true);
+        m_rbSpecific->SetValue(false);
+        m_rbAny->SetValue(false);
+        m_rbLockFirst->SetValue(false);
+        m_source_mode = "lockpersist";
+        m_choiceSources->Enable(false);
+    } else {
+        // Specific mode - dropdown should already be populated by tree
+        // selection handler
+        m_rbSpecific->SetValue(true);
+        m_rbAny->SetValue(false);
+        m_rbLockFirst->SetValue(false);
+        m_rbLockPersist->SetValue(false);
+        m_source_mode = "specific";
+        m_choiceSources->Enable(true);
+
+        // If a specific source was selected, find it in dropdown
+        if (!selected_source.IsEmpty()) {
+            int selection = m_choiceSources->FindString(selected_source);
+            if (selection != wxNOT_FOUND) {
+                m_choiceSources->SetSelection(selection);
+            }
+        }
+    }
+}
+
+void SKPathBrowserImpl::m_rbSpecificOnRadioButton(wxCommandEvent& event)
+{
+    m_source_mode = "specific";
+    m_choiceSources->Enable(true);
+    event.Skip();
+}
+
+void SKPathBrowserImpl::m_rbAnyOnRadioButton(wxCommandEvent& event)
+{
+    m_source_mode = "any";
+    m_choiceSources->Enable(false);
+    event.Skip();
+}
+
+void SKPathBrowserImpl::m_rbLockFirstOnRadioButton(wxCommandEvent& event)
+{
+    m_source_mode = "lockfirst";
+    m_choiceSources->Enable(false);
+    event.Skip();
+}
+
+void SKPathBrowserImpl::m_rbLockPersistOnRadioButton(wxCommandEvent& event)
+{
+    m_source_mode = "lockpersist";
+    m_choiceSources->Enable(false);
+    event.Skip();
+}
+
+void SKPathBrowserImpl::m_treePathOnTreeSelChanged(wxTreeEvent& event)
+{
+    // Populate sources dropdown when a path is selected by scanning JSON data
+    m_choiceSources->Clear();
+    wxTreeItemId selected = m_treePaths->GetSelection();
+    if (selected.IsOk() && selected != m_treePaths->GetRootItem()) {
+        // Build path from selected tree node
+        wxString path = wxEmptyString;
+        auto node = selected;
+        while (node.IsOk() && node != m_treePaths->GetRootItem()) {
+            if (!path.IsEmpty()) {
+                path.Prepend(".");
+            }
+            path.Prepend(m_treePaths->GetItemText(node));
+            node = m_treePaths->GetItemParent(node);
+        }
+
+        // Navigate JSON tree to find SRC: nodes
+        Json::Value* json_node = &m_sk_tree;
+        wxStringTokenizer tokenizer(path, ".");
+        while (tokenizer.HasMoreTokens()) {
+            wxString token = tokenizer.GetNextToken();
+            std::string token_str = token.ToStdString();
+            if (json_node->isObject() && json_node->isMember(token_str)) {
+                json_node = &(*json_node)[token_str];
+            } else {
+                json_node = nullptr;
+                break;
+            }
+        }
+
+        // Scan JSON children for SRC: members
+        if (json_node && json_node->isObject()) {
+            for (const auto& member : json_node->getMemberNames()) {
+                const wxString wmember = fromJsonVal(member);
+                if (wmember.StartsWith(SRC_MAGIC_STRING)) {
+                    wxString source = wmember.Mid(4); // strlen("SRC:") = 4
+                    if (!source.IsEmpty() && source != "any"
+                        && source != "lockfirst" && source != "lockpersist") {
+                        m_choiceSources->Append(source);
+                    }
+                }
+            }
+        }
+    }
+    if (m_choiceSources->GetCount() > 0) {
+        m_choiceSources->SetSelection(0);
+        m_rbSpecific->Enable(true);
+    } else {
+        m_rbSpecific->Enable(false);
+    }
+    event.Skip();
+}
 
 //====================================
 // SKKeyCtrlImpl
@@ -1262,6 +1471,8 @@ void SKKeyCtrlImpl::m_btnSelectOnButtonClick(wxCommandEvent& event)
         new SKPathBrowserImpl(this, wxID_ANY, m_tSKKey->GetValue()));
     dlg->SetSelf(m_self);
     dlg->SetSKTree(m_sk_tree);
+    // Set initial path and parse source selection mode
+    dlg->SetInitialPath(m_tSKKey->GetValue());
     dlg->ShowWindowModalThenDo([this, dlg](int retcode) {
         if (retcode == wxID_OK) {
             m_tSKKey->SetValue(dlg->GetSKPath());
