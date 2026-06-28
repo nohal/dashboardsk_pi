@@ -197,7 +197,9 @@ void DashboardSK::SendSKDelta(Json::Value& message)
     wxString fullKey;
     if (!message.isMember("context")) {
         LOG_RECEIVE("Message does not contain context "
-            + fromJsonVal(message.getMemberNames()[0]));
+            + (message.isObject() && !message.getMemberNames().empty()
+                    ? fromJsonVal(message.getMemberNames()[0])
+                    : wxString()));
         if (!message.isMember("updates") || !message["updates"].isArray()) {
             LOG_RECEIVE("Message does not look OK");
             return; // Invalid SK delta

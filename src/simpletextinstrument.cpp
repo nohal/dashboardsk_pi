@@ -134,7 +134,11 @@ wxBitmap SimpleTextInstrument::Render(double scale)
         if (val) {
             m_last_change = std::chrono::system_clock::now();
             Json::Value v = val->get("value", toJson(value));
-            value = fromJsonVal(v.asString());
+            // jsoncpp asString() throws on object/array values (e.g. a
+            // complex/position path); only convert scalar leaves.
+            if (!v.isObject() && !v.isArray()) {
+                value = fromJsonVal(v.asString());
+            }
         }
     }
 

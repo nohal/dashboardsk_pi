@@ -1105,7 +1105,7 @@ void SKPathBrowserImpl::SetSKTree(Json::Value* sk_tree)
 
 void SKPathBrowserImpl::AddChildren(wxTreeItemId parent, Json::Value& json_node)
 {
-    if (!json_node.isNull()) {
+    if (json_node.isObject()) {
         for (const auto& member : json_node.getMemberNames()) {
             const wxString wmember = fromJsonVal(member);
             if (!(wmember.IsSameAs("value") || wmember.IsSameAs("source")
