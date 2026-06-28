@@ -70,7 +70,7 @@ const json* GetSchema(const wxString& schema_path)
     if (it != cache.end()) {
         return it->second.get();
     }
-    std::ifstream f(schema_path.ToStdString(wxConvUTF8));
+    std::ifstream f(DSK_TO_STDSTRING_UTF8(schema_path));
     if (!f.is_open()) {
         cache[schema_path] = nullptr;
         return nullptr;
@@ -140,7 +140,7 @@ bool ValidateConfigJSON(const wxString& json_text, const wxString& schema_path,
     }
     json doc;
     try {
-        doc = json::parse(json_text.ToStdString(wxConvUTF8));
+        doc = json::parse(DSK_TO_STDSTRING_UTF8(json_text));
     } catch (const std::exception& e) {
         errors_out = wxString::FromUTF8(e.what());
         return false;
