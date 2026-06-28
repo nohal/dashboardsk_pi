@@ -34,7 +34,7 @@ PLUGIN_BEGIN_NAMESPACE
 #define ID_INSTR_ACTION_BASE 3100
 
 vector<wxString> Dashboard::AnchorEdgeLabels { _("Bottom"), _("Top"), _("Left"),
-    _("Right") };
+    _("Right"), _("Own ship") };
 
 map<Dashboard::canvas_edge_anchor, wxCoord> Dashboard::m_offsets;
 
@@ -77,6 +77,49 @@ void Dashboard::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
     if (!m_enabled || m_canvas_nr != canvasIndex) {
         return;
     }
+
+    if (m_anchor == anchor_edge::own_ship) {
+        double lat;
+        double lon;
+        if (!m_parent->GetOwnShipPosition(lat, lon)) {
+            return;
+        }
+        wxPoint ship;
+        GetCanvasPixLL(vp, &ship, lat, lon);
+        if (ship.x < 0 || ship.x >= vp->pix_width || ship.y < 0
+            || ship.y >= vp->pix_height) {
+            return;
+        }
+
+        vector<wxBitmap> bitmaps;
+        wxCoord width = 0;
+        for (auto instrument : m_instruments) {
+            bitmaps.emplace_back(
+                instrument->Render(m_parent->GetContentScaleFactor()));
+            if (!bitmaps.back().IsOk()) {
+                continue;
+            }
+            if (width > 0) {
+                width += m_parent->ToPhys(m_spacing_h);
+            }
+            width += bitmaps.back().GetWidth();
+        }
+
+        wxCoord x = ship.x - width / 2;
+        for (size_t i = 0; i < bitmaps.size(); ++i) {
+            const wxBitmap& bmp = bitmaps[i];
+            if (!bmp.IsOk()) {
+                continue;
+            }
+            wxCoord y = ship.y - bmp.GetHeight() / 2;
+            dc->DrawBitmap(bmp, x, y, bmp.HasAlpha());
+            m_instruments[i]->SetPlacement(
+                x, y, bmp.GetWidth(), bmp.GetHeight());
+            x += bmp.GetWidth() + m_parent->ToPhys(m_spacing_h);
+        }
+        return;
+    }
+
     wxCoord canvas_width = vp->pix_width, canvas_height = vp->pix_height, x = 0,
             y = 0, current_row_size = 0, row_offset = 0;
     wxCoord start_pos;
@@ -303,6 +346,11 @@ wxArrayString Dashboard::GetInstrumentNames()
 const Json::Value* Dashboard::GetSKData(const wxString& path)
 {
     return m_parent->GetSKData(path);
+}
+
+double Dashboard::GetMagneticVariation() const
+{
+    return m_parent ? m_parent->GetMagneticVariation() : 0.0;
 }
 
 PLUGIN_END_NAMESPACE

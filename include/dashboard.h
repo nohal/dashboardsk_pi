@@ -51,7 +51,13 @@ class Dashboard {
 public:
     /// Canvas edge enum represents the edges of the canvas to which the
     /// dashboard can be anchored
-    enum class anchor_edge { bottom = 0, top = 1, left = 2, right = 3 };
+    enum class anchor_edge {
+        bottom = 0,
+        top = 1,
+        left = 2,
+        right = 3,
+        own_ship = 4
+    };
 
     /// Labels for the edges of the canvas to be used in the GUI
     static vector<wxString> AnchorEdgeLabels;
@@ -314,6 +320,11 @@ public:
     /// \param path SignalK fully qualified path
     /// \return Pointer to the data object or NULL if not found
     const Json::Value* GetSKData(const wxString& path);
+
+    /// Get OpenCPN's current magnetic variation.
+    ///
+    /// \return Variation in degrees, east positive
+    double GetMagneticVariation() const;
 
     /// Force redraw of the instrument on the next overlay refresh
     void ForceRedraw()

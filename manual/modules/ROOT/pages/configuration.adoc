@@ -84,19 +84,25 @@ Changes in parameters are reflected in the displayed instrument as soon as an ac
 |The plugin allows grouping dashboards on pages to allow complex setups while maintaining enough space for the chart canvas. If more than one page is defined, a pager control is displlayed in the lower left corner of the screen allowing switching between pages. The pager control also provides a context menu accessible using right-click to quickly access the preferences, switch page or hide the dashboard completely. image::pager.png[Pager control with context menu]
 
 |Anchor
-|Edge of the screen to which the dashboard is docked
+|Edge of the screen to which the dashboard is docked. The *Own ship* option
+centers the dashboard's instruments in a horizontal row on OpenCPN's own-ship
+position. The dashboard is hidden when the position is unavailable or outside
+the canvas.
 
 |Offset h
-|Horizontal offset from the edge of the screen
+|Horizontal offset from the edge of the screen. Ignored for the *Own ship*
+anchor.
 
 |Offset v
-|Vertical offset from the edge of the screen
+|Vertical offset from the edge of the screen. Ignored for the *Own ship*
+anchor.
 
 |Spacing h
 |Horizontal spacing between the instruments in the dashboard
 
 |Spacing v
-|Vertical spacing between the instruments in the dashboard
+|Vertical spacing between the instruments in the dashboard. Ignored for the
+*Own ship* anchor.
 |===
 
 Changes performed in this area are immediately reflected on screen, but not persisted until the *OK* button is pressed.

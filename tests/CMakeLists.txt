@@ -31,6 +31,7 @@ set(SOURCES_TESTS
     005-SpacerInstrument.cpp
     006-ConfigValidator.cpp
     007-MagicSourceValues.cpp
+    008-CompositeWindInstrument.cpp
     opencpn_mock.cpp
     ${SRC_DASHBOARD})
 

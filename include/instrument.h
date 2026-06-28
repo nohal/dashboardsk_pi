@@ -349,6 +349,15 @@ protected:
     wxString m_locked_source_path;
     /// Timestamp when lock was established (for grace period tracking)
     std::chrono::system_clock::time_point m_locked_source_time;
+    /// Source lock state for instruments which consume multiple paths.
+    struct source_lock {
+        /// Locked source name, or "direct" for an unsourced value.
+        wxString source;
+        /// Most recent time at which the locked source was available.
+        std::chrono::system_clock::time_point time;
+    };
+    /// Independent dynamic source locks indexed by configured path.
+    std::map<wxString, source_lock> m_source_locks;
 
     /// Get version of a color adjusted to the current color scheme set for the
     /// instrument
@@ -499,7 +508,7 @@ public:
     /// \param x Horizontal position of the point
     /// \param y Vertical position of the point
     /// \return True if the point is inside the instrument, false otherwise
-    bool IsClicked(wxCoord x, wxCoord y) const
+    virtual bool IsClicked(wxCoord x, wxCoord y) const
     {
         return x >= m_x && x <= m_x + m_width && y >= m_y
             && y <= m_y + m_height;
@@ -673,6 +682,10 @@ public:
     {
         m_locked_source = source;
         m_locked_source_time = std::chrono::system_clock::now();
+        if (!m_locked_source_path.IsEmpty()) {
+            m_source_locks[m_locked_source_path]
+                = { m_locked_source, m_locked_source_time };
+        }
     }
 
     /// Get the time when the source lock was established

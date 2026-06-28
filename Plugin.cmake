@@ -58,6 +58,7 @@ set(HDR_DASHBOARD
     ${CMAKE_SOURCE_DIR}/include/dashboardsk.h
     ${CMAKE_SOURCE_DIR}/include/dashboard.h
     ${CMAKE_SOURCE_DIR}/include/instrument.h
+    ${CMAKE_SOURCE_DIR}/include/compositewindinstrument.h
     ${CMAKE_SOURCE_DIR}/include/simplenumberinstrument.h
     ${CMAKE_SOURCE_DIR}/include/simplegaugeinstrument.h
     ${CMAKE_SOURCE_DIR}/include/simpletextinstrument.h
@@ -73,6 +74,7 @@ set(SRC_DASHBOARD
     ${CMAKE_SOURCE_DIR}/src/dashboardsk.cpp
     ${CMAKE_SOURCE_DIR}/src/dashboard.cpp
     ${CMAKE_SOURCE_DIR}/src/instrument.cpp
+    ${CMAKE_SOURCE_DIR}/src/compositewindinstrument.cpp
     ${CMAKE_SOURCE_DIR}/src/simplenumberinstrument.cpp
     ${CMAKE_SOURCE_DIR}/src/simplegaugeinstrument.cpp
     ${CMAKE_SOURCE_DIR}/src/simpletextinstrument.cpp

@@ -65,6 +65,12 @@ int GetCanvasCount() { return 1; }
 
 int GetCanvasIndexUnderMouse() { return 0; }
 
+void GetCanvasPixLL(PlugIn_ViewPort* vp, wxPoint* point, double lat, double lon)
+{
+    point->x = static_cast<int>(lon);
+    point->y = static_cast<int>(lat);
+}
+
 wxBitmap GetBitmapFromSVGFile(
     wxString filename, unsigned int width, unsigned int height)
 {

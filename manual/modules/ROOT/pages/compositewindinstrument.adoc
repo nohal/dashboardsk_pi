@@ -1,0 +1,34 @@
+:imagesdir: ../images/
+== Composite wind instrument
+
+image::compositewindinstrument_screenshot.png[Composite wind instrument]
+
+The composite wind instrument combines apparent and true wind angles and
+speeds with vessel heading and course over ground. Its annular face leaves the
+center mostly transparent so chart content remains visible.
+
+The instrument accepts six independently selectable Signal K paths:
+
+* `environment.wind.angleApparent`
+* `environment.wind.speedApparent`
+* `environment.wind.angleTrueWater`
+* `environment.wind.speedTrue`
+* `navigation.headingMagnetic`
+* `navigation.courseOverGroundTrue`
+
+Signal K angles are converted from radians to degrees. Speeds are converted
+from metres per second to knots. Missing or timed-out values are replaced by
+dashes without hiding the remaining current data.
+
+The heading input is treated as magnetic and corrected with OpenCPN's current
+magnetic variation before it is drawn against the true-north chart.
+
+In *North up* mode the compass remains fixed while heading, COG, wind markers,
+and the port/starboard sectors rotate. In *Heading up* mode the bow and colored
+sectors remain at the top while the compass and COG rotate relative to heading.
+The `A` and `T` triangles point inward because wind comes from the indicated
+direction; heading and COG triangles point outward.
+
+The diameter and colors of the face, ticks, text, markers, border, and
+port/starboard sectors are configurable. The central opening, tick spacing,
+font sizes, and marker geometry are fixed.

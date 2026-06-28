@@ -90,6 +90,17 @@ void Instrument::ReadConfig(Json::Value& config)
         m_locked_source_path
             = fromJsonVal(config["locked_source_path"].asString());
     }
+    if (config.isMember("locked_sources")
+        && config["locked_sources"].isObject()) {
+        for (const auto& path : config["locked_sources"].getMemberNames()) {
+            m_source_locks[fromJsonVal(path)]
+                = { fromJsonVal(config["locked_sources"][path].asString()),
+                      std::chrono::system_clock::now() };
+        }
+    } else if (!m_locked_source.IsEmpty() && !m_locked_source_path.IsEmpty()) {
+        m_source_locks[m_locked_source_path]
+            = { m_locked_source, m_locked_source_time };
+    }
 }
 
 Json::Value Instrument::GenerateJSONConfig()
@@ -106,6 +117,13 @@ Json::Value Instrument::GenerateJSONConfig()
             || m_locked_source_path.IsSameAs(key))) {
         v["locked_source"] = toJson(m_locked_source);
         v["locked_source_path"] = toJson(key);
+    }
+    for (const auto& lock : m_source_locks) {
+        if (lock.first.EndsWith(".SRC:lockpersist")
+            && !lock.second.source.IsEmpty()) {
+            v["locked_sources"][toJson(lock.first).asString()]
+                = toJson(lock.second.source);
+        }
     }
     return v;
 }
@@ -419,20 +437,22 @@ const Json::Value* Instrument::GetSKDataResolved(const wxString& path)
     } else if (srcDesignation == "lockfirst"
         || srcDesignation == "lockpersist") {
         wxString basePath = path.Left(srcPos - 1);
-
-        if (!m_locked_source_path.IsEmpty()
-            && !m_locked_source_path.IsSameAs(path)) {
-            m_locked_source.Clear();
+        source_lock& lock = m_source_locks[path];
+        if (lock.time.time_since_epoch().count() == 0) {
+            lock.time = std::chrono::system_clock::now();
         }
         m_locked_source_path = path;
+        m_locked_source = lock.source;
+        m_locked_source_time = lock.time;
 
-        if (!m_locked_source.IsEmpty()) {
-            const Json::Value* lockedValue = m_locked_source.IsSameAs("direct")
+        if (!lock.source.IsEmpty()) {
+            const Json::Value* lockedValue = lock.source.IsSameAs("direct")
                 ? m_parent_dashboard->GetSKData(basePath)
                 : m_parent_dashboard->GetSKData(
-                      basePath + ".SRC:" + m_locked_source);
+                      basePath + ".SRC:" + lock.source);
             if (lockedValue) {
-                m_locked_source_time = std::chrono::system_clock::now();
+                lock.time = std::chrono::system_clock::now();
+                m_locked_source_time = lock.time;
                 return lockedValue;
             }
             if (srcDesignation == "lockfirst") {
@@ -440,10 +460,11 @@ const Json::Value* Instrument::GetSKDataResolved(const wxString& path)
             }
 
             const auto age = std::chrono::duration_cast<std::chrono::seconds>(
-                std::chrono::system_clock::now() - m_locked_source_time);
+                std::chrono::system_clock::now() - lock.time);
             if (age.count() < m_allowed_age_sec) {
                 return nullptr;
             }
+            lock.source.Clear();
             m_locked_source.Clear();
         }
 
@@ -456,8 +477,10 @@ const Json::Value* Instrument::GetSKDataResolved(const wxString& path)
         // Try direct value first, then scan for SRC: entries
         if (baseValue->isMember("value")) {
             // Direct value exists - lock to it (empty source = direct)
-            m_locked_source = "direct";
-            m_locked_source_time = std::chrono::system_clock::now();
+            lock.source = "direct";
+            lock.time = std::chrono::system_clock::now();
+            m_locked_source = lock.source;
+            m_locked_source_time = lock.time;
             return baseValue;
         }
 
@@ -473,8 +496,10 @@ const Json::Value* Instrument::GetSKDataResolved(const wxString& path)
                     // Found first available source - lock to it
                     wxString srcName(name);
                     wxString srcValue = srcName.Mid(4); // Skip "SRC:"
-                    m_locked_source = srcValue;
-                    m_locked_source_time = std::chrono::system_clock::now();
+                    lock.source = srcValue;
+                    lock.time = std::chrono::system_clock::now();
+                    m_locked_source = lock.source;
+                    m_locked_source_time = lock.time;
                     return candidate;
                 }
             }

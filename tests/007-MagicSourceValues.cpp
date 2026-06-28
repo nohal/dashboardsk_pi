@@ -194,6 +194,32 @@ TEST_CASE("Magic source locks obey mode and path")
     REQUIRE(instr.GetLockedSource().IsSameAs("new"));
 }
 
+TEST_CASE("Magic source locks are independent for multiple paths")
+{
+    DashboardSK dsk("");
+    Dashboard* db = dsk.AddDashboard();
+    SimpleNumberInstrument instr(db);
+
+    Json::Value update;
+    update["context"] = "test";
+    update["updates"][0]["$source"] = "wind";
+    update["updates"][0]["values"][0]["path"] = "awa";
+    update["updates"][0]["values"][0]["value"] = 1;
+    update["updates"][1]["$source"] = "navigation";
+    update["updates"][1]["values"][0]["path"] = "heading";
+    update["updates"][1]["values"][0]["value"] = 2;
+    dsk.SendSKDelta(update);
+
+    REQUIRE(instr.GetSKDataResolved("test.awa.SRC:lockpersist") != nullptr);
+    REQUIRE(instr.GetSKDataResolved("test.heading.SRC:lockpersist") != nullptr);
+
+    const Json::Value config = instr.GenerateJSONConfig();
+    REQUIRE(config["locked_sources"]["test.awa.SRC:lockpersist"].asString()
+        == "wind");
+    REQUIRE(config["locked_sources"]["test.heading.SRC:lockpersist"].asString()
+        == "navigation");
+}
+
 TEST_CASE("Magic source SRC:lockpersist falls back after grace period")
 {
     DashboardSK dsk("");

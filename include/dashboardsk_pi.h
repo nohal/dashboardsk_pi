@@ -208,6 +208,11 @@ public:
     void SetPluginMessage(
         wxString& message_id, wxString& message_body) override;
 
+    /// Receive the current own-ship navigation fix from OpenCPN.
+    ///
+    /// \param pfix Extended position fix
+    void SetPositionFixEx(PlugIn_Position_Fix_Ex& pfix) override;
+
     /// Get pointer to the actual dashboard logic
     ///
     /// \return Pointer to the DashboardSK instance

@@ -36,6 +36,7 @@
 #include <unordered_map>
 
 // All the instrument class headers must be included here
+#include "compositewindinstrument.h"
 #include "dividerinstrument.h"
 #include "simplegaugeinstrument.h"
 #include "simplehistograminstrument.h"
@@ -53,7 +54,7 @@
     X(4, SimpleHistogramInstrument)                                            \
     X(5, DividerInstrument)                                                    \
     X(6, SpacerInstrument)                                                     \
-    // X(7, AndAnotherInstrument)
+    X(7, CompositeWindInstrument)
 
 #define SRC_MAGIC_STRING "SRC:"
 
@@ -93,6 +94,14 @@ private:
 #endif
     /// Color scheme to be used when rendering the dashboards on screen
     int m_color_scheme;
+    /// Whether OpenCPN has supplied a valid own-ship position
+    bool m_own_ship_position_valid;
+    /// Own-ship latitude supplied by OpenCPN
+    double m_own_ship_lat;
+    /// Own-ship longitude supplied by OpenCPN
+    double m_own_ship_lon;
+    /// Magnetic variation supplied by OpenCPN, in degrees
+    double m_magnetic_variation;
 
     /// Path to the directory with data
     wxString m_data_dir;
@@ -152,6 +161,29 @@ public:
     ///
     /// \return Color scheme index
     const int GetColorScheme();
+
+    /// Store the own-ship position supplied by OpenCPN.
+    ///
+    /// \param lat Latitude in decimal degrees
+    /// \param lon Longitude in decimal degrees
+    void SetOwnShipPosition(double lat, double lon);
+
+    /// Get the latest valid own-ship position.
+    ///
+    /// \param lat Receives latitude in decimal degrees
+    /// \param lon Receives longitude in decimal degrees
+    /// \return True if a valid position is available
+    bool GetOwnShipPosition(double& lat, double& lon) const;
+
+    /// Store magnetic variation supplied by OpenCPN.
+    ///
+    /// \param variation Variation in degrees, east positive
+    void SetMagneticVariation(double variation);
+
+    /// Get magnetic variation supplied by OpenCPN.
+    ///
+    /// \return Variation in degrees, east positive
+    double GetMagneticVariation() const { return m_magnetic_variation; }
 
     /// Get pointer to the SignalK object from the data tree
     ///

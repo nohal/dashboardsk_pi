@@ -38,6 +38,13 @@ Example uses: wind angle, COG, tank level, like `environment.wind.angleApparent`
 
 * xref:simplegaugeinstrument.adoc[Detailed documentation]
 
+==== Composite wind
+
+Annular instrument combining apparent and true wind, heading, and course over
+ground while leaving the chart visible through its center.
+
+* xref:compositewindinstrument.adoc[Detailed documentation]
+
 ==== Simple text
 
 Simple instrument displaying a textual Signal K value. The instrument is not suitable to display compound values like position, use the respective specialozed instruments for these.

@@ -33,8 +33,30 @@
 #include "dashboardsk.h"
 #include "instrument.h"
 #include "simplenumberinstrument.h"
+#include <limits>
 
 using namespace DashboardSKPlugin;
+
+TEST_CASE("DashboardSK stores only valid OpenCPN own-ship positions")
+{
+    DashboardSK d(wxEmptyString);
+    double lat = 0.0;
+    double lon = 0.0;
+
+    REQUIRE_FALSE(d.GetOwnShipPosition(lat, lon));
+    d.SetOwnShipPosition(54.1, 10.2);
+    REQUIRE(d.GetOwnShipPosition(lat, lon));
+    REQUIRE(lat == 54.1);
+    REQUIRE(lon == 10.2);
+
+    d.SetOwnShipPosition(std::numeric_limits<double>::quiet_NaN(), 10.2);
+    REQUIRE_FALSE(d.GetOwnShipPosition(lat, lon));
+
+    d.SetMagneticVariation(12.5);
+    REQUIRE(d.GetMagneticVariation() == 12.5);
+    d.SetMagneticVariation(std::numeric_limits<double>::quiet_NaN());
+    REQUIRE(d.GetMagneticVariation() == 0.0);
+}
 
 TEST_CASE("DashboardSK Creation - properties set to defaults")
 {

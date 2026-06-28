@@ -71,3 +71,15 @@ TEST_CASE("Dashboard Configuration Storage - if JSON not complete, defaults "
     REQUIRE(config["spacing_v"].asInt() == DEFAULT_SPACING_V);
     REQUIRE(config["enabled"].asBool() == true);
 }
+
+TEST_CASE("Dashboard own-ship anchor survives configuration round trip")
+{
+    Dashboard d(nullptr);
+    Json::Value config;
+    ParseJSON("{ \"anchor\": 4 }", config);
+
+    d.ReadConfig(config);
+
+    REQUIRE(d.GetAnchorEdge() == Dashboard::anchor_edge::own_ship);
+    REQUIRE(d.GenerateJSONConfig()["anchor"].asInt() == 4);
+}

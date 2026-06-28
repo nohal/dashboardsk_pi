@@ -107,7 +107,7 @@ int dashboardsk_pi::Init()
     return (WANTS_OVERLAY_CALLBACK | WANTS_OPENGL_OVERLAY_CALLBACK
         | WANTS_DYNAMIC_OPENGL_OVERLAY_CALLBACK | WANTS_TOOLBAR_CALLBACK
         | INSTALLS_TOOLBAR_TOOL | WANTS_PREFERENCES | WANTS_PLUGIN_MESSAGING
-        | WANTS_MOUSE_EVENTS);
+        | WANTS_MOUSE_EVENTS | WANTS_NMEA_EVENTS);
 }
 
 bool dashboardsk_pi::DeInit()
@@ -330,6 +330,14 @@ void dashboardsk_pi::SetPluginMessage(
                 m_dsk->SendSKDelta(v);
             }
         }
+    }
+}
+
+void dashboardsk_pi::SetPositionFixEx(PlugIn_Position_Fix_Ex& pfix)
+{
+    if (m_dsk) {
+        m_dsk->SetOwnShipPosition(pfix.Lat, pfix.Lon);
+        m_dsk->SetMagneticVariation(pfix.Var);
     }
 }
 

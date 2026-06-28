@@ -26,6 +26,7 @@
 
 #include "dashboardsk.h"
 #include "dashboardsk_pi.h"
+#include <cmath>
 #include <wx/tokenzr.h>
 
 PLUGIN_BEGIN_NAMESPACE
@@ -37,6 +38,10 @@ DashboardSK::DashboardSK(const wxString& data_path)
     , m_self_ptr(nullptr)
     , m_frozen(false)
     , m_color_scheme(0)
+    , m_own_ship_position_valid(false)
+    , m_own_ship_lat(0.0)
+    , m_own_ship_lon(0.0)
+    , m_magnetic_variation(0.0)
     , m_data_dir(data_path)
 {
     for (int i = 0; i < GetCanvasCount(); i++) {
@@ -149,6 +154,36 @@ void DashboardSK::SetColorScheme(int cs)
 }
 
 const int DashboardSK::GetColorScheme() { return m_color_scheme; }
+
+void DashboardSK::SetOwnShipPosition(double lat, double lon)
+{
+    m_own_ship_position_valid = std::isfinite(lat) && std::isfinite(lon)
+        && lat >= -90.0 && lat <= 90.0 && lon >= -180.0 && lon <= 180.0;
+    if (m_own_ship_position_valid) {
+        m_own_ship_lat = lat;
+        m_own_ship_lon = lon;
+    }
+}
+
+bool DashboardSK::GetOwnShipPosition(double& lat, double& lon) const
+{
+    if (!m_own_ship_position_valid) {
+        return false;
+    }
+    lat = m_own_ship_lat;
+    lon = m_own_ship_lon;
+    return true;
+}
+
+void DashboardSK::SetMagneticVariation(double variation)
+{
+    variation = std::isfinite(variation) ? variation : 0.0;
+    if (variation == m_magnetic_variation) {
+        return;
+    }
+    m_magnetic_variation = variation;
+    ForceRedraw();
+}
 
 const Json::Value* DashboardSK::GetSKData(const wxString& path)
 {
