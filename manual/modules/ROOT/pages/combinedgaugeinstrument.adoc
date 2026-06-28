@@ -1,0 +1,44 @@
+:imagesdir: ../images/
+== Combined gauge instrument
+
+image::combinedgaugeinstrument_screenshot.png[Combined Gauge]
+
+The combined gauge is a xref:simplegaugeinstrument.adoc[Simple gauge] that additionally displays a numerical value from a *second* Signal K path in the center of the dial. The needle keeps showing the primary value (typically an angle or direction), while the center shows the secondary value (typically a related scalar, such as a speed).
+
+This is convenient for the common wind display where the apparent (or true) wind angle is shown by the needle and the corresponding wind speed is shown in the center, saving the screen space of two separate instruments.
+
+The needle, scale, zones and colors work exactly as for the xref:simplegaugeinstrument.adoc[Simple gauge] and act on the primary `SK key`. The primary value is *only* shown by the needle and is never displayed as text.
+
+The number displayed in the center of the gauge is always the *center value* (the second key). Because of that, the `Format`, `Value suffix` and the related `Transformation` controls on this instrument apply to the center value, and the instrument adds a `Center value SK key` and a `Center value transformation`:
+
+.Additional / repurposed configuration parameters
+[cols="1h,5,1"]
+|===
+|Parameter |Description |Example
+
+|Center value SK key
+|Fully qualified xref:skkeys.adoc[Signal K path] to the value displayed in the center of the gauge. When left empty, the center shows dashes.
+|vessels.self.environment.wind.speedApparent
+
+|Center value transformation
+|Function used to convert the center value from the SI unit used by Signal K to human readable form (same options as the Simple gauge `Transformation`).
+|m/s -> kn
+
+|Format
+|Format of the number displayed in the center (the center value).
+|9.9
+
+|Value suffix
+|Optional text appended to the center value.
+|kn
+
+|===
+
+`Transformation` (without the `Center value` prefix) still applies to the primary value and is used to convert it for the needle (e.g. `RAD -> DEG` for an angle). `Zones` define how the gauge itself looks and are evaluated against the primary value, as in the Simple gauge.
+
+.Example: apparent wind
+To build the classic apparent wind gauge:
+
+* Set `Gauge type` to `Relative angle`.
+* Set `SK key` to `environment.wind.angleApparent` and `Transformation` to `RAD -> DEG` (needle shows AWA).
+* Set `Center value SK key` to `environment.wind.speedApparent` and `Center value transformation` to `m/s -> kn`, then set `Format` to `9.9` and `Value suffix` to `kn` (center shows AWS).

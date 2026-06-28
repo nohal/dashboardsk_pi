@@ -214,6 +214,11 @@ protected:
     wxCoord m_instrument_size;
     /// add a suffix to the value if applicable
     wxString m_value_suffix;
+    /// Divisor applied to the instrument width to size the central value font.
+    /// Larger values yield smaller text. Child classes may increase it (e.g.
+    /// the combined gauge, whose center shows a secondary value next to the
+    /// needle).
+    wxCoord m_value_font_divisor;
 
     /// Draw arc sector. The arc is drawn counterclockwise from \c start_angle
     /// to  \c end_angle
@@ -305,6 +310,13 @@ protected:
     /// \param item Part of the instrument
     /// \return Color to be used
     const wxColor GetColor(const double& val, const color_item item);
+
+    /// Format the value to be displayed in the center of the gauge.
+    /// The base implementation formats the primary value (#m_old_value).
+    /// Child classes may override it to display a different value.
+    ///
+    /// \return Formatted string to be drawn in the center of the gauge
+    virtual wxString FormatCenterValue();
 
 public:
     // We override some of the implementations of SetSetting to do "special

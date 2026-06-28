@@ -45,6 +45,14 @@ ground while leaving the chart visible through its center.
 
 * xref:compositewindinstrument.adoc[Detailed documentation]
 
+==== Combined gauge
+
+Gauge instrument like the Simple gauge, but additionally displaying a numerical value from a second Signal K path in its center. Suitable for combining e.g. wind angle on the needle with wind speed in the center.
+
+Example uses: apparent wind angle + apparent wind speed (`environment.wind.angleApparent` + `environment.wind.speedApparent`)
+
+* xref:combinedgaugeinstrument.adoc[Detailed documentation]
+
 ==== Simple text
 
 Simple instrument displaying a textual Signal K value. The instrument is not suitable to display compound values like position, use the respective specialozed instruments for these.

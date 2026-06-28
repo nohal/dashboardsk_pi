@@ -36,6 +36,7 @@
 #include <unordered_map>
 
 // All the instrument class headers must be included here
+#include "combinedgaugeinstrument.h"
 #include "compositewindinstrument.h"
 #include "dividerinstrument.h"
 #include "simplegaugeinstrument.h"
@@ -54,7 +55,8 @@
     X(4, SimpleHistogramInstrument)                                            \
     X(5, DividerInstrument)                                                    \
     X(6, SpacerInstrument)                                                     \
-    X(7, CompositeWindInstrument)
+    X(7, CompositeWindInstrument)                                              \
+    X(8, CombinedGaugeInstrument)
 
 #define SRC_MAGIC_STRING "SRC:"
 

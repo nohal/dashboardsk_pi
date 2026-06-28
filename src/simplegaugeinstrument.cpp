@@ -56,6 +56,7 @@ void SimpleGaugeInstrument::Init()
     m_smoothing = 0;
     m_old_value = std::numeric_limits<double>::min();
     m_instrument_size = 200;
+    m_value_font_divisor = 3;
     m_gauge_type = gauge_type::relative_angle;
     m_max_val = std::numeric_limits<double>::min();
     m_min_val = std::numeric_limits<double>::max();
@@ -208,13 +209,7 @@ wxBitmap SimpleGaugeInstrument::RenderAngle(double scale, bool relative)
     if (m_new_data) {
         m_new_data = false;
         if (!m_timed_out) {
-            value = wxString::Format(
-                m_format_strings[m_format_index], abs(m_old_value));
-            if (m_old_value < 0
-                && !m_supported_formats[m_format_index].StartsWith("ABS")) {
-                value.Prepend("-");
-            }
-            value = value.Append(m_value_suffix);
+            value = FormatCenterValue();
         }
     } else {
         if (!m_timed_out && m_bmp.IsOk()) {
@@ -298,8 +293,8 @@ wxBitmap SimpleGaugeInstrument::RenderAngle(double scale, bool relative)
     // Data
     dc.SetTextForeground(
         GetDimedColor(GetColor(m_old_value, color_item::value)));
-    dc.SetFont(wxFont(size_x / 3 / AUTO_TEXT_SIZE_COEF, wxFONTFAMILY_SWISS,
-        wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
+    dc.SetFont(wxFont(size_x / m_value_font_divisor / AUTO_TEXT_SIZE_COEF,
+        wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
     dc.DrawText(value, xc - dc.GetTextExtent(value).GetX() / 2,
         yc
             - (wxCoord)round(
@@ -319,13 +314,7 @@ wxBitmap SimpleGaugeInstrument::RenderAdaptive(double scale)
         m_new_data = false;
         if (!m_timed_out) {
             has_value = true;
-            value = wxString::Format(
-                m_format_strings[m_format_index], abs(m_old_value));
-            if (m_old_value < 0
-                && !m_supported_formats[m_format_index].StartsWith("ABS")) {
-                value.Prepend("-");
-            }
-            value = value.Append(m_value_suffix);
+            value = FormatCenterValue();
         }
     } else {
         if (!m_timed_out && m_bmp.IsOk()) {
@@ -481,8 +470,8 @@ wxBitmap SimpleGaugeInstrument::RenderAdaptive(double scale)
     // Data
     dc.SetTextForeground(
         GetDimedColor(GetColor(m_old_value, color_item::value)));
-    dc.SetFont(wxFont(size_x / 3 / AUTO_TEXT_SIZE_COEF, wxFONTFAMILY_SWISS,
-        wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
+    dc.SetFont(wxFont(size_x / m_value_font_divisor / AUTO_TEXT_SIZE_COEF,
+        wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
     dc.DrawText(value, xc - dc.GetTextExtent(value).GetX() / 2,
         yc / AUTO_TEXT_SHIFT_COEF);
     mdc.SelectObject(wxNullBitmap);
@@ -500,13 +489,7 @@ wxBitmap SimpleGaugeInstrument::RenderFixed(double scale)
         m_new_data = false;
         if (!m_timed_out) {
             has_value = true;
-            value = wxString::Format(
-                m_format_strings[m_format_index], abs(m_old_value));
-            if (m_old_value < 0
-                && !m_supported_formats[m_format_index].StartsWith("ABS")) {
-                value.Prepend("-");
-            }
-            value = value.Append(m_value_suffix);
+            value = FormatCenterValue();
         }
     } else {
         if (!m_timed_out && m_bmp.IsOk()) {
@@ -662,8 +645,8 @@ wxBitmap SimpleGaugeInstrument::RenderFixed(double scale)
     // Data
     dc.SetTextForeground(
         GetDimedColor(GetColor(m_old_value, color_item::value)));
-    dc.SetFont(wxFont(size_x / 3 / AUTO_TEXT_SIZE_COEF, wxFONTFAMILY_SWISS,
-        wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
+    dc.SetFont(wxFont(size_x / m_value_font_divisor / AUTO_TEXT_SIZE_COEF,
+        wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
     dc.DrawText(value, xc - dc.GetTextExtent(value).GetX() / 2,
         yc / AUTO_TEXT_SHIFT_COEF);
     mdc.SelectObject(wxNullBitmap);
@@ -679,13 +662,7 @@ wxBitmap SimpleGaugeInstrument::RenderPercent(double scale)
     if (m_new_data) {
         m_new_data = false;
         if (!m_timed_out) {
-            value = wxString::Format(
-                m_format_strings[m_format_index], abs(m_old_value));
-            if (m_old_value < 0
-                && !m_supported_formats[m_format_index].StartsWith("ABS")) {
-                value.Prepend("-");
-            }
-            value = value.Append(m_value_suffix);
+            value = FormatCenterValue();
         }
     } else {
         if (!m_timed_out && m_bmp.IsOk()) {
@@ -792,8 +769,8 @@ wxBitmap SimpleGaugeInstrument::RenderPercent(double scale)
     // Data
     dc.SetTextForeground(
         GetDimedColor(GetColor(m_old_value, color_item::value)));
-    dc.SetFont(wxFont(size_x / 3 / AUTO_TEXT_SIZE_COEF, wxFONTFAMILY_SWISS,
-        wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
+    dc.SetFont(wxFont(size_x / m_value_font_divisor / AUTO_TEXT_SIZE_COEF,
+        wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD));
     dc.DrawText(value, xc - dc.GetTextExtent(value).GetX() / 2,
         yc - dc.GetTextExtent(value).GetY() / 1.8 * AUTO_TEXT_SHIFT_COEF);
     mdc.SelectObject(wxNullBitmap);
@@ -971,6 +948,17 @@ const wxColor SimpleGaugeInstrument::GetColor(
         break;
     }
     return c;
+}
+
+wxString SimpleGaugeInstrument::FormatCenterValue()
+{
+    wxString value
+        = wxString::Format(m_format_strings[m_format_index], abs(m_old_value));
+    if (m_old_value < 0
+        && !m_supported_formats[m_format_index].StartsWith("ABS")) {
+        value.Prepend("-");
+    }
+    return value.Append(m_value_suffix);
 }
 
 PLUGIN_END_NAMESPACE
