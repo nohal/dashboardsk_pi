@@ -100,10 +100,18 @@ using namespace std;
 /// JSON scalar accessor result back to a wxString/scalar. Overloaded so the
 /// instrument settings X-macros work uniformly for string and numeric values.
 ///@{
+// ponytail: Android ships an old wxWidgets whose wxString::ToStdString() takes
+// no converter argument. Drop this shim once Android moves to wx >= 3.1.1.
+#if wxCHECK_VERSION(3, 1, 1)
+#define DSK_TO_STDSTRING_UTF8(s) ((s).ToStdString(wxConvUTF8))
+#else
+#define DSK_TO_STDSTRING_UTF8(s) (std::string((s).utf8_str()))
+#endif
+
 /// Convert a wxString to a JSON string value (UTF-8)
 inline Json::Value toJson(const wxString& s)
 {
-    return Json::Value(s.ToStdString(wxConvUTF8));
+    return Json::Value(DSK_TO_STDSTRING_UTF8(s));
 }
 /// Convert an integer to a JSON value
 inline Json::Value toJson(int v) { return Json::Value(v); }
@@ -132,7 +140,7 @@ inline double fromJsonVal(double v) { return v; }
 inline bool ParseJSON(const wxString& text, Json::Value& out)
 {
     Json::CharReaderBuilder builder;
-    const std::string s = text.ToStdString(wxConvUTF8);
+    const std::string s = DSK_TO_STDSTRING_UTF8(text);
     std::unique_ptr<Json::CharReader> reader(builder.newCharReader());
     std::string errors;
     return reader->parse(s.data(), s.data() + s.size(), &out, &errors);
