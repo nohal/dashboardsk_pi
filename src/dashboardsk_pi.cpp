@@ -267,10 +267,26 @@ bool dashboardsk_pi::RenderOverlayMultiCanvas(
     }
     m_oDC->SetDC(&dc);
     m_oDC->SetVP(vp);
+    // OpenCPN hands us a viewport in physical pixels (vp->pix_*,
+    // GetCanvasPixLL) but a wxDC that draws in logical pixels. On a HiDPI
+    // canvas that mismatch pushed everything down/right by the content scale
+    // factor. Render at the canvas scale like the GL path (keeps bitmaps crisp
+    // and ToPhys consistent), then compress physical->logical with the DC user
+    // scale so coordinates land correctly. The GL path needs no user scale: its
+    // viewport is physical.
+    const double csf = GetOCPNCanvasWindow()->GetContentScaleFactor();
+    m_oDC->SetContentScaleFactor(csf);
+    double old_ux = 1.0, old_uy = 1.0;
+    dc.GetUserScale(&old_ux, &old_uy);
+    if (csf > 0.0) {
+        dc.SetUserScale(old_ux / csf, old_uy / csf);
+    }
 
     if (m_dsk) {
         m_dsk->Draw(m_oDC, vp, canvasIndex);
     }
+
+    dc.SetUserScale(old_ux, old_uy);
 
     return true;
 }
