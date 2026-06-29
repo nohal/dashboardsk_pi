@@ -102,7 +102,7 @@ void Dashboard::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
             if (width > 0) {
                 width += m_parent->ToPhys(m_spacing_h);
             }
-            width += bitmaps.back().GetWidth();
+            width += instrument->ContentSize(bitmaps.back()).GetWidth();
         }
 
         wxCoord x = ship.x - width / 2;
@@ -111,11 +111,16 @@ void Dashboard::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
             if (!bmp.IsOk()) {
                 continue;
             }
-            wxCoord y = ship.y - bmp.GetHeight() / 2;
-            dc->DrawBitmap(bmp, x, y, bmp.HasAlpha());
+            // Lay out and hit-test by the content footprint; draw the (possibly
+            // larger) bitmap centered on it so any overflow is purely visual.
+            const wxSize content = m_instruments[i]->ContentSize(bmp);
+            const wxCoord off_x = (bmp.GetWidth() - content.GetWidth()) / 2;
+            const wxCoord off_y = (bmp.GetHeight() - content.GetHeight()) / 2;
+            wxCoord y = ship.y - content.GetHeight() / 2;
+            dc->DrawBitmap(bmp, x - off_x, y - off_y, bmp.HasAlpha());
             m_instruments[i]->SetPlacement(
-                x, y, bmp.GetWidth(), bmp.GetHeight());
-            x += bmp.GetWidth() + m_parent->ToPhys(m_spacing_h);
+                x, y, content.GetWidth(), content.GetHeight());
+            x += content.GetWidth() + m_parent->ToPhys(m_spacing_h);
         }
         return;
     }
@@ -164,8 +169,13 @@ void Dashboard::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
     for (auto& instrument : m_instruments) {
         const wxBitmap bmp(
             instrument->Render(m_parent->GetContentScaleFactor()));
-        wxCoord width = bmp.GetWidth();
-        wxCoord height = bmp.GetHeight();
+        // Lay out by the content footprint; draw the (possibly larger) bitmap
+        // centered on it so decorative overflow does not reserve layout space.
+        const wxSize content = instrument->ContentSize(bmp);
+        wxCoord width = content.GetWidth();
+        wxCoord height = content.GetHeight();
+        const wxCoord off_x = (bmp.GetWidth() - width) / 2;
+        const wxCoord off_y = (bmp.GetHeight() - height) / 2;
         if (bmp.IsOk()) {
             if (m_anchor == anchor_edge::bottom
                 || m_anchor == anchor_edge::top) {
@@ -178,7 +188,7 @@ void Dashboard::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
                 }
                 y = start_pos + dir * row_offset + dir * row_nr * height;
                 current_row_size = wxMax(current_row_size, height);
-                dc->DrawBitmap(bmp, x, y, bmp.HasAlpha());
+                dc->DrawBitmap(bmp, x - off_x, y - off_y, bmp.HasAlpha());
                 instrument->SetPlacement(x, y, width, height);
                 x += width + m_spacing_h;
             } else if (m_anchor == anchor_edge::left
@@ -196,7 +206,7 @@ void Dashboard::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
                 }
                 x = start_pos - row_offset - row_nr * width;
                 current_row_size = wxMax(current_row_size, width);
-                dc->DrawBitmap(bmp, x, y, bmp.HasAlpha());
+                dc->DrawBitmap(bmp, x - off_x, y - off_y, bmp.HasAlpha());
                 instrument->SetPlacement(x, y, width, height);
                 y += height + m_parent->ToPhys(m_spacing_v);
             }
@@ -351,6 +361,16 @@ const Json::Value* Dashboard::GetSKData(const wxString& path)
 double Dashboard::GetMagneticVariation() const
 {
     return m_parent ? m_parent->GetMagneticVariation() : 0.0;
+}
+
+std::optional<double> Dashboard::GetOwnShipCOG() const
+{
+    return m_parent ? m_parent->GetOwnShipCOG() : std::nullopt;
+}
+
+std::optional<double> Dashboard::GetOwnShipHeadingMagnetic() const
+{
+    return m_parent ? m_parent->GetOwnShipHeadingMagnetic() : std::nullopt;
 }
 
 PLUGIN_END_NAMESPACE

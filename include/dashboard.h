@@ -33,6 +33,7 @@
 #include "pi_common.h"
 #include <json/json.h>
 #include <map>
+#include <optional>
 #include <tuple>
 
 #define DEFAULT_OFFSET_X 50
@@ -325,6 +326,16 @@ public:
     ///
     /// \return Variation in degrees, east positive
     double GetMagneticVariation() const;
+
+    /// Get OpenCPN's own-ship course over ground.
+    ///
+    /// \return Course over ground in radians true, or empty if unavailable
+    std::optional<double> GetOwnShipCOG() const;
+
+    /// Get OpenCPN's own-ship magnetic heading.
+    ///
+    /// \return Magnetic heading in radians, or empty if unavailable
+    std::optional<double> GetOwnShipHeadingMagnetic() const;
 
     /// Force redraw of the instrument on the next overlay refresh
     void ForceRedraw()

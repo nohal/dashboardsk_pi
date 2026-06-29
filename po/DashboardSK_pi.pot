@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DashboardSK_pi 0.4.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-28 18:18-0300\n"
+"POT-Creation-Date: 2026-06-29 20:18-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -61,7 +61,7 @@ msgstr ""
 msgid "Dash-Dot"
 msgstr ""
 
-#: include/dividerinstrument.h:67 include/compositewindinstrument.h:46
+#: include/dividerinstrument.h:67 include/compositewindinstrument.h:78
 msgid "Orientation"
 msgstr ""
 
@@ -217,81 +217,129 @@ msgstr ""
 msgid "3 days"
 msgstr ""
 
-#: include/compositewindinstrument.h:34
+#: include/compositewindinstrument.h:44
 msgid "AWA key"
 msgstr ""
 
-#: include/compositewindinstrument.h:36
+#: include/compositewindinstrument.h:46
 msgid "AWS key"
 msgstr ""
 
-#: include/compositewindinstrument.h:38
+#: include/compositewindinstrument.h:48
 msgid "TWA key"
 msgstr ""
 
-#: include/compositewindinstrument.h:40
+#: include/compositewindinstrument.h:50
 msgid "TWS key"
 msgstr ""
 
-#: include/compositewindinstrument.h:42
+#: include/compositewindinstrument.h:52
 msgid "Heading key"
 msgstr ""
 
-#: include/compositewindinstrument.h:44
+#: include/compositewindinstrument.h:54
 msgid "COG key"
 msgstr ""
 
-#: include/compositewindinstrument.h:47
-msgid "North up;Heading up"
-msgstr ""
-
-#: include/compositewindinstrument.h:48 include/simplegaugeinstrument.h:99
-msgid "Instrument size"
-msgstr ""
-
-#: include/compositewindinstrument.h:50
-msgid "Ring color"
-msgstr ""
-
-#: include/compositewindinstrument.h:52 include/simplegaugeinstrument.h:120
-msgid "Tick color"
-msgstr ""
-
-#: include/compositewindinstrument.h:54
-msgid "Text color"
-msgstr ""
-
 #: include/compositewindinstrument.h:56
-msgid "AWA color"
+msgid "Beat angle key"
 msgstr ""
 
 #: include/compositewindinstrument.h:58
+msgid "Gybe angle key"
+msgstr ""
+
+#: include/compositewindinstrument.h:61
+msgid "Speed through water key"
+msgstr ""
+
+#: include/compositewindinstrument.h:64
+msgid "Current set key"
+msgstr ""
+
+#: include/compositewindinstrument.h:67
+msgid "Current drift key"
+msgstr ""
+
+#: include/compositewindinstrument.h:69
+msgid "Show laylines"
+msgstr ""
+
+#: include/compositewindinstrument.h:69
+msgid "Off;On"
+msgstr ""
+
+#: include/compositewindinstrument.h:71
+msgid "Layline reference"
+msgstr ""
+
+#: include/compositewindinstrument.h:72
+msgid "Through water (HDG/STW);Over ground (COG/SOG)"
+msgstr ""
+
+#: include/compositewindinstrument.h:74
+msgid "Beat angle"
+msgstr ""
+
+#: include/compositewindinstrument.h:76
+msgid "Gybe angle"
+msgstr ""
+
+#: include/compositewindinstrument.h:79
+msgid "North up;Heading up"
+msgstr ""
+
+#: include/compositewindinstrument.h:80 include/simplegaugeinstrument.h:99
+msgid "Instrument size"
+msgstr ""
+
+#: include/compositewindinstrument.h:82
+msgid "Ring opacity"
+msgstr ""
+
+#: include/compositewindinstrument.h:84
+msgid "Ring color"
+msgstr ""
+
+#: include/compositewindinstrument.h:86 include/simplegaugeinstrument.h:120
+msgid "Tick color"
+msgstr ""
+
+#: include/compositewindinstrument.h:88
+msgid "Text color"
+msgstr ""
+
+#: include/compositewindinstrument.h:90
+msgid "AWA color"
+msgstr ""
+
+#: include/compositewindinstrument.h:92
 msgid "TWA color"
 msgstr ""
 
-#: include/compositewindinstrument.h:60
+#: include/compositewindinstrument.h:94
 msgid "Heading color"
 msgstr ""
 
-#: include/compositewindinstrument.h:62
+#: include/compositewindinstrument.h:96
 msgid "COG color"
 msgstr ""
 
-#: include/compositewindinstrument.h:64 include/simplegaugeinstrument.h:108
+#: include/compositewindinstrument.h:98 include/simplegaugeinstrument.h:108
 msgid "Port color"
 msgstr ""
 
-#: include/compositewindinstrument.h:66 include/simplegaugeinstrument.h:110
+#: include/compositewindinstrument.h:100 include/simplegaugeinstrument.h:110
 msgid "Starboard color"
 msgstr ""
 
-#: include/compositewindinstrument.h:68 include/simplegaugeinstrument.h:134
+#: include/compositewindinstrument.h:102 include/simplegaugeinstrument.h:134
 #: include/simplehistograminstrument.h:86 include/simplenumberinstrument.h:103
 #: include/simplepositioninstrument.h:64 include/simpletextinstrument.h:62
 msgid "Border color"
 msgstr ""
 
-#: include/compositewindinstrument.h:93
+#: include/compositewindinstrument.h:127
 msgid "Composite wind"
 msgstr ""
 
@@ -577,7 +625,7 @@ msgstr ""
 msgid "Own ship"
 msgstr ""
 
-#: src/dashboard.cpp:223
+#: src/dashboard.cpp:233
 #, c-format
 msgid "Configure %s..."
 msgstr ""
@@ -857,21 +905,21 @@ msgstr ""
 msgid "Expand"
 msgstr ""
 
-#: src/dashboardsk_pi.cpp:98 src/dashboardsk_pi.cpp:103
-#: src/dashboardsk_pi.cpp:138
+#: src/dashboardsk_pi.cpp:101 src/dashboardsk_pi.cpp:106
+#: src/dashboardsk_pi.cpp:141
 msgid "DashboardSK"
 msgstr ""
 
-#: src/dashboardsk_pi.cpp:142
+#: src/dashboardsk_pi.cpp:145
 msgid "SignalK dashboard PlugIn for OpenCPN"
 msgstr ""
 
-#: src/dashboardsk_pi.cpp:147
+#: src/dashboardsk_pi.cpp:150
 msgid ""
 "Universal dashboard plugin for OpenCPN based on the SignalK data model.\n"
 msgstr ""
 
-#: src/compositewindinstrument.cpp:50
+#: src/compositewindinstrument.cpp:79
 msgid "New Composite Wind"
 msgstr ""
 

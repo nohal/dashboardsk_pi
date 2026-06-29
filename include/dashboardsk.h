@@ -33,6 +33,7 @@
 #include "pager.h"
 #include "pi_common.h"
 #include <json/json.h>
+#include <optional>
 #include <unordered_map>
 
 // All the instrument class headers must be included here
@@ -104,6 +105,10 @@ private:
     double m_own_ship_lon;
     /// Magnetic variation supplied by OpenCPN, in degrees
     double m_magnetic_variation;
+    /// Course over ground supplied by OpenCPN, in radians true
+    std::optional<double> m_own_ship_cog;
+    /// Magnetic heading supplied by OpenCPN, in radians
+    std::optional<double> m_own_ship_heading_mag;
 
     /// Path to the directory with data
     wxString m_data_dir;
@@ -186,6 +191,32 @@ public:
     ///
     /// \return Variation in degrees, east positive
     double GetMagneticVariation() const { return m_magnetic_variation; }
+
+    /// Store own-ship course over ground supplied by OpenCPN.
+    ///
+    /// \param cog Course over ground in radians true, or empty if unavailable
+    void SetOwnShipCOG(std::optional<double> cog) { m_own_ship_cog = cog; }
+
+    /// Get own-ship course over ground supplied by OpenCPN.
+    ///
+    /// \return Course over ground in radians true, or empty if unavailable
+    std::optional<double> GetOwnShipCOG() const { return m_own_ship_cog; }
+
+    /// Store own-ship magnetic heading supplied by OpenCPN.
+    ///
+    /// \param heading Magnetic heading in radians, or empty if unavailable
+    void SetOwnShipHeadingMagnetic(std::optional<double> heading)
+    {
+        m_own_ship_heading_mag = heading;
+    }
+
+    /// Get own-ship magnetic heading supplied by OpenCPN.
+    ///
+    /// \return Magnetic heading in radians, or empty if unavailable
+    std::optional<double> GetOwnShipHeadingMagnetic() const
+    {
+        return m_own_ship_heading_mag;
+    }
 
     /// Get pointer to the SignalK object from the data tree
     ///

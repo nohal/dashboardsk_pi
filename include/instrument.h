@@ -438,6 +438,21 @@ public:
         m_height = h;
     };
 
+    /// Footprint the instrument reserves when laying out neighbouring
+    /// instruments, given its rendered bitmap. Defaults to the full bitmap.
+    /// Instruments that intentionally draw outside this box (e.g. laylines
+    /// protruding into a transparent margin) report the smaller content size so
+    /// the overflow does not reserve layout space; the bitmap is then drawn
+    /// centered on this footprint.
+    ///
+    /// \param bmp The bitmap returned by #Render
+    /// \return Layout footprint in rendered pixels
+    virtual wxSize ContentSize(const wxBitmap& bmp) const
+    {
+        return bmp.IsOk() ? wxSize(bmp.GetWidth(), bmp.GetHeight())
+                          : wxSize(0, 0);
+    };
+
     /// Destructor
     virtual ~Instrument();
 

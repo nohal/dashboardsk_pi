@@ -31,6 +31,9 @@
 #include <wx/filename.h>
 #include <wx/wfstream.h>
 
+#include <cmath>
+#include <optional>
+
 extern "C" DECL_EXP opencpn_plugin* create_pi(void* ppimgr)
 {
     return static_cast<opencpn_plugin*>(
@@ -335,10 +338,27 @@ void dashboardsk_pi::SetPluginMessage(
 
 void dashboardsk_pi::SetPositionFixEx(PlugIn_Position_Fix_Ex& pfix)
 {
-    if (m_dsk) {
-        m_dsk->SetOwnShipPosition(pfix.Lat, pfix.Lon);
-        m_dsk->SetMagneticVariation(pfix.Var);
+    if (!m_dsk) {
+        return;
     }
+    m_dsk->SetOwnShipPosition(pfix.Lat, pfix.Lon);
+    m_dsk->SetMagneticVariation(pfix.Var);
+    // Cache the nav values OpenCPN fuses for own ship so instruments can fall
+    // back to them when their Signal K key is unset or stale. Signal K units
+    // are radians, so convert here once.
+    constexpr double deg2rad_ = 0.017453292519943295;
+    const auto valid = [](double v) { return !std::isnan(v); };
+    m_dsk->SetOwnShipCOG(valid(pfix.Cog)
+            ? std::optional<double>(pfix.Cog * deg2rad_)
+            : std::nullopt);
+    // Prefer the magnetic heading; derive it from true - variation otherwise.
+    std::optional<double> heading_mag;
+    if (valid(pfix.Hdm)) {
+        heading_mag = pfix.Hdm * deg2rad_;
+    } else if (valid(pfix.Hdt) && valid(pfix.Var)) {
+        heading_mag = (pfix.Hdt - pfix.Var) * deg2rad_;
+    }
+    m_dsk->SetOwnShipHeadingMagnetic(heading_mag);
 }
 
 wxString dashboardsk_pi::GetDataDir() const

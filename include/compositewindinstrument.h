@@ -19,7 +19,17 @@
 #define DSK_CWI_TWS_KEY "tws_sk_key"
 #define DSK_CWI_HEADING_KEY "heading_sk_key"
 #define DSK_CWI_COG_KEY "cog_sk_key"
+#define DSK_CWI_BEAT_KEY "beat_sk_key"
+#define DSK_CWI_GYBE_KEY "gybe_sk_key"
+#define DSK_CWI_STW_KEY "stw_sk_key"
+#define DSK_CWI_CURRENT_SET_KEY "current_set_sk_key"
+#define DSK_CWI_CURRENT_DRIFT_KEY "current_drift_sk_key"
+#define DSK_CWI_SHOW_LAYLINES "show_laylines"
+#define DSK_CWI_LAYLINE_REF "layline_ref"
+#define DSK_CWI_BEAT_ANGLE "beat_angle"
+#define DSK_CWI_GYBE_ANGLE "gybe_angle"
 #define DSK_CWI_ORIENTATION "orientation"
+#define DSK_CWI_RING_OPACITY "ring_opacity"
 #define DSK_CWI_RING_COLOR "ring_color"
 #define DSK_CWI_TICK_COLOR "tick_color"
 #define DSK_CWI_TEXT_COLOR "text_color"
@@ -43,10 +53,34 @@
         wxEmptyString, asString, GetStringSetting)                             \
     X(DSK_CWI_COG_KEY, wxString(), _("COG key"), SignalKKeyCtrl,               \
         wxEmptyString, asString, GetStringSetting)                             \
+    X(DSK_CWI_BEAT_KEY, wxString(), _("Beat angle key"), SignalKKeyCtrl,       \
+        wxEmptyString, asString, GetStringSetting)                             \
+    X(DSK_CWI_GYBE_KEY, wxString(), _("Gybe angle key"), SignalKKeyCtrl,       \
+        wxEmptyString, asString, GetStringSetting)                             \
+    X(DSK_CWI_STW_KEY, wxString("navigation.speedThroughWater"),               \
+        _("Speed through water key"), SignalKKeyCtrl, wxEmptyString, asString, \
+        GetStringSetting)                                                      \
+    X(DSK_CWI_CURRENT_SET_KEY, wxString("environment.current.setTrue"),        \
+        _("Current set key"), SignalKKeyCtrl, wxEmptyString, asString,         \
+        GetStringSetting)                                                      \
+    X(DSK_CWI_CURRENT_DRIFT_KEY, wxString("environment.current.drift"),        \
+        _("Current drift key"), SignalKKeyCtrl, wxEmptyString, asString,       \
+        GetStringSetting)                                                      \
+    X(DSK_CWI_SHOW_LAYLINES, 1, _("Show laylines"), ChoiceCtrl, _("Off;On"),   \
+        asInt, GetIntSetting)                                                  \
+    X(DSK_CWI_LAYLINE_REF, 0, _("Layline reference"), ChoiceCtrl,              \
+        _("Through water (HDG/STW);Over ground (COG/SOG)"), asInt,             \
+        GetIntSetting)                                                         \
+    X(DSK_CWI_BEAT_ANGLE, 45, _("Beat angle"), SpinCtrl, "20;90", asInt,       \
+        GetIntSetting)                                                         \
+    X(DSK_CWI_GYBE_ANGLE, 150, _("Gybe angle"), SpinCtrl, "90;180", asInt,     \
+        GetIntSetting)                                                         \
     X(DSK_CWI_ORIENTATION, 0, _("Orientation"), ChoiceCtrl,                    \
         _("North up;Heading up"), asInt, GetIntSetting)                        \
     X(DSK_SETTING_INSTR_SIZE, 200, _("Instrument size"), SpinCtrl, "50;500",   \
         asInt, GetIntSetting)                                                  \
+    X(DSK_CWI_RING_OPACITY, 128, _("Ring opacity"), SpinCtrl, "0;255", asInt,  \
+        GetIntSetting)                                                         \
     X(DSK_CWI_RING_COLOR, wxColor(32, 37, 43), _("Ring color"),                \
         ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)           \
     X(DSK_CWI_TICK_COLOR, wxColor(230, 230, 230), _("Tick color"),             \
@@ -93,7 +127,20 @@ public:
     static wxString DisplayType() { return _("Composite wind"); }
     wxString GetDisplayType() const override { return DisplayType(); }
 
+    /// Combine a through-water velocity with a current to get the resulting
+    /// course over ground. All bearings share one frame (0 = up, growing
+    /// clockwise) and the two speeds share units.
+    ///
+    /// \param water_bearing Direction the boat moves through the water
+    /// \param stw Speed through the water
+    /// \param set_bearing Direction the current flows towards
+    /// \param drift Speed of the current
+    /// \return Bearing of the water + current vector sum, in [0, 360)
+    static double GroundTrack(
+        double water_bearing, double stw, double set_bearing, double drift);
+
     wxBitmap Render(double scale) override;
+    wxSize ContentSize(const wxBitmap& bmp) const override;
     bool IsClicked(wxCoord x, wxCoord y) const override;
     void ProcessData() override;
     void NotifyNewData(const wxString& fullpath) override;
@@ -104,8 +151,21 @@ public:
     wxString GetPrimarySKKey() const override;
 
 private:
-    /// Identifiers for the six subscribed Signal K inputs.
-    enum class input { awa, aws, twa, tws, heading, cog, count };
+    /// Identifiers for the subscribed Signal K inputs.
+    enum class input {
+        awa,
+        aws,
+        twa,
+        tws,
+        heading,
+        cog,
+        beat,
+        gybe,
+        stw,
+        current_set,
+        current_drift,
+        count
+    };
     /// Cached value and freshness state for one input.
     struct datum {
         /// Most recently resolved numeric value.
@@ -122,6 +182,12 @@ private:
     std::array<datum, static_cast<size_t>(input::count)> m_data;
     /// Current north-up or heading-up orientation.
     orientation m_orientation;
+    /// Fallback close-hauled beat angle in degrees off the true wind.
+    int m_beat_angle;
+    /// Fallback running gybe angle in degrees off the true wind.
+    int m_gybe_angle;
+    /// Whether the laylines are drawn.
+    bool m_show_laylines;
     /// Configured diameter in device-independent pixels.
     wxCoord m_instrument_size;
     /// Cached rendered bitmap.
