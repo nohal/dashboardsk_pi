@@ -72,7 +72,7 @@ You may also run `make asciidoxy-docs` to produce documentation formated using [
 
 To be able to do the above follow install the respective tools first...
 
-The end user documentation integrates to the [OpenCPN plugin documentation framework](https://opencpn-manuals.github.io/plugins/opencpn-plugins/0.1/index.html), is written in [AsciiDoc](https://docs.asciidoctor.org/asciidoc/latest/) and processed using [Antora](https://antora.org) and [AsciiDoctor](https://asciidoctor.org). Please document newly added or changed functionality as soon as it is implemented and try to include the documentation in the same pull request as the code whenever feasible, unfortunately it really won't magically write itelf at some later moment.
+The end user documentation integrates to the [OpenCPN plugin documentation framework](https://opencpn-manuals.github.io/plugins/opencpn-plugins/), is written in [AsciiDoc](https://docs.asciidoctor.org/asciidoc/latest/) and processed using [Antora](https://antora.org) and [AsciiDoctor](https://asciidoctor.org). Please document newly added or changed functionality as soon as it is implemented and try to include the documentation in the same pull request as the code whenever feasible, unfortunately it really won't magically write itelf at some later moment.
 
 ### Images
 
