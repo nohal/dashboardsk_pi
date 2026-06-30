@@ -149,6 +149,7 @@ public:
     void SetSetting(const wxString& key, const wxString& value) override;
     void SetSetting(const wxString& key, const int& value) override;
     wxString GetPrimarySKKey() const override;
+    void SetChartRotation(double degrees) override;
 
 private:
     /// Identifiers for the subscribed Signal K inputs.
@@ -182,6 +183,10 @@ private:
     std::array<datum, static_cast<size_t>(input::count)> m_data;
     /// Current north-up or heading-up orientation.
     orientation m_orientation;
+    /// Chart canvas rotation (deg, chart north clockwise from screen up) added
+    /// to every compass bearing so the dial tracks a course-up / head-up chart
+    /// when the dashboard is anchored to the own ship; 0 otherwise.
+    double m_chart_rotation = 0.0;
     /// Fallback close-hauled beat angle in degrees off the true wind.
     int m_beat_angle;
     /// Fallback running gybe angle in degrees off the true wind.

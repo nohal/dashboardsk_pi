@@ -551,6 +551,14 @@ public:
     /// \return Scaled bitmap
     virtual wxBitmap Render(double scale);
 
+    /// Inform the instrument about the current chart canvas rotation so an
+    /// instrument anchored to the own ship can align its drawing with the
+    /// chart (course-up / head-up). Instruments that do not overlay the chart
+    /// geographically ignore it.
+    ///
+    /// \param degrees Bearing of chart north, clockwise from screen up
+    virtual void SetChartRotation(double degrees) { (void)degrees; };
+
     /// Set color schema, the instrument should respect the application wide
     /// color schema and dime it's output accordingly
     ///

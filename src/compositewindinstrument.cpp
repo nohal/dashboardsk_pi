@@ -294,7 +294,11 @@ wxBitmap CompositeWindInstrument::Render(double scale)
     dc.DrawCircle(center, center, radius);
     dc.DrawCircle(center, center, size * 0.375);
 
-    const double bow = m_orientation == orientation::north_up ? heading : 0.0;
+    // m_chart_rotation turns the whole dial (compass, sectors, pointers) with
+    // the chart when anchored to the own ship; the text readouts are laid out
+    // in bitmap coordinates further down and stay upright.
+    const double bow = (m_orientation == orientation::north_up ? heading : 0.0)
+        + m_chart_rotation;
     for (int i = -30; i < 30; ++i) {
         const wxColor color = i < 0 ? GetColorSetting(DSK_CWI_PORT_COLOR)
                                     : GetColorSetting(DSK_CWI_STARBOARD_COLOR);
@@ -304,7 +308,8 @@ wxBitmap CompositeWindInstrument::Render(double scale)
     }
 
     const double dial_rotation
-        = m_orientation == orientation::heading_up ? -heading : 0.0;
+        = (m_orientation == orientation::heading_up ? -heading : 0.0)
+        + m_chart_rotation;
     dc.SetPen(wxPen(GetDimedColor(GetColorSetting(DSK_CWI_TICK_COLOR)),
         wxMax(1, size / 200)));
     for (int angle = 0; angle < 360; angle += 10) {
@@ -329,7 +334,8 @@ wxBitmap CompositeWindInstrument::Render(double scale)
     const auto twa = Current(input::twa);
     const auto cog = Current(input::cog);
     const double wind_offset
-        = m_orientation == orientation::north_up ? heading : 0.0;
+        = (m_orientation == orientation::north_up ? heading : 0.0)
+        + m_chart_rotation;
     if (m_show_laylines && twa
         && (has_heading || m_orientation == orientation::heading_up)) {
         // Pick beat (close-hauled) or gybe (running) laylines from the current
@@ -356,7 +362,8 @@ wxBitmap CompositeWindInstrument::Render(double scale)
             && *stw > 0.05 && set && drift;
         const double set_dial = correct
             ? Normalize(rad2deg(*set)
-                  - (m_orientation == orientation::heading_up ? heading : 0.0))
+                  - (m_orientation == orientation::heading_up ? heading : 0.0)
+                  + m_chart_rotation)
             : 0.0;
         const wxColor port = GetColorSetting(DSK_CWI_PORT_COLOR);
         const wxColor starboard = GetColorSetting(DSK_CWI_STARBOARD_COLOR);
@@ -391,7 +398,8 @@ wxBitmap CompositeWindInstrument::Render(double scale)
     }
     if (cog && (has_heading || m_orientation == orientation::north_up)) {
         const double bearing = Normalize(rad2deg(*cog)
-            - (m_orientation == orientation::heading_up ? heading : 0.0));
+            - (m_orientation == orientation::heading_up ? heading : 0.0)
+            + m_chart_rotation);
         DrawTriangle(dc, center, center, bearing, radius, size * 0.39,
             size * 0.025, GetDimedColor(GetColorSetting(DSK_CWI_COG_COLOR)));
     }
@@ -495,6 +503,14 @@ Json::Value CompositeWindInstrument::GenerateJSONConfig()
 wxString CompositeWindInstrument::GetPrimarySKKey() const
 {
     return m_keys[static_cast<size_t>(input::awa)];
+}
+
+void CompositeWindInstrument::SetChartRotation(double degrees)
+{
+    if (degrees != m_chart_rotation) {
+        m_chart_rotation = degrees;
+        m_needs_redraw = true;
+    }
 }
 
 PLUGIN_END_NAMESPACE

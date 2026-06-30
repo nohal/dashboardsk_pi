@@ -28,6 +28,8 @@
 #include "dashboardsk.h"
 #include <wx/menu.h>
 
+#include <cmath>
+
 PLUGIN_BEGIN_NAMESPACE
 
 #define ID_INSTR_CONFIG 3001
@@ -91,9 +93,22 @@ void Dashboard::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
             return;
         }
 
+        // In course-up / head-up the chart canvas is rotated. Measure that
+        // rotation from the on-screen direction of true north (a point just
+        // north of the ship) and hand it to the instruments so their compass
+        // dials turn with the chart while the text readouts stay upright. The
+        // bearing of chart north, clockwise from screen up, is the angle the
+        // dial must add to every compass bearing it draws.
+        wxPoint north;
+        GetCanvasPixLL(vp, &north, lat + 0.001, lon);
+        const double chart_rotation
+            = std::atan2(north.y - ship.y, north.x - ship.x) * 180.0 / M_PI
+            + 90.0;
+
         vector<wxBitmap> bitmaps;
         wxCoord width = 0;
         for (auto instrument : m_instruments) {
+            instrument->SetChartRotation(chart_rotation);
             bitmaps.emplace_back(
                 instrument->Render(m_parent->GetContentScaleFactor()));
             if (!bitmaps.back().IsOk()) {
@@ -167,6 +182,9 @@ void Dashboard::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
     }
 
     for (auto& instrument : m_instruments) {
+        // Edge-anchored dashboards are not chart overlays; clear any rotation a
+        // previous own-ship anchoring may have left on the instrument.
+        instrument->SetChartRotation(0.0);
         const wxBitmap bmp(
             instrument->Render(m_parent->GetContentScaleFactor()));
         // Lay out by the content footprint; draw the (possibly larger) bitmap
