@@ -117,7 +117,9 @@ bool dashboardsk_pi::DeInit()
 {
     SaveConfig();
     delete m_oDC;
+    m_oDC = nullptr;
     delete m_dsk;
+    m_dsk = nullptr;
     return true;
 }
 
