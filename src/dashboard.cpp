@@ -93,17 +93,11 @@ void Dashboard::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
             return;
         }
 
-        // In course-up / head-up the chart canvas is rotated. Measure that
-        // rotation from the on-screen direction of true north (a point just
-        // north of the ship) and hand it to the instruments so their compass
-        // dials turn with the chart while the text readouts stay upright. The
-        // bearing of chart north, clockwise from screen up, is the angle the
-        // dial must add to every compass bearing it draws.
-        wxPoint north;
-        GetCanvasPixLL(vp, &north, lat + 0.001, lon);
-        const double chart_rotation
-            = std::atan2(north.y - ship.y, north.x - ship.x) * 180.0 / M_PI
-            + 90.0;
+        // In course-up / head-up the chart canvas is rotated. vp->rotation is
+        // that angle (radians, clockwise) and is handed to the instruments so
+        // their compass dials turn with the chart while the text readouts
+        // stay upright.
+        const double chart_rotation = vp->rotation * 180.0 / M_PI;
 
         vector<wxBitmap> bitmaps;
         wxCoord width = 0;
