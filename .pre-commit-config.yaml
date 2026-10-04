@@ -14,7 +14,7 @@ repos:
       - id: check-yaml
       - id: check-added-large-files
   - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: v22.1.8
+    rev: v23.1.1
     hooks:
       - id: clang-format
         exclude: |
@@ -33,10 +33,10 @@ repos:
     hooks:
     - id: cmake-format
   - repo: https://github.com/oxipng/oxipng
-    rev: v10.1.1
+    rev: v10.2.1
     hooks:
       - id: oxipng
   - repo: https://github.com/kytta/mirrors-svgo
-    rev: v4.0.2
+    rev: v4.1.0
     hooks:
       - id: svgo
