@@ -47,7 +47,11 @@ function(GetArch)
       endif()
     endif()
   else(NOT WIN32)
-    set(ARCH "x86") # See #573
+    if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+      set(ARCH "x86_64")
+    else()
+      set(ARCH "x86")
+    endif()
   endif()
   set(ARCH
       ${ARCH}

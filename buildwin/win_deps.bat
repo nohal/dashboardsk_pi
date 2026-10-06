@@ -32,21 +32,33 @@ python -m pip install -q cryptography
 :: Install pre-compiled wxWidgets and other DLL; add required paths.
 ::
 set SCRIPTDIR=%~dp0
-set WXWIN=%SCRIPTDIR%..\cache\wxWidgets
+set "WX_VERSION=3.2.2.1"
+set "WX_MSW_VERSION=3.2.2"
+set "WX_DIR=wxWidgets"
+set "WX_ARCH="
+set "WX_LIB_DIR=vc_dll"
+if /I "%PLATFORM%"=="x64" (
+  set "WX_VERSION=3.2.9"
+  set "WX_MSW_VERSION=3.2.9"
+  set "WX_DIR=wxWidgets-x64"
+  set "WX_ARCH=_x64"
+  set "WX_LIB_DIR=vc14x_x64_dll"
+)
+set WXWIN=%SCRIPTDIR%..\cache\%WX_DIR%
 set wxWidgets_ROOT_DIR=%WXWIN%
-set wxWidgets_LIB_DIR=%WXWIN%\lib\vc_dll
+set wxWidgets_LIB_DIR=%WXWIN%\lib\%WX_LIB_DIR%
 if not exist "%WXWIN%" (
   wget --version > nul 2>&1 || choco install --no-progress -y wget
-  wget https://github.com/wxWidgets/wxWidgets/releases/download/v3.2.2.1/wxWidgets-3.2.2.1-headers.7z ^
+  wget https://github.com/wxWidgets/wxWidgets/releases/download/v%WX_VERSION%/wxWidgets-%WX_VERSION%-headers.7z ^
       -O wxWidgetsHeaders.7z
-  wget -q https://github.com/wxWidgets/wxWidgets/releases/download/v3.2.2.1/wxMSW-3.2.2_vc14x_ReleaseDLL.7z ^
+  wget -q https://github.com/wxWidgets/wxWidgets/releases/download/v%WX_VERSION%/wxMSW-%WX_MSW_VERSION%_vc14x%WX_ARCH%_ReleaseDLL.7z ^
       -O wxWidgetsDLL.7z
-  wget -q https://github.com/wxWidgets/wxWidgets/releases/download/v3.2.2.1/wxMSW-3.2.2_vc14x_Dev.7z ^
+  wget -q https://github.com/wxWidgets/wxWidgets/releases/download/v%WX_VERSION%/wxMSW-%WX_MSW_VERSION%_vc14x%WX_ARCH%_Dev.7z ^
       -O wxWidgetsDev.7z
   7z i > nul 2>&1 || choco install -y 7zip
   7z x -aoa wxWidgetsHeaders.7z -o%WXWIN%
   7z x -aoa wxWidgetsDLL.7z -o%WXWIN%
   7z x -aoa wxWidgetsDev.7z -o%WXWIN%
-  ren "%WXWIN%\lib\vc14x_dll" vc_dll
+  if not "%WX_ARCH%"=="_x64" ren "%WXWIN%\lib\vc14x_dll" vc_dll
 )
 set "PATH=%PATH%;%WXWIN%;%wxWidgets_LIB_DIR%"

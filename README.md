@@ -28,16 +28,19 @@ make
 
 ### Windows
 
-Run `x86 Native Tools Command Prompt for VS 2022` from the Start menu as Administrator
+Run the `x86 Native Tools Command Prompt` or `x64 Native Tools Command Prompt`
+for VS 2022 from the Start menu as Administrator. Set `PLATFORM=x64` before
+running the build script for a 64-bit build; leaving it unset keeps the 32-bit
+default.
 
 ```
 git clone https://github.com/nohal/dashboardsk_pi.git
 git submodule update --init
 cd dashboardsk_pi.git
+set PLATFORM=x64
 ci\appveyor.bat
 cd build
-cmake -A Win32 ..
-cmake --build .
+cmake --build . --config RelWithDebInfo
 ```
 
 Subsequent runs should not need running the command prompt as Administrator

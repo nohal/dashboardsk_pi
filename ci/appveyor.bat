@@ -24,12 +24,19 @@ if not defined VCINSTALLDIR (
 if exist build (rmdir /s /q build)
 mkdir build && cd build
 
-cmake -A Win32 -G "Visual Studio 17 2022" ^
-    -DCMAKE_GENERATOR_PLATFORM=Win32 ^
+set "GENERATOR_PLATFORM=Win32"
+set "OCPN_TARGET=msvc-wx32;10;x86"
+if /I "%PLATFORM%"=="x64" (
+  set "GENERATOR_PLATFORM=x64"
+  set "OCPN_TARGET=msvc-64;10;x86_64"
+)
+
+cmake -A !GENERATOR_PLATFORM! -G "Visual Studio 17 2022" ^
+    -DCMAKE_GENERATOR_PLATFORM=!GENERATOR_PLATFORM! ^
     -DCMAKE_BUILD_TYPE=%CONFIGURATION% ^
     -DwxWidgets_LIB_DIR=!wxWidgets_LIB_DIR! ^
     -DwxWidgets_ROOT_DIR=!wxWidgets_ROOT_DIR! ^
-    -DOCPN_TARGET_TUPLE=msvc-wx32;10;x86_64 ^
+    -DOCPN_TARGET_TUPLE=!OCPN_TARGET! ^
     ..
 cmake --build . --target tarball --config %CONFIGURATION%
 

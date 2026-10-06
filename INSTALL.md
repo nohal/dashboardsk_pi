@@ -44,11 +44,16 @@ To build an android armhf tarball
 On Windows, build is performed in the _build_ directory using a CMD shell:
 
     > set PATH=C:\ProgramData\chocolatey\bin;C:\Windows\system32;C:\Windows
+    > set PLATFORM=x64
     > ..\buildwin\win_deps.bat
     > cmake -T v143 -G "Visual Studio 17 2022" ^
-            -DCMAKE_GENERATOR_PLATFORM=Win32 ^
+            -DCMAKE_GENERATOR_PLATFORM=x64 ^
+            -DOCPN_TARGET_TUPLE=msvc-64;10;x86_64 ^
             -DCMAKE_BUILD_TYPE=RelWithDebInfo  ..
     > cmake --build . --target tarball --config RelWithDebInfo
+
+Leave `PLATFORM` unset and use `-DCMAKE_GENERATOR_PLATFORM=Win32` with
+`-DOCPN_TARGET_TUPLE=msvc-wx32;10;x86` for a 32-bit build.
 
 _win\_deps.bat_ needs administrative privileges on the first run when it
 installs some build dependencies. Subsequent runs can (should) be
