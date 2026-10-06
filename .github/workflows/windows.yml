@@ -6,6 +6,7 @@ on:
   push:
     branches:
       - main
+      - win64
     paths-ignore:
       - 'manual/**'
     tags:
