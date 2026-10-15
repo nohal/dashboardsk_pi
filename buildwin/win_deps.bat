@@ -38,9 +38,9 @@ set "WX_DIR=wxWidgets"
 set "WX_ARCH="
 set "WX_LIB_DIR=vc_dll"
 if /I "%PLATFORM%"=="x64" (
-  set "WX_VERSION=3.2.9"
-  set "WX_MSW_VERSION=3.2.9"
-  set "WX_DIR=wxWidgets-x64"
+  set "WX_VERSION=3.3.4"
+  set "WX_MSW_VERSION=3.3.4"
+  set "WX_DIR=wxWidgets-3.3.4-x64"
   set "WX_ARCH=_x64"
   set "WX_LIB_DIR=vc14x_x64_dll"
 )
