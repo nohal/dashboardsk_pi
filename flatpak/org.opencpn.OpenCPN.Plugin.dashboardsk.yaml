@@ -17,6 +17,9 @@ modules:
     no-autogen: true
     buildsystem: cmake
     builddir: true
+    # The nested tarball-build make races the outer parallel make on
+    # shared targets (libGLU.a); it still builds with --parallel itself.
+    no-parallel-make: true
     config-opts:
       - -DCMAKE_INSTALL_PREFIX=/app/extensions/dashboardsk/
       - -DCMAKE_BUILD_TYPE:STRING=Release
