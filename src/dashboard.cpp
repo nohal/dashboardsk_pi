@@ -370,6 +370,16 @@ const Json::Value* Dashboard::GetSKData(const wxString& path)
     return m_parent->GetSKData(path);
 }
 
+wxString Dashboard::GetDataDir() const
+{
+    return m_parent ? m_parent->GetDataDir() : wxString();
+}
+
+wxString Dashboard::GetUserDir() const
+{
+    return m_parent ? m_parent->GetUserDir() : wxString();
+}
+
 double Dashboard::GetMagneticVariation() const
 {
     return m_parent ? m_parent->GetMagneticVariation() : 0.0;

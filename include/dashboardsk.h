@@ -46,6 +46,7 @@
 #include "simplepositioninstrument.h"
 #include "simpletextinstrument.h"
 #include "spacerinstrument.h"
+#include "svginstrument.h"
 // #include "andanotherinstrument.h"
 //  All the instrument classes must be defined here
 #define INSTRUMENTS                                                            \
@@ -57,7 +58,8 @@
     X(5, DividerInstrument)                                                    \
     X(6, SpacerInstrument)                                                     \
     X(7, CompositeWindInstrument)                                              \
-    X(8, CombinedGaugeInstrument)
+    X(8, CombinedGaugeInstrument)                                              \
+    X(9, SvgInstrument)
 
 #define SRC_MAGIC_STRING "SRC:"
 
@@ -112,6 +114,8 @@ private:
 
     /// Path to the directory with data
     wxString m_data_dir;
+    /// Writable per-user directory
+    wxString m_user_dir;
 
     /// Process the SK value and if it is an object, extend the data structure
     /// to make the actual values leaves
@@ -436,6 +440,16 @@ public:
     ///
     /// @return Path to the data directory
     const wxString& GetDataDir() { return m_data_dir; }
+
+    /// Set the writable per-user directory (imported SVG skins etc.)
+    ///
+    /// \param dir Path ending with a separator
+    void SetUserDir(const wxString& dir) { m_user_dir = dir; }
+
+    /// Get the writable per-user directory
+    ///
+    /// \return Path ending with a separator, empty if not set
+    const wxString& GetUserDir() { return m_user_dir; }
 
     /// Adds a numbered page to the canvas
     ///

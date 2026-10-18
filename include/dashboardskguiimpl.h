@@ -508,6 +508,52 @@ private:
     // wxDECLARE_EVENT_TABLE();
 };
 
+/// Widget selecting an SVG skin from the bundled and imported ones, with an
+/// import button copying a new skin into the user's skin folder.
+class SvgSkinCtrlImpl : public wxPanel {
+private:
+    /// Plugin core owning the data and user directories
+    DashboardSK* m_dsk;
+    /// List of the skins
+    wxChoice* m_choice;
+
+    /// Rebuild the list and select a skin.
+    ///
+    /// \param value Skin to select, appended if not available
+    void Fill(const wxString& value);
+
+    /// Let the user pick an SVG and copy it into the user's skin folder.
+    ///
+    /// \param event The button event
+    void OnImport(wxCommandEvent& event);
+
+public:
+    /// Constructor
+    SvgSkinCtrlImpl()
+        : m_dsk(nullptr)
+        , m_choice(nullptr) { };
+
+    /// Constructor
+    ///
+    /// \param parent Parent window pointer
+    /// \param dsk Plugin core providing the skin directories
+    /// \param name Name of the widget
+    SvgSkinCtrlImpl(wxWindow* parent, DashboardSK* dsk, const wxString& name);
+
+    /// Get the selected skin
+    /// \return Skin file name
+    wxString GetValue() const { return m_choice->GetStringSelection(); }
+
+    /// Select a skin
+    ///
+    /// \param value Skin file name
+    void SetValue(const wxString& value) { Fill(value); }
+
+private:
+    /// Obligatory for the widget
+    wxDECLARE_DYNAMIC_CLASS(SvgSkinCtrlImpl);
+};
+
 /// Implementation of the form displaying value zones
 /// To obtain \c ZonesConfigDialog information use \c wxFormBuilder to open \c
 /// dashboardsk.fbp

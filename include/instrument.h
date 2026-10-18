@@ -107,7 +107,7 @@ PLUGIN_BEGIN_NAMESPACE
     X(Instrument::transformation::pa2kpa, _("Pa -> kPa"))                      \
     X(Instrument::transformation::pa2mpa, _("Pa -> MPa"))                      \
     X(Instrument::transformation::pa2atm, _("Pa -> atm"))                      \
-    X(Instrument::transformation::pa2atm, _("Pa -> mmHg"))                     \
+    X(Instrument::transformation::pa2mmhg, _("Pa -> mmHg"))                    \
     X(Instrument::transformation::pa2psi, _("Pa -> psi"))                      \
     X(Instrument::transformation::hz2rpm, _("Hz -> RPM"))                      \
     X(Instrument::transformation::rads2degm, _("RAD/s -> DEG/m"))              \
@@ -181,7 +181,8 @@ enum class dskConfigCtrl {
     SpinCtrlDouble,
     ChoiceCtrl,
     SignalKKeyCtrl,
-    SignalKZonesCtrl
+    SignalKZonesCtrl,
+    SvgSkinCtrl
 };
 
 /// Structure describing a single configuration control for the instrument

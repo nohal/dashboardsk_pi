@@ -294,7 +294,8 @@ double Instrument::GetDoubleSetting(const wxString& key)
     double i = 0.0;
     if (m_config_vals.find(UNORDERED_KEY(key)) != m_config_vals.end()) {
 #if (wxCHECK_VERSION(3, 1, 6))
-        if (!m_config_vals[UNORDERED_KEY(key)].ToDouble(&i)) {
+        // Stored locale independent, see wxString::FromCDouble
+        if (!m_config_vals[UNORDERED_KEY(key)].ToCDouble(&i)) {
             i = 0.0;
         }
 #else
@@ -407,11 +408,16 @@ void Instrument::ConfigureFromMeta(Json::Value& sk_meta)
 
 void Instrument::ConfigureFromKey(const wxString& key)
 {
-    if (!key.IsEmpty() && m_title == DUMMY_TITLE) {
-        m_title = key.AfterLast('.');
+    // The name comes from the path, not from the source designation (which
+    // may contain dots itself)
+    const int source = key.Find(".SRC:");
+    const wxString name
+        = (source == wxNOT_FOUND ? key : key.Left(source)).AfterLast('.');
+    if (!name.IsEmpty() && m_title == DUMMY_TITLE) {
+        m_title = name;
     }
-    if (!key.IsEmpty() && m_name.StartsWith("New ")) {
-        m_name = key.AfterLast('.');
+    if (!name.IsEmpty() && m_name.StartsWith("New ")) {
+        m_name = name;
     }
 }
 

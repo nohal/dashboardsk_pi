@@ -6,6 +6,7 @@
 ** xref:simplegaugeinstrument.adoc[Simple gauge]
 ** xref:compositewindinstrument.adoc[Composite wind]
 ** xref:combinedgaugeinstrument.adoc[Combined gauge]
+** xref:svginstrument.adoc[SVG skin]
 ** xref:simpletextinstrument.adoc[Simple text]
 ** xref:simplepositioninstrument.adoc[Simple position]
 ** xref:simplehistograminstrument.adoc[Simple histogram]

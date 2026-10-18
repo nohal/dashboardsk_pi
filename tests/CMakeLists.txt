@@ -33,6 +33,8 @@ set(SOURCES_TESTS
     007-MagicSourceValues.cpp
     008-CompositeWindInstrument.cpp
     009-CombinedGaugeInstrument.cpp
+    010-SvgInstrument.cpp
+    011-ManualScreenshots.cpp
     opencpn_mock.cpp
     ${SRC_DASHBOARD})
 
@@ -67,11 +69,18 @@ if(NOT TARGET ocpn::json-schema-validator)
                    "${CMAKE_CURRENT_BINARY_DIR}/json-schema-validator")
 endif()
 target_link_libraries(tests ocpn::json-schema-validator)
+if(NOT TARGET ocpn::pugixml)
+  add_subdirectory("${CMAKE_SOURCE_DIR}/opencpn-libs/pugixml"
+                   "${CMAKE_CURRENT_BINARY_DIR}/pugixml")
+endif()
+target_link_libraries(tests ocpn::pugixml)
 target_compile_definitions(
   tests
   PRIVATE
     DSK_SCHEMA_PATH="${CMAKE_SOURCE_DIR}/data/dashboardsk.config.schema.json"
-    DSK_SAMPLE_PATH="${CMAKE_SOURCE_DIR}/data/sample_config.json")
+    DSK_SAMPLE_PATH="${CMAKE_SOURCE_DIR}/data/sample_config.json"
+    DSK_DATA_DIR="${CMAKE_SOURCE_DIR}/data/"
+    DSK_MANUAL_IMAGES_DIR="${CMAKE_SOURCE_DIR}/manual/modules/ROOT/images/")
 target_link_libraries(tests ${wxWidgets_LIBRARIES})
 if(GIOMM_FOUND)
   target_link_libraries(tests ${GIOMM_LIBRARIES})

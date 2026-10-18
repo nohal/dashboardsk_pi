@@ -17,6 +17,7 @@ include/simplenumberinstrument.h
 include/simplepositioninstrument.h
 include/simpletextinstrument.h
 include/spacerinstrument.h
+include/svginstrument.h
 include/zone.h
 src/dashboard.cpp
 src/dashboardsk.cpp
@@ -34,3 +35,4 @@ src/simplenumberinstrument.cpp
 src/simplepositioninstrument.cpp
 src/simpletextinstrument.cpp
 src/spacerinstrument.cpp
+src/svginstrument.cpp

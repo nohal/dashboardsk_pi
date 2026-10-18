@@ -67,3 +67,18 @@ TEST_CASE("SimpleNumberInstrument Configuration Storage - if JSON not "
     REQUIRE(v[DSK_SETTING_TITLE_FONT].asInt() > 1);
     REQUIRE(v[DSK_SETTING_TITLE_FONT].asInt() < 30);
 }
+
+TEST_CASE("Title and name from a key ignore the source designation")
+{
+    SimpleNumberInstrument instrument(nullptr);
+    instrument.SetSetting("title", wxString(DUMMY_TITLE));
+    instrument.ConfigureFromKey(
+        "vessels.self.environment.wind.speedApparent.SRC:can0.115");
+    REQUIRE(instrument.GetTitle() == "speedApparent");
+    REQUIRE(instrument.GetName() == "speedApparent");
+
+    SimpleNumberInstrument plain(nullptr);
+    plain.SetSetting("title", wxString(DUMMY_TITLE));
+    plain.ConfigureFromKey("vessels.self.navigation.speedOverGround");
+    REQUIRE(plain.GetTitle() == "speedOverGround");
+}

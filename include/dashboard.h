@@ -322,6 +322,16 @@ public:
     /// \return Pointer to the data object or NULL if not found
     const Json::Value* GetSKData(const wxString& path);
 
+    /// Get the plugin's data directory.
+    ///
+    /// \return Path ending with a separator, empty without a parent
+    wxString GetDataDir() const;
+
+    /// Get the plugin's writable per-user directory.
+    ///
+    /// \return Path ending with a separator, empty without a parent
+    wxString GetUserDir() const;
+
     /// Get OpenCPN's current magnetic variation.
     ///
     /// \return Variation in degrees, east positive

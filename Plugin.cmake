@@ -49,6 +49,13 @@ if(NOT "${SANITIZE}" STREQUAL "OFF" AND NOT "${SANITIZE}" STREQUAL "")
   add_link_options(-fsanitize=${SANITIZE} -fno-omit-frame-pointer)
 endif()
 
+# GNU unique symbols make the library impossible to unload, so a plugin updated
+# in a running OpenCPN would keep running the old code. A generator expression,
+# the compiler isn't known yet before project().
+add_compile_options(
+  "$<$<AND:$<COMPILE_LANGUAGE:CXX>,$<CXX_COMPILER_ID:GNU>,$<PLATFORM_ID:Linux>>:-fno-gnu-unique>"
+)
+
 add_definitions(-DDASHBOARDSK_USE_SVG)
 add_definitions(-DocpnUSE_GL)
 
@@ -67,6 +74,7 @@ set(HDR_DASHBOARD
     ${CMAKE_SOURCE_DIR}/include/simplehistograminstrument.h
     ${CMAKE_SOURCE_DIR}/include/dividerinstrument.h
     ${CMAKE_SOURCE_DIR}/include/spacerinstrument.h
+    ${CMAKE_SOURCE_DIR}/include/svginstrument.h
     ${CMAKE_SOURCE_DIR}/include/zone.h
     ${CMAKE_SOURCE_DIR}/include/displayscale.h
     ${CMAKE_SOURCE_DIR}/include/configvalidator.h
@@ -84,6 +92,7 @@ set(SRC_DASHBOARD
     ${CMAKE_SOURCE_DIR}/src/simplehistograminstrument.cpp
     ${CMAKE_SOURCE_DIR}/src/dividerinstrument.cpp
     ${CMAKE_SOURCE_DIR}/src/spacerinstrument.cpp
+    ${CMAKE_SOURCE_DIR}/src/svginstrument.cpp
     ${CMAKE_SOURCE_DIR}/src/configvalidator.cpp
     ${CMAKE_SOURCE_DIR}/src/pager.cpp)
 
@@ -143,6 +152,9 @@ macro(add_plugin_libraries)
 
   add_subdirectory("${CMAKE_SOURCE_DIR}/opencpn-libs/plugin_dc")
   target_link_libraries(${PACKAGE_NAME} ocpn::plugin-dc)
+
+  add_subdirectory("${CMAKE_SOURCE_DIR}/opencpn-libs/pugixml")
+  target_link_libraries(${PACKAGE_NAME} ocpn::pugixml)
 
   add_subdirectory("opencpn-libs/jsoncpp")
   target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)

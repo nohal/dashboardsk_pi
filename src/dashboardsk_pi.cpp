@@ -83,6 +83,7 @@ dashboardsk_pi::~dashboardsk_pi() { }
 int dashboardsk_pi::Init()
 {
     m_dsk = new DashboardSK(GetDataDir());
+    m_dsk->SetUserDir(GetConfigDir());
     m_dsk->SetParentWindow(m_parent_window);
     m_dsk->SetParentPlugin(this);
     LoadConfig();

@@ -28,6 +28,7 @@
 #include "configvalidator.h"
 #include "dashboardsk.h"
 #include "dashboardsk_pi.h"
+#include <cmath>
 #include <wx/choicdlg.h>
 #include <wx/dialog.h>
 #include <wx/msgdlg.h>
@@ -486,47 +487,35 @@ void MainConfigFrameImpl::FillInstrumentDetails()
             break;
         }
         case dskConfigCtrl::SpinCtrlDouble: {
-            double min = -99999.9;
-            double max = 99999.9;
-            if (!ctrl.control_settings.IsEmpty()) {
-                int pos = 0;
-                wxStringTokenizer tokenizer(ctrl.control_settings, ";");
-                while (tokenizer.HasMoreTokens()) {
-                    wxString token = tokenizer.GetNextToken();
-                    switch (pos) {
-                    case 0:
-#if wxCHECK_VERSION(3, 1, 6)
-                        if (!token.ToDouble(&min)) {
-                            min = -99999.9;
-                        }
-#else
-                        min = wxAtof(token);
-#endif
-                        break;
-                    case 1:
-#if wxCHECK_VERSION(3, 1, 6)
-                        if (!token.ToDouble(&max)) {
-                            max = 99999.9;
-                        }
-#else
-                        max = wxAtof(token);
-#endif
-                        break;
-                    default:
-                        LOG_VERBOSE(
-                            "Uncovered SpinCtrlDouble parameter %i", pos);
-                    }
-                    pos++;
+            // Parameters: min;max;step, locale independent numbers
+            double lim[] { -99999.9, 99999.9, 1.0 };
+            wxStringTokenizer tokenizer(ctrl.control_settings, ";");
+            for (double& l : lim) {
+                double d;
+                if (tokenizer.HasMoreTokens()
+                    && tokenizer.GetNextToken().ToCDouble(&d)) {
+                    l = d;
                 }
             }
+            const double step = lim[2] > 0 ? lim[2] : 1.0;
             double i = m_edited_instrument->GetDoubleSetting(ctrl.key);
-            i = wxMin(wxMax(i, min), max); // Adjust to limits
+            i = wxMin(wxMax(i, lim[0]), lim[1]); // Adjust to limits
 
+            auto* spin = new wxSpinCtrlDouble(m_swConfig, wxID_ANY,
+                wxEmptyString, wxDefaultPosition, wxDefaultSize,
+                wxSP_ARROW_KEYS, lim[0], lim[1], i, step, ctrl.key);
+            // Show as many decimals as the step needs (0.25 -> 2)
+            unsigned digits = 0;
+            while (digits < 6
+                && std::fabs(step * std::pow(10, digits)
+                       - std::round(step * std::pow(10, digits)))
+                    > 1e-9) {
+                ++digits;
+            }
+            spin->SetDigits(digits);
+            spin->SetValue(i); // Re-apply, the old digits may have rounded it
             SettingsItemSizer->Add(
-                new wxSpinCtrlDouble(m_swConfig, wxID_ANY, wxEmptyString,
-                    wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, min, max,
-                    i, 1, ctrl.key),
-                0, wxALIGN_CENTER_VERTICAL | wxALL | wxEXPAND, 5);
+                spin, 0, wxALIGN_CENTER_VERTICAL | wxALL | wxEXPAND, 5);
             break;
         }
         case dskConfigCtrl::ChoiceCtrl: {
@@ -568,6 +557,22 @@ void MainConfigFrameImpl::FillInstrumentDetails()
                 skz, 0, wxALIGN_CENTER_VERTICAL | wxALL | wxEXPAND, 5);
             break;
         }
+        case dskConfigCtrl::SvgSkinCtrl: {
+            auto* svg
+                = new SvgSkinCtrlImpl(m_swConfig, m_dsk_pi->GetDSK(), ctrl.key);
+            svg->SetValue(m_edited_instrument->GetStringSetting(ctrl.key));
+            // The controls depend on the skin. Deferred, the rebuild destroys
+            // the control whose event we are handling.
+            svg->Bind(wxEVT_CHOICE, [this](wxCommandEvent&) {
+                CallAfter([this]() {
+                    UpdateEditedInstrument();
+                    FillInstrumentDetails();
+                });
+            });
+            SettingsItemSizer->Add(
+                svg, 0, wxALIGN_CENTER_VERTICAL | wxALL | wxEXPAND, 5);
+            break;
+        }
         default:
             // Dunno, add spacer
             SettingsItemSizer->Add(0, 0, 1, wxEXPAND, 5);
@@ -588,6 +593,10 @@ wxString MainConfigFrameImpl::ExtractValue(wxWindow* ctrl)
     } else if (wxString(ctrl->GetClassInfo()->GetClassName()) == "wxSpinCtrl") {
         return wxString::Format(
             "%i", static_cast<wxSpinCtrl*>(ctrl)->GetValue());
+    } else if (wxString(ctrl->GetClassInfo()->GetClassName())
+        == "wxSpinCtrlDouble") {
+        return wxString::FromCDouble(
+            static_cast<wxSpinCtrlDouble*>(ctrl)->GetValue());
     } else if (wxString(ctrl->GetClassInfo()->GetClassName()) == "wxChoice") {
         return wxString::Format(
             "%i", static_cast<wxChoice*>(ctrl)->GetSelection());
@@ -597,6 +606,9 @@ wxString MainConfigFrameImpl::ExtractValue(wxWindow* ctrl)
     } else if (wxString(ctrl->GetClassInfo()->GetClassName())
         == "SKZonesCtrlImpl") {
         return static_cast<SKZonesCtrlImpl*>(ctrl)->GetValue();
+    } else if (wxString(ctrl->GetClassInfo()->GetClassName())
+        == "SvgSkinCtrlImpl") {
+        return static_cast<SvgSkinCtrlImpl*>(ctrl)->GetValue();
     } // TODO: Other supported controls defined in dskConfigCtrl
     LOG_VERBOSE("DashboardSK: Unknown control class %s",
         ctrl->GetClassInfo()->GetClassName());
@@ -1477,6 +1489,86 @@ void SKKeyCtrlImpl::m_btnSelectOnButtonClick(wxCommandEvent& event)
         if (retcode == wxID_OK) {
             m_tSKKey->SetValue(dlg->GetSKPath());
         }
+    });
+    event.Skip();
+}
+
+//====================================
+// SvgSkinCtrlImpl
+//====================================
+
+wxIMPLEMENT_DYNAMIC_CLASS(SvgSkinCtrlImpl, wxPanel);
+
+SvgSkinCtrlImpl::SvgSkinCtrlImpl(
+    wxWindow* parent, DashboardSK* dsk, const wxString& name)
+    : wxPanel(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize,
+          wxTAB_TRAVERSAL, name)
+    , m_dsk(dsk)
+{
+    auto* sizer = new wxBoxSizer(wxHORIZONTAL);
+    m_choice = new wxChoice(this, wxID_ANY);
+    sizer->Add(m_choice, 1, wxALIGN_CENTER_VERTICAL | wxEXPAND, 0);
+    auto* btn = new wxButton(this, wxID_ANY, _("Import..."));
+    btn->Bind(wxEVT_BUTTON, &SvgSkinCtrlImpl::OnImport, this);
+    sizer->Add(btn, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, 5);
+    SetSizerAndFit(sizer);
+    DimeWindow(this);
+}
+
+void SvgSkinCtrlImpl::Fill(const wxString& value)
+{
+    m_choice->Clear();
+    m_choice->Append(
+        SvgInstrument::ListSkins(m_dsk->GetDataDir(), m_dsk->GetUserDir()));
+    if (!value.IsEmpty() && m_choice->FindString(value) == wxNOT_FOUND) {
+        // Missing file or absolute path from an older config, keep it
+        m_choice->Append(value);
+    }
+    m_choice->SetStringSelection(value);
+}
+
+void SvgSkinCtrlImpl::OnImport(wxCommandEvent& event)
+{
+    wxWindowPtr<wxFileDialog> dlg(
+        new wxFileDialog(this, _("Import SVG skin"), "", "",
+            _("SVG files (*.svg)|*.svg"), wxFD_OPEN | wxFD_FILE_MUST_EXIST));
+    dlg->ShowWindowModalThenDo([this, dlg](int retcode) {
+        if (retcode != wxID_OK) {
+            return;
+        }
+        const wxString src = dlg->GetPath();
+        const wxString err = SvgInstrument::ValidateSkin(src);
+        if (!err.IsEmpty()) {
+            wxMessageBox(err, _("Import SVG skin"), wxOK | wxICON_ERROR, this);
+            return;
+        }
+        const wxString dir = SvgInstrument::SkinDir(m_dsk->GetUserDir());
+        // Only the name is taken from the source, never its directories
+        const wxString name = wxFileName(src).GetFullName();
+        const wxString dst = dir + name;
+        if (wxFileExists(dst)
+            && wxMessageBox(wxString::Format(
+                                _("Skin %s already exists. Replace it?"), name),
+                   _("Import SVG skin"), wxYES_NO | wxICON_QUESTION, this)
+                != wxYES) {
+            return;
+        }
+        if (!wxDirExists(dir)
+            && !wxFileName::Mkdir(dir, wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL)) {
+            wxMessageBox(wxString::Format(_("Can't create %s"), dir),
+                _("Import SVG skin"), wxOK | wxICON_ERROR, this);
+            return;
+        }
+        if (!wxCopyFile(src, dst)) {
+            wxMessageBox(wxString::Format(_("Can't copy %s to %s"), src, dst),
+                _("Import SVG skin"), wxOK | wxICON_ERROR, this);
+            return;
+        }
+        Fill(name);
+        // Let the settings form follow the new skin
+        wxCommandEvent ev(wxEVT_CHOICE, m_choice->GetId());
+        ev.SetEventObject(m_choice);
+        wxPostEvent(m_choice, ev);
     });
     event.Skip();
 }
