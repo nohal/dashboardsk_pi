@@ -16,16 +16,12 @@ MANIFEST=$(cd flatpak; ls org.opencpn.OpenCPN.Plugin*yaml)
 echo "Using manifest file: $MANIFEST"
 set -x
 
-if [[ "$BRANCH" == 2208 ]]; then
-  export SDK=22.08
-  export FLATHUB_REPO=flathub
-  export FLATHUB_BRANCH=stable
-elif [[ "$BRANCH" == 2408 ]]; then
-  export SDK=24.08
-  export FLATHUB_REPO=flathub
-  export FLATHUB_BRANCH=stable
-elif [[  "$BRANCH" == 2508 ]]; then
+if [[  "$BRANCH" == 2508 ]]; then
   export SDK=25.08
+  export FLATHUB_REPO=flathub-beta
+  export FLATHUB_BRANCH=beta
+elif [[  "$BRANCH" == 2608 ]]; then
+  export SDK=26.08
   export FLATHUB_REPO=flathub-beta
   export FLATHUB_BRANCH=beta
 else
@@ -83,7 +79,7 @@ flatpak remote-add --user --if-not-exists flathub-beta \
 flatpak remote-add --user --if-not-exists \
     flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 flatpak install --user -y --noninteractive \
-    flathub org.freedesktop.Sdk//${SDK:-22.08}
+    flathub org.freedesktop.Sdk//${SDK}
 
 set -x
 cd $builddir
@@ -91,7 +87,7 @@ cd $builddir
 # Patch the manifest to use correct branch and runtime unconditionally
 manifest=$(ls ../flatpak/org.opencpn.OpenCPN.Plugin*yaml)
 sed -i  '/^runtime-version/s/:.*/:'" ${FLATHUB_BRANCH:-stable}/"  $manifest
-sed -i  '/^sdk:/s|//.*|//'"${SDK:-24.08}|"  $manifest
+sed -i  '/^sdk:/s|//.*|//'"${SDK}|"  $manifest
 
 flatpak install --user -y --or-update --noninteractive \
     ${FLATHUB_REPO:-flathub}  org.opencpn.OpenCPN
