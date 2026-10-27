@@ -24,8 +24,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-#if defined(DASHBOARDSK_USE_GIOMM)
-#include <giomm/settings.h>
+#if defined(DASHBOARDSK_USE_GTK3)
+#include <gtk/gtk.h>
 #endif
 #include "dashboard.h"
 #include "instrument.h"
@@ -41,10 +41,12 @@ Instrument::~Instrument()
 
 double Instrument::GetSystemFontScalingFactor()
 {
-#if defined(DASHBOARDSK_USE_GIOMM)
-    Glib::RefPtr<Gio::Settings> s
-        = Gio::Settings::create("org.gnome.desktop.interface");
-    return s->get_double("text-scaling-factor");
+#if defined(DASHBOARDSK_USE_GTK3)
+    // GTK exposes the text scaling factor as gtk-xft-dpi (96 * 1024 * factor),
+    // sourced from XSETTINGS, GSettings or the flatpak settings portal
+    gint dpi = -1;
+    g_object_get(gtk_settings_get_default(), "gtk-xft-dpi", &dpi, nullptr);
+    return dpi > 0 ? dpi / (96.0 * 1024.0) : 1.0;
 #else
     return 1.0;
 #endif

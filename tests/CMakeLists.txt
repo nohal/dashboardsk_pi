@@ -82,8 +82,8 @@ target_compile_definitions(
     DSK_DATA_DIR="${CMAKE_SOURCE_DIR}/data/"
     DSK_MANUAL_IMAGES_DIR="${CMAKE_SOURCE_DIR}/manual/modules/ROOT/images/")
 target_link_libraries(tests ${wxWidgets_LIBRARIES})
-if(GIOMM_FOUND)
-  target_link_libraries(tests ${GIOMM_LIBRARIES})
+if(GTK3_FOUND)
+  target_link_libraries(tests ${GTK3_LIBRARIES})
 endif()
 
 include(CTest)
