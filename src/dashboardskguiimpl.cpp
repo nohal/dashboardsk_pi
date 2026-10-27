@@ -839,6 +839,7 @@ void MainConfigFrameImpl::m_bpSaveInstrButtonOnButtonClick(
                 w.Write(m_edited_instrument->GenerateJSONConfig(), s);
                 tos.WriteString(m_dsk_pi->GetDSK()->SelfTranslate(s));
                 output_stream.Close();
+            } else {
                 LOG_INFO("Cannot save current contents in file '%s'.",
                     dlg->GetPath());
             }
@@ -907,7 +908,7 @@ void MainConfigFrameImpl::m_btnExportDashboardOnButtonClick(
             "DashboardSK JSON files (*.json)|*.json",
             wxFD_SAVE | wxFD_OVERWRITE_PROMPT));
     dlg->ShowWindowModalThenDo([this, dlg](int retcode) {
-        if (retcode == wxID_OK && m_edited_instrument) {
+        if (retcode == wxID_OK && m_edited_dashboard) {
             wxFileOutputStream output_stream(dlg->GetPath());
             if (output_stream.IsOk()) {
                 wxJSONWriter w;
@@ -916,6 +917,7 @@ void MainConfigFrameImpl::m_btnExportDashboardOnButtonClick(
                 w.Write(m_edited_dashboard->GenerateJSONConfig(), s);
                 tos.WriteString(m_dsk_pi->GetDSK()->SelfTranslate(s));
                 output_stream.Close();
+            } else {
                 LOG_INFO("Cannot save current contents in file '%s'.",
                     dlg->GetPath());
             }
