@@ -900,6 +900,7 @@ void MainConfigFrameImpl::m_bpSaveInstrButtonOnButtonClick(
                 wxTextOutputStream tos(output_stream);
                 tos.WriteString(m_dsk_pi->GetDSK()->SelfTranslate(s));
                 output_stream.Close();
+            } else {
                 LOG_INFO("Cannot save current contents in file '%s'.",
                     dlg->GetPath());
             }
@@ -982,13 +983,14 @@ void MainConfigFrameImpl::m_btnExportDashboardOnButtonClick(
             "DashboardSK JSON files (*.json)|*.json",
             wxFD_SAVE | wxFD_OVERWRITE_PROMPT));
     dlg->ShowWindowModalThenDo([this, dlg](int retcode) {
-        if (retcode == wxID_OK && m_edited_instrument) {
+        if (retcode == wxID_OK && m_edited_dashboard) {
             wxFileOutputStream output_stream(dlg->GetPath());
             if (output_stream.IsOk()) {
                 wxString s = DumpJSON(m_edited_dashboard->GenerateJSONConfig());
                 wxTextOutputStream tos(output_stream);
                 tos.WriteString(m_dsk_pi->GetDSK()->SelfTranslate(s));
                 output_stream.Close();
+            } else {
                 LOG_INFO("Cannot save current contents in file '%s'.",
                     dlg->GetPath());
             }
