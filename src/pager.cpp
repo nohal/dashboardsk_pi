@@ -91,23 +91,6 @@ bool Pager::IsClicked(int& x, int& y)
 #define ID_VISIBILITY 2002
 #define ID_PAGES 2222
 
-void Pager::OnPopupClick(wxCommandEvent& evt)
-{
-    // void* data = static_cast<wxMenu*>(evt.GetEventObject())->GetClientData();
-    switch (evt.GetId()) {
-    case ID_PREFERENCES:
-        m_parent->ShowPreferencesDialog();
-        break;
-    case ID_VISIBILITY:
-        m_parent->ToggleVisibility();
-        break;
-    default:
-        if (evt.GetId() > ID_PAGES) {
-            SetCurrentPage(evt.GetId() - ID_PAGES);
-        }
-    }
-}
-
 bool Pager::ProcessMouseEvent(wxMouseEvent& event)
 {
     if (!m_parent->IsVisible()) {
@@ -122,7 +105,7 @@ bool Pager::ProcessMouseEvent(wxMouseEvent& event)
             SetCurrentPage(GetNextPage());
             return true;
         }
-    } else if (event.RightIsDown()) {
+    } else if (event.RightDown()) {
         int x = m_parent->ToPhys(
             event.GetX()); // Convert to per-canvas coordinates
         int y = m_parent->ToPhys(
@@ -130,16 +113,28 @@ bool Pager::ProcessMouseEvent(wxMouseEvent& event)
         if (!IsClicked(x, y)) {
             return false;
         }
-        wxMenu mnu;
-        mnu.Append(ID_PREFERENCES, _("Preferences..."));
-        mnu.Append(ID_VISIBILITY, _("Toggle visibility"));
-        for (auto& page : m_pages) {
-            wxString s = wxString::Format(_("Page %d"), page);
-            mnu.Append(ID_PAGES + page, s);
-        }
-        mnu.Connect(wxEVT_COMMAND_MENU_SELECTED,
-            wxCommandEventHandler(Pager::OnPopupClick), NULL, this);
-        m_parent->GetParentWindow()->PopupMenu(&mnu);
+        // Show the menu only after the canvas mouse handler returned, running
+        // the popup menu and modal dialog nested inside it breaks the canvas
+        // mouse state on MSW
+        m_parent->GetParentWindow()->CallAfter([this]() {
+            wxMenu mnu;
+            mnu.Append(ID_PREFERENCES, _("Preferences..."));
+            mnu.Append(ID_VISIBILITY, _("Toggle visibility"));
+            for (auto& page : m_pages) {
+                wxString s = wxString::Format(_("Page %d"), page);
+                mnu.Append(ID_PAGES + page, s);
+            }
+            int sel
+                = m_parent->GetParentWindow()->GetPopupMenuSelectionFromUser(
+                    mnu);
+            if (sel == ID_PREFERENCES) {
+                m_parent->ShowPreferencesDialog();
+            } else if (sel == ID_VISIBILITY) {
+                m_parent->ToggleVisibility();
+            } else if (sel > ID_PAGES) {
+                SetCurrentPage(sel - ID_PAGES);
+            }
+        });
         return true;
     }
     return false;

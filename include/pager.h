@@ -107,10 +107,6 @@ public:
     /// interesting
     bool ProcessMouseEvent(wxMouseEvent& event);
 
-    /// Event handler for the popup menu click
-    /// @param evt
-    void OnPopupClick(wxCommandEvent& evt);
-
     /// Reset the pager
     void Reset() { m_pages.clear(); }
 

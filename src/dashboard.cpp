@@ -230,30 +230,41 @@ void Dashboard::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
 
 bool Dashboard::ProcessMouseEvent(wxMouseEvent& event, int dashboard_idx)
 {
-    if (!m_enabled || !event.RightIsDown()) {
+    if (!m_enabled || !event.RightDown()) {
         return false;
     }
     int x = m_parent->ToPhys(event.GetX());
     int y = m_parent->ToPhys(event.GetY());
     for (size_t i = 0; i < m_instruments.size(); ++i) {
-        Instrument* instr = m_instruments[i];
-        if (!instr->IsClicked(x, y)) {
+        if (!m_instruments[i]->IsClicked(x, y)) {
             continue;
         }
-        wxMenu mnu;
-        mnu.Append(ID_INSTR_CONFIG,
-            wxString::Format(_("Configure %s..."), instr->GetName()));
-        wxArrayString actions = instr->GetContextMenuActions();
-        for (size_t a = 0; a < actions.GetCount(); ++a) {
-            mnu.Append(ID_INSTR_ACTION_BASE + static_cast<int>(a), actions[a]);
-        }
-        int sel
-            = m_parent->GetParentWindow()->GetPopupMenuSelectionFromUser(mnu);
-        if (sel == ID_INSTR_CONFIG) {
-            m_parent->ShowPreferencesDialog(dashboard_idx, static_cast<int>(i));
-        } else if (sel >= ID_INSTR_ACTION_BASE) {
-            instr->DoContextMenuAction(sel - ID_INSTR_ACTION_BASE);
-        }
+        // Show the menu only after the canvas mouse handler returned, running
+        // the popup menu and modal dialog nested inside it breaks the canvas
+        // mouse state on MSW
+        m_parent->GetParentWindow()->CallAfter([this, i, dashboard_idx]() {
+            if (i >= m_instruments.size()) {
+                return;
+            }
+            Instrument* instr = m_instruments[i];
+            wxMenu mnu;
+            mnu.Append(ID_INSTR_CONFIG,
+                wxString::Format(_("Configure %s..."), instr->GetName()));
+            wxArrayString actions = instr->GetContextMenuActions();
+            for (size_t a = 0; a < actions.GetCount(); ++a) {
+                mnu.Append(
+                    ID_INSTR_ACTION_BASE + static_cast<int>(a), actions[a]);
+            }
+            int sel
+                = m_parent->GetParentWindow()->GetPopupMenuSelectionFromUser(
+                    mnu);
+            if (sel == ID_INSTR_CONFIG) {
+                m_parent->ShowPreferencesDialog(
+                    dashboard_idx, static_cast<int>(i));
+            } else if (sel >= ID_INSTR_ACTION_BASE) {
+                instr->DoContextMenuAction(sel - ID_INSTR_ACTION_BASE);
+            }
+        });
         return true;
     }
     return false;
