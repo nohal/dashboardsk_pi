@@ -722,7 +722,10 @@ void MainConfigFrameImpl::m_sdbSizerOnOKButtonClick(wxCommandEvent& event)
 
 void MainConfigFrameImpl::m_sdbSizerOnCancelButtonClick(wxCommandEvent& event)
 {
-    m_dsk_pi->GetDSK()->ReadConfig(m_orig_config);
+    // Reloading recreates all instruments and loses their history
+    if (m_dsk_pi->GetDSK()->GenerateJSONConfig() != m_orig_config) {
+        m_dsk_pi->GetDSK()->ReadConfig(m_orig_config);
+    }
     event.Skip();
 }
 
