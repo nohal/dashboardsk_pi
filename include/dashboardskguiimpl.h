@@ -242,8 +242,9 @@ protected:
     /// \param event The event object reference
     virtual void m_spSpacingVOnSpinCtrl(wxSpinEvent& event);
 
-    /// Event handler for main Cancel button click. Rolls back all the changing
-    /// by reloading the original configuration stored in #m_orig_config
+    /// Event handler for main Cancel button click. Rolls back all the changes
+    /// by reloading the original configuration stored in #m_orig_config, if
+    /// anything was changed
     ///
     /// \param event The event object reference
     virtual void m_sdbSizerOnCancelButtonClick(wxCommandEvent& event);
