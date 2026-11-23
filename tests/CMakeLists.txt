@@ -35,6 +35,7 @@ set(SOURCES_TESTS
     009-CombinedGaugeInstrument.cpp
     010-SvgInstrument.cpp
     011-ManualScreenshots.cpp
+    012-SimpleHistogramInstrument.cpp
     opencpn_mock.cpp
     ${SRC_DASHBOARD})
 

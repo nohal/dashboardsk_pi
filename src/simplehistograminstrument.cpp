@@ -83,6 +83,9 @@ void SimpleHistogramInstrument::Init()
 #define X(a, b) m_supported_histories.Add(b);
     DSK_HISTORY_LENGTH
 #undef X
+#define X(a, b) m_supported_sides.Add(b);
+    DSK_NEW_VALUES_SIDE
+#undef X
 
     // Basic settings inherited from Instrument class
     m_title = DUMMY_TITLE;
@@ -123,6 +126,7 @@ void SimpleHistogramInstrument::SetSetting(
     } else if (key.IsSameAs(DSK_SETTING_FORMAT)
         || key.IsSameAs(DSK_SETTING_TRANSFORMATION)
         || key.IsSameAs(DSK_SETTING_ORDER) || key.IsSameAs(DSK_SETTING_HISTORY)
+        || key.IsSameAs(DSK_SETTING_NEW_VALUES_SIDE)
         || key.IsSameAs(DSK_SETTING_INSTR_WIDTH)
         || key.IsSameAs(DSK_SETTING_INSTR_HEIGHT)) {
         // TODO: The above manually maintained list should be replaced with
@@ -155,6 +159,8 @@ void SimpleHistogramInstrument::SetSetting(
         m_value_order = static_cast<value_order>(value);
     } else if (key.IsSameAs(DSK_SETTING_HISTORY)) {
         m_history_length = static_cast<history_length>(value);
+    } else if (key.IsSameAs(DSK_SETTING_NEW_VALUES_SIDE)) {
+        m_new_values_side = static_cast<new_values_side>(value);
     } else if (key.IsSameAs(DSK_SETTING_INSTR_WIDTH)) {
         m_instrument_width = value;
     } else if (key.IsSameAs(DSK_SETTING_INSTR_HEIGHT)) {
@@ -332,6 +338,10 @@ wxBitmap SimpleHistogramInstrument::Render(double scale)
     dc.SetFont(wxFont(height / 8 / AUTO_TEXT_SIZE_COEF, wxFONTFAMILY_SWISS,
         wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
     int max_labels = width / (dc.GetTextExtent("100s").GetWidth() * 1.5);
+    // Positions are computed with the newest value at the left edge
+    auto side_x = [&](wxCoord x) {
+        return m_new_values_side == new_values_side::right ? width - x : x;
+    };
     int current_label = 1;
     for (auto& v : vals) {
         if (cnt > 0) {
@@ -353,23 +363,25 @@ wxBitmap SimpleHistogramInstrument::Render(double scale)
                                  .count()
                     * pps;
                 if (m_value_order == value_order::lowest_highest) {
-                    dc.DrawLine(x1,
+                    dc.DrawLine(side_x(x1),
                         vertical_shift
                             + (lastval.GetMean() - min) * height_coef,
-                        x2, vertical_shift + (v.GetMean() - min) * height_coef);
+                        side_x(x2),
+                        vertical_shift + (v.GetMean() - min) * height_coef);
                 } else {
-                    dc.DrawLine(x1,
+                    dc.DrawLine(side_x(x1),
                         height
                             - (vertical_shift
                                 + (lastval.GetMean() - min) * height_coef),
-                        x2,
+                        side_x(x2),
                         height
                             - (vertical_shift
                                 + (v.GetMean() - min) * height_coef));
                 }
                 if (x2 > width * current_label / max_labels) {
                     wxString lbl = FormatTime(v.ts);
-                    dc.DrawText(lbl, x2 - dc.GetTextExtent(lbl).GetWidth() / 2,
+                    dc.DrawText(lbl,
+                        side_x(x2) - dc.GetTextExtent(lbl).GetWidth() / 2,
                         height - dc.GetTextExtent(lbl).GetHeight()
                             - BORDER_LINE_WIDTH);
                     ++current_label;
