@@ -108,3 +108,27 @@ TEST_CASE("DashboardSK - Meta Delta")
                                  ["meta"]["zones"]
                                      .isArray());
 }
+
+TEST_CASE("DashboardSK - pager ignores pages with only disabled dashboards")
+{
+    DashboardSK d(wxEmptyString);
+    Json::Value config;
+
+    // Saved page 1 holds only a disabled dashboard, so page 2 is shown
+    ParseJSON("{ \"dashboards\": ["
+              "{ \"canvas\": 0, \"page\": 1, \"enabled\": false },"
+              "{ \"canvas\": 0, \"page\": 2, \"enabled\": true } ],"
+              "\"canvas\": [ { \"id\": 0, \"page\": 1 } ] }",
+        config);
+    d.ReadConfig(config);
+    REQUIRE(d.GenerateJSONConfig()["canvas"][0]["page"].asInt() == 2);
+
+    // Saved page 2 holds only a disabled dashboard, so page 1 is shown
+    ParseJSON("{ \"dashboards\": ["
+              "{ \"canvas\": 0, \"page\": 1, \"enabled\": true },"
+              "{ \"canvas\": 0, \"page\": 2, \"enabled\": false } ],"
+              "\"canvas\": [ { \"id\": 0, \"page\": 2 } ] }",
+        config);
+    d.ReadConfig(config);
+    REQUIRE(d.GenerateJSONConfig()["canvas"][0]["page"].asInt() == 1);
+}

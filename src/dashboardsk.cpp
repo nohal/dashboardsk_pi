@@ -64,22 +64,20 @@ void DashboardSK::Draw(dskDC* dc, PlugIn_ViewPort* vp, int canvasIndex)
     if (m_displayed_pages.find(canvasIndex) == m_displayed_pages.end()) {
         m_displayed_pages[canvasIndex] = new Pager(this);
     }
-    m_displayed_pages[canvasIndex]->Draw(dc, vp, canvasIndex);
+    Pager* pager = m_displayed_pages[canvasIndex];
+    // Falls back to the first page if the current one has no enabled dashboard
+    pager->SetCurrentPage(pager->GetCurrentPage());
+    pager->Draw(dc, vp, canvasIndex);
     Dashboard::ClearOffsets();
-    bool drawn = false;
     for (auto dashboard : m_dashboards) {
         if (!m_frozen
             && static_cast<size_t>(
                    m_displayed_pages[canvasIndex]->GetCurrentPage())
                 == dashboard->GetPageNr()) {
             dashboard->Draw(dc, vp, canvasIndex);
-            drawn = true;
         } else {
             dashboard->ProcessData();
         }
-    }
-    if (!drawn) {
-        m_displayed_pages[canvasIndex]->ResetCurrentPage();
     }
 }
 
@@ -90,6 +88,9 @@ void DashboardSK::ReadConfig(Json::Value& config)
         delete db;
     }
     m_dashboards.clear();
+    for (auto& pager : m_displayed_pages) {
+        pager.second->Reset();
+    }
     if (config["signalk"].isMember("self")) {
         SetSelf(fromJsonVal(config["signalk"]["self"].asString()));
     }
@@ -106,7 +107,9 @@ void DashboardSK::ReadConfig(Json::Value& config)
                 == m_displayed_pages.end()) {
                 m_displayed_pages[d->GetCanvasNr()] = new Pager(this);
             }
-            m_displayed_pages[d->GetCanvasNr()]->AddPage(d->GetPageNr());
+            if (d->Enabled()) {
+                m_displayed_pages[d->GetCanvasNr()]->AddPage(d->GetPageNr());
+            }
         }
     } else {
         LOG_VERBOSE("DashboardSK_pi: No dashboards array");
@@ -542,13 +545,6 @@ const wxString DashboardSK::SelfPopulate(const wxString& path)
     return new_path;
 }
 
-void DashboardSK::AddPageToCanvas(const int& canvas, const size_t& page)
-{
-    if (canvas < GetCanvasCount()) {
-        m_displayed_pages[canvas]->AddPage(page);
-    }
-}
-
 bool DashboardSK::ProcessMouseEvent(wxMouseEvent& event)
 {
     // Pagers
@@ -618,7 +614,8 @@ void DashboardSK::ResetPagers()
     for (auto& page : m_displayed_pages) {
         page.second->Reset();
         for (auto& dashboard : m_dashboards) {
-            if (page.first == dashboard->GetCanvasNr()) {
+            if (page.first == dashboard->GetCanvasNr()
+                && dashboard->Enabled()) {
                 page.second->AddPage(dashboard->GetPageNr());
             }
         }
