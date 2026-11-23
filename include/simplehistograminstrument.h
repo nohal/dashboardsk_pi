@@ -291,7 +291,7 @@ public:
     /// their respective unique value
     ///
     /// \return Name of the instrument gauge
-    static wxString DisplayType() { return _("Simple histogram"); };
+    static wxString DisplayType() { return _("Simple history"); };
 
     wxBitmap Render(double scale) override;
 

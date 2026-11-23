@@ -9,7 +9,7 @@
 ** xref:svginstrument.adoc[SVG skin]
 ** xref:simpletextinstrument.adoc[Simple text]
 ** xref:simplepositioninstrument.adoc[Simple position]
-** xref:simplehistograminstrument.adoc[Simple histogram]
+** xref:simplehistograminstrument.adoc[Simple history]
 ** xref:dividerinstrument.adoc[Divider]
 ** xref:spacerinstrument.adoc[Spacer]
 * xref:zones.adoc[Zones]
