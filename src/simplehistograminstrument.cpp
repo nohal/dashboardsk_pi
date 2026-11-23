@@ -86,7 +86,7 @@ void SimpleHistogramInstrument::Init()
 
     // Basic settings inherited from Instrument class
     m_title = DUMMY_TITLE;
-    m_name = _("New Simple Histogram");
+    m_name = _("New Simple History");
     m_sk_key = wxEmptyString;
     // SimpleHistogramInstrument's own settings
     m_timed_out = false;

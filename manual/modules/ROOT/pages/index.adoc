@@ -69,7 +69,7 @@ Example uses: all Signal K position paths, like `navigation.position`
 
 * xref:simplepositioninstrument.adoc[Detailed documentation]
 
-==== Simple histogram
+==== Simple history
 
 Simple instrument showing history of a single Signal K path numerical value.
 

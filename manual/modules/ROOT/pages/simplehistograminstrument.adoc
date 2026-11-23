@@ -1,9 +1,9 @@
 :imagesdir: ../images/
-== Simple histogram instrument
+== Simple history instrument
 
-image::simplehistograminstrument_screenshot.png[Simple gauge instrument]
+image::simplehistograminstrument_screenshot.png[Simple history instrument]
 
-A resctangular instrument displaying a single numerical value history. Allows to select formatting and unit conversion from the SI units used by Signal K to usual units used in navigation as well as the length of the history shown by the instrument.
+A rectangular instrument displaying the history of a single numerical value. Called "Simple histogram" in earlier versions. Lets you select the formatting, the conversion from the SI units used by Signal K to units usual in navigation, and the length of the history shown by the instrument.
 
 .Configuration parameters
 [cols="1h,5,1"]
@@ -19,7 +19,7 @@ A resctangular instrument displaying a single numerical value history. Allows to
 |GPS Time
 
 |Timeout
-|Timeout in seconds. If the set numeber of seconds passes since the last update for the Signal K key displayed by the instrument pass without receiving an update, the value is considerd timed out and is replaced by dashes.
+|Timeout in seconds. If the set number of seconds passes without an update of the Signal K key displayed by the instrument, the value is considered timed out and is replaced by dashes.
 |3
 
 |SK key
@@ -39,7 +39,7 @@ a|Format of the displayed number.
 * 09.9
 * 09.99
 * 009.99
-If displaying a sign in front of the number for negative values is undesirable, select the format marked by `ABS`, eg. `ABS(009)`.
+If displaying a sign in front of the number for negative values is undesirable, select the format marked by `ABS`, e.g. `ABS(009)`.
 
 |
 
@@ -87,8 +87,8 @@ a|Order of values in the graph
 a|Length of the history shown by the instrument. Selectable between 1 minute and 3 days.
 
 * The data for the last 1 minute are internally stored with resolution of 1 second.
-* The data for the last 1 hour are internally stored with resolution of 10 seconds
-* Older data are stored with resolution of 5 minutes
+* The data for the last 1 hour are internally stored with resolution of 10 seconds.
+* Older data are stored with resolution of 5 minutes.
 
 The data with different resolution are seamlessly combined together for longer time ranges.
 |5 minutes
