@@ -93,6 +93,10 @@ a|Length of the history shown by the instrument. Selectable between 1 minute and
 The data with different resolution are seamlessly combined together for longer time ranges.
 |5 minutes
 
+|New values
+|Side of the graph on which new values are added. `Left` scrolls the graph to the right, `Right` scrolls it to the left like an echo sounder or a barograph.
+|Right
+
 |Instrument width
 |Width of the instrument on screen
 |200

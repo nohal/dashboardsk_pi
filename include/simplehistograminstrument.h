@@ -63,27 +63,29 @@
         ConcatChoiceStrings(m_supported_orders), asInt, GetIntSetting)         \
     X(4, DSK_SETTING_HISTORY, 0, _("History"), ChoiceCtrl,                     \
         ConcatChoiceStrings(m_supported_histories), asInt, GetIntSetting)      \
-    X(5, DSK_SETTING_INSTR_WIDTH, m_instrument_width, _("Instrument width"),   \
+    X(5, DSK_SETTING_NEW_VALUES_SIDE, 0, _("New values"), ChoiceCtrl,          \
+        ConcatChoiceStrings(m_supported_sides), asInt, GetIntSetting)          \
+    X(6, DSK_SETTING_INSTR_WIDTH, m_instrument_width, _("Instrument width"),   \
         SpinCtrl,                                                              \
         STRINGIFY(DSK_SHI_INSTR_MIN_WIDTH) ";" STRINGIFY(                      \
             DSK_SHI_INSTR_MAX_WIDTH),                                          \
         asInt, GetIntSetting)                                                  \
-    X(6, DSK_SETTING_INSTR_HEIGHT, m_instrument_height,                        \
+    X(7, DSK_SETTING_INSTR_HEIGHT, m_instrument_height,                        \
         _("Instrument height"), SpinCtrl,                                      \
         STRINGIFY(DSK_SHI_INSTR_MIN_WIDTH) ";" STRINGIFY(                      \
             DSK_SHI_INSTR_MAX_WIDTH),                                          \
         asInt, GetIntSetting)                                                  \
-    X(7, DSK_SETTING_TITLE_FG, DSK_SHI_COLOR_TITLE_FG, _("Title color"),       \
+    X(8, DSK_SETTING_TITLE_FG, DSK_SHI_COLOR_TITLE_FG, _("Title color"),       \
         ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)           \
-    X(8, DSK_SETTING_BODY_BG, DSK_SHI_COLOR_BODY_BG, _("Background"),          \
+    X(9, DSK_SETTING_BODY_BG, DSK_SHI_COLOR_BODY_BG, _("Background"),          \
         ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)           \
-    X(9, DSK_SETTING_BODY_FG, DSK_SHI_COLOR_BODY_FG, _("Graph color"),         \
+    X(10, DSK_SETTING_BODY_FG, DSK_SHI_COLOR_BODY_FG, _("Graph color"),        \
         ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)           \
-    X(10, DSK_SETTING_MEAN_FG, DSK_SHI_COLOR_MEAN_FG, _("Mean color"),         \
+    X(11, DSK_SETTING_MEAN_FG, DSK_SHI_COLOR_MEAN_FG, _("Mean color"),         \
         ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)           \
-    X(11, DSK_SETTING_TIME_FG, DSK_SHI_COLOR_TIME_FG, _("Time color"),         \
+    X(12, DSK_SETTING_TIME_FG, DSK_SHI_COLOR_TIME_FG, _("Time color"),         \
         ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)           \
-    X(12, DSK_SETTING_BORDER_COLOR, DSK_SHI_COLOR_BORDER, _("Border color"),   \
+    X(13, DSK_SETTING_BORDER_COLOR, DSK_SHI_COLOR_BORDER, _("Border color"),   \
         ColourPickerCtrl, wxEmptyString, asString, GetStringSetting)
 
 PLUGIN_BEGIN_NAMESPACE
@@ -189,6 +191,10 @@ protected:
     wxArrayString m_supported_histories;
     /// Length of the history displayed
     Instrument::history_length m_history_length;
+    /// Array of supported new values side labels
+    wxArrayString m_supported_sides;
+    /// Side of the graph on which new values are added
+    Instrument::new_values_side m_new_values_side;
     /// Bitmap representation of the instrument
     wxBitmap m_bmp;
     /// Instrument in timed out state flag. True if the instrument is not

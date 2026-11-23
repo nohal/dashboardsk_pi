@@ -89,6 +89,7 @@ PLUGIN_BEGIN_NAMESPACE
 #define DSK_SETTING_TIME_FG "time_color"
 #define DSK_SETTING_ORDER "instrument_order"
 #define DSK_SETTING_HISTORY "history_length"
+#define DSK_SETTING_NEW_VALUES_SIDE "new_values_side"
 
 // Table of transformations to be shown in the GUI
 #define DSK_UNIT_TRANSFORMATIONS                                               \
@@ -150,6 +151,10 @@ PLUGIN_BEGIN_NAMESPACE
 #define DSK_VALUE_ORDER                                                        \
     X(Instrument::value_order::lowest_highest, _("Lowest to highest"))         \
     X(Instrument::value_order::highest_lowest, _("Highest to lowest"))
+
+#define DSK_NEW_VALUES_SIDE                                                    \
+    X(Instrument::new_values_side::left, _("Left"))                            \
+    X(Instrument::new_values_side::right, _("Right"))
 
 #define DSK_HISTORY_LENGTH                                                     \
     X(Instrument::history_length::len_1min, _("1 minute"))                     \
@@ -292,6 +297,14 @@ public:
         /// @brief From highest to lowest (lowest value on the top or right) -
         /// Suitable for eg. depth
         highest_lowest
+    };
+
+    /// @brief Side of a history graph on which new values are added
+    enum class new_values_side {
+        /// @brief New values on the left, the graph scrolls to the right
+        left,
+        /// @brief New values on the right, the graph scrolls to the left
+        right
     };
 
     /// @brief Supported lengths of history
