@@ -451,12 +451,6 @@ public:
     /// \return Path ending with a separator, empty if not set
     const wxString& GetUserDir() { return m_user_dir; }
 
-    /// Adds a numbered page to the canvas
-    ///
-    /// @param canvas Index of the canvas
-    /// @param page Page number (1-9)
-    void AddPageToCanvas(const int& canvas, const size_t& page);
-
     /// Process the mouse event
     ///
     /// @param event

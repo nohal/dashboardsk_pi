@@ -287,10 +287,8 @@ void Dashboard::ReadConfig(Json::Value& config)
         m_name = fromJsonVal(config["name"].asString());
     if (config.isMember("canvas"))
         m_canvas_nr = config["canvas"].asInt();
-    if (config.isMember("page")) {
+    if (config.isMember("page"))
         m_page_nr = config["page"].asInt();
-        m_parent->AddPageToCanvas(m_canvas_nr, m_page_nr);
-    }
     if (config.isMember("anchor"))
         m_anchor = (anchor_edge)config["anchor"].asInt();
     if (config.isMember("offset_h"))
